@@ -1,6 +1,6 @@
-Last update: December 14th, 2019
+Last update: December 30th, 2019
 
-![](https://img.shields.io/badge/Home%20Assistant-0.96.5-blue.svg)
+![](https://img.shields.io/badge/Home%20Assistant-0.103.5-blue.svg)
 ![](https://img.shields.io/github/last-commit/rbisschops/homeassistant.svg)
 [![](https://img.shields.io/github/issues-raw/rbisschops/homeassistant)](https://github.com/rbisschops/homeassistant/issues)
 
@@ -22,28 +22,33 @@ Last update: December 14th, 2019
 
 # [My Home server](#my-home-server)
 
-Here's my [Home Assistant](https://home-assistant.io/) configuration. I have installed Home Assistant on an old HP laptop for now. The laptop is running as a "Home server". I am currently running Ubuntu 18.04 LTS on the laptop. Home Assistant as well as all supporting applications (and some additional non Home Assistant related applications) are running in Docker containers. 
+Here's my [Home Assistant](https://home-assistant.io/) configuration. I have installed Home Assistant on an custom build PC. The PC is running as a "Home server". I am currently running Ubuntu 18.04 LTS on the PC. Home Assistant as well as all supporting applications (and some additional non Home Assistant related applications) are running in Docker containers. Home assistant is running on HASS.io as are some of the add-ons.
 
-## Things that I run on my Home server (all in Docker containers)
+## Things that I run on my Home server
+* [Home Assistant](https://home-assistant.io/), home automation solution running as HASS.io version.
 
-* [Home Assistant](https://home-assistant.io/)
-* [Zigbee2MQTT](https://koenkk.github.io/zigbee2mqtt/), great development for getting rid of most of the propietary bridges. I use it for all my ZigBee devices except for Hue.
-* [Mosquitto](https://mosquitto.org/), my favorite MQTT Broker. Used for exchanging data between a lot of applications and from the outside world (through the reverse proxy).
-* [Domoticz](https://www.domoticz.com/), for test mainly, not really made for containerizing so stopped moving there with Domoticz.
+Home assistant add-ons:
+* [Mosquitto](https://mosquitto.org/), my favourite MQTT Broker. Used for exchanging data between a lot of applications and from the outside world (through the reverse proxy).
 * [ESPHome](https://esphome.io/), for connecting all kinds of sensors to Home Assistant. Intend to add a lot of ESP32 based sensors with this (for example for Bluetooth devices)
 * [Node-RED](https://nodered.org), flow based programming, an intuitive addition to both Home Assistant and Domoticz (or any other home automation system).
+
+Stand alone containers:
+* [Zigbee2MQTT](https://koenkk.github.io/zigbee2mqtt/), great development for getting rid of most of the proprietary bridges. I use it for all my ZigBee devices except for Hue.
 * [InfluxDB](https://www.influxdata.com/), a time series database. Installed, tested but not used yet.
 * [Grafana](https://grafana.com/), analytics and monitoring. Installed, tested but not used yet.
 * [Traefik](https://traefik.io/), reverse proxy for secure access from the outside world.
 * [Unifi Controller](https://www.ui.com/), for managing my Ubiquiti Access points.
 * [Portainer](https://www.portainer.io/), makes managing my Docker containers easy.
 
-I plan to move everything to a dedicated PC in time. Docker and hass.io should make this simple.
+Some application are still running on the old laptop server. I will move everything to the server PC. Docker and hass.io will make this simple.
 
-When I find the time I will write a blog or something alike about my Home server.
+Standalone solutions
+A number of solutions have their own hardware, mostly raspberry Pi's:
+* [Domoticz](https://www.domoticz.com/), running on two Raspberry Pi’s in master/slave configuration. The master will retire when everything is migrated to Home Assistant (mainly the RFXtrx and the CoCo hardware). The slave will stay as it is logging the smart meter data.
+* [HA Bridge](https://www.bwssystems.com/#), running an emulated Hue bridge. I use it for connecting my Amazon Alexa Echo-dot to Home Assistant.
+* [MySensors gateway](https://www.mysensors.org/), The gateway for the MySensors devices around the house. Running on a Raspberry Pi.
 
 # [Home Assistant](#home-assistant)
-
 
 Home Assistant and Domoticz are running in parallel at the moment. I spent quite some time to get the two working together. Home Assistant is the main home automation application.
 
@@ -52,18 +57,18 @@ Home Assistant and Domoticz are running in parallel at the moment. I spent quite
 ## Home Assistant setup
 
 ### Home Assistant configuration
-After looking at a ton of configurations and playing around with them I decided to go for packages. All my configurations are now in packages grouped as logical collections of components, entities automations etc. ,mostly room based
+After looking at a ton of configurations and playing around with them I decided to go for packages. All my configurations are now in packages grouped as logical collections of components, entities automations etc. ,mostly room based.
 
-For example package_notification contains the applied notification components (prowl and pushsafer currently), the associated entities for example the input_boolean that controls if notifications are enabled) and scripts. Scripts are used by many other packages that require  notifications.   
+For example package_notification contains the applied notification components (Prowl, Telegram and Pushsafer currently), the associated entities, automations and scripts. Most scripts can be  used by other packages that require  notifications to be sent.
 
 ### Lovelace UI
-I decided to fully go for Lovelace as the UI. As this is stable since the 0.87 release I moved everything over to Lovelace. [Isabella Gross Alström](https://github.com/isabellaalstrom) has a wonderfull UI that is one of the sources of inspiration for me.
+I moved to Lovelace as the UI already some time ago. [Isabella Gross Alström](https://github.com/isabellaalstrom) has a wonderful UI that is one of the sources of inspiration for me.
 I use a growing number of custom cards and helpers in my Lovelace. I will do some write up on these later but here are the ones I use now.
 * [compact-custom-header](https://github.com/maykar/compact-custom-header), card by Ryan Meek (maykar) for customizing the header of your UI. 
-* [decluttering-card](https://github.com/custom-cards/decluttering-card), card by Jérôme W (RomRider). This card signifcantly reduces the number of lines in your lovelace configuration. Helps structure your code.
+* [decluttering-card](https://github.com/custom-cards/decluttering-card), card by Jérôme W (RomRider). This card significantly reduces the number of lines in your Lovelace configuration. Helps structure your code.
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card), nice graphs of your data can be created with this card. Good work delivered by Karl Kihlström (kalkih).
 * [button-card](https://github.com/custom-cards/button-card), customize your buttons with this card. Started by Alexandre Garcia this card now has many active contributors.
-* [card-mod](https://github.com/thomasloven/lovelace-card-mod), Adds CSS styles to (almost) any lovelace card. Powerful custom card by Thomas Lovén (thomasloven) 
+* [card-mod](https://github.com/thomasloven/lovelace-card-mod), Adds CSS styles to (almost) any lovelace card. Powerful custom card by Thomas Lovén (thomasloven)
 
 When things are progressing I will upload some screenshots of my UI.
 
@@ -72,13 +77,13 @@ When things are progressing I will upload some screenshots of my UI.
 * Zwave:
   * [Aeotec Z-Stick Gen5](https://aeotec.com/z-wave-usb-stick) Z-Wave controller.
   * [Heatit Thermostat](https://www.heatit.com/heating-control/floor-heating-thermostats/heatit-z-wave-thermostat/) Z-Wave thermostat for controlling the electrical heating in one room.
-  * [Neo Coolcam sensors](https://www.szneo.com/) Motion sensors and door/window sensors. Available at Ali Express for competitive prices.
+  * [Neo Coolcam sensors](https://www.szneo.com/) Motion sensors and door/window sensors. Available at AliExpress for competitive prices.
   * [Fibaro smoke sensors](https://www.fibaro.com/en/) The best looking smoke detectors on the market (IMHO).
 
 * Zigbee:
-  * [Xiaomi Aqara sensors](https://www.aliexpress.com) I use motion sensors, door/window sensors, temp/hum/pressure sensors, a magic cube (nice gadget!) and some buttons. All sensors are connected to Home Assistant (through Zigbee2mqtt)
-  * [Philips Hue](https://www2.meethue.com) Philips Hue bulbs used in the house. Operated through the Hue Bridge as I use the scenes in the Bridge for setting the ambiance.
-  * [Tradfri](https://www.ikea.com) Cheap ZigBee compatible smart home devices. Currently I only use Wireless control outlets for the more critical switches (replacement of Click-On-Click-Off units). I'm not convinced with the quality and the performance.
+  * [Xiaomi Aqara sensors](https://www.aliexpress.com) I use motion sensors, door/window sensors, temp/hum/pressure sensors, vibration sensors, a magic cube (nice gadget!) and some buttons. All sensors are connected to Home Assistant (through Zigbee2mqtt)
+  * [Philips Hue](https://www2.meethue.com) Philips Hue bulbs used in the house. Operated through the Hue Bridge. The ambiance (colour) is controlled form Home Assistant where I decided to go for profiles instead of scenes.
+  * [IKEA Trådfri](https://www.ikea.com) Cheap ZigBee compatible smart home devices. Currently I use Wireless control outlets for the more critical switches (replacement of Click-On-Click-Off units) and a repeater. I'm not convinced with the quality and the performance.  All entities are connected to Home Assistant (through Zigbee2mqtt)
   * The Aqara bridge is retired. 
 
 * MySensors platform:
@@ -86,20 +91,20 @@ When things are progressing I will upload some screenshots of my UI.
 
 * MQTT:
   * [OwnTracks](https://home-assistant.io/components/device_tracker.owntracks/) Presence detection is an important part of the home automation. OwnTracks is used for Geolocation over MQTT.
-  * Interfacing to Home Assistant and used for controlling devices that rely on presence.
 
 * Wi-Fi and network:
-  * [Netgear Nighthawk](https://www.netgear.nl/home/products/networking/wifi-routers/R7000.aspx), the center of all the networking activities in the house. Connects to all devices that require wired networking and to the Wi-Fi AP's. Several unmanaged switches are used to connect wired devices in the house. The Nighthawk submits the status information of all connected devices to Home Assistant. This way I can track if everything is still online. Connected mobile phones are tracked for additional presence detection. 
+  * [Netgear Nighthawk](https://www.netgear.nl/home/products/networking/wifi-routers/R7000.aspx), the centre of all the networking activities in the house. Connects to all devices that require wired networking and to the Wi-Fi AP's. Several unmanaged switches are used to connect wired devices in the house. The Nighthawk submits the status information of all connected devices to Home Assistant. This way I can track if everything is still online. Connected mobile phones are tracked for additional presence detection. 
   * [Unifi AP AC Lite](https://www.ui.com/unifi/unifi-ap-ac-lite/), the access points I use in the house to support full Wi-Fi coverage for the mobile and Wi-Fi connected devices.
 
 * Voice control:
-  * [Amazon Echo Dot 2nd gen.](https://amazon.com), Echo dot 2nd generation used for voice control. Currently this runs through HA-Bridge, an emulated Hue application running on a RPi. Will be exchanged with Home Assistant native Amazon Alexa support in the future.
+  * [Amazon Echo Dot 2nd gen.](https://amazon.com), Echo dot 2nd generation used for voice control. Currently this runs through the HA Bridge. Will be exchanged with Home Assistant native Amazon Alexa support in the future.
   * [Google Home Mini](https://store.google.com/product/google_home_mini), currently not in use. But successfully tested with Home Assistant.
 
 * Media devices:
   * [LG Television](https://www.lg.com), my LG television running LG WebOS is controlled by Home Assistant mainly for choosing the correct mode for things like Netflix and Spotify.
-  * [Popcorn Hour](https://www.cloudmedia.com/), a classic in my house, the Popcorn A300. Mainly controlled with the Harmony Hub, but some initial settings are done by Home Assistant at startup.
-  * [Denon AV3808](https://www.denon.com), also a classic, but with network connect powerful for internet radio and streaming music, direct control over Home Assistant is on the wish list.
+  * [Popcorn Hour](https://www.cloudmedia.com/), a classic in my house, the Popcorn A300. Mainly controlled with the Harmony Hub, but some initial settings are done by Home Assistant at start up.
+  * [Denon AVR-X3600H](https://www.denon.com), AV receiver with network connect. powerful for internet radio and streaming music, direct control over Home Assistant is partly implemented though not complete yet. As the device is HEOS compatible, this should open integration possibilities.
+  * [Humax iHRD-5050c](https://myhumax.info/), this is an older cable receiver, but still working. Used for cable television and radio. I can control the Humax over the Harmony Hub.
   * [Apple TV](https://www.apple.com), not much used anymore these days as the LG can do most of it.
   * [Harmony Hub](https://www.logitech.com), the Harmony Hub, despite Logitech's poor way of supporting interoperability, a powerful device for controlling the media devices. Integrated with Home Assistant. I spent a lot of time in getting it running in Home Assistant. Still some lose ends but I'm getting there.
 
@@ -115,6 +120,7 @@ Some projects I have planned:
 * Add motion sensors and automations to switch on lights for orientation at night time
 
 Many ideas, too little time! I will add some more projects later.
+When I find the time I will write a blog or something alike about my Home automation projects.
 
 # [Development](#development)
 
