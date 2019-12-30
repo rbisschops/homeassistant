@@ -49,7 +49,7 @@ cards:
             name: ' '
           - entity: sensor.br_rainchance_2d
             name: Regen
-          - entity: sensor.br_sunchance_2d
+          - entity: sensor.br_sunchance_2d 
             name: Zon
       - type: custom:decluttering-card
         template: custom_markdown_card_small
