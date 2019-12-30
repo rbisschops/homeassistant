@@ -1,0 +1,117 @@
+## Lovelace-UI file for Home Assistant, Secondfloor view
+## Type: Home Assistant yaml file
+## Date: 30-05-2019
+## Author: R.Bisschops
+##
+## Changelog:
+## V0.1.0:  First version
+## V0.2.0:  Moved overleays to the top in the code (see remarks)
+## V.02.1:  Added hallway env sensor 2nd floor
+## V0.3.0:  Changed layout
+## v0.3.1:  Minor color update
+
+## Remarks:
+## overlays for doors and other elements need to be on top in the code, otherwise
+## the other controlable elements are not accessible anymore in the fontend!!
+
+title: 2e verdieping
+panel: true  
+cards:
+  - type: picture-elements
+    image: /local/floorplans/second_floor.png
+    elements:
+      ## Doors and windows overlays
+      - type: image
+        entity: input_boolean.heating_room_door
+        tap_action:
+          action: none
+        state_image:
+          'on': /local/floorplans/overlays/heating_room_door.png        
+        style:
+          top: 0%
+          left: 0%
+          position: absolute
+          transform: translate(0%, 0%)
+      - type: image
+        entity: input_boolean.top_floor_room
+        tap_action:
+          action: none
+        state_image:
+          'on': /local/floorplans/overlays/top_floor_room.png        
+        style:
+          top: 0%
+          left: 0%
+          position: absolute
+          transform: translate(0%, 0%)
+      ## Outdoor temperature (buienradar)
+      - type: state-label
+        entity: sensor.rotterdam_temperature
+        prefix: 'Buiten temperatuur: '
+        style:
+          top: 83%
+          left: 25%
+          font-size: 100%
+          font-weight: 'bold'
+      - type: state-label
+        entity: sensor.rotterdam_humidity
+        prefix: 'Relatieve luchtvochtigheid: '
+        style:
+          top: 89%
+          left: 25%
+          font-size: 100%  
+          font-weight: 'bold'
+      ## Indoor temerature and humdity sensors
+      - type: state-label
+        entity: sensor.room_temp_kim
+        style:
+          top: 52%
+          left: 30%
+          position: absolute
+          font-size: 12px
+          color: '#000000'
+          font-weight: 'bold'
+      - type: state-label
+        entity: sensor.room_humidity_kim
+        style:
+          top: 56%
+          left: 30%
+          position: absolute
+          font-size: 12px
+          color: '#000000'
+          font-weight: 'bold'
+      - type: state-label
+        entity: sensor.room_temp_heating_room
+        style:
+          top: 26%
+          left: 50%
+          position: absolute
+          font-size: 12px
+          color: '#000000'
+          font-weight: 'bold'
+      - type: state-label
+        entity: sensor.room_humidity_heating_room
+        style:
+          top: 30%
+          left: 50%
+          position: absolute
+          font-size: 12px
+          color: '#000000'
+          font-weight: 'bold'
+      - type: state-label
+        entity: sensor.room_temp_hallway_floor2
+        style:
+          top: 30%
+          left: 33%
+          position: absolute
+          font-size: 12px
+          color: '#000000'
+          font-weight: 'bold'
+      - type: state-label
+        entity: sensor.room_humidity_hallway_floor2
+        style:
+          top: 34%
+          left: 33%
+          position: absolute
+          font-size: 12px
+          color: '#000000'
+          font-weight: 'bold'

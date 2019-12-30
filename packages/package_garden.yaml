@@ -1,0 +1,381 @@
+## Package file for Home Assistant, used for the garden
+## Type: Home Assistant yaml file
+## Date: 01-08-2019
+## Author: R.Bisschops
+##
+## Changelog:
+## V0.1.0:  First version
+## V1.0.0:  Production version 1.0.0
+## V1.0.1:  Minor updates in comments
+## V1.1.0:  Added HA-Bridge automation (moved from package_livingroom)
+## V1.1.1:  Added entity to automation Tuinverlichting bij thuiskomst for testing (fix bug #006)  
+## V1.1.2:  Commented after_offset to fix bug #006
+## V1.2.0:  Added script for stopping the sunscreen
+## V1.2.1:  Added sunscreen input_boolean for state monitoring of sunscreen stop actions
+##          Replaced sunscreen stop script with pauze automation triggered by input_boolean
+##          Added automations for auto zonnescherm (notification only for test)
+## V1.2.2:  Udated automations auto zonnescherm (notification only for test)
+## V1.2.3:  Added sunscreen manaul overide input boolean
+##          Added live sunscreen to automations
+## V1.2.4:  Minor update sunscreen in automation
+## V1.2.5:  Added automation for percipitation returning to <0.01
+## V1.2.6:  Changed eleavation trigger to 16 (was 17)
+## V1.3.0:  Fix for #0034
+## V1.3.1:  Code cleanup and code structure
+## V1.3.2:  Commented trigger garden lights for test
+## V1.3.3:  Changed trigger for gardenlights (based on front door trigger)
+## V1.4.0:  Moved in automations from package_presence
+## V1.5.0:  Updated sunscreen scripts due to change in domo2hass automations
+## V1.6.0:  Added gardenlights before sunrise on and oof automations
+##          Changed condtional sensor people_home to everybody_away
+## V1.7.0:  Changed automations for garden lights and fountain,
+##          Added input_booleans for garden lights and fountain, 
+##          Added groups for garden lights and fountain
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+homeassistant:
+
+###############################################################################
+##  Entities
+###############################################################################
+input_boolean:
+  ## Pause state toggle for sunscreen lovelace
+  sunscreen_pause:
+    name: Pauze zonnescherm
+  ## Test switch for sunscreen. Removed when all automations work ok
+  sunscreen_test:
+    name: Test zonnescherm
+    icon: mdi:blinds
+  ## Manual mode switch for the sunscreen 
+  sunscreen_manual:
+    name: Zonnescherm handmatig  
+  ## Added V1.7.0
+  gardenlight:
+    name: Tuin verlichting
+    icon: mdi:lightbulb
+  waterornament:
+    name: Waterbollen
+    icon: mdi:fountain
+
+###############################################################################
+##  Groups
+###############################################################################
+group:
+  # garden_lights:
+  #   name: Tuinverlichting
+  #   entities:
+  #     - input_boolean.gardenlight
+  #     - automation.tuinverlichting_bij_zonsondergang
+  #     - automation.tuinverlichting_bij_thuiskomst
+  ## Added V1.7.0
+  gardenlight:
+    name: Tuin verlichting
+    entities:
+      - switch.habridge_gardenlight
+      - input_boolean.gardenlight
+  waterornament:
+    name: Waterbollen
+    entities:
+      - switch.habridge_waterornament
+      - input_boolean.waterornament
+###############################################################################
+##  Automations
+###############################################################################
+automation:
+  ## Added V1.7.0
+  ## Switch garden lights on and off
+  - alias: "Verlichting tuin aan-uit"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: 
+        - switch.habridge_gardenlight
+        - input_boolean.gardenlight
+    action:
+      - service_template: >-
+          {% if is_state(trigger.entity_id, 'on') %}
+            homeassistant.turn_on
+          {% elif is_state(trigger.entity_id, 'off') %}
+            homeassistant.turn_off
+          {% endif %}
+        entity_id: input_boolean.domo_gardenlight
+      - service_template: >-
+          {% if is_state(trigger.entity_id, 'on') %}
+            homeassistant.turn_on
+          {% elif is_state(trigger.entity_id, 'off') %}
+            homeassistant.turn_off
+          {% endif %}
+        entity_id: group.gardenlight
+  ## Switch fountain lights on and off
+  - alias: "waterbollen aan-uit"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      platform: state
+      entity_id: 
+        - switch.habridge_waterornament
+        - input_boolean.waterornament
+    action:
+      - service_template: >-
+          {% if is_state(trigger.entity_id, 'on') %}
+            homeassistant.turn_on
+          {% elif is_state(trigger.entity_id, 'off') %}
+            homeassistant.turn_off
+          {% endif %}
+        entity_id: input_boolean.domo_waterornament
+      - service_template: >-
+          {% if is_state(trigger.entity_id, 'on') %}
+            homeassistant.turn_on
+          {% elif is_state(trigger.entity_id, 'off') %}
+            homeassistant.turn_off
+          {% endif %}
+        entity_id: group.waterornament
+
+  ## Switch on gardenlights at sunset but only if someone is home
+  - alias: "Tuinverlichting bij zonsondergang"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      platform: sun
+      event: sunset
+      offset: '00:15:00'
+    condition:
+      condition: and
+      conditions: 
+        - condition: state
+          entity_id: binary_sensor.everybody_away
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.holiday_mode
+          state: 'off'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.gardenlight
+
+  ## Added V1.6.0  
+  ## Switch on gardenlights before sunrise but only if someone is home
+  - alias: "Tuinverlichting voor zonsopkomst"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      platform: time
+      at: '06:30:00'
+    condition:
+      condition: and
+      conditions: 
+        - condition: state
+          entity_id: binary_sensor.everybody_away
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.holiday_mode
+          state: 'off'
+        - condition: state
+          entity_id: sun.sun
+          state: 'below_horizon'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.gardenlight
+
+  ## Added V1.6.0
+  ## Switch off gardenlights at sunrise but only if someone is home
+  - alias: "Tuinverlichting uit bij zonsopkomst"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      platform: sun
+      event: sunrise
+      offset: '-00:15:00'
+    condition:
+      condition: and
+      conditions: 
+        - condition: state
+          entity_id: binary_sensor.everybody_away
+          state: 'off'
+        - condition: state
+          entity_id: input_boolean.holiday_mode
+          state: 'off'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.gardenlight
+
+  ## Switch gardenlights at home coming but only when dark and before 23:00
+  - alias: "Tuinverlichting bij thuiskomst"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: 
+          ## Added in V1.3.3
+          - binary_sensor.neo_coolcam_front_door
+        to: 'on'
+    condition:  
+      condition: and
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: time
+          before: '23:00:00'
+        ## Added in V1.3.3
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: input_select.ralph_status_dropdown
+              state: 'Just Arrived'
+            - condition: state
+              entity_id: input_select.anneke_status_dropdown
+              state: 'Just Arrived'
+            - condition: state
+              entity_id: input_select.kimberly_status_dropdown
+              state: 'Just Arrived'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.gardenlight
+
+  ## Start and stop sunscreen based on toggle pause/start from frontend 
+  - alias: "Pauzeer zonnescherm"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: 
+          - input_boolean.sunscreen_pause
+    action:
+      - service: script.domoticz_sunscreen
+        data_template:
+          new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
+
+  ## Open sunscreen based on position of the sun (elevation)
+  - alias: "Zonnescherm uit - elevatie" 
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sun.sun
+        value_template: "{{ state.attributes.elevation |int }}"
+        above: 16
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.sunscreen_manual
+          state: 'off'
+        - condition: template
+          value_template: '{{ states.sensor.rotterdam_precipitation_forecast_total.state |float == 0.0 }}'
+        - condition: state
+          entity_id: input_boolean.domo_sunscreen
+          state: 'off'
+    action:
+      - service: script.open_sunscreen
+      - service: script.notify_prowl
+        data_template:
+          value1: 'Zonnescherm: '
+          value2: 'zonnescherm gaat open op basis van elevatie zon'
+          value3: ' '
+          who: 'ralph'
+          prio: -2   
+
+  ## Open sunscreen when percipitation returns to 0.0
+  - alias: "Zonnescherm uit - regenverwachting"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.rotterdam_precipitation_forecast_total
+        value_template: "{{ states.sensor.rotterdam_precipitation_forecast_total.state |float }}"
+        below: 0.01
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.sunscreen_manual
+          state: 'off'
+        - condition: template
+          value_template: '{{ states.sun.sun.attributes.elevation | float >= 16.0 }}'
+        - condition: template
+          value_template: '{{ states.sun.sun.attributes.azimuth |int <= 200 }}'
+        - condition: state
+          entity_id: input_boolean.domo_sunscreen
+          state: 'off'
+    action: 
+      - service: script.open_sunscreen
+      - service: script.notify_prowl
+        data_template:
+          value1: 'Zonnescherm: '
+          value2: 'zonnescherm gaat open, geen regen verwacht'
+          value3: ' '
+          who: 'ralph'
+          prio: -2
+
+  ## Close sunscreen when rain is expected (percipitation > 0.0 or when its 19:30 or when azimuth is over 200.0
+  ## Azimuth is trigger commented for now
+  - alias: "Zonnescherm in"
+    hide_entity: false
+    initial_state: 'on'
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.rotterdam_precipitation_forecast_total
+        value_template: "{{ state.state |float }}"
+        above: 0.0
+      # - platform: numeric_state
+      #   entity_id: sun.sun
+      #   value_template: "{{ state.attributes.azimuth |int }}"
+      #   above: 200
+      - platform: time
+        at: '19:30:00'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.domo_sunscreen
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.sunscreen_manual
+          state: 'off'
+    action:
+      - service: script.close_sunscreen
+      - service: script.notify_prowl
+        data_template:
+          value1: 'Zonnescherm: '
+          value2: 'Zonnescherm gaat dicht'
+          value3: ' het is tijd of regen verwacht'
+          who: 'ralph'
+          prio: -2
+
+###############################################################################
+##  Templates
+###############################################################################
+
+
+###############################################################################
+##  Scripts
+###############################################################################
+script:
+  open_sunscreen:
+    alias: Zonnescherm uit
+    sequence:
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.domo_sunscreen
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.sunscreen_test
+
+  close_sunscreen:
+    alias: Zonnescherm in
+    sequence:
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.domo_sunscreen
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.sunscreen_test
+
+  # pause_sunscreen:
+  #   alias: Pauzeer zonnescherm op huidige positie
+  #   sequence:
+  #     - service: script.domoticz_sunscreen
+  #       data_template:
+  #         new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
+
+###############################################################################
+##  Timers
+###############################################################################

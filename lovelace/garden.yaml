@@ -1,0 +1,132 @@
+## Lovelace-UI file for Home Assistant, Firstfloor view
+## Type: Home Assistant yaml file
+## Date: 12-07-2019
+## Author: R.Bisschops
+##
+## Changelog:
+## V0.1.0:  First version
+## V0.2.0:  Added controls and status for the sunscreen
+## V0.3.0:  Changed layout and updated icons for lamps
+## V0.3.1:  Added sunscreen manual button
+## V0.3.2:  Minor color update
+
+## overlays for doors and other elements need to be on top in the code, otherwise
+## the other controlable elements are not accessible anymore in the fontend!!
+
+title: Tuin
+panel: true
+cards:
+  - type: picture-elements
+    image: /local/floorplans/garden.png
+    elements:
+      ## Sunscreen overlay
+      - type: image
+        entity: input_boolean.domo_sunscreen
+        tap_action:
+          action: none
+        state_image:
+          'on': /local/floorplans/overlays/sunscreen.png        
+        style:
+          top: 0%
+          left: 0%
+          position: absolute
+          transform: translate(0%, 0%)
+      ## Outdoor temperature & humidity
+      - type: state-label
+        entity: sensor.rotterdam_temperature
+        prefix: 'Buiten temperatuur: '
+        style:
+          top: 83%
+          left: 25%
+          font-size: 100%
+          font-weight: 'bold'
+      - type: state-label
+        entity: sensor.rotterdam_humidity
+        prefix: 'Relatieve luchtvochtigheid: '
+        style:
+          top: 89%
+          left: 25%
+          font-size: 100%   
+          font-weight: 'bold'
+      ## Controls for the garden
+      - type: image
+        entity: input_boolean.gardenlight
+        tap_action:
+          action: toggle
+        image: /local/custom_icons/customlight48_on.png
+        state_image:
+          'on': /local/custom_icons/customlight48_on.png
+          'off': /local/custom_icons/customlight48_off.png
+        style:
+          top: 42%
+          left: 22.5% 
+          position: absolute
+          width: 2.5%                                                 
+      - type: image
+        entity: input_boolean.waterornament
+        tap_action:
+          action: toggle
+        image: /local/custom_icons/fountain48_on.png
+        state_image:
+          'on': /local/custom_icons/fountain48_on.png
+          'off': /local/custom_icons/fountain48_off.png 
+        style:
+          top: 42%
+          left: 10% 
+          position: absolute
+          width: 2.5%
+      ## Sunscreen control buttons
+      - type: image
+        entity: input_boolean.domo_sunscreen
+        tap_action:
+          action: call-service
+          service: script.open_sunscreen          
+        image: /local/custom_icons/left48_on.png
+        state_image:
+          'on': /local/custom_icons/left48_off.png
+          'off': /local/custom_icons/left48_on.png
+        style:
+          top: 20%
+          left: 46% 
+          position: absolute
+          width: 2.5%
+      - type: image
+        entity: input_boolean.sunscreen_pause
+        tap_action:
+          action: toggle
+        image: /local/custom_icons/play48_on.png
+        state_image:
+          'on': /local/custom_icons/play48_on.png
+          'off': /local/custom_icons/pause48_on.png 
+        style:
+          top: 27%
+          left: 46% 
+          position: absolute
+          width: 2.5%
+      - type: image
+        entity: input_boolean.domo_sunscreen
+        tap_action:
+          action: call-service
+          service: script.close_sunscreen
+        image: /local/custom_icons/right48_on.png
+        state_image:
+          'on': /local/custom_icons/right48_on.png
+          'off': /local/custom_icons/right48_off.png 
+        style:
+          top: 34%
+          left: 46% 
+          position: absolute
+          width: 2.5%
+      - type: image
+        entity: input_boolean.sunscreen_manual
+        tap_action:
+          action:  toggle
+        image: /local/custom_icons/manual48_on.png
+        state_image:
+          'on': /local/custom_icons/manual48_on.png
+          'off': /local/custom_icons/manual48_off.png 
+        style:
+          top: 41%
+          left: 46% 
+          position: absolute
+          width: 2.5%      

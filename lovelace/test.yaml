@@ -1,0 +1,227 @@
+## Lovelace-UI file for Home Assistant, Test view
+## Type: Home Assistant yaml file
+## Date: 12-07-2019
+## Author: R.Bisschops
+##
+## Changelog:
+## V0.1.0:  First version
+## V0.2.0:  Moved some switches to other tabs
+## V0.2.1:  Changed UI layout
+## V0.2.2:  Added susncreen dummy switch
+## V0.2.1:  Added sunscreen manaul overide input boolean for test
+## V0.2.2:  Removed virtual heating from Domo (obsolete)
+## V0.2.3:  Removed input_boolean.sunscreen_manual (moved)
+##          Added switch.tradfri_high_cabinets_switch (moved)
+## V0.3.0:  Major UI changes based on Decluttering card
+## V0.4.0:  Added new precense items for test
+## V0.4.1:  Added input booleans for garbage bins
+## V0.5.0:  Removed obsolete entities, added windows
+
+title: Test
+icon: 'mdi:test-tube'
+background: "#e3e3e3"
+cards:
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Test schakelaars algemeen
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Presence test
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - input_select.ralph_status_dropdown
+        - input_select.anneke_status_dropdown
+        - input_select.kimberly_status_dropdown
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Z-Wave devices
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: binary_sensor.neo_coolcam_front_door
+        - entity: binary_sensor.neo_coolcam_storage_door
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Timers
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: timer.hallwaylight
+        - entity: timer.porchlight
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Test schakelaars tuin
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars tuin
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.sunscreen_test
+
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Test schakelaars begane grond
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Tradfri test schakelaars
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: switch.tradfri_high_cabinets_switch
+        - type: section
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars begane grond
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.front_window
+        - entity: input_boolean.garden_door
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Test schakelaars uitbouw
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars halletje
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.hallway_livingroom_door
+        - entity: input_boolean.hallway_storage_door
+        - entity: input_boolean.metering_cabinet_door
+        - entity: input_boolean.toilet_door
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars berging
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.freezer
+        - entity: input_boolean.plastic_bin
+        - entity: input_boolean.bio_bin
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Test schakelaars  1e verdieping
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars badkamer
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.bath_room_door
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars slaapkamer
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.bed_room_door
+        - entity: input_boolean.bed_room_window_l
+        - entity: input_boolean.bed_room_window_r
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars overloop
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.hallway_door
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars kantoor
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.office_door
+        - entity: input_boolean.office_window
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars kastenkamer
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.side_room_window
+
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Test schakelaars  2e verdieping
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars overloop
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.heating_room_door
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Virtuele schakelaars kamer Kim
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.top_floor_room
+        - entity: input_boolean.top_floor_window_l
+        - entity: input_boolean.top_floor_window_r

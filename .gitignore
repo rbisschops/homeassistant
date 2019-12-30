@@ -1,0 +1,61 @@
+# .gitignore file for the homeassitant config dir.
+# Ensure that everything will be ignored first
+*
+
+# Whitelist files/folders for the config dir.
+!*.yaml
+!.gitignore
+!*.md
+
+# Whitelist folders and files.
+!packages
+!lovelace
+!includes
+!includes/automations
+!includes/binary_sensors
+!includes/customizations
+!includes/groups
+!includes/input_boolean
+!includes/input_number
+!includes/input_select
+!includes/scenes
+!includes/scripts
+!includes/sensors
+!includes/zones
+!themes
+!www
+!www/*.jpg
+!www/*.png
+!www/custom_cards
+!www/custom_cards/*.js
+!www/custom_cards/compact-custom-header
+!www/custom_cards/compact-custom-header/*.js
+!www/custom_icons
+!www/custom_icons/*.png
+
+
+# Ignore the folowing folders.
+.storage
+.cloud
+.google.token
+deps
+private
+tts
+www/floorplans
+
+# Ensure individual files to be ignored.
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+zwave_device_config.yaml
+google_calendars.yaml
+anneke.jpg
+anneke_*.png
+anneke48*.png
+kimberly.jpg
+kimberly_*.png
+kimberly48*.png
+ralph.jpg
+ralph_*.png
+ralph48*.png
+

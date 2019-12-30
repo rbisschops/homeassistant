@@ -1,0 +1,228 @@
+## Lovelace-UI file for Home Assistant, Statistics view
+## Type: Home Assistant yaml file
+## Date: 21-07-2019
+## Author: R.Bisschops
+##
+## Changelog:
+## V0.1.0:  First version
+## V0.2.0:  Changed layout for presence
+##          Changed colors of non- critical network devices
+## V0.2.1:  Updated empty card in critcal network devices 
+## V0.4.0:  Changed some configs
+##          Removed obsolete devices
+##          Reshuffled layout
+## V0.4.1:  Changed UI layout
+## V0.5.0:  Major UI changes based on Decluttering card
+## V0.6.0:  Added MySensors Gateway
+
+title: Status
+icon: 'mdi:stethoscope'
+background: "#e3e3e3"
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:decluttering-card
+        template: custom_markdown_card
+        variables:
+          - title: Kritische netwerk componenten
+      - type: horizontal-stack
+        cards:
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: diskstation
+              - name: Diskstation
+              - icon: nas
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: voip
+              - name: VOIP
+              - icon: phone-voip
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: printer
+              - name: HP Printer
+              - icon: printer
+      - type: horizontal-stack
+        cards: 
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: domoticz_master
+              - name: Domoticz (M)
+              - icon: desktop-tower
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: domoticz_slave
+              - name: Domoticz (S)
+              - icon: desktop-tower
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: harmonyhub
+              - name: Harmony Hub
+              - icon: router-wireless
+      - type: horizontal-stack
+        cards:    
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: hue_bridge
+              - name: Hue Bridge
+              - icon: router-wireless
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: ha_bridge
+              - name: HA-Bridge
+              - icon: desktop-tower
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: mysensors_gateway
+              - name: MySensors
+              - icon: desktop-tower
+      - type: horizontal-stack
+        cards:    
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: amazonecho
+              - name: Echo Dot
+              - icon: microphone
+          - type: custom:button-card
+            color_type: blank-card
+          - type: custom:button-card
+            color_type: blank-card          
+
+  - type: vertical-stack
+    cards:
+      - type: custom:decluttering-card
+        template: custom_markdown_card
+        variables:
+          - title: Internet
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities: 
+            - sensor.speedtest_download 
+          - type: custom:mini-graph-card
+            entities: 
+            - sensor.speedtest_upload 
+      - type: horizontal-stack
+        cards:  
+          - type: glance
+            show_name: true
+            show_state: true
+            entities:
+              - entity: sensor.speedtest_ping
+                tap_action:
+                  action: none
+          - type: glance
+            show_name: true
+            show_state: true
+            entities:
+              - entity: sensor.uptime
+                tap_action:
+                  action: none 
+  - type: vertical-stack
+    cards:
+      - type: custom:decluttering-card
+        template: custom_markdown_card
+        variables:
+          - title: Overige netwerk componenten
+      - type: horizontal-stack
+        cards:
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: laptop_rediscript
+              - name: Rediscript
+              - icon: laptop
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: laptop_kim_prive
+              - name: Kim (P)
+              - icon: laptop
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: laptop_kim_werk
+              - name: Kim (W)
+              - icon: laptop
+      - type: horizontal-stack
+        cards:
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: laptop_ralph
+              - name: Ralph
+              - icon: laptop
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: pc_ralph
+              - name: Ralph PC
+              - icon: desktop-tower
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: ipad
+              - name: iPad
+              - icon: tablet-ipad
+      - type: horizontal-stack
+        cards:
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: appletv
+              - name: Apple-TV
+              - icon: apple
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: lgtelevision
+              - name: LG TV
+              - icon: television
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: denon
+              - name: Denon
+              - icon: volume-high
+      - type: horizontal-stack
+        cards:
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: humax
+              - name: Humax
+              - icon: satellite-variant
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: popcornhour
+              - name: Popcorn
+              - icon: popcorn
+          - type: custom:button-card
+            color_type: blank-card
+      - type: horizontal-stack
+        cards:
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: bosch_washing_machine
+              - name: Wasmachine
+              - icon: washing-machine
+          - type: custom:decluttering-card
+            template: stats_normal_small_icon
+            variables:
+              - sensor: bosch_dryer
+              - name: Droger
+              - icon: tumble-dryer
+          - type: custom:button-card
+            color_type: blank-card
