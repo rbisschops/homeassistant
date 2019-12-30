@@ -155,11 +155,11 @@ script:
       #     operation_mode: '{{ mode }}'
       - service: climate.set_hvac_mode
         data_template:
-          entity_id: climate.thermofloor_as_heatit_thermostat_tf_021_mode
+          entity_id: climate.rest_room_heating_mode
           hvac_mode: '{{ mode }}'
       - service: climate.set_preset_mode
         data_template:
-          entity_id: climate.thermofloor_as_heatit_thermostat_tf_021_mode
+          entity_id: climate.rest_room_heating_mode
           preset_mode: '{{ preset }}'
       - service: script.notify_prowl
         data_template:
