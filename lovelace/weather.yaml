@@ -32,11 +32,11 @@ cards:
       - type: entities
         show_header_toggle: false
         entities:
-          - entity: sensor.rotterdam_symbol_1d
+          - entity: sensor.br_symbol_1d
             name: ' '
-          - entity: sensor.rotterdam_rainchance_1d
+          - entity: sensor.br_rainchance_1d
             name: Regen
-          - entity: sensor.rotterdam_sunchance_1d
+          - entity: sensor.br_sunchance_1d
             name: Zon
       - type: custom:decluttering-card
         template: custom_markdown_card_small
@@ -45,11 +45,11 @@ cards:
       - type: entities
         show_header_toggle: false
         entities:
-          - entity: sensor.rotterdam_symbol_2d
+          - entity: sensor.br_symbol_2d
             name: ' '
-          - entity: sensor.rotterdam_rainchance_2d
+          - entity: sensor.br_rainchance_2d
             name: Regen
-          - entity: sensor.rotterdam_sunchance_2d
+          - entity: sensor.br_sunchance_2d
             name: Zon
       - type: custom:decluttering-card
         template: custom_markdown_card_small
@@ -58,11 +58,11 @@ cards:
       - type: entities
         show_header_toggle: false
         entities:
-          - entity: sensor.rotterdam_symbol_3d
+          - entity: sensor.br_symbol_3d
             name: ' '
-          - entity: sensor.rotterdam_rainchance_3d
+          - entity: sensor.br_rainchance_3d
             name: Regen
-          - entity: sensor.rotterdam_sunchance_3d
+          - entity: sensor.br_sunchance_3d
             name: Zon
       - type: custom:decluttering-card
         template: custom_markdown_card_small
@@ -71,11 +71,11 @@ cards:
       - type: entities
         show_header_toggle: false
         entities:
-          - entity: sensor.rotterdam_symbol_4d
+          - entity: sensor.br_symbol_4d
             name: ' '
-          - entity: sensor.rotterdam_rainchance_4d
+          - entity: sensor.br_rainchance_4d
             name: Regen
-          - entity: sensor.rotterdam_sunchance_4d
+          - entity: sensor.br_sunchance_4d
             name: Zon
       - type: custom:decluttering-card
         template: custom_markdown_card_small
@@ -84,11 +84,11 @@ cards:
       - type: entities
         show_header_toggle: false
         entities:
-          - entity: sensor.rotterdam_symbol_5d
+          - entity: sensor.br_symbol_5d
             name: ' '
-          - entity: sensor.rotterdam_rainchance_5d
+          - entity: sensor.br_rainchance_5d
             name: Regen
-          - entity: sensor.rotterdam_sunchance_5d
+          - entity: sensor.br_sunchance_5d
             name: Zon
   - type: vertical-stack
     cards:
@@ -122,6 +122,6 @@ cards:
       - type: entities
         show_header_toggle: false
         entities:
-          - entity: sensor.rotterdam_precipitation_forecast_total
+          - entity: sensor.br_precipitation_forecast_total
             name: Regen verwaching (10 min)
             icon: mdi:weather-pouring
