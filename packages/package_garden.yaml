@@ -31,6 +31,10 @@
 ## V1.7.0:  Changed automations for garden lights and fountain,
 ##          Added input_booleans for garden lights and fountain, 
 ##          Added groups for garden lights and fountain
+## V1.8.0:  Updated buienradar sensors
+##          Moved old state.state annotation to state('xxx') notation, needs testing
+## V1.8.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
+## V1.8.2:  Updated susnset automations for garden lights (added additional triggers as backup/fallback)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -88,7 +92,7 @@ automation:
   ## Switch garden lights on and off
   - alias: "Verlichting tuin aan-uit"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: 
@@ -109,10 +113,16 @@ automation:
             homeassistant.turn_off
           {% endif %}
         entity_id: group.gardenlight
+      # - service_template: >-
+      #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
+      #   entity_id: input_boolean.domo_gardenlight
+      # - service_template: >-
+      #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
+      #   entity_id: group.gardenlight
   ## Switch fountain lights on and off
   - alias: "waterbollen aan-uit"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: 
@@ -134,69 +144,76 @@ automation:
           {% endif %}
         entity_id: group.waterornament
 
+  ## Updated V1.8.2
   ## Switch on gardenlights at sunset but only if someone is home
   - alias: "Tuinverlichting bij zonsondergang"
     hide_entity: false
     initial_state: 'on'
     trigger:
-      platform: sun
-      event: sunset
-      offset: '00:15:00'
+      - platform: sun
+        event: sunset
+        offset: '00:15:00'
+      - platform: sun
+        event: sunset
+        offset: '00:16:00'
+      - platform: sun
+        event: sunset
+        offset: '00:17:00'
     condition:
       condition: and
       conditions: 
         - condition: state
           entity_id: binary_sensor.everybody_away
-          state: 'off'
+          state: "off"
         - condition: state
           entity_id: input_boolean.holiday_mode
-          state: 'off'
+          state: "off"
     action:
       - service: homeassistant.turn_on
         entity_id: input_boolean.gardenlight
 
-  ## Added V1.6.0  
+  ## Added V1.6.0, Updated V1.8.2
   ## Switch on gardenlights before sunrise but only if someone is home
   - alias: "Tuinverlichting voor zonsopkomst"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
-      platform: time
-      at: '06:30:00'
+      - platform: time
+        at: "06:30:00"
+      - platform: time
+        at: "06:31:00"
+      - platform: time
+        at: "06:32:00"
     condition:
       condition: and
       conditions: 
         - condition: state
           entity_id: binary_sensor.everybody_away
-          state: 'off'
+          state: "off"
         - condition: state
           entity_id: input_boolean.holiday_mode
-          state: 'off'
+          state: "off"
         - condition: state
           entity_id: sun.sun
-          state: 'below_horizon'
+          state: "below_horizon"
     action:
       - service: homeassistant.turn_on
         entity_id: input_boolean.gardenlight
 
-  ## Added V1.6.0
+  ## Added V1.6.0, Updated V1.8.2
   ## Switch off gardenlights at sunrise but only if someone is home
   - alias: "Tuinverlichting uit bij zonsopkomst"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
-      platform: sun
-      event: sunrise
-      offset: '-00:15:00'
-    condition:
-      condition: and
-      conditions: 
-        - condition: state
-          entity_id: binary_sensor.everybody_away
-          state: 'off'
-        - condition: state
-          entity_id: input_boolean.holiday_mode
-          state: 'off'
+      - platform: sun
+        event: sunrise
+        offset: "-00:15:00"
+      - platform: sun
+        event: sunrise
+      - platform: sun
+        event: sunrise
+        offset: "00:05:00"
     action:
       - service: homeassistant.turn_off
         entity_id: input_boolean.gardenlight
@@ -204,32 +221,32 @@ automation:
   ## Switch gardenlights at home coming but only when dark and before 23:00
   - alias: "Tuinverlichting bij thuiskomst"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: 
           ## Added in V1.3.3
           - binary_sensor.neo_coolcam_front_door
-        to: 'on'
+        to: "on"
     condition:  
       condition: and
       conditions:
         - condition: sun
           after: sunset
         - condition: time
-          before: '23:00:00'
+          before: "23:00:00"
         ## Added in V1.3.3
         - condition: or
           conditions:
             - condition: state
               entity_id: input_select.ralph_status_dropdown
-              state: 'Just Arrived'
+              state: "Just Arrived"
             - condition: state
               entity_id: input_select.anneke_status_dropdown
-              state: 'Just Arrived'
+              state: "Just Arrived"
             - condition: state
               entity_id: input_select.kimberly_status_dropdown
-              state: 'Just Arrived'
+              state: "Just Arrived"
     action:
       - service: homeassistant.turn_on
         entity_id: input_boolean.gardenlight
@@ -237,7 +254,7 @@ automation:
   ## Start and stop sunscreen based on toggle pause/start from frontend 
   - alias: "Pauzeer zonnescherm"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: 
@@ -245,12 +262,13 @@ automation:
     action:
       - service: script.domoticz_sunscreen
         data_template:
-          new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
+          new_state: "{{ states('input_boolean.domo_sunscreen') }}"
+          # new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
 
   ## Open sunscreen based on position of the sun (elevation)
   - alias: "Zonnescherm uit - elevatie" 
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: numeric_state
         entity_id: sun.sun
@@ -261,41 +279,66 @@ automation:
       conditions:
         - condition: state
           entity_id: input_boolean.sunscreen_manual
-          state: 'off'
+          state: "off"
+        #################################################################  
+        # The next condition is commented and replaced with a new version
+        # - condition: template
+        #   value_template: '{{ states.sensor.br_precipitation_forecast_total.state |float == 0.0 }}'
+        # The next condition requires testing before the automation is used again
+        #################################################################
         - condition: template
-          value_template: '{{ states.sensor.rotterdam_precipitation_forecast_total.state |float == 0.0 }}'
+          value_template: >
+            {{ 'true' if states('sensor.br_precipitation_forecast_total')|float == 0.0 else 'false' }}
         - condition: state
           entity_id: input_boolean.domo_sunscreen
-          state: 'off'
+          state: "off"
     action:
       - service: script.open_sunscreen
       - service: script.notify_prowl
         data_template:
-          value1: 'Zonnescherm: '
-          value2: 'zonnescherm gaat open op basis van elevatie zon'
-          value3: ' '
-          who: 'ralph'
+          value1: "Zonnescherm: "
+          value2: "zonnescherm gaat open op basis van elevatie zon"
+          value3: " "
+          who: "ralph"
           prio: -2   
 
   ## Open sunscreen when percipitation returns to 0.0
   - alias: "Zonnescherm uit - regenverwachting"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
+      #################################################################  
+      # The next trigger is commented and replaced with a new version
+      # - platform: numeric_state
+      #   entity_id: sensor.rotterdam_precipitation_forecast_total
+      #   value_template: "{{ states.sensor.br_precipitation_forecast_total.state |float }}"
+      #   below: 0.01
+      # The next condition requires testing before the automation is used again
+      #################################################################
       - platform: numeric_state
-        entity_id: sensor.rotterdam_precipitation_forecast_total
-        value_template: "{{ states.sensor.rotterdam_precipitation_forecast_total.state |float }}"
+        entity_id: sensor.br_precipitation_forecast_total
+        value_template: "{{ (states('sensor.br_precipitation_forecast_total')|float) }}"
         below: 0.01
     condition:
       condition: and
       conditions:
         - condition: state
           entity_id: input_boolean.sunscreen_manual
-          state: 'off'
+          state: "off"
+        #################################################################  
+        # The next condition is commented and replaced with a new version
+        # - condition: template
+        #   value_template: '{{ states.sun.sun.attributes.elevation | float >= 16.0 }}'
+        # - condition: template
+        #   value_template: '{{ states.sun.sun.attributes.azimuth |int <= 200 }}'
+        # The next condition requires testing before the automation is used again
+        #################################################################
         - condition: template
-          value_template: '{{ states.sun.sun.attributes.elevation | float >= 16.0 }}'
+          value_template: >
+            {{ 'true' if state_attr('sun.sun','elevation')|float >= 16.0 else 'false' }}
         - condition: template
-          value_template: '{{ states.sun.sun.attributes.azimuth |int <= 200 }}'
+          value_template: >
+            {{ 'true' if state_attr('sun.sun','azimuth')|int >= 200 else 'false' }}
         - condition: state
           entity_id: input_boolean.domo_sunscreen
           state: 'off'
@@ -303,45 +346,53 @@ automation:
       - service: script.open_sunscreen
       - service: script.notify_prowl
         data_template:
-          value1: 'Zonnescherm: '
-          value2: 'zonnescherm gaat open, geen regen verwacht'
-          value3: ' '
-          who: 'ralph'
+          value1: "Zonnescherm: "
+          value2: "zonnescherm gaat open, geen regen verwacht"
+          value3: " "
+          who: "ralph"
           prio: -2
 
   ## Close sunscreen when rain is expected (percipitation > 0.0 or when its 19:30 or when azimuth is over 200.0
   ## Azimuth is trigger commented for now
   - alias: "Zonnescherm in"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
+      #################################################################  
+      # The next trigger is commented and replaced with a new version
+      # - platform: numeric_state
+      #   entity_id: sensor.rotterdam_precipitation_forecast_total
+      #   value_template: "{{ state.state |float }}"
+      #   above: 0.0
+      # The next condition requires testing before the automation is used again
+      #################################################################
       - platform: numeric_state
-        entity_id: sensor.rotterdam_precipitation_forecast_total
-        value_template: "{{ state.state |float }}"
+        entity_id: sensor.br_precipitation_forecast_total
+        value_template: "{{ (states('sensor.br_precipitation_forecast_total')|float) }}"
         above: 0.0
       # - platform: numeric_state
       #   entity_id: sun.sun
       #   value_template: "{{ state.attributes.azimuth |int }}"
       #   above: 200
       - platform: time
-        at: '19:30:00'
+        at: "19:30:00"
     condition:
       condition: and
       conditions:
         - condition: state
           entity_id: input_boolean.domo_sunscreen
-          state: 'on'
+          state: "on"
         - condition: state
           entity_id: input_boolean.sunscreen_manual
-          state: 'off'
+          state: "off"
     action:
       - service: script.close_sunscreen
       - service: script.notify_prowl
         data_template:
-          value1: 'Zonnescherm: '
-          value2: 'Zonnescherm gaat dicht'
-          value3: ' het is tijd of regen verwacht'
-          who: 'ralph'
+          value1: "Zonnescherm: "
+          value2: "Zonnescherm gaat dicht "
+          value3: "het is tijd of regen verwacht"
+          who: "ralph"
           prio: -2
 
 ###############################################################################
@@ -354,15 +405,14 @@ automation:
 ###############################################################################
 script:
   open_sunscreen:
-    alias: Zonnescherm uit
+    alias: "Zonnescherm uit"
     sequence:
       - service: homeassistant.turn_on
         entity_id: input_boolean.domo_sunscreen
       - service: homeassistant.turn_on
         entity_id: input_boolean.sunscreen_test
-
   close_sunscreen:
-    alias: Zonnescherm in
+    alias: "Zonnescherm in"
     sequence:
       - service: homeassistant.turn_off
         entity_id: input_boolean.domo_sunscreen
@@ -370,12 +420,12 @@ script:
         entity_id: input_boolean.sunscreen_test
 
   # pause_sunscreen:
-  #   alias: Pauzeer zonnescherm op huidige positie
+  #   alias: "Pauzeer zonnescherm op huidige positie"
   #   sequence:
   #     - service: script.domoticz_sunscreen
   #       data_template:
-  #         new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
-
+  #         # new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
+  #         new_state: '{{ states("input_boolean.domo_sunscreen") }}'
 ###############################################################################
 ##  Timers
 ###############################################################################

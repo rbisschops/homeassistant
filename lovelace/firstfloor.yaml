@@ -161,7 +161,7 @@ cards:
 
       ## Smoke detectors
       - type: image
-        entity: binary_sensor.fibaro_hallway_101_smoke_sensor_sensor
+        entity: binary_sensor.fibaro_hallway_101_smoke_sensor_smoke
         title: Rookdetector overloop (101)
         tap_action:
           action: none

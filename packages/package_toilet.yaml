@@ -14,6 +14,7 @@
 ## V0.3.2:  Code cleaning
 ## V0.4.0:  Changed control for toilet heating
 ## V0.5.0:  Updated code for climate settings with HA version 0.103
+## V0.5.1:  Removed commented code lines
 
 ###############################################################################
 ##  Homeassistant settings
@@ -149,10 +150,6 @@ script:
   set_toilet_heating_mode:
     alias: Zend verwarmings mode naar toilet verwarming
     sequence: 
-      # - service: climate.set_operation_mode
-      #   data_template:
-      #     entity_id: climate.toilet_heating_heating
-      #     operation_mode: '{{ mode }}'
       - service: climate.set_hvac_mode
         data_template:
           entity_id: climate.rest_room_heating_mode
@@ -166,7 +163,6 @@ script:
           value1: 'Toilet verwarming '
           value2: 'nieuwe status: '
           value3: '{{mode}} {{preset}}'
-          # value3: '{{ states.input_select.restroom_heating.state }}'
           who: 'ralph'
           prio: -2
 

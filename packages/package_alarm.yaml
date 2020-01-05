@@ -15,6 +15,8 @@
 ## V1.2.1:  Added input booleans for garbage bins
 ## V1.2.2:  Code cleanup and changes to entities, package ready for migration to new homeserver
 ## V1.3.0:  Added icons to input_booleans, added soem windows
+## V1.3.1:  Changed states. into states("xx")
+## V1.3.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -146,8 +148,7 @@ binary_sensor:
         value_template: >-
           {{ is_state('input_boolean.alarm', 'on') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/alarm48_' ~ states.input_boolean.alarm.state ~ '.png' }}
-
+          {{ '/local/custom_icons/alarm48_' ~ states('input_boolean.alarm') ~ '.png'}}
   ## Door open sensor (only outside doors are monitored)
   - platform: template
     sensors:
@@ -158,8 +159,7 @@ binary_sensor:
             or is_state('binary_sensor.neo_coolcam_storage_door', 'on')
             or is_state('input_boolean.garden_door', 'on') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/door48_' ~ states.binary_sensor.doors.state ~ '.png' }}
-
+          {{ '/local/custom_icons/door48_' ~ states('binary_sensor.doors') ~ '.png'}}
   ## Window open sensor
   - platform: template
     sensors:
@@ -172,7 +172,7 @@ binary_sensor:
             or is_state('input_boolean.bedroom_window_l', 'on')
             or is_state('input_boolean.bedroom_window_r', 'on') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/window48_' ~ states.binary_sensor.windows.state ~ '.png' }}
+          {{ '/local/custom_icons/window48_' ~ states('binary_sensor.windows') ~ '.png'}}
 
 sensor:
   ## Refridgerator door battery status monitoring sensor
@@ -236,25 +236,25 @@ automation:
   ## Test if refigerator door or freezer door is open for more then xx minutes
   - alias: "Koelkast alarm"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id:
           - binary_sensor.refrigerator_door
-        to: 'on'
-        for: '00:10:00'
+        to: "on"
+        for: "00:10:00"
 #      - platform: state
 #        entity_id:
 #          - binary_sensor.freezer_door
-#        to: 'on'
+#        to: "on"
 #        for: '00:10:00'
     action:
       - service: script.notify_prowl
         data_template:
-          value1: 'Alarm: '
-          value2: '{{ trigger.to_state.attributes.friendly_name }}'
-          value3: ' meer dan 10 minuten geopend'
-          who: 'ralph'
+          value1: "Alarm: "
+          value2: "{{ trigger.to_state.attributes.friendly_name }}"
+          value3: " meer dan 10 minuten geopend"
+          who: "ralph"
           prio: 2
       - service: homeassistant.turn_on
         entity_id: input_boolean.alarm
@@ -262,19 +262,19 @@ automation:
   ## Test if alarm is gereset and perform actions
   - alias: "Alarm gereset"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id:
           - input_boolean.alarm
-        to: 'off'
+        to: "off"
     action:
       - service: script.notify_prowl
         data_template:
-          value1: 'Alarm op: '
-          value2: '{{ now().day }}-{{ now().month }}-{{ now().year }}'
-          value3: ' om {{ now().hour }}:{{ now().minute }} gereset'
-          who: 'ralph'
+          value1: "Alarm op: "
+          value2: "{{ now().day }}-{{ now().month }}-{{ now().year }}"
+          value3: " om {{ now().hour }}:{{ now().minute }} gereset"
+          who: "ralph"
           prio: -2
 
 ###############################################################################

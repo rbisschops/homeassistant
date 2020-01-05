@@ -11,6 +11,8 @@
 ## V0.4.0:  Changed automations for hallway lights,
 ##          Added input_booleans for hallway lights, 
 ##          Added groups for hallway lights
+## V0.4.1:  Changed states. into states("xx")
+## V0.4.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -64,7 +66,7 @@ automation:
   ## Test min and max settings on long hallwaylight timer input 
   - alias: "Valideer halletje timer lang"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: input_text.timer_minutes_hallwaylight_long
@@ -73,19 +75,19 @@ automation:
         data_template:
           entity_id: input_text.timer_minutes_hallwaylight_long
           value: >
-            {% if (states.input_text.timer_minutes_hallwaylight_long.state | int) > 60 %}
+            {% if (states('input_text.timer_minutes_hallwaylight_long')|int) > 60 %}
               60
-            {% elif (states.input_text.timer_minutes_hallwaylight_long.state | int) < 1 %}
+            {% elif (states('input_text.timer_minutes_hallwaylight_long')|int) < 1 %}
               1
             {% else %}
-              {{ states.input_text.timer_minutes_hallwaylight_long.state | int }}
+              {{ states('input_text.timer_minutes_hallwaylight_long')|int }}
             {% endif %}
-  
+
   ## Added V0.3.0
   ## Test min and max settings on short hallwaylight timer input 
   - alias: "Valideer halletje timer kort"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: input_text.timer_minutes_hallwaylight_short
@@ -94,29 +96,29 @@ automation:
         data_template:
           entity_id: input_text.timer_minutes_hallwaylight_short
           value: >
-            {% if (states.input_text.timer_minutes_hallwaylight_short.state | int) > 60 %}
+            {% if (states('input_text.timer_minutes_hallwaylight_short')|int) > 60 %}
               60
-            {% elif (states.input_text.timer_minutes_hallwaylight_short.state | int) < 1 %}
+            {% elif (states('input_text.timer_minutes_hallwaylight_short')|int) < 1 %}
               1
             {% else %}
-              {{ states.input_text.timer_minutes_hallwaylight_short.state | int }}
+              {{ states('input_text.timer_minutes_hallwaylight_short')|int }}
             {% endif %}
 
   ## Switch on hallway light when someone arrives home
   - alias: "Halletje aan bij thuiskomst"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: 
           - binary_sensor.neo_coolcam_front_door
-        to: 'on'
+        to: "on"
     condition:
       condition: and
       conditions:
         - condition: state
           entity_id: input_boolean.porchlight
-          state: 'on'
+          state: "on"
         - condition: sun
           after: sunset
           after_offset: "00:15:00"
@@ -126,12 +128,11 @@ automation:
       - service: timer.start
         data_template:
           entity_id: timer.hallwaylight
-          duration: '00:{{ states.input_text.timer_minutes_hallwaylight_short.state | int }}:00'
-
+          duration: "00:{{ states('input_text.timer_minutes_hallwaylight_short')|int}}:00"
   ## Switch off hallway light based on timer
   - alias: "Halletje uit xx minuten na trigger"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: event
       event_type: timer.finished
@@ -146,7 +147,7 @@ automation:
   ## Switch hallway light on and off
   - alias: "Verlichting halletje aan-uit"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: 

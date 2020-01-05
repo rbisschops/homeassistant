@@ -60,6 +60,7 @@ binary_sensor:
             or is_state('input_select.kimberly_status_dropdown', 'Just Left') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/people48_' ~ states.binary_sensor.people_home.state ~ '.png' }}
+
   ## Added V1.6.0
   ## Everybody is away
   - platform: template

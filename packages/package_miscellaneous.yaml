@@ -23,7 +23,8 @@
 ## V0.11.0: Added hallway and porchlight on with timer to leaving script
 ## V0.12.0: Added sunset automations and scripts
 ## V0.13.0: Updated all hue light related scripts
-##          Updated all climate rlated scripts
+##          Updated all climate related scripts
+## V0.13.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -129,12 +130,12 @@ automation:
   ## Called by Alexa via HA Bridge
   - alias: "Bed mode ingeschakeld"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: 
       - binary_sensor.habridge_bed_time
-      to: 'on'
+      to: "on"
     action:
       - service: script.turn_on
         entity_id: script.bedtime
@@ -143,29 +144,29 @@ automation:
   ## Called by the front door sensor
   - alias: "Coming home mode ingeschakeld"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: 
           - binary_sensor.neo_coolcam_front_door
-        to: 'on'
+        to: "on"
     condition:
       condition: and
       conditions:
         - condition: state
           entity_id: input_boolean.livingroom_lights
-          state: 'off'
+          state: "off"
         - condition: or
           conditions:
             - condition: state
               entity_id: input_select.ralph_status_dropdown
-              state: 'Just Arrived'
+              state: "Just Arrived"
             - condition: state
               entity_id: input_select.anneke_status_dropdown
-              state: 'Just Arrived'
+              state: "Just Arrived"
             - condition: state
               entity_id: input_select.kimberly_status_dropdown
-              state: 'Just Arrived'
+              state: "Just Arrived"
     action:
       - service: script.turn_on
         entity_id: script.coming_home
@@ -174,12 +175,12 @@ automation:
   ## Called by Alexa via HA Bridge
   - alias: "Leaving mode ingeschakeld"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: 
       - binary_sensor.habridge_leaving
-      to: 'on'
+      to: "on"
     action:
       - service: script.turn_on
         entity_id: script.leaving
@@ -190,12 +191,12 @@ automation:
   ## Note: Potentially replace binary_sensor.everybody_extended_away with a group
   - alias: "Extended away mode ingeschakeld"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: 
       - binary_sensor.everybody_extended_away
-      to: 'on'
+      to: "on"
     action:
       - service: script.turn_on
         entity_id: script.extended_away
@@ -204,11 +205,11 @@ automation:
   ## Triggered based on sunset minus offset 
   - alias: "Zonsondergang mode ingeschakeld"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: sun
       event: sunset
-      offset: '-01:00:00'
+      offset: "-01:00:00"
     action:
       - service: script.turn_on
         entity_id: script.sunset
@@ -217,25 +218,25 @@ automation:
   ## Tiggered by sensors based on Google calendar entries
   - alias: "Vuilnisbak aan de straat"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: 
       - binary_sensor.gft
       - binary_sensor.pmd
       - binary_sensor.gft_pmd
-      to: 'on'
+      to: "on"
     action:
       - service: script.notify_telegram_ralph
         data_template:
-          value1: 'Vandaag moet de '
-          value2: '{{ trigger.to_state.attributes.friendly_name }}'
-          value3: ' bak buiten worden gezet'
+          value1: "Vandaag moet de "
+          value2: "{{ trigger.to_state.attributes.friendly_name }}"
+          value3: " bak buiten worden gezet"
       - service: script.notify_telegram_anneke
         data_template:
-          value1: 'Vandaag moet de '
-          value2: '{{ trigger.to_state.attributes.friendly_name }}'
-          value3: ' bak buiten worden gezet'
+          value1: "Vandaag moet de "
+          value2: "{{ trigger.to_state.attributes.friendly_name }}"
+          value3: " bak buiten worden gezet"
 
 ###############################################################################
 ##  Templates
@@ -263,10 +264,10 @@ script:
       - service: input_select.select_option
         data:
           entity_id: input_select.restroom_heating
-          option: 'Spaarstand'
+          option: "Spaarstand"
       - condition: state
         entity_id: input_boolean.recording_mode
-        state: 'off'
+        state: "off"
       - service: homeassistant.turn_off
         entity_id: switch.tradfri_media_switch
 
@@ -288,30 +289,31 @@ script:
           option: >
             {{ 'Uitgeschakeld' if is_state('input_select.restroom_heating','Uitgeschakeld') else 'Spaarstand' }}
       - service_template: >
-          {% if (states.input_boolean.recording_mode.state == 'off') %}
-            homeassistant.turn_off
-          {% else %}
+          {% if is_state('input_boolean.recording_mode', 'on') %}
             homeassistant.turn_on
+          {% elif is_state('input_boolean.recording_mode', 'off') %}
+            homeassistant.turn_off
           {% endif %}
         entity_id: switch.tradfri_media_switch
       ## Turn on lighting, but only when dark
       - condition: state
         entity_id: sun.sun
-        state: 'below_horizon'
+        state: "below_horizon"
       ## Switch on the outdoor lighting
       - service: homeassistant.turn_on
         entity_id: input_boolean.porchlight
       - service: timer.start
         data_template:
           entity_id: timer.porchlight
-          duration: '00:{{ states.input_text.timer_minutes_porch_short.state | int }}:00'
+          # duration: '00:{{ states.input_text.timer_minutes_porch_short.state | int }}:00'
+          duration: "00:{{ states('input_text.timer_minutes_porch_short')|int}}:00"
       - service: homeassistant.turn_on
         entity_id: input_boolean.hallwaylight
       - service: timer.start
         data_template:
           entity_id: timer.hallwaylight
-          duration: '00:{{ states.input_text.timer_minutes_hallwaylight_long.state | int }}:00'
-
+          # duration: '00:{{ states.input_text.timer_minutes_hallwaylight_long.state | int }}:00'
+          duration: "00:{{ states('input_text.timer_minutes_hallwaylight_long')|int}}:00"
   ## Added V0.9.0, Updated V0.13.0
   ## Script when someone comes home
   coming_home:
@@ -326,7 +328,7 @@ script:
       ## Turn on lighting, but only when dark
       - condition: state
         entity_id: sun.sun
-        state: 'below_horizon'
+        state: "below_horizon"
       ## Switch on the outdoor lighting
       - service: homeassistant.turn_on
         entity_id: input_boolean.gardenlight
@@ -354,7 +356,7 @@ script:
       ## check if it is christmas time
       - condition: state
         entity_id: input_boolean.christmas_mode
-        state: 'on'
+        state: "on"
       ## Switch on the chritmas tree lights
       - service: homeassistant.turn_on
         entity_id: 
@@ -379,13 +381,13 @@ script:
     sequence:
       - condition: state
         entity_id: binary_sensor.people_home
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.holiday_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: input_boolean.livingroom_lights_status
-        state: 'off'
+        state: "off"
       ## Switch on the living room lights switch
       - service: homeassistant.turn_on
         entity_id: input_boolean.livingroom_lights_status
@@ -406,19 +408,19 @@ script:
       - service: timer.start
         data_template:
           entity_id: timer.kitchencabinets_on
-          duration: '00:30:00'
+          duration: "00:30:00"
       ## Switch on the living room lights switch
       - service: homeassistant.turn_on
         entity_id: input_boolean.livingroom_lights
       ## check if it is christmas time
       - condition: state
         entity_id: input_boolean.christmas_mode
-        state: 'on'
+        state: "on"
       ## start timer for christmas tree, will switch on after xx hour
       - service: timer.start
         data_template:
           entity_id: timer.christmastree_on
-          duration: '00:30:00'
+          duration: "00:30:00"
 
   ##----------------------------------------------
   ## Test scripts >> Remove ASAP after testing 

@@ -844,7 +844,7 @@ cards:
                 template: media_button_small_text_3
                 variables:
                   - switch: radio
-                  - name: CH1
+                  - name: CH-
                   - device: Humax
                   - command: ChannelDown
           ## Conditional buttons for Radio. 4th row
@@ -939,8 +939,10 @@ cards:
         - entity: remote.bisschops
         - type: section
           label: Instellingen
-        - entity: input_select.harmony_livingroom
-        - entity: input_select.test_old_status
+        - entity: input_select.harmony_livingroom_new_status
+        - entity: input_select.harmony_livingroom_old_status
+        - entity: input_select.humax_new_status
+        - entity: input_select.humax_old_status
         - type: section
           label: Homeassistant entities
         - entity: switch.tradfri_media_switch

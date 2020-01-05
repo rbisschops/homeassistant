@@ -21,6 +21,8 @@
 ## V1.4.3:  Added env sensors 2nd floor hallway
 ## V1.5.0:  Added season sensor
 ## V1.6.0:  Code cleanup and changes to entities, package ready for migration to new homeserver
+## V1.6.1:  Changed states. into states("xx")
+## V1.6.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -144,11 +146,12 @@ sensor:
   - platform: template
     sensors:
       sunset:
-        value_template: '{% set timestamp = as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom("%I:%M") %} {{ timestamp.lstrip("0") }}'
-        unit_of_measurement: 'PM'
+        value_template: "{% set timestamp = as_timestamp(state_attr('sun.sun','next_setting')) | timestamp_custom('%H:%M') %} {{ timestamp }}"
+        unit_of_measurement: "PM"
       sunrise:
-        value_template: '{% set timestamp = as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom("%I:%M") %} {{ timestamp.lstrip("0") }}'
-        unit_of_measurement: 'AM'
+        # value_template: '{% set timestamp = as_timestamp(state_attr("sun.sun","next_rising")) | timestamp_custom("%H:%M") %} {{ timestamp.lstrip("0") }}'
+        value_template: "{% set timestamp = as_timestamp(state_attr('sun.sun','next_rising')) | timestamp_custom('%H:%M') %} {{ timestamp }}"
+        unit_of_measurement: "AM"
 
   ## Season sensor (astronomical)
   - platform: season
@@ -179,45 +182,45 @@ sensor:
   - platform: template
     sensors:
       utilities_electricity_current_usage:
-        value_template: '{% set value = states.sensor.utilities_electricity.attributes["current_usage"] %} {{ value }}'
-        unit_of_measurement: 'W'
+        value_template: '{% set value = state_attr("sensor.utilities_electricity","current_usage") %} {{ value }}'
+        unit_of_measurement: "W"
       utilities_electricity_low_usage:
         value_template: >-
-          {% set previous = float (states.sensor.utilities_reference.attributes["e_usage_low"]) %}
-          {% set value = float (states.sensor.utilities_electricity.attributes["usage_low"]) %} 
+          {% set previous = state_attr('sensor.utilities_reference','e_usage_low')|float %}
+          {% set value = state_attr('sensor.utilities_electricity','usage_low')|float %}
           {% set value = ((value-previous)/1000)|round(3, 'common') %}
           {{ value }}
-        unit_of_measurement: 'kWh'
+        unit_of_measurement: "kWh"
       utilities_electricity_high_usage:
         value_template: >-
-          {% set previous = float (states.sensor.utilities_reference.attributes["e_usage_high"]) %}
-          {% set value = float (states.sensor.utilities_electricity.attributes["usage_high"]) %} 
+          {% set previous = state_attr('sensor.utilities_reference','e_usage_high')|float %}
+          {% set value = state_attr('sensor.utilities_electricity','usage_high')|float %}
           {% set value = ((value-previous)/1000)|round(3, 'common') %}
           {{ value }}
-        unit_of_measurement: 'kWh'
+        unit_of_measurement: "kWh"
       utilities_electricity_usage: 
         value_template: >-
-          {% set previous1 = float (states.sensor.utilities_reference.attributes["e_usage_high"]) %}
-          {% set value1 = float (states.sensor.utilities_electricity.attributes["usage_high"]) %} 
-          {% set previous2 = float (states.sensor.utilities_reference.attributes["e_usage_low"]) %}
-          {% set value2 = float (states.sensor.utilities_electricity.attributes["usage_low"]) %} 
+          {% set previous1 = state_attr('sensor.utilities_reference','e_usage_high')|float %}
+          {% set value1 = state_attr('sensor.utilities_electricity','usage_high')|float %}
+          {% set previous2 = state_attr('sensor.utilities_reference','e_usage_low')|float %}
+          {% set value2 = state_attr('sensor.utilities_electricity','usage_low')|float %}
           {% set value = (((value1-previous1)+(value2-previous2))/1000)|round(3, 'common') %}
           {{ value }}
-        unit_of_measurement: 'kWh'
+        unit_of_measurement: "kWh"
       utilities_gas_usage:
         value_template: >-
-          {% set previous = float (states.sensor.utilities_reference.attributes["g_usage"]) %}
-          {% set value = float (states.sensor.utilities_gas.attributes["usage"]) %} 
+          {% set previous = state_attr('sensor.utilities_reference','g_usage')|float %}
+          {% set value = state_attr('sensor.utilities_gas','usage')|float %}
           {% set value = ((value-previous)/1000)|round(3, 'common') %}
           {{ value }}
-        unit_of_measurement: 'm3'
+        unit_of_measurement: "m3"
       utilities_water_usage:
         value_template: >-
-          {% set previous = float (states.sensor.utilities_reference.attributes["w_usage"]) %}
-          {% set value = float (states.sensor.utilities_water.attributes["usage"]) %} 
+          {% set previous = state_attr('sensor.utilities_reference','w_usage')|float %}
+          {% set value = state_attr('sensor.utilities_water','usage')|float %}
           {% set value = (value-previous)|round %}
           {{ value }}
-        unit_of_measurement: 'L'
+        unit_of_measurement: "L"
 
   ## Inhouse environment sensors - temperature
   - platform: "mqtt"
@@ -704,30 +707,29 @@ group:
 ##  Automations
 ###############################################################################
 automation:
+  ## Automation for storing the nightly values (00:00) for reference. Reference is used for daily usage graphs 
   - alias: 'update utilities referentie waarden'
     hide_entity: false
-    initial_state: 'on' 
+    initial_state: "on" 
     trigger:
-      # platform: time_pattern
-      # minutes: '/10'
       platform: time
-      at: '00:00:00'
+      at: "00:00:00"
     action:
       - service: mqtt.publish
         data_template:
-          topic: 'home/meter/reference'
+          topic: "home/meter/reference"
           retain: true
           payload_template: >-
-            {% set e_usage_low = float(states.sensor.utilities_electricity.attributes["usage_low"]) %}
-            {% set e_usage_high = float(states.sensor.utilities_electricity.attributes["usage_high"]) %}
-            {% set g_usage = float(states.sensor.utilities_gas.attributes["usage"]) %}
-            {% set w_usage = float(states.sensor.utilities_water.attributes["usage"]) %}  
+            {% set e_usage_low = state_attr('sensor.utilities_electricity','usage_low')|float %}
+            {% set e_usage_high = state_attr('sensor.utilities_electricity','usage_high')|float %}
+            {% set g_usage = state_attr('sensor.utilities_gas','usage')|float %}
+            {% set w_usage = state_attr('sensor.utilities_water','usage')|float %}
             {{ {
               "e_usage_low": e_usage_low,
               "e_usage_high": e_usage_high,
               "g_usage": g_usage,
               "w_usage": w_usage
-            }|tojson }}        
+            }|tojson }}
 
 ###############################################################################
 ##  Templates

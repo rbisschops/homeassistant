@@ -56,26 +56,6 @@ homeassistant:
 ###############################################################################
 ##  Entities
 ###############################################################################
-binary_sensor:
-  ## Anyone home sensor
-  ## Upgraded to use advanced presense (V1.4.0)
-  - platform: template
-    sensors:
-      people_home:
-        friendly_name: Iemand thuis
-        value_template: >-
-          {{ is_state('input_select.ralph_status_dropdown', 'Home')
-            or is_state('input_select.ralph_status_dropdown', 'Just Arrived')
-            or is_state('input_select.ralph_status_dropdown', 'Just Left')
-            or is_state('input_select.anneke_status_dropdown', 'Home')
-            or is_state('input_select.anneke_status_dropdown', 'Just Arrived')
-            or is_state('input_select.anneke_status_dropdown', 'Just Left')
-            or is_state('input_select.kimberly_status_dropdown', 'Home')
-            or is_state('input_select.kimberly_status_dropdown', 'Just Arrived')
-            or is_state('input_select.kimberly_status_dropdown', 'Just Left') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/people48_' ~ states.binary_sensor.people_home.state ~ '.png' }}
-
 input_boolean:
   ## Living roon light input
   ## Used in multiple automations and scripts

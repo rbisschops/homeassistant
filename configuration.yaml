@@ -142,7 +142,8 @@ tts:
 zwave:
   usb_path: /dev/ttyACM1
   device_config: !include zwave_device_config.yaml
-
+  network_key: !secret zwave_network_key
+  
 updater:
 ## Optional, allows Home Assistant developers to focus on popular components.
   # include_used_components: true

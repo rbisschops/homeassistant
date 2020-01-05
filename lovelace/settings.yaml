@@ -62,6 +62,9 @@ cards:
         - entity: input_text.timer_minutes_porch_short
         - entity: input_text.timer_minutes_hallwaylight_long
         - entity: input_text.timer_minutes_hallwaylight_short
+        - entity: input_text.timer_media_delay
+        - entity: input_text.timer_media_wait
+        - entity: input_text.timer_media_tv_radio_mode
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
