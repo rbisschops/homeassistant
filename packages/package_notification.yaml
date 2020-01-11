@@ -8,7 +8,8 @@
 ## V1.0.0:  Production version 1.0.0
 ## V1.1.0:  Added pushbullet notifications
 ## V1.2.0:  Added Telegram BOT
-## V1.2.1:  COde cleaning. Update tp pushbullet script
+## V1.2.1:  Code cleaning. Update tp pushbullet script
+## V1.2.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -77,8 +78,8 @@ script:
 ## action:
 ##   service:  script.notify_prowl
 ##   data_template:
-##     value1: 'Startup: Home Assistant is Up and Running!'
-##     value2: ''
+##     value1: "Startup: Home Assistant is Up and Running!"
+##     value2: ""
 ##     value3: "{{ trigger.to_state.state }}"
 ##     priority: number
 ##     who: "name of the addressee", should match the selection in the list below. 
@@ -101,7 +102,7 @@ script:
         conditions:
           - condition: state
             entity_id: input_boolean.text_notifications
-            state: 'on'
+            state: "on"
       - service_template: >
             {% if who == 'ralph' %}
               notify.prowl_ralph
@@ -113,17 +114,17 @@ script:
               notify.prowl_ralph
             {% endif %}
         data_template:
-          message: '{{ value1 }} {{ value2 }} {{ value3 }}'
-          title: 'Melding'
+          message: "{{ value1 }} {{ value2 }} {{ value3 }}"
+          title: "Melding"
           data:
-            priority: '{{ prio }}'
+            priority: "{{ prio }}"
 
 ## Pushbullet:
 ## Script to send notifications to Pushbullet. Syntax:
 ##   service:  script.notify_pushbullet
 ##   data_template:
-##     value1: 'Startup: Home Assistant is Up and Running!'
-##     value2: ''
+##     value1: "Startup: Home Assistant is Up and Running!"
+##     value2: ""
 ##     value3: "{{ trigger.to_state.state }}"
 ##     priority: number
 ##     who: "name of the addressee", should match the selection in the list below. 
@@ -139,18 +140,18 @@ script:
         conditions:
           - condition: state
             entity_id: input_boolean.text_notifications
-            state: 'on'
+            state: "on"
       - service: notify.pushbullet
         data_template:
-          title: '{{ title }}'
-          message: '{{ value1 }} {{ value2 }} {{ value3 }}'
+          title: "{{ title }}"
+          message: "{{ value1 }} {{ value2 }} {{ value3 }}"
 
 ## Telegram:
 ## Script to send notifications to Pushbullet. Syntax:
 ##   service:  script.notify_pushbullet
 ##   data_template:
-##     value1: 'Startup: Home Assistant is Up and Running!'
-##     value2: ''
+##     value1: "Startup: Home Assistant is Up and Running!"
+##     value2: ""
 ##     value3: "{{ trigger.to_state.state }}"
 ##     priority: number
 ##
@@ -164,11 +165,11 @@ script:
         conditions:
           - condition: state
             entity_id: input_boolean.text_notifications
-            state: 'on'
+            state: "on"
       - service: notify.telegram_ralph
         data_template:
-          title: '{{ title }}'
-          message: '{{ value1 }} {{ value2 }} {{ value3 }}'
+          title: "{{ title }}"
+          message: "{{ value1 }} {{ value2 }} {{ value3 }}"
 
   notify_telegram_anneke:
     alias: Telegram notifications Anneke
@@ -177,11 +178,11 @@ script:
         conditions:
           - condition: state
             entity_id: input_boolean.text_notifications
-            state: 'on'
+            state: "on"
       - service: notify.telegram_anneke
         data_template:
-          title: '{{ title }}'
-          message: '{{ value1 }} {{ value2 }} {{ value3 }}'
+          title: "{{ title }}"
+          message: "{{ value1 }} {{ value2 }} {{ value3 }}"
 
 ###############################################################################
 ##  Timers

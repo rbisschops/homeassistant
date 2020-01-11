@@ -19,6 +19,8 @@
 ## V1.7.0:  Added everybody extended away sensor
 ## V1.8.0:  Added comming home script to automation "Er komt iemand thuis"
 ## V1.8.1: Removed initial state from input_select
+## V1.8.2:  Changed states. into states("xx")
+##          Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -49,17 +51,17 @@ binary_sensor:
       people_home:
         friendly_name: Iemand thuis
         value_template: >-
-          {{ is_state('input_select.ralph_status_dropdown', 'Home')
-            or is_state('input_select.ralph_status_dropdown', 'Just Arrived')
-            or is_state('input_select.ralph_status_dropdown', 'Just Left')
-            or is_state('input_select.anneke_status_dropdown', 'Home')
-            or is_state('input_select.anneke_status_dropdown', 'Just Arrived')
-            or is_state('input_select.anneke_status_dropdown', 'Just Left')
-            or is_state('input_select.kimberly_status_dropdown', 'Home')
-            or is_state('input_select.kimberly_status_dropdown', 'Just Arrived')
-            or is_state('input_select.kimberly_status_dropdown', 'Just Left') }}
+          {{ is_state('input_select.ralph_status_dropdown','Home')
+            or is_state('input_select.ralph_status_dropdown','Just Arrived')
+            or is_state('input_select.ralph_status_dropdown','Just Left')
+            or is_state('input_select.anneke_status_dropdown','Home')
+            or is_state('input_select.anneke_status_dropdown','Just Arrived')
+            or is_state('input_select.anneke_status_dropdown','Just Left')
+            or is_state('input_select.kimberly_status_dropdown','Home')
+            or is_state('input_select.kimberly_status_dropdown','Just Arrived')
+            or is_state('input_select.kimberly_status_dropdown','Just Left') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/people48_' ~ states.binary_sensor.people_home.state ~ '.png' }}
+          {{ '/local/custom_icons/people48_' ~ states('binary_sensor.people_home') ~ '.png' }}
 
   ## Added V1.6.0
   ## Everybody is away
@@ -68,11 +70,11 @@ binary_sensor:
       everybody_away:
         friendly_name: Niemand thuis (kort)
         value_template: >-
-          {{ is_state('input_select.ralph_status_dropdown', 'Away')
-            and is_state('input_select.anneke_status_dropdown', 'Away')
-            and is_state('input_select.kimberly_status_dropdown', 'Away') }}
+          {{ is_state('input_select.ralph_status_dropdown','Away')
+            and is_state('input_select.anneke_status_dropdown','Away')
+            and is_state('input_select.kimberly_status_dropdown','Away') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/people48_' ~ states.binary_sensor.people_home.state ~ '.png' }}
+          {{ '/local/custom_icons/people48_' ~ states('binary_sensor.people_home') ~ '.png' }}
 
   ## Added V1.7.0
   ## Everybody is extended away
@@ -81,11 +83,11 @@ binary_sensor:
       everybody_extended_away:
         friendly_name: Niemand thuis (lang)
         value_template: >-
-          {{ is_state('input_select.ralph_status_dropdown', 'Extended Away')
-            and is_state('input_select.anneke_status_dropdown', 'Extended Away')
-            and is_state('input_select.kimberly_status_dropdown', 'Extended Away') }}
+          {{ is_state('input_select.ralph_status_dropdown','Extended Away')
+            and is_state('input_select.anneke_status_dropdown','Extended Away')
+            and is_state('input_select.kimberly_status_dropdown','Extended Away') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/people48_' ~ states.binary_sensor.people_home.state ~ '.png' }}
+          {{ '/local/custom_icons/people48_' ~ states('binary_sensor.people_home') ~ '.png' }}
 
   ## Anneke home sensor
   - platform: template
@@ -93,33 +95,33 @@ binary_sensor:
       anneke_home:
         friendly_name: Anneke thuis
         value_template: >-
-          {{ is_state('input_select.anneke_status_dropdown', 'Home')
-            or is_state('input_select.anneke_status_dropdown', 'Just Arrived')
-            or is_state('input_select.anneke_status_dropdown', 'Just Left') }}
+          {{ is_state('input_select.anneke_status_dropdown','Home')
+            or is_state('input_select.anneke_status_dropdown','Just Arrived')
+            or is_state('input_select.anneke_status_dropdown','Just Left') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/anneke48_' ~ states.binary_sensor.anneke_home.state ~ '.png' }}
+          {{ '/local/custom_icons/anneke48_' ~ states('binary_sensor.anneke_home') ~ '.png' }}
   ## kimberly home sensor
   - platform: template
     sensors:
       kimberly_home:
         friendly_name: Kimberly thuis
         value_template: >-
-          {{ is_state('input_select.kimberly_status_dropdown', 'Home')
-            or is_state('input_select.kimberly_status_dropdown', 'Just Arrived')
-            or is_state('input_select.kimberly_status_dropdown', 'Just Left') }}
+          {{ is_state('input_select.kimberly_status_dropdown','Home')
+            or is_state('input_select.kimberly_status_dropdown','Just Arrived')
+            or is_state('input_select.kimberly_status_dropdown','Just Left') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/kimberly48_' ~ states.binary_sensor.kimberly_home.state ~ '.png' }}
+          {{ '/local/custom_icons/kimberly48_' ~ states('binary_sensor.kimberly_home') ~ '.png' }}
   ## Ralph home sensor
   - platform: template
     sensors:
       ralph_home:
         friendly_name: Ralph thuis
         value_template: >-
-          {{ is_state('input_select.ralph_status_dropdown', 'Home')
-            or is_state('input_select.ralph_status_dropdown', 'Just Arrived')
-            or is_state('input_select.ralph_status_dropdown', 'Just Left') }}
+          {{ is_state('input_select.ralph_status_dropdown','Home')
+            or is_state('input_select.ralph_status_dropdown','Just Arrived')
+            or is_state('input_select.ralph_status_dropdown','Just Left') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/ralph48_' ~ states.binary_sensor.ralph_home.state ~ '.png' }}
+          {{ '/local/custom_icons/ralph48_' ~ states('binary_sensor.ralph_home') ~ '.png' }}
 
 ## Added input select for advanced presence states (V1.3.0)
 input_select:
@@ -156,14 +158,14 @@ sensor:
   - platform: template
     sensors:
       ralph_status:
-        value_template: '{{ states.input_select.ralph_status_dropdown.state }}'
-        friendly_name: 'Ralph'
+        value_template: "{{ states('input_select.ralph_status_dropdown') }}"
+        friendly_name: "Ralph"
       anneke_status:
-        value_template: '{{ states.input_select.anneke_status_dropdown.state }}'
-        friendly_name: 'Anneke'
+        value_template: "{{ states('input_select.input_select.anneke_status_dropdown') }}"
+        friendly_name: "Anneke"
       kimberly_status:
-        value_template: '{{ states.input_select.kimberly_status_dropdown.state }}'
-        friendly_name: 'Kimberly'
+        value_template: "{{ states('input_select.input_select.kimberly_status_dropdown') }}"
+        friendly_name: "Kimberly"
 
 ###############################################################################
 ##  Groups
@@ -217,20 +219,20 @@ automation:
   ## Added automations for advanced presence states (V1.3.0)
   - alias: Mark person as just arrived
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: group.ralph
-        from: 'not_home'
-        to: 'home'
+        from: "not_home"
+        to: "home"
       - platform: state
         entity_id: group.anneke
-        from: 'not_home'
-        to: 'home'
+        from: "not_home"
+        to: "home"
       - platform: state
         entity_id: group.kimberly
-        from: 'not_home'
-        to: 'home'
+        from: "not_home"
+        to: "home"
     action:
       - service: input_select.select_option
         data_template:
@@ -244,58 +246,45 @@ automation:
             {% endif %}
           option: >
             {% if trigger.entity_id == 'group.ralph' %}
-              {% if states.input_select.ralph_status_dropdown.state == 'Just Left' %}
-                Home
-              {% else %}
-                Just Arrived
-              {% endif %}
-            {% elif trigger.entity_id == 'group.anneke' %}  
-              {% if states.input_select.anneke_status_dropdown.state == 'Just Left' %}
-                Home
-              {% else %}
-                Just Arrived
-              {% endif %}          
+              {{ 'Home' if is_state('input_select.ralph_status_dropdown','Just Left') else 'Just Arrived' }}
+            {% elif trigger.entity_id == 'group.anneke' %}
+              {{ 'Home' if is_state('input_select.anneke_status_dropdown','Just Left') else 'Just Arrived' }}
             {% else %}
-              {% if states.input_select.kimberly_status_dropdown.state == 'Just Left' %}
-                Home
-              {% else %}
-                Just Arrived
-              {% endif %}
+              {{ 'Home' if is_state('input_select.kimberly_status_dropdown','Just Left') else 'Just Arrived' }}
             {% endif %}
-
   - alias: Mark person as home
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: input_select.ralph_status_dropdown
-        to: 'Just Arrived'
+        to: "Just Arrived"
         for:
-          minutes: 10
+          minutes: 5
       - platform: state
         entity_id: input_select.anneke_status_dropdown
-        to: 'Just Arrived'
+        to: "Just Arrived"
         for:
-          minutes: 10
+          minutes: 5
+          seconds: 10
+      - platform: state
+        entity_id: input_select.kimberly_status_dropdown
+        to: "Just Arrived"
+        for:
+          minutes: 5
           seconds: 15
       - platform: state
-        entity_id: input_select.kimberly_status_dropdown
-        to: 'Just Arrived'
-        for:
-          minutes: 10
-          seconds: 30
-      - platform: state
         entity_id: input_select.ralph_status_dropdown
-        from: 'Just Left'
-        to: 'Just Arrived'
+        from: "Just Left"
+        to: "Just Arrived"
       - platform: state
         entity_id: input_select.anneke_status_dropdown
-        from: 'Just Left'
-        to: 'Just Arrived'
+        from: "Just Left"
+        to: "Just Arrived"
       - platform: state
         entity_id: input_select.kimberly_status_dropdown
-        from: 'Just Left'
-        to: 'Just Arrived'
+        from: "Just Left"
+        to: "Just Arrived"
     action:
       - service: input_select.select_option
         data_template:
@@ -308,23 +297,22 @@ automation:
               input_select.kimberly_status_dropdown
             {% endif %}
           option: Home
-
   - alias: Mark person as just left
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: group.ralph
-        from: 'home'
-        to: 'not_home'
+        from: "home"
+        to: "not_home"
       - platform: state
         entity_id: group.anneke
-        from: 'home'
-        to: 'not_home'
+        from: "home"
+        to: "not_home"
       - platform: state
         entity_id: group.kimberly
-        from: 'home'
-        to: 'not_home'
+        from: "home"
+        to: "not_home"
     action:
       - service: input_select.select_option
         data_template:
@@ -337,25 +325,24 @@ automation:
               input_select.kimberly_status_dropdown
             {% endif %}
           option: Just Left
-
   - alias: Mark person as away
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: input_select.ralph_status_dropdown
-        to: 'Just Left'
+        to: "Just Left"
         for:
           minutes: 5
       - platform: state
         entity_id: input_select.anneke_status_dropdown
-        to: 'Just Left'
+        to: "Just Left"
         for:
           minutes: 5
           seconds: 15
       - platform: state
         entity_id: input_select.kimberly_status_dropdown
-        to: 'Just Left'
+        to: "Just Left"
         for:
           minutes: 5
           seconds: 30
@@ -371,26 +358,25 @@ automation:
               input_select.kimberly_status_dropdown
             {% endif %}
           option: Away
-  
   - alias: Mark person as extended away
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: input_select.ralph_status_dropdown
-        to: 'Away'
+        to: "Away"
         for:
           hours: 23
           minutes: 59
       - platform: state
         entity_id: input_select.anneke_status_dropdown
-        to: 'Away'
+        to: "Away"
         for:
           hours: 24
           minutes: 0
       - platform: state
         entity_id: input_select.kimberly_status_dropdown
-        to: 'Away'
+        to: "Away"
         for:
           hours: 24
           minutes: 1
@@ -410,20 +396,20 @@ automation:
   ## Test if everybody is away and perform actions
   - alias: "Iedereen is weg"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: binary_sensor.everybody_away
-      to: 'on'
+      to: "on"
     action:
       - service: script.turn_on
         entity_id: script.leaving
       - service: script.notify_prowl
         data_template:
-          value1: 'Afwezigheidsmelding: '
-          value2: ''
-          value3: 'Iedereen is weg'
-          who: 'ralph'
+          value1: "Afwezigheidsmelding: "
+          value2: ""
+          value3: "Iedereen is weg"
+          who: "ralph"
           prio: -2
 
   ## Updated V1.8.0
@@ -431,18 +417,18 @@ automation:
   ## Upgraded to use advanced presense (V1.4.0)
   - alias: "Er komt iemand thuis"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       platform: state
       entity_id: input_select.ralph_status_dropdown, input_select.anneke_status_dropdown, input_select.kimberly_status_dropdown
-      to: 'Home'
+      to: "Home"
     action:
       - service: script.notify_prowl
         data_template:
-          value1: 'Aanwezigheidsmelding: '
-          value2: '{{ trigger.to_state.attributes.friendly_name }}'
-          value3: ' is thuis'
-          who: 'ralph'
+          value1: "Aanwezigheidsmelding: "
+          value2: "{{ trigger.to_state.attributes.friendly_name }}"
+          value3: " is thuis"
+          who: "ralph"
           prio: -2
 
 ###############################################################################

@@ -15,6 +15,7 @@
 ## V0.4.0:  Changed control for toilet heating
 ## V0.5.0:  Updated code for climate settings with HA version 0.103
 ## V0.5.1:  Removed commented code lines
+## V0.5.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -31,9 +32,9 @@ input_select:
   restroom_heating:
     name: Verwarming toilet
     options:
-      - 'Verwarmen'
-      - 'Spaarstand'
-      - 'Uitgeschakeld'
+      - "Verwarmen"
+      - "Spaarstand"
+      - "Uitgeschakeld"
     icon: mdi:thermometer
 
 ###############################################################################
@@ -49,22 +50,22 @@ automation:
   ## Switch restroom heating based on time for work days
   - alias: "Toilet verwarming aan volgens schema - werkdagen"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: time
-        at: '06:00:00'
+        at: "06:00:00"
     condition:
       condition: and
       conditions:
         - condition: state
           entity_id: binary_sensor.workday_sensor
-          state: 'on'
+          state: "on"
         - condition: state
           entity_id: binary_sensor.everybody_away
-          state: 'off'
+          state: "off"
         - condition: state
           entity_id: input_boolean.holiday_mode
-          state: 'off'
+          state: "off"
         - condition: template
           value_template: >
             {{ not is_state('input_select.restroom_heating','Uitgeschakeld') }}
@@ -73,35 +74,35 @@ automation:
       - service: input_select.select_option
         data_template:
           entity_id: input_select.restroom_heating
-          option: 'Verwarmen'
+          option: "Verwarmen"
       - service: script.notify_prowl
         data_template:
-          value1: 'Toilet verwarming geschakeld. '
-          value2: 'Trigger = Werkdag '
-          value3: ' '
-          who: 'ralph'
+          value1: "Toilet verwarming geschakeld. "
+          value2: "Trigger = Werkdag "
+          value3: " "
+          who: "ralph"
           prio: -2
 
   ## Updated V0.4.0, V0.5.0
   ## Switch restroom heating based on time for non-working days
   - alias: "Toilet verwarming aan volgens schema - niet werkdagen"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: time
-        at: '06:30:00'
+        at: "06:30:00"
     condition:
       condition: and
       conditions:
         - condition: state
           entity_id: binary_sensor.workday_sensor
-          state: 'off'
+          state: "off"
         - condition: state
           entity_id: binary_sensor.everybody_away
-          state: 'off'
+          state: "off"
         - condition: state
           entity_id: input_boolean.holiday_mode
-          state: 'off'
+          state: "off"
         - condition: template
           value_template: >
             {{ not is_state('input_select.restroom_heating','Uitgeschakeld') }}
@@ -110,20 +111,20 @@ automation:
       - service: input_select.select_option
         data_template:
           entity_id: input_select.restroom_heating
-          option: 'Verwarmen'
+          option: "Verwarmen"
       - service: script.notify_prowl
         data_template:
-          value1: 'Toilet verwarming geschakeld. '
-          value2: 'Trigger = Niet-werkdag '
-          value3: '{{ states.input_select.restroom_heating.state }}'
-          who: 'ralph'
+          value1: "Toilet verwarming geschakeld. "
+          value2: "Trigger = Niet-werkdag "
+          value3: "{{ states.input_select.restroom_heating.state }}"
+          who: "ralph"
           prio: -2
 
   ## Added V0.4.0, V0.5.0
   ## Switch toilet heating based on input selector state
   - alias: "Toilet verwarming mode selectie"
     hide_entity: false
-    initial_state: 'on'
+    initial_state: "on"
     trigger:
       - platform: state
         entity_id: 
@@ -153,17 +154,17 @@ script:
       - service: climate.set_hvac_mode
         data_template:
           entity_id: climate.rest_room_heating_mode
-          hvac_mode: '{{ mode }}'
+          hvac_mode: "{{ mode }}"
       - service: climate.set_preset_mode
         data_template:
           entity_id: climate.rest_room_heating_mode
-          preset_mode: '{{ preset }}'
+          preset_mode: "{{ preset }}"
       - service: script.notify_prowl
         data_template:
-          value1: 'Toilet verwarming '
-          value2: 'nieuwe status: '
-          value3: '{{mode}} {{preset}}'
-          who: 'ralph'
+          value1: "Toilet verwarming "
+          value2: "nieuwe status: "
+          value3: "{{mode}} {{preset}}"
+          who: "ralph"
           prio: -2
 
 ###############################################################################

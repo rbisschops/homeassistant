@@ -16,6 +16,7 @@
 ## V0.4.0:  Added new precense items for test
 ## V0.4.1:  Added input booleans for garbage bins
 ## V0.5.0:  Removed obsolete entities, added windows
+## V0.6.0:  Added media/denon controls
 
 title: Test
 icon: 'mdi:test-tube'
@@ -61,6 +62,26 @@ cards:
       entities:
         - entity: timer.hallwaylight
         - entity: timer.porchlight
+
+  ## Added V0.6.0
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Test Media
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Test Denon volume 
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_number.volume_setpoint
+        - entity: sensor.denon_volume
+
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card

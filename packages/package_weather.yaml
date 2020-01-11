@@ -10,6 +10,7 @@
 ## V1.0.0:  Production version 1.0
 ## V1.1.0:  Added timeframe for buienradar sensor
 ## V1.1.1:  Code cleaning
+## V1.1.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -24,11 +25,11 @@ camera:
   ## Camera used for buienradar
   - platform: generic
     name: buienradar
-    still_image_url: 'https://api.buienradar.nl/image/1.0/RadarMapNL?w=256h=256'
+    still_image_url: "https://api.buienradar.nl/image/1.0/RadarMapNL?w=256h=256"
 
 weather:
   ## Weather platform
-  - platform: buienradar  
+  - platform: buienradar
 
 sensor:
   ## Buienradar
