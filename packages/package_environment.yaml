@@ -23,6 +23,9 @@
 ## V1.6.0:  Code cleanup and changes to entities, package ready for migration to new homeserver
 ## V1.6.1:  Changed states. into states("xx")
 ## V1.6.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
+## V1.7.0:  Added DSMR Reader and sensors
+## V1.8.0:  Added automations for humidity livingroom
+## V1.8.1:  Syntax error corrections
 
 ###############################################################################
 ##  Homeassistant settings
@@ -41,6 +44,9 @@ homeassistant:
       friendly_name: Gas meter
     sensor.utilitises_water:
       friendly_name: Water meter
+    ## V1.7.0:
+    sensor.dsmr_reading_electricity_currently_delivered_watt:
+      friendly_name: Huidig verbruik
     ## Temperature sensors
     sensor.room_temp_office:
       friendly_name: Temperatuur Kantoor
@@ -141,6 +147,13 @@ homeassistant:
 #  Entities
 ###############################################################################
 
+input_number:
+  water_tariff:
+    name: Tarief water (EUR/m3)
+    initial: 0.927
+    min: 0
+    max: 2
+
 sensor:
   ## SUNRISE/SUNSET SENSORS
   - platform: template
@@ -157,7 +170,34 @@ sensor:
   - platform: season
     type: astronomical
 
-  ## Utilities sensors (not ready yet)
+  - platform: template
+    sensors:
+      ## Added V1.7.0:
+      dsmr_reading_electricity_currently_delivered_watt:
+        value_template: "{{ states('sensor.dsmr_reading_electricity_currently_delivered')|float * 1000 }}"
+        unit_of_measurement: "W"
+      
+      ## Added V1.8.0:
+      utilities_day_consumption_water_costs:
+        value_template: "{{(states('sensor.utilities_water_usage')|float /1000 * states('input_number.water_tariff')|float)|round(2) }}"
+        unit_of_measurement: "€"
+      utilities_total_cost_day:
+        value_template: "{{ (states('sensor.dsmr_day_consumption_total_cost')|float + states('sensor.utilities_day_consumption_water_costs')|float)|round(2) }}"
+        unit_of_measurement: "€"
+
+  ## Added V1.7.0:
+  ## DSMR reader integration
+  - platform: dsmr_reader
+
+  ## Utilities sensor water
+  - platform: "mqtt"
+    name: utilities_water
+    state_topic: "home/meter/water"
+    value_template: "{{ value_json.device }}"
+    json_attributes_topic: "home/meter/water"
+
+  ## Utilities sensors
+  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
   - platform: "mqtt"
     name: utilities_electricity
     state_topic: "home/meter/electricity"
@@ -169,11 +209,6 @@ sensor:
     value_template: "{{ value_json.device }}"
     json_attributes_topic: "home/meter/gas"
   - platform: "mqtt"
-    name: utilities_water
-    state_topic: "home/meter/water"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/meter/water"
-  - platform: "mqtt"
     name: utilities_reference
     state_topic: "home/meter/reference"
     value_template: "{{ value_json.device }}"
@@ -181,8 +216,10 @@ sensor:
 
   - platform: template
     sensors:
+  ## Utilities sensors
+  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
       utilities_electricity_current_usage:
-        value_template: '{% set value = state_attr("sensor.utilities_electricity","current_usage") %} {{ value }}'
+        value_template: "{% set value = state_attr('sensor.utilities_electricity','current_usage') %} {{ value }}"
         unit_of_measurement: "W"
       utilities_electricity_low_usage:
         value_template: >-
@@ -708,7 +745,8 @@ group:
 ###############################################################################
 automation:
   ## Automation for storing the nightly values (00:00) for reference. Reference is used for daily usage graphs 
-  - alias: 'update utilities referentie waarden'
+  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
+  - alias: "update utilities referentie waarden"
     hide_entity: false
     initial_state: "on" 
     trigger:
@@ -730,6 +768,66 @@ automation:
               "g_usage": g_usage,
               "w_usage": w_usage
             }|tojson }}
+
+  ## Added V1.8.0
+  - alias: "Luchtvochtigheid woonkamer te laag"
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.room_humidity_livingroom
+      below: 40
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          before: "22:30:00"
+          after: "08:00:00"
+        - condition: state
+          entity_id: sensor.everybody_away
+          state: "off"
+    action:
+      - service_template: >
+          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
+        data_template:
+          value1: "De luchtvochtigheid in de woonkamer is momenteel te laag ("
+          value2: "{{ states('sensor.room_humidity_livingroom')|round(0) }}"
+          value3: "%)."
+  - alias: "Luchtvochtigheid woonkamer te hoog"
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.room_humidity_livingroom
+      above: 60
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          before: "22:30:00"
+          after: "08:00:00"  
+        - condition: state
+          entity_id: sensor.everybody_away
+          state: "off"
+    action:
+      - service_template: >
+          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
+        data_template:
+          value1: "De luchtvochtigheid in de woonkamer is momenteel te hoog ("
+          value2: "{{ states('sensor.room_humidity_livingroom')|round(0) }}"
+          value3: "%)."
 
 ###############################################################################
 ##  Templates

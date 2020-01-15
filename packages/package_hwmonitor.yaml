@@ -1,0 +1,119 @@
+## Package file for Home Assistant, used for hardware monitoring
+## Type: Home Assistant yaml file
+## Date: 12-01-2020
+## Author: R.Bisschops
+##
+## Changelog:
+## V0.1.0:  First version
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+
+
+###############################################################################
+##  Entities
+###############################################################################
+sensor:
+  ## Domoitcz server hardware monitoring
+  - platform: "mqtt"
+    name: server_domoticz_memory_usage
+    state_topic: "home/server/domoticz/mem_usage"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/domoticz/mem_usage"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_domoticz_hdd_boot
+    state_topic: "home/server/domoticz/hdd_boot"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/domoticz/hdd_boot"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_domoticz_hdd
+    state_topic: "home/server/domoticz/hdd"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/domoticz/hdd"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_domoticz_cpu_temp
+    state_topic: "home/server/domoticz/cpu_temp"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/domoticz/cpu_temp"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - platform: "mqtt"
+    name: server_domoticz_cpu_usage
+    state_topic: "home/server/domoticz/cpu_usage"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/domoticz/cpu_usage"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_domoticz_process_usage
+    state_topic: "home/server/domoticz/process_usage"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/domoticz/process_usage"
+    unit_of_measurement: "MB"
+
+  ## Homeserver server hardware monitoring
+  - platform: "mqtt"
+    name: server_homeserver_memory_usage
+    state_topic: "home/server/homeserver/mem_usage"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/mem_usage"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_homeserver_hdd_boot
+    state_topic: "home/server/homeserver/hdd_boot"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/hdd_boot"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_homeserver_hdd
+    state_topic: "home/server/homeserver/hdd"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/hdd"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_homeserver_cpu_temp
+    state_topic: "home/server/homeserver/cpu_temp"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/cpu_temp"
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+  - platform: "mqtt"
+    name: server_homeserver_cpu_usage
+    state_topic: "home/server/homeserver/cpu_usage"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/cpu_usage"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_homeserver_process_usage
+    state_topic: "home/server/homeserver/process_usage"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/process_usage"
+    unit_of_measurement: "MB"
+
+###############################################################################
+##  Groups
+###############################################################################
+
+
+###############################################################################
+##  Automations
+###############################################################################
+
+
+###############################################################################
+##  Templates
+###############################################################################
+
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+
+###############################################################################
+##  Timers
+###############################################################################
+

@@ -15,7 +15,7 @@
 ## v0.8.0:  Added christmas setting
 
 title: Settings
-icon: 'mdi:settings'
+icon: "mdi:settings"
 background: "#e3e3e3"
 cards:
   - type: vertical-stack
@@ -35,20 +35,20 @@ cards:
       entities:
       - entity: input_boolean.text_notifications
         name: Tekst notificaties
-        icon: 'mdi:bell'
+        icon: "mdi:bell"
       - entity: input_boolean.holiday_mode 
         name: Vakantie mode
-        icon: 'mdi:briefcase'
+        icon: "mdi:briefcase"
       ## Added V0.8.0
       - entity: input_boolean.christmas_mode
         name: Kerst mode
-        icon: 'mdi:pine-tree'
+        icon: "mdi:pine-tree"
       - entity: input_boolean.recording_mode
         name: Recorder mode
-        icon: 'mdi:video'
+        icon: "mdi:video"
       - entity: input_boolean.livingroom_lights_status
         name: Licht aan status
-        icon: 'mdi:lightbulb'
+        icon: "mdi:lightbulb"
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:

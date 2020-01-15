@@ -16,6 +16,7 @@
 ## V1.4.3:  Added overlays for garbage bins
 ## V1.5.0:  Updated presence sensors
 ## V1.6.0:  Changed everybody away badge to use everybody away instead of people home
+## V1.6.1:  Added christmastree
 
 ## Remarks:
 ## overlays for doors and other elements need to be on top in the code, otherwise
@@ -345,6 +346,21 @@ cards:
         style:
           top: 20%
           left: 58%
+          position: absolute
+          width: 2.5%
+
+      ## X-mastree
+      - type: image
+        entity: input_boolean.christmastree
+        tap_action:
+          action: toggle
+        image: /local/custom_icons/lightbulb48_on.png
+        state_image:
+          'on': /local/custom_icons/xmastree48_on.png
+          'off': /local/custom_icons/xmastree48_off.png 
+        style:
+          top: 29%
+          left: 9%
           position: absolute
           width: 2.5%
 

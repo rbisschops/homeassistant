@@ -209,7 +209,7 @@ automation:
         entity_id: group.porchlight
 
   ## Actions to perform on mailbox motion
-  - alias: "Post ontvangen anneke"
+  - alias: "Post ontvangen"
     hide_entity: false
     initial_state: "on"
     trigger:
@@ -217,32 +217,46 @@ automation:
       entity_id: sensor.mailbox
       to: "vibration"
     action:
-      - service: script.notify_telegram_anneke
+      - service_template: >
+          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
         data_template:
           value1: "Er is post!"
           value2: " "
           value3: " "
           prio: -2
-      - service: timer.start
-        data_template:
-          entity_id: timer.wait
-          duration: "00:00:01"
 
-  - alias: "Post ontvangen ralph"
-    hide_entity: false
-    initial_state: "on"
-    trigger: 
-      platform: event
-      event_type: timer.finished
-      event_data:
-        entity_id: timer.wait
-    action:
-      - service: script.notify_telegram_ralph
-        data_template:
-          value1: "Er is post!"
-          value2: " "
-          value3: " "
-          prio: -2
+      # - service: script.notify_telegram_anneke
+      #   data_template:
+      #     value1: "Er is post!"
+      #     value2: " "
+      #     value3: " "
+      #     prio: -2
+      # - service: timer.start
+      #   data_template:
+      #     entity_id: timer.wait
+      #     duration: "00:00:01"
+
+  # - alias: "Post ontvangen ralph"
+  #   hide_entity: false
+  #   initial_state: "on"
+  #   trigger: 
+  #     platform: event
+  #     event_type: timer.finished
+  #     event_data:
+  #       entity_id: timer.wait
+  #   action:
+  #     - service: script.notify_telegram_ralph
+  #       data_template:
+  #         value1: "Er is post!"
+  #         value2: " "
+  #         value3: " "
+  #         prio: -2
           
 ###############################################################################
 ##  Templates
@@ -259,4 +273,4 @@ automation:
 ###############################################################################
 timer:
   porchlight:
-  wait:
+  # wait:

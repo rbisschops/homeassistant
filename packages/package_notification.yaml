@@ -41,6 +41,10 @@ notify:
     platform: telegram
     chat_id: !secret anneke_telegram_chat_id
 
+  - name: telegram_test
+    platform: telegram
+    chat_id: !secret ralph_telegram_chat_id
+
 ###############################################################################
 ##  Entities
 ###############################################################################
@@ -62,7 +66,19 @@ group:
 ###############################################################################
 ##  Automations
 ###############################################################################
-
+automation:
+  - alias: "Telegram bot reactie op keyboard"
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: telegram_callback
+      event_data:
+        data: "/remove"
+    action:
+      - service: telegram_bot.delete_message
+        data_template:
+          message_id: "{{ trigger.event.data.message.message_id }}"
+          chat_id: !secret ralph_telegram_chat_id
 
 ###############################################################################
 ##  Templates
@@ -157,6 +173,16 @@ script:
 ##
 ## Dependancies:
 ##   input_boolean.text_notifications
+  notify_telegram_test:
+    alias: Telegram notifications Ralph 
+    sequence:
+      - service: notify.telegram_test
+        data_template:
+          title: "Test"
+          message: "Hi Ralph!"
+          data:
+            inline_keyboard:
+              - 'Verwijder:/remove, OK:/ok'
 
   notify_telegram_ralph:
     alias: Telegram notifications Ralph
@@ -169,7 +195,7 @@ script:
       - service: notify.telegram_ralph
         data_template:
           title: "{{ title }}"
-          message: "{{ value1 }} {{ value2 }} {{ value3 }}"
+          message: "Hi Ralph. {{ value1 }} {{ value2 }} {{ value3 }}"
 
   notify_telegram_anneke:
     alias: Telegram notifications Anneke
@@ -182,8 +208,26 @@ script:
       - service: notify.telegram_anneke
         data_template:
           title: "{{ title }}"
-          message: "{{ value1 }} {{ value2 }} {{ value3 }}"
+          message: "Hi Anneke. {{ value1 }} {{ value2 }} {{ value3 }}"
 
+  notify_telegram_ralph_and_anneke:
+    alias: Telegram notifications ralph en Anneke
+    sequence:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_boolean.text_notifications
+            state: "on"
+      - service: notify.telegram_anneke
+        data_template:
+          title: "{{ title }}"
+          message: "Hi Anneke. {{ value1 }} {{ value2 }} {{ value3 }}"
+      - delay: 
+          milliseconds: 100
+      - service: notify.telegram_ralph
+        data_template:
+          title: "{{ title }}"
+          message: "Hi Ralph. {{ value1 }} {{ value2 }} {{ value3 }}"
 ###############################################################################
 ##  Timers
 ###############################################################################

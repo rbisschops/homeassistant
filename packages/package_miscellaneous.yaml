@@ -25,7 +25,7 @@
 ## V0.13.0: Updated all hue light related scripts
 ##          Updated all climate related scripts
 ## V0.13.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-
+## V0.13.2:  Syntax error corrections
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
@@ -227,16 +227,29 @@ automation:
       - binary_sensor.gft_pmd
       to: "on"
     action:
-      - service: script.notify_telegram_ralph
+      - service_template: >
+          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
         data_template:
           value1: "Vandaag moet de "
           value2: "{{ trigger.to_state.attributes.friendly_name }}"
           value3: " bak buiten worden gezet"
-      - service: script.notify_telegram_anneke
-        data_template:
-          value1: "Vandaag moet de "
-          value2: "{{ trigger.to_state.attributes.friendly_name }}"
-          value3: " bak buiten worden gezet"
+
+      # - service: script.notify_telegram_ralph
+      #   data_template:
+      #     value1: "Vandaag moet de "
+      #     value2: "{{ trigger.to_state.attributes.friendly_name }}"
+      #     value3: " bak buiten worden gezet"
+      # - service: script.notify_telegram_anneke
+      #   data_template:
+      #     value1: "Vandaag moet de "
+      #     value2: "{{ trigger.to_state.attributes.friendly_name }}"
+      #     value3: " bak buiten worden gezet"
 
 ###############################################################################
 ##  Templates

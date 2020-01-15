@@ -86,9 +86,9 @@ remote:
 
 ## Added V0.6.0
 ## Rest commands for Denon AVR
-rest_command: 
-  denon_volume:
-    url: "http://192.168.0.105/goform/formiPhoneAppDirect.xml?MV{{ states('input_number.volume_setpoint')|int}}"
+# rest_command: 
+#   denon_volume:
+#     url: "http://192.168.0.105/goform/formiPhoneAppDirect.xml?MV{{ states('input_number.volume_setpoint')|int}}"
 
 ## Media players
 ##  LG television
@@ -107,11 +107,11 @@ media_player:
         - Netflix
         - Set-top Box
         - Spotify Music - Luister gratis op LG TV
-  # - platform: denonavr
-  #   host: !secret ip_denonavr 
-  #   name: Denon AVR
-  #   show_all_sources: true
-  #   timeout: 2
+  - platform: denonavr
+    host: !secret ip_denonavr 
+    name: Denon AVR
+    show_all_sources: true
+    timeout: 2
 
 ###############################################################################
 ##  Entities
@@ -242,16 +242,15 @@ sensor:
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"    
   ## Added V0.6.0
-  # - platform: template
-  #   sensors:
-  #     denon_volume:
-  #       value_template: >
-  #         {% if is_state('media_player.denon_avr', 'on')  %}
-  #           {{ (state_attr('media_player.denon_avr', 'volume_level') * 100)|int }}
-  #         {% endif %}
-  #       friendly_name: Receiver Volume Level
-  #       icon_template: mdi:volume-medium
-
+  - platform: template
+    sensors:
+      denon_volume:
+        value_template: >
+          {% if is_state('media_player.denon_avr', 'on')  %}
+            {{ (state_attr('media_player.denon_avr', 'volume_level') * 100)|int }}
+          {% endif %}
+        friendly_name: Receiver Volume Level
+        icon_template: mdi:volume-medium
 
 switch:
   ## Media center operations, switch (Tradfri via Zigbee2MQTT)
@@ -653,7 +652,7 @@ automation:
           device: "Popcorn"
 
   ## Added V0.6.0
-  ## Test automation for Denon Volume control
+  # ## Test automation for Denon Volume control
   # - alias: "Set Denon volume"
   #   trigger:
   #     platform: state
@@ -661,36 +660,36 @@ automation:
   #   action:
   #   - service: rest_command.denon_volume
 
-  # - alias: "Denon Set Volume"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id: input_number.volume_setpoint
-  #   action:
-  #     - service: media_player.volume_set
-  #       data_template:
-  #         entity_id: media_player.denon_avr
-  #         volume_level: >
-  #           {{states('input_number.volume_setpoint') | int / 100}}
+  - alias: "Denon Set Volume"
+    initial_state: "on"
+    trigger:
+      platform: state
+      entity_id: input_number.volume_setpoint
+    action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.denon_avr
+          volume_level: >
+            {{states('input_number.volume_setpoint') | int / 100}}
 
-  # - alias: "Denon Update Volume Slider"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: sensor.denon_volume
-  #     # - platform: homeassistant
-  #     #   event: start
-  #   condition:
-  #     condition: state
-  #     entity_id: media_player.denon_avr     # receiver must be on to set the volume, without this would throw error on startup
-  #     state: "on"
-  #   action:
-  #     - delay:
-  #         seconds: 3
-  #     - service: input_number.set_value
-  #       data_template:
-  #         entity_id: input_number.volume_setpoint
-  #         value: '{{ trigger.to_state.state }}'
+  - alias: "Denon Update Volume Slider"
+    initial_state: "on"
+    trigger:
+      - platform: state
+        entity_id: sensor.denon_volume
+      # - platform: homeassistant
+      #   event: start
+    condition:
+      condition: state
+      entity_id: media_player.denon_avr     # receiver must be on to set the volume, without this would throw error on startup
+      state: "on"
+    action:
+      - delay:
+          seconds: 3
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.volume_setpoint
+          value: '{{ trigger.to_state.state }}'
 
 ###############################################################################
 ##  Templates
@@ -870,6 +869,12 @@ script:
         data:
           entity_id: media_player.living_room_tv
           source: Netflix
+      ## Added V0.6.0
+      ## Service for setting the Denon Volume
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.volume_setpoint
+          value: 50
       - service: input_select.select_option
         data:
           entity_id: input_select.livingroom_lights_mode
@@ -890,11 +895,11 @@ script:
           new_state: "Televisie"
           old_state: "{{ states('input_select.humax_old_status') }}"
       ## Added V0.6.0
-      ## Added service for setting the Denon Volume
-      # - service: input_number.set_value
-      #   data:
-      #     entity_id: input_number.volume_setpoint
-      #   value: 55
+      ## Service for setting the Denon Volume
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.volume_setpoint
+          value: 55
       - service: input_select.select_option
         data:
           entity_id: input_select.livingroom_lights_mode
@@ -914,6 +919,12 @@ script:
         data_template:
           new_state: "Radio"
           old_state: "{{ states('input_select.humax_old_status') }}"
+      ## Added V0.6.0
+      ## Service for setting the Denon Volume
+      - service: input_number.set_value
+        data:
+          entity_id: input_number.volume_setpoint
+          value: 45
       - service: input_select.select_option
         data:
           entity_id: input_select.livingroom_lights_mode
@@ -928,12 +939,6 @@ script:
   media_mode_music:
     alias: Aanvullende media settings Music
     sequence:
-      ## Added V0.6.0
-      ## Added service for setting the Denon Volume
-      # - service: input_number.set_value
-      #   data:
-      #     entity_id: input_number.volume_setpoint
-      #   value: 45
       - service: input_select.select_option
         data:
           entity_id: input_select.livingroom_lights_mode

@@ -23,7 +23,8 @@
 ## V0.8.1:  Removed script requirement for domo2hass automation chistmastree (test)
 ## V0.8.2:  Removed all domo2hass swtich scripts
 ## V0.8.3:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-
+## V0.9.0:  Added hardware sensors for Domoticz server and homeserver
+## V0.9.1:  Remove scripts for water meter, e and g meters, all in automation now
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
@@ -279,7 +280,7 @@ automation:
           state: >-
             {{ trigger.payload_json.nvalue }}
 
-  # Added V0.6.0
+  # Added V0.6.0, Updated V0.9.1
   ## Convert Domoticz Energy meters to Hass
   ## Elektra meter will sent svalue1, svalue2, svalue5
   - alias: "Domoticz Elektra waarden via MQTT"
@@ -296,12 +297,24 @@ automation:
       - condition: template
         value_template: "{{ trigger.payload_json.name == 'Elektra' }}"
     action: 
-      - service: script.domoticz_electricity
+      # - service: script.domoticz_electricity
+      #   data_template:
+      #     device: "{{ trigger.payload_json.name }}"
+      #     low: "{{ trigger.payload_json.svalue1 }}" 
+      #     high: "{{ trigger.payload_json.svalue2 }}"
+      #     current: "{{ trigger.payload_json.svalue5 }}"
+      - service: mqtt.publish
         data_template:
-          device: "{{ trigger.payload_json.name }}"
-          low: "{{ trigger.payload_json.svalue1 }}" 
-          high: "{{ trigger.payload_json.svalue2 }}"
-          current: "{{ trigger.payload_json.svalue5 }}"
+          topic: "home/meter/electricity"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage_high": trigger.payload_json.svalue2,
+              "usage_low": trigger.payload_json.svalue1,
+              "current_usage": trigger.payload_json.svalue5
+            }|tojson }}
+  ## Updated V0.9.1
   ## Gas meter will sent svalue1
   - alias: "Domoticz Gas waarden via MQTT"
     hide_entity: false
@@ -317,11 +330,21 @@ automation:
       - condition: template
         value_template: "{{ trigger.payload_json.name == 'Gas' }}"
     action: 
-      - service: script.domoticz_gas
+      # - service: script.domoticz_gas
+      #   data_template:
+      #     device: "{{ trigger.payload_json.name }}"
+      #     usage: "{{ trigger.payload_json.svalue1 }}"
+      - service: mqtt.publish
         data_template:
-          device: "{{ trigger.payload_json.name }}"
-          usage: "{{ trigger.payload_json.svalue1 }}"
-  ## Water meter will sent  
+          topic: "home/meter/gas"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Updated V0.9.1
+  ## Water meter will sent svalue1
   - alias: Domoticz Water waarden via MQTT
     hide_entity: false
     initial_state: "on" 
@@ -336,10 +359,308 @@ automation:
       - condition: template
         value_template: "{{ trigger.payload_json.name == 'Water' }}"
     action: 
-      - service: script.domoticz_water
+      # - service: script.domoticz_water
+      #   data_template:
+      #     device: "{{ trigger.payload_json.name }}"
+      #     usage: "{{ trigger.payload_json.svalue1 }}"
+      - service: mqtt.publish
         data_template:
-          device: "{{ trigger.payload_json.name }}"
-          usage: "{{ trigger.payload_json.svalue1 }}"
+          topic: "home/meter/water"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Added V0.9.0
+  ## Domoticz server memory usage, will sent svalue1
+  - alias: Domoticz geheugen gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Memory Usage (Domoticz)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/domoticz/mem_usage"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Domoticz server HDD-boot partition, will sent svalue1
+  - alias: Domoticz HDD-boot partition gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'HDD /boot (Domoticz)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/domoticz/hdd_boot"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Domoticz server HDD partition, will sent svalue1
+  - alias: Domoticz HDD partition gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'HDD / (Domoticz)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/domoticz/hdd"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Domoticz server temperature, will sent svalue1
+  - alias: Domoticz CPU temperature gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'Temp' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Server temperatuur (Domoticz)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/domoticz/cpu_temp"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Domoticz CPU usage, will sent svalue1
+  - alias: Domoticz CPU usage partition gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'CPU gebruik (Domoticz)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/domoticz/cpu_usage"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Domoticz process usage, will sent svalue1
+  - alias: Domoticz process usage partition gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Process Usage (Domoticz)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/domoticz/process_usage"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Homeserver server memory usage, will sent svalue1
+  - alias: Homeserver geheugen gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Memory Usage (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/mem_usage"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Homeserver server HDD-boot partition, will sent svalue1
+  - alias: Homeserver HDD-boot partition gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'HDD /boot (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/hdd_boot"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Homeserver server HDD partition, will sent svalue1
+  - alias: Homeserver HDD partition gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'HDD / (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/hdd"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Homeserver server temperature, will sent svalue1
+  - alias: Homeserver CPU temperature gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'Temp' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Server temperatuur (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/cpu_temp"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Homeserver CPU usage, will sent svalue1
+  - alias: Homeserver CPU usage partition gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'CPU gebruik (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/cpu_usage"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Homeserver process usage, will sent svalue1
+  - alias: Homeserver process usage partition gebruik via MQTT
+    hide_entity: false
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Process Usage (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/process_usage"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
 
   ##----------------------------------------------
   ## Test automations >> Remove ASAP after testing 
@@ -456,48 +777,50 @@ script:
              "source": device
             }|tojson }}
 
-  ## Added V0.6, Updated 0.6.x
-  ## Read electiricity values from Domoticz
-  domoticz_electricity:
-    alias: Receive domoticz elektra readings via MQTT
-    sequence:
-      - service: mqtt.publish
-        data_template:
-          topic: "home/meter/electricity"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": device,
-              "usage_high": high,
-              "usage_low": low,
-              "current_usage": current
-            }|tojson }}
-  ## Read gas values from Domoticz
-  domoticz_gas:
-    alias: Receive domoticz gas readings via MQTT
-    sequence:
-      - service: mqtt.publish
-        data_template:
-          topic: "home/meter/gas"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": device,
-              "usage": usage,
-            }|tojson }}
-  ## Read gas values from Domoticz
-  domoticz_water:
-    alias: Receive domoticz water readings via MQTT
-    sequence:
-      - service: mqtt.publish
-        data_template:
-          topic: "home/meter/water"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": device,
-              "usage": usage,
-            }|tojson }}
+  ## Added V0.6, Updated 0.6.x remove V0.9.1
+  # ## Read electiricity values from Domoticz
+  # domoticz_electricity:
+  #   alias: Receive domoticz elektra readings via MQTT
+  #   sequence:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "home/meter/electricity"
+  #         retain: true
+  #         payload_template: >-
+  #           {{ {
+  #             "device": device,
+  #             "usage_high": high,
+  #             "usage_low": low,
+  #             "current_usage": current
+  #           }|tojson }}
+  # ## Read gas values from Domoticz
+  # domoticz_gas:
+  #   alias: Receive domoticz gas readings via MQTT
+  #   sequence:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "home/meter/gas"
+  #         retain: true
+  #         payload_template: >-
+  #           {{ {
+  #             "device": device,
+  #             "usage": usage
+  #           }|tojson }}
+  
+  ## Removed V0.9.1
+  # ## Read water values from Domoticz
+  # domoticz_water:
+  #   alias: Receive domoticz water readings via MQTT
+  #   sequence:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "home/meter/water"
+  #         retain: true
+  #         payload_template: >-
+  #           {{ {
+  #             "device": device,
+  #             "usage": usage
+  #           }|tojson }}
 
 ###############################################################################
 ##  Timers

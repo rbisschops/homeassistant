@@ -161,10 +161,10 @@ sensor:
         value_template: "{{ states('input_select.ralph_status_dropdown') }}"
         friendly_name: "Ralph"
       anneke_status:
-        value_template: "{{ states('input_select.input_select.anneke_status_dropdown') }}"
+        value_template: "{{ states('input_select.anneke_status_dropdown') }}"
         friendly_name: "Anneke"
       kimberly_status:
-        value_template: "{{ states('input_select.input_select.kimberly_status_dropdown') }}"
+        value_template: "{{ states('input_select.kimberly_status_dropdown') }}"
         friendly_name: "Kimberly"
 
 ###############################################################################

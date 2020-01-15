@@ -8,6 +8,7 @@
 ## V0.2.0:  Added camera picture for utilities graphs (for evaluation)
 ## V0.2.1:  Changed UI layout 
 ## V0.3.0:  Major UI changes based on Decluttering card
+## V0.4.0:  Added DSMR Reader sensors
 
 title: Verbruik
 icon: 'mdi:flash'
@@ -20,23 +21,8 @@ cards:
       variables:
         - title: Elektriciteit
     - type: gauge
-      entity: sensor.utilities_electricity_current_usage
-      name: Huidig verbruik
-      icon: 'mdi:flash'
-      unit: 'W'
-      min: 0
-      max: 5000
-      severity:
-        green: 0
-        yellow: 3000
-        red: 3500
-      style: |
-        div.gauge-a {
-          background-color: #E0E0E0;
-        }
-    - type: gauge
-      entity: sensor.utilities_electricity_usage
-      name: Dag verbruik
+      entity: sensor.dsmr_day_consumption_electricity_merged
+      name: Dagverbruik
       icon: 'mdi:flash'
       unit: 'kWh'
       min: 0
@@ -49,6 +35,58 @@ cards:
         div.gauge-a {
           background-color: #E0E0E0;  
         }
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities: 
+        - entity: sensor.dsmr_reading_electricity_currently_delivered_watt
+          name: Huidige verbruik
+          icon: mdi:flash
+    - type: custom:mini-graph-card
+      entities: 
+      - entity: sensor.dsmr_reading_electricity_currently_delivered
+        name: Recent elektriciteitsverbruik
+      hours_to_show: 24
+      points_per_hour: 6
+      hour24: true
+      show:
+        graph: bar
+      icon: mdi:flash
+      name: "Recent elektriciteitsverbruik"
+      group_by: hour
+    - type: horizontal-stack
+      cards:
+      - type: gauge
+        entity: sensor.dsmr_day_consumption_electricity1
+        name: Dagverbruik (Laag)
+        icon: 'mdi:flash'
+        unit: 'kWh'
+        min: 0
+        max: 25
+        severity:
+          green: 0
+          yellow: 10
+          red: 15
+        style: |
+          div.gauge-a {
+            background-color: #E0E0E0;  
+          }
+      - type: gauge
+        entity: sensor.dsmr_day_consumption_electricity2
+        name: Dagverbruik (Hoog)
+        icon: 'mdi:flash'
+        unit: 'kWh'
+        min: 0
+        max: 25
+        severity:
+          green: 0
+          yellow: 10
+          red: 15
+        style: |
+          div.gauge-a {
+            background-color: #E0E0E0;  
+          }
     # - type: picture-entity
     #   name: Elektriciteit dag
     #   entity: camera.elektricteit_grafana
@@ -57,13 +95,16 @@ cards:
     #     action: more-info
     #   show_name: false
     #   show_state: false
+
+  - type: vertical-stack
+    cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
         - title: Gas
     - type: gauge
-      entity: sensor.utilities_gas_usage
-      name: Dag verbruik
+      entity: sensor.dsmr_day_consumption_gas
+      name: Dagverbruik
       icon: 'mdi:flash'
       unit: 'm3'
       min: 0
@@ -75,13 +116,35 @@ cards:
       style: |
         div.gauge-a {
           background-color: #E0E0E0;
+        } 
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities: 
+        - entity: sensor.dsmr_consumption_gas_currently_delivered
+          name: Huidige verbruik
+    - type: custom:mini-graph-card
+      entities: 
+      - entity: sensor.dsmr_consumption_gas_currently_delivered
+        name: Recent gasverbruik  
+      hours_to_show: 24
+      points_per_hour: 1
+      hour24: true
+      show:
+        graph: bar
+      name: "Recent gasverbruik" 
+      group_by: hour
+      labels: false
+  - type: vertical-stack
+    cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
         - title: Water
     - type: gauge
       entity: sensor.utilities_water_usage
-      name: Dag verbruik
+      name: Dagverbruik
       icon: 'mdi:flash'
       unit: 'L'
       min: 0
@@ -94,3 +157,25 @@ cards:
         div.gauge-a {
           background-color: #E0E0E0;  
         }
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Totale dag kosten
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities: 
+        - entity: sensor.dsmr_day_consumption_electricity_cost_merged
+          name: Kosten elektriciteit
+        - entity: sensor.dsmr_day_consumption_gas_cost
+          name: Kosten gas
+        - entity: sensor.utilities_day_consumption_water_costs
+          name: Kosten water
+          icon: mdi:currency-eur
+        - type: divider
+        - entity: sensor.utilities_total_cost_day
+          name: Totale kosten dag
+          icon: mdi:currency-eur

@@ -159,13 +159,13 @@ script:
         data_template:
           entity_id: climate.rest_room_heating_mode
           preset_mode: "{{ preset }}"
-      - service: script.notify_prowl
-        data_template:
-          value1: "Toilet verwarming "
-          value2: "nieuwe status: "
-          value3: "{{mode}} {{preset}}"
-          who: "ralph"
-          prio: -2
+      # - service: script.notify_prowl
+      #   data_template:
+      #     value1: "Toilet verwarming "
+      #     value2: "nieuwe status: "
+      #     value3: "{{mode}} {{preset}}"
+      #     who: "ralph"
+      #     prio: -2
 
 ###############################################################################
 ##  Timers

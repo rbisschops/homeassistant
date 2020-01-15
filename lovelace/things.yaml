@@ -177,7 +177,12 @@ cards:
       show_header_toggle: false
       entities:
         - entity: input_boolean.domo_sunscreen
-        - entity: input_boolean.sunscreen_manual
+          name: Zonnescherm
+          icon: "mdi:white-balance-sunny"
+        - entity: input_boolean.sunscreen_manual 
+          name: Zonnescherm handbediening
+          icon: "mdi:white-balance-sunny"
+
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -215,7 +220,75 @@ cards:
       show_header_toggle: false
       entities:
         - sensor.mailbox
-
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: A/V apparatuur
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Harmony Hub
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: remote.bisschops
+          icon: mdi:remote
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: A/V apparatuur aan/uit
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: switch.tradfri_media_switch
+          icon: mdi:power
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Harmony activiteiten
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: switch.television
+          icon: mdi:checkbox-blank-circle
+        - entity: switch.smarttv
+          icon: mdi:checkbox-blank-circle
+        - entity: switch.netflix
+          icon: mdi:checkbox-blank-circle
+        - entity: switch.spotify
+          icon: mdi:checkbox-blank-circle
+        - entity: switch.mediaplayer
+          icon: mdi:checkbox-blank-circle
+        - entity: switch.appletv
+          icon: mdi:checkbox-blank-circle
+        - entity: switch.radio
+          icon: mdi:checkbox-blank-circle
+        - entity: switch.music
+          icon: mdi:checkbox-blank-circle
+        - entity: switch.poweroff
+          icon: mdi:checkbox-blank-circle
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Instellingen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_select.harmony_livingroom_new_status
+        - entity: input_select.harmony_livingroom_old_status
+        - entity: input_select.humax_new_status
+        - entity: input_select.humax_old_status
+        - entity: timer.media_center_delay
   # - type: vertical-stack
   #   cards:
   #   - type: entities

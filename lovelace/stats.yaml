@@ -14,6 +14,7 @@
 ## V0.4.1:  Changed UI layout
 ## V0.5.0:  Major UI changes based on Decluttering card
 ## V0.6.0:  Added MySensors Gateway
+## V0.7.0:  Added server monitoring
 
 title: Status
 icon: 'mdi:stethoscope'
@@ -24,8 +25,11 @@ cards:
       - type: custom:decluttering-card
         template: custom_markdown_card
         variables:
-          - title: Kritische netwerk componenten
-      - type: horizontal-stack
+          - title: Netwerk status
+      - type: custom:decluttering-card
+        template: custom_markdown_card_small
+        variables:
+          - title: Kritische netwerkcomponenten
         cards:
           - type: custom:decluttering-card
             template: stats_critical_small_icon
@@ -97,41 +101,8 @@ cards:
             color_type: blank-card
           - type: custom:button-card
             color_type: blank-card          
-
-  - type: vertical-stack
-    cards:
       - type: custom:decluttering-card
-        template: custom_markdown_card
-        variables:
-          - title: Internet
-      - type: horizontal-stack
-        cards:
-          - type: custom:mini-graph-card
-            entities: 
-            - sensor.speedtest_download 
-          - type: custom:mini-graph-card
-            entities: 
-            - sensor.speedtest_upload 
-      - type: horizontal-stack
-        cards:  
-          - type: glance
-            show_name: true
-            show_state: true
-            entities:
-              - entity: sensor.speedtest_ping
-                tap_action:
-                  action: none
-          - type: glance
-            show_name: true
-            show_state: true
-            entities:
-              - entity: sensor.uptime
-                tap_action:
-                  action: none 
-  - type: vertical-stack
-    cards:
-      - type: custom:decluttering-card
-        template: custom_markdown_card
+        template: custom_markdown_card_small
         variables:
           - title: Overige netwerk componenten
       - type: horizontal-stack
@@ -226,3 +197,170 @@ cards:
               - icon: tumble-dryer
           - type: custom:button-card
             color_type: blank-card
+  ## Added V0.7.0
+  - type: vertical-stack
+    cards:
+      - type: custom:decluttering-card
+        template: custom_markdown_card
+        variables:
+          - title: Server status
+      - type: custom:decluttering-card
+        template: custom_markdown_card_small
+        variables:
+          - title: Domoticz server
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.server_domoticz_cpu_temp
+            name: Temperatuur
+            icon: 'mdi:flash'
+            unit: '°C'
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 50
+              red: 65
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+          - type: gauge
+            entity: sensor.server_domoticz_cpu_usage
+            name: CPU gebruik
+            icon: 'mdi:flash'
+            unit: '%'
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 90
+              red: 95
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+          - type: gauge
+            entity: sensor.server_domoticz_memory_usage
+            name: Geheugen
+            icon: 'mdi:flash'
+            unit: '%'
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 80
+              red: 90
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+      - type: entities
+        show_state: false
+        show_name: false
+        show_header_toggle: false
+        entities: 
+          - entity: sensor.server_domoticz_hdd_boot
+            name: HDD boot partitie
+            icon: mdi:harddisk
+          - entity: sensor.server_domoticz_hdd
+            name: HDD data partitie
+            icon: mdi:harddisk
+          - entity: sensor.server_domoticz_process_usage
+            name: Proces geheugen gebruik
+            icon: mdi:memory
+      - type: custom:decluttering-card
+        template: custom_markdown_card_small
+        variables:
+          - title: Homeserver
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.server_homeserver_cpu_temp
+            name: Temperatuur
+            icon: 'mdi:flash'
+            unit: '°C'
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 50
+              red: 65
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+          - type: gauge
+            entity: sensor.server_homeserver_cpu_usage
+            name: CPU gebruik
+            icon: 'mdi:flash'
+            unit: '%'
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 90
+              red: 95
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+          - type: gauge
+            entity: sensor.server_homeserver_memory_usage
+            name: Geheugen
+            icon: 'mdi:flash'
+            unit: '%'
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 80
+              red: 90
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+      - type: entities
+        show_state: false
+        show_name: false
+        show_header_toggle: false
+        entities: 
+          - entity: sensor.server_homeserver_hdd_boot
+            name: HDD boot partitie
+            icon: mdi:harddisk
+          - entity: sensor.server_homeserver_hdd
+            name: HDD data partitie
+            icon: mdi:harddisk
+          - entity: sensor.server_homeserver_process_usage
+            name: Proces geheugen gebruik
+            icon: mdi:memory
+  - type: vertical-stack
+    cards:
+      - type: custom:decluttering-card
+        template: custom_markdown_card
+        variables:
+          - title: Internet
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities: 
+            - sensor.speedtest_download 
+          - type: custom:mini-graph-card
+            entities: 
+            - sensor.speedtest_upload 
+      - type: horizontal-stack
+        cards:  
+          - type: glance
+            show_name: true
+            show_state: true
+            entities:
+              - entity: sensor.speedtest_ping
+                tap_action:
+                  action: none
+          - type: glance
+            show_name: true
+            show_state: true
+            entities:
+              - entity: sensor.uptime
+                tap_action:
+                  action: none 

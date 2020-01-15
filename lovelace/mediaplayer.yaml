@@ -18,7 +18,14 @@ background: "#e3e3e3"
 cards:
   - type: vertical-stack
     cards:
-
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Afstandsbediening
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Activiteit 
 ## Selection part for media modes.
     ## Mode selection, first row 
     - type: horizontal-stack
@@ -115,6 +122,10 @@ cards:
             cards: 
               - type: custom:button-card
                 color_type: blank-card
+          - type: custom:decluttering-card
+            template: custom_markdown_card_small
+            variables:
+              - title: Bediening 
           ## Conditional buttons for television. 2nd row
           - type: horizontal-stack
             cards: 
@@ -459,6 +470,10 @@ cards:
             cards: 
               - type: custom:button-card
                 color_type: blank-card
+          - type: custom:decluttering-card
+            template: custom_markdown_card_small
+            variables:
+              - title: Bediening 
           ## Conditional buttons for Netflix. 2nd row
           - type: horizontal-stack
             cards: 
@@ -615,6 +630,10 @@ cards:
             cards: 
               - type: custom:button-card
                 color_type: blank-card
+          - type: custom:decluttering-card
+            template: custom_markdown_card_small
+            variables:
+              - title: Bediening 
           ## Conditional buttons for Spotify. 2nd row
           - type: horizontal-stack
             cards: 
@@ -771,6 +790,10 @@ cards:
             cards: 
               - type: custom:button-card
                 color_type: blank-card
+          - type: custom:decluttering-card
+            template: custom_markdown_card_small
+            variables:
+              - title: Bediening 
           ## Conditional buttons for Radio. 2nd row
           - type: horizontal-stack
             cards: 
@@ -926,40 +949,24 @@ cards:
 
   ## Additional selectors and information stack 
   ## (hidden for normal use)
+
   - type: vertical-stack
     cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Extra bediening
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Denon volume 
     - type: entities
       show_state: false
       show_name: false
       show_header_toggle: false
-      title: Media Center
       entities:
-        - type: section
-          label: Afstandsbediening
-        - entity: remote.bisschops
-        - type: section
-          label: Instellingen
-        - entity: input_select.harmony_livingroom_new_status
-        - entity: input_select.harmony_livingroom_old_status
-        - entity: input_select.humax_new_status
-        - entity: input_select.humax_old_status
-        - type: section
-          label: Homeassistant entities
-        - entity: switch.tradfri_media_switch
-        - entity: input_boolean.enable_media_buttons
-        - entity: timer.media_center_delay
-        - type: section
-          label: Schakelaars Harmony
-        - entity: switch.television
-        - entity: switch.smarttv
-        - entity: switch.netflix
-        - entity: switch.spotify
-        - entity: switch.mediaplayer
-        - entity: switch.appletv
-        - entity: switch.radio
-        - entity: switch.music
-        - entity: switch.poweroff
-
+        - entity: input_number.volume_setpoint
+        - entity: sensor.denon_volume
 
 # Experimental line to import from file. Not working yet
   #  - !include mediaplayer_modes.yaml

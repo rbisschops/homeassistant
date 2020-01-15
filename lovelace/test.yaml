@@ -69,24 +69,6 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
-        - title: Test Media
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Test Denon volume 
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - entity: input_number.volume_setpoint
-        - entity: sensor.denon_volume
-
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card
-      template: custom_markdown_card
-      variables:
         - title: Test schakelaars tuin
     - type: custom:decluttering-card
       template: custom_markdown_card_small
