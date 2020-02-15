@@ -25,6 +25,8 @@
 ## V0.8.3:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 ## V0.9.0:  Added hardware sensors for Domoticz server and homeserver
 ## V0.9.1:  Remove scripts for water meter, e and g meters, all in automation now
+## V0.10.0: Removed hide_entity form automations (deprecated HA V0.105)
+
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
@@ -66,7 +68,6 @@ automation:
   ## Publish a switch to Domoticz
   ## Obsolete since V0.8.0, remove after a while
   # - alias: Domoticz publish switch
-  #   hide_entity: false
   #   initial_state: "on"  
   #   trigger:     
   #     platform: state
@@ -91,7 +92,6 @@ automation:
   ## Added V0.8.1
   ## Publish christmas tree light switch to Domoticz
   - alias: "Domoticz publish - Kerstboom"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -112,7 +112,6 @@ automation:
   ## Added V0.8.0, updated 0.8.1 & 0.8.2
   ## Publish garden light switch to Domoticz
   - alias: "Domoticz publish - Tuinverlichting"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -131,7 +130,6 @@ automation:
             }|tojson }}
   ## Publish porch light switch to Domoticz
   - alias: "Domoticz publish - Buitenlamp"
-    hide_entity: false
     initial_state: "on"
     trigger:     
       platform: state
@@ -150,7 +148,6 @@ automation:
             }|tojson }}
   ## Publish hallway light switch to Domoticz
   - alias: "Domoticz publish - Halletje"
-    hide_entity: false
     initial_state: "on"
     trigger:     
       platform: state
@@ -169,7 +166,6 @@ automation:
             }|tojson }}
   ## Publish kitchen cabinets light switch to Domoticz
   - alias: "Domoticz publish - Hoge kasten"
-    hide_entity: false
     initial_state: "on"
     trigger:     
       platform: state
@@ -188,7 +184,6 @@ automation:
             }|tojson }}
   ## Publish bar light switch to Domoticz
   - alias: "Domoticz publish - Lampen bar"
-    hide_entity: false
     initial_state: "on"
     trigger:     
       platform: state
@@ -207,7 +202,6 @@ automation:
             }|tojson }}
   ## Publish water ornament switch to Domoticz
   - alias: "Domoticz publish - Waterbollen"
-    hide_entity: false
     initial_state: "on"
     trigger:     
       platform: state
@@ -226,7 +220,6 @@ automation:
             }|tojson }}
   ## Publish sunscreen switch to Domoticz
   - alias: "Domoticz publish - Zonnescherm"
-    hide_entity: false
     initial_state: "on"
     trigger:     
       platform: state
@@ -246,7 +239,6 @@ automation:
 
   ## Convert Domoticz Zigbee switch (type Light/Switch) to Hass 
   - alias: "Read domoticz Zigbee switch via MQTT"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: mqtt
@@ -264,7 +256,6 @@ automation:
 
   ## Convert Domoticz CoCo switch (type Lighting 2) to Hass 
   - alias: "Read domoticz CoCo switch via MQTT"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: mqtt
@@ -284,7 +275,6 @@ automation:
   ## Convert Domoticz Energy meters to Hass
   ## Elektra meter will sent svalue1, svalue2, svalue5
   - alias: "Domoticz Elektra waarden via MQTT"
-    hide_entity: false
     initial_state: "on"  
     trigger:
       - platform: mqtt
@@ -317,7 +307,6 @@ automation:
   ## Updated V0.9.1
   ## Gas meter will sent svalue1
   - alias: "Domoticz Gas waarden via MQTT"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: mqtt
@@ -346,7 +335,6 @@ automation:
   ## Updated V0.9.1
   ## Water meter will sent svalue1
   - alias: Domoticz Water waarden via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -375,7 +363,6 @@ automation:
   ## Added V0.9.0
   ## Domoticz server memory usage, will sent svalue1
   - alias: Domoticz geheugen gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -399,7 +386,6 @@ automation:
             }|tojson }}
   ## Domoticz server HDD-boot partition, will sent svalue1
   - alias: Domoticz HDD-boot partition gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -423,7 +409,6 @@ automation:
             }|tojson }}
   ## Domoticz server HDD partition, will sent svalue1
   - alias: Domoticz HDD partition gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -447,7 +432,6 @@ automation:
             }|tojson }}
   ## Domoticz server temperature, will sent svalue1
   - alias: Domoticz CPU temperature gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -471,7 +455,6 @@ automation:
             }|tojson }}
   ## Domoticz CPU usage, will sent svalue1
   - alias: Domoticz CPU usage partition gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -495,7 +478,6 @@ automation:
             }|tojson }}
   ## Domoticz process usage, will sent svalue1
   - alias: Domoticz process usage partition gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -519,7 +501,6 @@ automation:
             }|tojson }}
   ## Homeserver server memory usage, will sent svalue1
   - alias: Homeserver geheugen gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -543,7 +524,6 @@ automation:
             }|tojson }}
   ## Homeserver server HDD-boot partition, will sent svalue1
   - alias: Homeserver HDD-boot partition gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -567,7 +547,6 @@ automation:
             }|tojson }}
   ## Homeserver server HDD partition, will sent svalue1
   - alias: Homeserver HDD partition gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -591,7 +570,6 @@ automation:
             }|tojson }}
   ## Homeserver server temperature, will sent svalue1
   - alias: Homeserver CPU temperature gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -615,7 +593,6 @@ automation:
             }|tojson }}
   ## Homeserver CPU usage, will sent svalue1
   - alias: Homeserver CPU usage partition gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -639,7 +616,6 @@ automation:
             }|tojson }}
   ## Homeserver process usage, will sent svalue1
   - alias: Homeserver process usage partition gebruik via MQTT
-    hide_entity: false
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -668,8 +644,6 @@ automation:
 
   ## Publish bar lamps light switch to Domoticz with dim level
   # - alias: Domoticz publish - Lampen bar dim level
-  #   hide_entity: false
-  #   initial_state: "on"
   #   trigger:     
   #     platform: state
   #     entity_id:

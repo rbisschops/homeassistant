@@ -73,6 +73,7 @@ sensor:
     value_template: "{{ value_json.usage|float }}"
     json_attributes_topic: "home/server/homeserver/hdd"
     unit_of_measurement: "%"
+  ## Temp sensor not available on Homeserver 2 for now
   - platform: "mqtt"
     name: server_homeserver_cpu_temp
     state_topic: "home/server/homeserver/cpu_temp"

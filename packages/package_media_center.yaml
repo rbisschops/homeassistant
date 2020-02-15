@@ -17,6 +17,8 @@
 ## V0.4.0:  Changed delays in timers, rationalsed some scripts and automations
 ## V0.5.0:  Added automation for selecting radio television on Humax
 ## V0.6.0:  Added volume control for the Denon AVR
+## V0.7.0:  Changed WebOS (breaking change HA V0.104)
+##          Removed hide_entity form automations (deprecated HA V0.105)
 
 # remove input_select > humax_old_status
 
@@ -92,21 +94,34 @@ remote:
 
 ## Media players
 ##  LG television
+webostv:
+  host: !secret ip_lgtelevision
+  name: Living Room TV
+  # filename: webostv.conf
+  turn_on_action:
+    service: persistent_notification.create
+    data:
+      message: "Turn on action"
+  customize:
+    sources:
+      - Netflix
+      - Set-top Box
+      - Spotify Music - Luister gratis op LG TV
 media_player:
-  - platform: webostv
-    host: !secret ip_lgtelevision
-    name: Living Room TV
-    filename: webostv.conf
-    timeout: 5
-    turn_on_action:
-      service: persistent_notification.create
-      data:
-        message: "Turn on action"
-    customize:
-      sources:
-        - Netflix
-        - Set-top Box
-        - Spotify Music - Luister gratis op LG TV
+  # - platform: webostv
+  #   host: !secret ip_lgtelevision
+  #   name: Living Room TV
+  #   filename: webostv.conf
+  #   timeout: 5
+  #   turn_on_action:
+  #     service: persistent_notification.create
+  #     data:
+  #       message: "Turn on action"
+  #   customize:
+  #     sources:
+  #       - Netflix
+  #       - Set-top Box
+  #       - Spotify Music - Luister gratis op LG TV
   - platform: denonavr
     host: !secret ip_denonavr 
     name: Denon AVR
@@ -462,7 +477,6 @@ automation:
   ## Added V0.4.0
   ## Test min and max settings on media start timer
   - alias: "Valideer media start timer"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -482,7 +496,6 @@ automation:
   ## Added V0.4.0
   ## Test min and max settings on media wait timer
   - alias: "Valideer media wait timer"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -503,7 +516,6 @@ automation:
   ## Automation for Harmony mode selector inputs, 
   ## used for manual selection from lovelace interface
   - alias: "Media acties lovelace buttons"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -535,7 +547,6 @@ automation:
   ## Automation for Harmony mode selector from HA Bridge, 
   ## used for selection from HA Bridge (Alexa commands)
   - alias: "Media acties HA-Bridge"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -558,7 +569,6 @@ automation:
   ## Automation for Harmony mode selector from Harmony Hub, 
   ## used for selection from Harmony Hub
   - alias: "Media acties Harmony Hub"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -583,7 +593,6 @@ automation:
   ## Added V0.4.0
   ##  Continue script based on media_center_delay timer einde
   - alias: "Timer media center start einde"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: event
@@ -596,7 +605,6 @@ automation:
   ## Added V0.4.0
   ##  Automation to run action after media_center_wait timer ends
   - alias: "Timer media center wait einde"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: event
@@ -614,7 +622,6 @@ automation:
   ## Added V0.5.0
   ##  Automation to run action after tv radio timer ends
   - alias: "Timer tv-radio wait einde"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: event
@@ -636,7 +643,6 @@ automation:
   ## Test automation for testen Harmony hub commands
   ## remove after completion of media package
   - alias: "Test acties Harmony Hub"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state

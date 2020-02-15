@@ -27,7 +27,7 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
-        - title: Test schakelaars algemeen
+        - title: Algemeen
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -69,7 +69,7 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
-        - title: Test schakelaars tuin
+        - title: Tuin
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -86,7 +86,7 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
-        - title: Test schakelaars begane grond
+        - title: Begane grond
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -97,7 +97,6 @@ cards:
       show_header_toggle: false
       entities:
         - entity: switch.tradfri_high_cabinets_switch
-        - type: section
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -114,7 +113,7 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
-        - title: Test schakelaars uitbouw
+        - title: Uitbouw
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -145,7 +144,19 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
-        - title: Test schakelaars  1e verdieping
+        - title: 1e verdieping
+
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Lichtsensor kantoor
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: sensor.light_level_office
+
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -205,7 +216,7 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
-        - title: Test schakelaars  2e verdieping
+        - title: 2e verdieping
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:

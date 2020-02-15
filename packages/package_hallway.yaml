@@ -13,6 +13,7 @@
 ##          Added groups for hallway lights
 ## V0.4.1:  Changed states. into states("xx")
 ## V0.4.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
+## V0.5.0   Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -65,7 +66,6 @@ automation:
   ## Added V0.3.0
   ## Test min and max settings on long hallwaylight timer input 
   - alias: "Valideer halletje timer lang"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -86,7 +86,6 @@ automation:
   ## Added V0.3.0
   ## Test min and max settings on short hallwaylight timer input 
   - alias: "Valideer halletje timer kort"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -106,7 +105,6 @@ automation:
 
   ## Switch on hallway light when someone arrives home
   - alias: "Halletje aan bij thuiskomst"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -131,7 +129,6 @@ automation:
           duration: "00:{{ states('input_text.timer_minutes_hallwaylight_short')|int}}:00"
   ## Switch off hallway light based on timer
   - alias: "Halletje uit xx minuten na trigger"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: event
@@ -146,7 +143,6 @@ automation:
   ## Added V0.4.0
   ## Switch hallway light on and off
   - alias: "Verlichting halletje aan-uit"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state

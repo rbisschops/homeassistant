@@ -30,6 +30,7 @@ cards:
         template: custom_markdown_card_small
         variables:
           - title: Kritische netwerkcomponenten
+      - type: horizontal-stack
         cards:
           - type: custom:decluttering-card
             template: stats_critical_small_icon
@@ -60,17 +61,23 @@ cards:
           - type: custom:decluttering-card
             template: stats_critical_small_icon
             variables:
-              - sensor: domoticz_slave
-              - name: Domoticz (S)
+              - sensor: pihole
+              - name: PiHole
               - icon: desktop-tower
+          - type: custom:decluttering-card
+            template: stats_critical_small_icon
+            variables:
+              - sensor: dsmrreader_pi
+              - name: DSMR Reader
+              - icon: desktop-tower
+      - type: horizontal-stack
+        cards:    
           - type: custom:decluttering-card
             template: stats_critical_small_icon
             variables:
               - sensor: harmonyhub
               - name: Harmony Hub
               - icon: router-wireless
-      - type: horizontal-stack
-        cards:    
           - type: custom:decluttering-card
             template: stats_critical_small_icon
             variables:
@@ -83,14 +90,14 @@ cards:
               - sensor: ha_bridge
               - name: HA-Bridge
               - icon: desktop-tower
+      - type: horizontal-stack
+        cards:    
           - type: custom:decluttering-card
             template: stats_critical_small_icon
             variables:
               - sensor: mysensors_gateway
               - name: MySensors
               - icon: desktop-tower
-      - type: horizontal-stack
-        cards:    
           - type: custom:decluttering-card
             template: stats_critical_small_icon
             variables:
@@ -99,8 +106,6 @@ cards:
               - icon: microphone
           - type: custom:button-card
             color_type: blank-card
-          - type: custom:button-card
-            color_type: blank-card          
       - type: custom:decluttering-card
         template: custom_markdown_card_small
         variables:
@@ -275,21 +280,21 @@ cards:
           - title: Homeserver
       - type: horizontal-stack
         cards:
-          - type: gauge
-            entity: sensor.server_homeserver_cpu_temp
-            name: Temperatuur
-            icon: 'mdi:flash'
-            unit: '°C'
-            min: 0
-            max: 100
-            severity:
-              green: 0
-              yellow: 50
-              red: 65
-            style: |
-              div.gauge-a {
-                background-color: #E0E0E0;  
-              }
+          # - type: gauge
+          #   entity: sensor.server_homeserver_cpu_temp
+          #   name: Temperatuur
+          #   icon: 'mdi:flash'
+          #   unit: '°C'
+          #   min: 0
+          #   max: 100
+          #   severity:
+          #     green: 0
+          #     yellow: 50
+          #     red: 65
+          #   style: |
+          #     div.gauge-a {
+          #       background-color: #E0E0E0;  
+          #     }
           - type: gauge
             entity: sensor.server_homeserver_cpu_usage
             name: CPU gebruik
@@ -320,6 +325,8 @@ cards:
               div.gauge-a {
                 background-color: #E0E0E0;  
               }
+          - type: custom:button-card
+            color_type: blank-card
       - type: entities
         show_state: false
         show_name: false

@@ -17,7 +17,8 @@
 ## V1.5.0:  Updated presence sensors
 ## V1.6.0:  Changed everybody away badge to use everybody away instead of people home
 ## V1.6.1:  Added christmastree
-
+## V1.6.2:  Changed people home sensor
+## V1.6.3:  Made christmas tree conditionally visible
 ## Remarks:
 ## overlays for doors and other elements need to be on top in the code, otherwise
 ## the other controlable elements are not accessible anymore in the fontend!!
@@ -350,20 +351,24 @@ cards:
           width: 2.5%
 
       ## X-mastree
-      - type: image
-        entity: input_boolean.christmastree
-        tap_action:
-          action: toggle
-        image: /local/custom_icons/lightbulb48_on.png
-        state_image:
-          'on': /local/custom_icons/xmastree48_on.png
-          'off': /local/custom_icons/xmastree48_off.png 
-        style:
-          top: 29%
-          left: 9%
-          position: absolute
-          width: 2.5%
-
+      - type: conditional
+        conditions:
+          - entity: 'input_boolean.christmas_mode'
+            state: 'on'
+        elements:
+          - type: image
+            entity: input_boolean.christmastree
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/lightbulb48_on.png
+            state_image:
+              'on': /local/custom_icons/xmastree48_on.png
+              'off': /local/custom_icons/xmastree48_off.png 
+            style:
+              top: 29%
+              left: 9%
+              position: absolute
+              width: 2.5%
 
       ## Home states
       - type: image
@@ -395,15 +400,15 @@ cards:
           transform: translate(0%, -50%)
           width: 3%              
       ## People home/away badges
-      ## Updated V1.6.0 
+      ## Updated V1.6.2
       - type: image
-        entity: binary_sensor.everybody_away
+        entity: binary_sensor.people_home
         tap_action:
           action: none
         image: /local/custom_icons/people48_on.png
         state_image:
-          'on': /local/custom_icons/people48_off.png
-          'off': /local/custom_icons/people48_on.png 
+          'on': /local/custom_icons/people48_on.png
+          'off': /local/custom_icons/people48_off.png
         style:
           top: 7%
           left: 48%

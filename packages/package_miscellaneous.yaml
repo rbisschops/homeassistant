@@ -26,6 +26,8 @@
 ##          Updated all climate related scripts
 ## V0.13.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 ## V0.13.2:  Syntax error corrections
+## V0.14.0   Removed hide_entity form automations (deprecated HA V0.105)
+
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
@@ -129,7 +131,6 @@ automation:
   ## Automation for runnning the bed time script 
   ## Called by Alexa via HA Bridge
   - alias: "Bed mode ingeschakeld"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -143,7 +144,6 @@ automation:
   ## Automation for running the coming home script
   ## Called by the front door sensor
   - alias: "Coming home mode ingeschakeld"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -174,7 +174,6 @@ automation:
   ## Automation for runnning the leaving script
   ## Called by Alexa via HA Bridge
   - alias: "Leaving mode ingeschakeld"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -190,7 +189,6 @@ automation:
   ## Called from binary sensor Extended Away
   ## Note: Potentially replace binary_sensor.everybody_extended_away with a group
   - alias: "Extended away mode ingeschakeld"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -204,7 +202,6 @@ automation:
   ## Automation for running the sunset script
   ## Triggered based on sunset minus offset 
   - alias: "Zonsondergang mode ingeschakeld"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: sun
@@ -217,7 +214,6 @@ automation:
   ## Automation to run when the garbage bins need to go out for collection
   ## Tiggered by sensors based on Google calendar entries
   - alias: "Vuilnisbak aan de straat"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -383,7 +379,7 @@ script:
       - service: input_select.select_option
         data:
           entity_id: input_select.restroom_heating
-          option: 'Uitgeschakeld'
+          option: "Uitgeschakeld"
       - service: homeassistant.turn_on
         entity_id: input_boolean.holiday_mode
 

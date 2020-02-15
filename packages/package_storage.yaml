@@ -16,7 +16,8 @@
 ##          Added groups for porch light
 ## V0.5.1:  Changed states. into states("xx")
 ##          Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V0.6.0:  Added timer and spilt notification script in two parts due to script conflict (already running) 
+## V0.6.0:  Added timer and spilt notification script in two parts due to script conflict (already running)
+## V0.7.0   Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -101,7 +102,6 @@ automation:
   ## Added V0.4.0
   ## Test min and max settings on long porch light timer input 
   - alias: "Valideer buitenlamp timer lang"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -122,7 +122,6 @@ automation:
   ## Added V0.4.0
   ## Test min and max settings on short porch light timer input 
   - alias: "Valideer buitenlamp timer kort"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -143,7 +142,6 @@ automation:
   ## Switch on porch light when someone arrives home
   ## Upgraded to use advanced presense (V1.4.0)
   - alias: "Buitenlamp bij thuiskomst"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -171,7 +169,6 @@ automation:
 
   ## Switch off porchlight based on timer
   - alias: "Buitenlamp uit xx minuten na trigger"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: event
@@ -185,7 +182,6 @@ automation:
   ## Added V0.5.0
   ## Switch Bar lights on and off
   - alias: "Verlichting bar aan-uit"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -210,7 +206,6 @@ automation:
 
   ## Actions to perform on mailbox motion
   - alias: "Post ontvangen"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -243,7 +238,6 @@ automation:
       #     duration: "00:00:01"
 
   # - alias: "Post ontvangen ralph"
-  #   hide_entity: false
   #   initial_state: "on"
   #   trigger: 
   #     platform: event

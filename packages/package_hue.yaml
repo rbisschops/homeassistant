@@ -18,6 +18,8 @@
 ## V1.5.0:  Added manual control over custom Hue scenes (not using the Hue bridge)
 ## V1.6.0:  Changed code for a number of scripts and automations (simplifying code)
 ## V1.6.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
+## V1.7.0   Removed hide_entity form automations (deprecated HA V0.105)
+## V1.8.0:  Removed Hue filename (deprecated HA V0.104)
 
 ## Notes: Scenes are also stored in the Hue Bridge and can be
 ## edited with the Hue V1 and/or V2 App
@@ -35,7 +37,7 @@ homeassistant:
 hue:
   bridges:
     - host: !secret ip_hue_bridge
-      filename: phue_bridge.conf
+      # filename: phue_bridge.conf
       allow_unreachable: true
       allow_hue_groups: true
 
@@ -183,7 +185,6 @@ automation:
   ## Added V1.5.0
   ## Automation for selecting the Hue scenes form the UI
   - alias: "Scene verlichting woonkamer"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state

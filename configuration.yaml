@@ -52,6 +52,8 @@ google:
   client_secret: !secret google_secret
 
 ## Google assistant
+## Note: The api_key for manual installs is now deprecated and will be removed in 0.105. 
+## To correct this you will need to remove api_key from the configuration.yaml and switch to using service_account instead.
 # google_assistant:
 #  project_id: !secret ga_project_name
 #  api_key: !secret ga_api_key

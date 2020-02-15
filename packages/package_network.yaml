@@ -9,6 +9,7 @@
 ## V1.0.0:  Production version 1.0.0
 ## V1.1.0:  Added MySensors Gateway
 ## V1.1.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
+## V1.2.0   Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -32,7 +33,7 @@ homeassistant:
       icon: "mdi:nas"
     sensor.nc_domoticz_master:
       icon: "mdi:desktop-tower"
-    sensor.nc_domoticz_slave:
+    sensor.nc_pihole:
       icon: "mdi:desktop-tower"
     sensor.nc_mysensors_gateway:
       icon: "mdi:desktop-tower"
@@ -40,7 +41,7 @@ homeassistant:
       icon: "mdi:router-wireless"
     sensor.nc_harmonyhub:
       icon: "mdi:router-wireless"
-    sensor.nc_homeassistant_pi:
+    sensor.nc_dsmrreader_pi:
       icon: "mdi:desktop-tower"
     sensor.nc_hue_bridge:
       icon: "mdi:router-wireless"
@@ -109,8 +110,8 @@ sensor:
         entity_id:
           - device_tracker.raspberrypi
         value_template: "{{ 'on' if is_state('device_tracker.raspberrypi','home') else 'off' }}"
-      nc_domoticz_slave:
-        friendly_name: "Domoticz (slave)"
+      nc_pihole:
+        friendly_name: "PiHole"
         entity_id:
           - device_tracker.raspberrypi_2
         value_template: "{{ 'on' if is_state('device_tracker.raspberrypi_2','home') else 'off' }}"
@@ -123,17 +124,17 @@ sensor:
         friendly_name: "HA Bridge"  
         entity_id:
           - device_tracker.habridge
-        value_template: "{{ 'on' if is_state('device_tracker.habridge', 'home') else 'off' }}"  
+        value_template: "{{ 'on' if is_state('device_tracker.habridge', 'home') else 'off' }}"
       nc_harmonyhub:
         friendly_name: "Harmony Hub"
         entity_id:
           - device_tracker.harmonyhub
         value_template: "{{ 'on' if is_state('device_tracker.harmonyhub', 'home') else 'off' }}"
-      nc_homeassistant_pi:
+      nc_dsmrreader_pi:
         friendly_name: "Home Assistant (RPi)"
         entity_id:
-          - device_tracker.hassio
-        value_template: "{{ 'on' if is_state('device_tracker.hassio', 'home') else 'off' }}"
+          - device_tracker.dsmrreader
+        value_template: "{{ 'on' if is_state('device_tracker.dsmrreader', 'home') else 'off' }}"
       nc_hue_bridge:
         friendly_name: "Philips Hue Bridge"
         entity_id:
@@ -270,9 +271,9 @@ group:
       - sensor.nc_diskstation
       - sensor.nc_voip
       - sensor.nc_domoticz_master
-      - sensor.nc_domoticz_slave
+      - sensor.nc_pihole
       - sensor.nc_mysensors_gateway
-      - sensor.nc_homeassistant_pi
+      - sensor.nc_dsmrreader_pi
       - sensor.nc_harmonyhub
       - sensor.nc_hue_bridge
       - sensor.nc_xiaomi_bridge
@@ -285,7 +286,6 @@ group:
 automation:
   ## Sent alert when a critical network device is offline
   - alias: "Netwerk alarm aan"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -293,7 +293,7 @@ automation:
         - sensor.nc_diskstation
         - sensor.nc_voip
         - sensor.nc_domoticz_master
-        - sensor.nc_domoticz_slave
+        - sensor.ncpihole
         - sensor.nc_mysensors_gateway
         - sensor.nc_harmonyhub
         - sensor.nc_hue_bridge
@@ -311,7 +311,6 @@ automation:
           prio: 2
   ## Sent alert when a critical network device is online
   - alias: "Netwerk alarm uit"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -319,9 +318,9 @@ automation:
         - sensor.nc_diskstation
         - sensor.nc_voip
         - sensor.nc_domoticz_master
-        - sensor.nc_domoticz_slave
+        - sensor.nc_pihole
         - sensor.nc_mysensors_gateway
-        # - sensor.nc_homeassistant_pi
+        # - sensor.nc_dsmrreader_pi
         - sensor.nc_harmonyhub
         - sensor.nc_hue_bridge
         # - sensor.nc_xiaomi_bridge

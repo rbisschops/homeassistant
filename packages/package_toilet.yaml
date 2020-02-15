@@ -16,12 +16,15 @@
 ## V0.5.0:  Updated code for climate settings with HA version 0.103
 ## V0.5.1:  Removed commented code lines
 ## V0.5.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
+## V0.6.0:  Updated heating automations to also consider extended away as a condition
+## V0.7.0:  Removed hide_entity form automations (deprecated HA V0.105)
+## V0.8.0:  Removed platform Climate (removed from HA)
 
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-climate:
-  - platform: zwave
+# climate:
+#   - platform: zwave
 
 ###############################################################################
 ##  Entities
@@ -46,10 +49,9 @@ input_select:
 ##  Automations
 ###############################################################################
 automation:
-  ## Updated V0.4.0, V0.5.0
+  ## Updated V0.4.0, V0.5.0, V0.6.0
   ## Switch restroom heating based on time for work days
   - alias: "Toilet verwarming aan volgens schema - werkdagen"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: time
@@ -62,6 +64,9 @@ automation:
           state: "on"
         - condition: state
           entity_id: binary_sensor.everybody_away
+          state: "off"
+        - condition: state
+          entity_id: binary_sensor.everybody_extended_away
           state: "off"
         - condition: state
           entity_id: input_boolean.holiday_mode
@@ -83,10 +88,9 @@ automation:
           who: "ralph"
           prio: -2
 
-  ## Updated V0.4.0, V0.5.0
+  ## Updated V0.4.0, V0.5.0, V0.6.0
   ## Switch restroom heating based on time for non-working days
   - alias: "Toilet verwarming aan volgens schema - niet werkdagen"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: time
@@ -123,7 +127,6 @@ automation:
   ## Added V0.4.0, V0.5.0
   ## Switch toilet heating based on input selector state
   - alias: "Toilet verwarming mode selectie"
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -137,6 +140,7 @@ automation:
             {{ 'off' if is_state('input_select.restroom_heating','Uitgeschakeld') else 'heat' }}
           preset: >
             {{ 'Energy Heat' if is_state('input_select.restroom_heating','Spaarstand') else 'none' }}
+
 ###############################################################################
 ##  Templates
 ###############################################################################

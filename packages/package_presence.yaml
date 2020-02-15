@@ -21,6 +21,7 @@
 ## V1.8.1: Removed initial state from input_select
 ## V1.8.2:  Changed states. into states("xx")
 ##          Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
+## V1.9.0:  Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -218,7 +219,6 @@ group:
 automation:
   ## Added automations for advanced presence states (V1.3.0)
   - alias: Mark person as just arrived
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -253,7 +253,6 @@ automation:
               {{ 'Home' if is_state('input_select.kimberly_status_dropdown','Just Left') else 'Just Arrived' }}
             {% endif %}
   - alias: Mark person as home
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -298,7 +297,6 @@ automation:
             {% endif %}
           option: Home
   - alias: Mark person as just left
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -326,7 +324,6 @@ automation:
             {% endif %}
           option: Just Left
   - alias: Mark person as away
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -359,7 +356,6 @@ automation:
             {% endif %}
           option: Away
   - alias: Mark person as extended away
-    hide_entity: false
     initial_state: "on"
     trigger:
       - platform: state
@@ -395,7 +391,6 @@ automation:
   ## Updated V1.6.0
   ## Test if everybody is away and perform actions
   - alias: "Iedereen is weg"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
@@ -416,7 +411,6 @@ automation:
   ## Test if anybody comes home and perform actions
   ## Upgraded to use advanced presense (V1.4.0)
   - alias: "Er komt iemand thuis"
-    hide_entity: false
     initial_state: "on"
     trigger:
       platform: state
