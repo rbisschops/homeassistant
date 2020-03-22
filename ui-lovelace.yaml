@@ -15,22 +15,33 @@
 ##          Updated mini graph card V0.3.0 > V0.8.2
 ##          Updated Custom compact header V1.1.0 > V1.4.9
 ##          decluttering card = upto date, card-mod will be updated after migration to V0.10x
+## V0.6.0:  Added autoamations tab
+## V0.7.0:  Update custom cards
+##          compact-custom-header.js?V1.4.9 >> custom-header.js?V1.3.2
+##          decluttering-card.js?v=0.2.0 >> decluttering-card.js?v=0.3.0
+##          mini-graph-card-bundle.js?v=0.8.2 >> mini-graph-card-bundle.js?v=0.9.3
+##          card-mod.js?v=0.2 >> card-mod.js?v=13
+## v0.8.0:  Removed resources. Moved to configuration.yaml (as per HA 0.107.x) 
 
 ###############################################################################
 ##  Additional resources used
 ###############################################################################
 
-resources:
-  - url: /local/custom_cards/mini-graph-card-bundle.js?v=0.8.2
-    type: module
-  - url: /local/custom_cards/button-card.js?v=3.0.0
-    type: module
-  - url: /local/custom_cards/compact-custom-header/compact-custom-header.js?V1.4.9
-    type: module
-  - url: /local/custom_cards/decluttering-card.js?v=0.2.0
-    type: module
-  - url: /local/custom_cards/card-mod.js?v=0.2
-    type: module
+# resources:
+#   ## Updated V0.7.0
+#   - url: /local/custom_cards/mini-graph-card-bundle.js?v=0.9.3
+#     type: module
+#   - url: /local/custom_cards/button-card.js?v=3.0.0
+#     type: module
+#   ## Updated V0.7.0
+#   - url: /local/custom_cards/custom-header/custom-header.js?V1.3.2
+#     type: module
+#   ## Updated V0.7.0
+#   - url: /local/custom_cards/decluttering-card.js?v=0.3.0
+#     type: module
+#   ## Updated V0.7.0    
+#   - url: /local/custom_cards/card-mod.js?v=13
+#     type: module
 
 ###############################################################################
 ##  Custom compact header settings
@@ -484,4 +495,5 @@ views:
   - !include lovelace/stats.yaml
   - !include lovelace/things.yaml
   - !include lovelace/settings.yaml
+  - !include lovelace/automations.yaml
   - !include lovelace/test.yaml

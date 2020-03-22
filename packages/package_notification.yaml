@@ -195,7 +195,7 @@ script:
       - service: notify.telegram_ralph
         data_template:
           title: "{{ title }}"
-          message: "Hi Ralph. {{ value1 }} {{ value2 }} {{ value3 }}"
+          message: "Hi Ralph. {{ value1 }}{{ value2 }}{{ value3 }}"
 
   notify_telegram_anneke:
     alias: Telegram notifications Anneke
@@ -208,7 +208,7 @@ script:
       - service: notify.telegram_anneke
         data_template:
           title: "{{ title }}"
-          message: "Hi Anneke. {{ value1 }} {{ value2 }} {{ value3 }}"
+          message: "Hi Anneke. {{ value1 }}{{ value2 }}{{ value3 }}"
 
   notify_telegram_ralph_and_anneke:
     alias: Telegram notifications ralph en Anneke
@@ -221,13 +221,13 @@ script:
       - service: notify.telegram_anneke
         data_template:
           title: "{{ title }}"
-          message: "Hi Anneke. {{ value1 }} {{ value2 }} {{ value3 }}"
+          message: "Hi Anneke. {{ value1 }}{{ value2 }}{{ value3 }}"
       - delay: 
           milliseconds: 100
       - service: notify.telegram_ralph
         data_template:
           title: "{{ title }}"
-          message: "Hi Ralph. {{ value1 }} {{ value2 }} {{ value3 }}"
+          message: "Hi Ralph. {{ value1 }}{{ value2 }}{{ value3 }}"
 ###############################################################################
 ##  Timers
 ###############################################################################

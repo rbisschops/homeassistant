@@ -18,7 +18,7 @@
 ## V0.6.0:  Added template sensors for waste bin schedular 
 ## V0.7.0:  Added comments and some code cleaning
 ## V0.8.0:  Remover Domo Virtual heating from script
-## V0.9.0:  Added leaving autoamtions and scripts
+## V0.9.0:  Added leaving automations and scripts
 ## V0.10.0: Added extended away script
 ## V0.11.0: Added hallway and porchlight on with timer to leaving script
 ## V0.12.0: Added sunset automations and scripts

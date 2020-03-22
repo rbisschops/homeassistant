@@ -1,6 +1,6 @@
 ## Package file for Home Assistant, used for the toilet
 ## Type: Home Assistant yaml file
-## Date: 11-11-2019
+## Date: 21-02-2020
 ## Author: R.Bisschops
 ##
 ## Changelog:
@@ -18,7 +18,8 @@
 ## V0.5.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 ## V0.6.0:  Updated heating automations to also consider extended away as a condition
 ## V0.7.0:  Removed hide_entity form automations (deprecated HA V0.105)
-## V0.8.0:  Removed platform Climate (removed from HA)
+## V0.8.0:  Removed platform Climate (removed from Home Automation V10X.0)
+## V0.8.1:  Commented prowl notifications 
 
 ###############################################################################
 ##  Homeassistant settings
@@ -80,13 +81,13 @@ automation:
         data_template:
           entity_id: input_select.restroom_heating
           option: "Verwarmen"
-      - service: script.notify_prowl
-        data_template:
-          value1: "Toilet verwarming geschakeld. "
-          value2: "Trigger = Werkdag "
-          value3: " "
-          who: "ralph"
-          prio: -2
+      # - service: script.notify_prowl
+      #   data_template:
+      #     value1: "Toilet verwarming geschakeld. "
+      #     value2: "Trigger = Werkdag "
+      #     value3: " "
+      #     who: "ralph"
+      #     prio: -2
 
   ## Updated V0.4.0, V0.5.0, V0.6.0
   ## Switch restroom heating based on time for non-working days
@@ -116,13 +117,13 @@ automation:
         data_template:
           entity_id: input_select.restroom_heating
           option: "Verwarmen"
-      - service: script.notify_prowl
-        data_template:
-          value1: "Toilet verwarming geschakeld. "
-          value2: "Trigger = Niet-werkdag "
-          value3: "{{ states.input_select.restroom_heating.state }}"
-          who: "ralph"
-          prio: -2
+      # - service: script.notify_prowl
+      #   data_template:
+      #     value1: "Toilet verwarming geschakeld. "
+      #     value2: "Trigger = Niet-werkdag "
+      #     value3: "{{ states.input_select.restroom_heating.state }}"
+      #     who: "ralph"
+      #     prio: -2
 
   ## Added V0.4.0, V0.5.0
   ## Switch toilet heating based on input selector state

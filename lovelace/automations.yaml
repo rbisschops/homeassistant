@@ -1,0 +1,134 @@
+## Lovelace-UI file for Home Assistant, Automations view
+## Type: Home Assistant yaml file
+## Date: 19-02-2029
+## Author: R.Bisschops
+##
+## Changelog:
+## V0.1.0:  First version
+
+title: Automations
+icon: "mdi:file-code-outline"
+background: "#e3e3e3"
+cards:
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Alarm automatiseringen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+      - entity: automation.koelkast_alarm
+        name: Koelkast alarm
+      - entity: automation.alarm_gereset
+        name: Alarm gereset
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Aanwezigheidsautomatiseringen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+      - entity: automation.buitenlamp_bij_thuiskomst
+        name: Buitenlamp bij thuiskomst
+      - entity: automation.er_komt_iemand_thuis
+        name: Er komt iemand thuis
+      - entity: automation.iedereen_is_weg  
+        name: Iedereen is weg
+      - entity: automation.mark_person_as_just_arrived
+        name: Markeer persoon als net thuis
+      - entity: automation.mark_person_as_home
+        name: Markeer persoon als thuis
+      - entity: automation.mark_person_as_just_left
+        name: Markeer persoon als net weg
+      - entity: automation.mark_person_as_away
+        name: Markeer persoon als weg
+      - entity: automation.mark_person_as_extended_away
+        name: Markeer persoon als langer weg
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Tuin automatiseringen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+      - entity: automation.tuinverlichting_bij_thuiskomst
+        name: Tuinverlichting aan bij thuiskomst
+      - entity: automation.tuinverlichting_bij_zonsondergang 
+        name: Tuinverlichting aan bij zonsondergang
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Toilet automatiseringen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+      - entity: automation.toilet_verwarming_aan_volgens_schema_niet_werkdagen
+        name: Toilet verwarming aan volgens schema - niet werkdagen
+      - entity: automation.toilet_verwarming_aan_volgens_schema_werkdagen
+        name: Toilet verwarming aan volgens schema - werkdagen
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Domoticz automatiseringen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+      - entity: automation.domoticz_publish_buitenlamp
+        name: Publiceer buitenlamp naar Domoticz
+      - entity: automation.domoticz_publish_halletje
+        name: Publiceer verl. halletje naar Domoticz
+      - entity: automation.domoticz_publish_hoge_kasten
+        name: Publiceer verl.hoge kasten naar Domoticz
+      - entity: automation.domoticz_publish_kerstboom
+        name: Publiceer kerstboom naar Domoticz
+      - entity: automation.domoticz_publish_lampen_bar
+        name: Publiceer lampen bar naar Domoticz
+      - entity: automation.domoticz_publish_tuinverlichting
+        name: Publiceer tuinverlichting naar Domoticz
+      - entity: automation.domoticz_publish_waterbollen
+        name: Publiceer waterbollen naar Domoticz
+      - entity: automation.domoticz_publish_zonnescherm
+        name: Publiceer zonnescherm naar Domoticz
+      - entity: automation.read_domoticz_zigbee_switch_via_mqtt
+        name: Lees zigbee schakelaar
+      - entity: automation.read_domoticz_coco_switch_via_mqtt
+        name: Lees klik-aan-klik-uit schakelaar
+      - entity: automation.domoticz_elektra_waarden_via_mqtt
+        name: Lees waarden elektriciteit
+      - entity: automation.domoticz_gas_waarden_via_mqtt
+        name: Lees waarden gas
+      - entity: automation.domoticz_water_waarden_via_mqtt
+        name: Lees waarden water
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Berging automatiseringen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+      - entity: automation.post_ontvangen
+        name: Melding post ontvangen

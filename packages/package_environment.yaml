@@ -31,6 +31,9 @@
 ##          Syntax error corrections
 ##          Removed commented "json_attributes_topic:xxx" lines
 ## V1.10.0  Removed hide_entity form automations (deprecated HA V0.105)
+## V1.11.0  Fixed error humidity alerts
+##          Added test sensor humidity
+##          Added alert for low battery Aqara sensors
 
 ###############################################################################
 ##  Homeassistant settings
@@ -89,8 +92,10 @@ homeassistant:
     sensor.room_humidity_heating_room:
       friendly_name: Rel. Vochtigheid Ketel ruimte 
     sensor.room_humidity_hallway_floor2:
-      friendly_name: Rel. Vochtigheid Overloop 2e verdieping      
-    ## Pressure sensors
+      friendly_name: Rel. Vochtigheid Overloop 2e verdieping 
+    ## Added V1.11.0
+    sensor.room_humidity_test:
+      friendly_name: Rel. Vochtigheid Test
     sensor.room_pressure_office:
       friendly_name: Luchtdruk Kantoor
     sensor.room_pressure_livingroom:
@@ -128,14 +133,16 @@ homeassistant:
     sensor.room_storage_battery:
       friendly_name:  Berging (batterij)  
     sensor.room_heating_room_battery:
-      friendly_name:  Ketel ruimte (batterij)
+      friendly_name: Ketel ruimte (batterij)
     sensor.room_hallway_floor2_battery:
-      friendly_name:  Overloop 2e verdieping (batterij)
+      friendly_name: Overloop 2e verdieping (batterij)
     ## Added V1.9.0:
     sensor.light_level_office_battery:
-      friendly_name:  Licht level kantoor (batterij)
-
-    ## Link quility sensors
+      friendly_name: Licht level kantoor (batterij)
+    ## Added V1.11.0:
+    sensor.room_test_battery:
+      friendly_name: Test sensor (batterij)
+    ## Link quality sensors
     sensor.room_office_linkquality:
       friendly_name:  Kantoor (link quality)  
     sensor.room_livingroom_linkquality:
@@ -412,6 +419,13 @@ sensor:
     unit_of_measurement: "%"
     device_class: "humidity"
     value_template: "{{ value_json.humidity }}"
+  ## Added in V1.11.0:
+  - platform: "mqtt"
+    name: room_humidity_test
+    state_topic: "test/test_sensor_env"
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
 
   ## Inhouse environment sensors - pressure
   - platform: "mqtt"
@@ -563,6 +577,13 @@ sensor:
     name:  light_level_office_battery
     state_topic: "zigbee2mqtt/light_sensor"
     availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Added V1.11.0:
+  - platform: "mqtt"
+    name: room_test_battery
+    state_topic: "test/test_sensor_env"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
@@ -780,13 +801,14 @@ automation:
               "w_usage": w_usage
             }|tojson }}
 
-  ## Added V1.8.0
+  ## Added V1.8.0, Updated V1.11.0
   - alias: "Luchtvochtigheid woonkamer te laag"
     initial_state: "on" 
     trigger:
       platform: numeric_state
       entity_id: sensor.room_humidity_livingroom
-      below: 40.00
+      # entity_id: sensor.room_humidity_test
+      below: 40
     condition:
       condition: and
       conditions:
@@ -794,7 +816,7 @@ automation:
           before: "22:30:00"
           after: "08:00:00"
         - condition: state
-          entity_id: sensor.everybody_away
+          entity_id: binary_sensor.everybody_away
           state: "off"
     action:
       - service_template: >
@@ -807,14 +829,17 @@ automation:
           {% endif %}
         data_template:
           value1: "De luchtvochtigheid in de woonkamer is momenteel te laag ("
-          value2: "{{ states('sensor.room_humidity_livingroom')|round(0) }}"
+          value2: "{{ states('sensor.room_humidity_livingroom')|round(2) }}"
           value3: "%)."
+
+  ## Added V1.8.0, Updated V1.11.0
   - alias: "Luchtvochtigheid woonkamer te hoog"
     initial_state: "on" 
     trigger:
       platform: numeric_state
       entity_id: sensor.room_humidity_livingroom
-      above: 60.00
+      # entity_id: sensor.room_humidity_test
+      above: 60
     condition:
       condition: and
       conditions:
@@ -822,7 +847,7 @@ automation:
           before: "22:30:00"
           after: "08:00:00"  
         - condition: state
-          entity_id: sensor.everybody_away
+          entity_id: binary_sensor.everybody_away
           state: "off"
     action:
       - service_template: >
@@ -835,8 +860,35 @@ automation:
           {% endif %}
         data_template:
           value1: "De luchtvochtigheid in de woonkamer is momenteel te hoog ("
-          value2: "{{ states('sensor.room_humidity_livingroom')|round(0) }}"
+          value2: "{{ states('sensor.room_humidity_livingroom')|round(2) }}"
           value3: "%)."
+
+## Added V1.11.0
+  - alias: "Aqara Batterij niveau laag"
+    initial_state: "on" 
+    trigger:
+      platform: numeric_state
+      entity_id:
+      - sensor.room_humidity_livingroom
+      - sensor.room_office_battery
+      - sensor.room_livingroom_battery
+      - sensor.room_bathroom_battery
+      - sensor.room_bedroom_battery
+      - sensor.room_kim_battery
+      - sensor.room_toilet_battery
+      - sensor.room_storage_battery
+      - sensor.room_heating_room_battery
+      - sensor.room_hallway_floor2_battery
+      - sensor.room_test_battery
+      below: 25
+    action:
+      - service: script.notify_prowl
+        data_template:
+          value1: "Hi Ralph, De "
+          value2: "{{ trigger.to_state.attributes.friendly_name }} "
+          value3: "is laag. Tijd om te vervangen"
+          who: "ralph"
+          prio: -2
 
 ###############################################################################
 ##  Templates

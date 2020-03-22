@@ -17,6 +17,7 @@
 ## V0.10.0: Added MySensors Gateway
 ## V0.10.1: Added logger
 ## V0.10.2: Changed logger to warning for MySensors
+## V0.11.0: Moved lovelace resources from ui-lovelace.yaml (required as of HA 107.x) 
 
 homeassistant:
   name: !secret ha_name
@@ -98,6 +99,21 @@ logger:
 ## Lovelace UI
 lovelace:
   mode: yaml
+  ## V0.11.0 Added lovelace resources from ui-=lovelace
+  ## Additional resources used
+  resources:
+  - url: /local/custom_cards/mini-graph-card-bundle.js?v=0.9.3
+    type: module
+  ## Updated V0.11.0
+  - url: /local/custom_cards/button-card.js?v=3.2.3
+    type: module
+  - url: /local/custom_cards/custom-header/custom-header.js?V1.3.2
+    type: module
+  ## Updated V0.11.0
+  - url: /local/custom_cards/decluttering-card.js?v=0.4.3
+    type: module
+  - url: /local/custom_cards/card-mod.js?v=13
+    type: module
 
 ## Enables a map showing the location of tracked devices
 map:

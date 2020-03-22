@@ -8,6 +8,8 @@
 ## V1.0.0:  Production versionn
 ## V1.0.1:  Code cleaning
 ## V1.0.2:  Commented university zone
+## V1.1.0:  Added offices
+##          Removed university
 
 ###############################################################################
 ##                              Homeassistant settings
@@ -17,33 +19,52 @@ homeassistant:
   customize:
     zone.home:
       friendly_name: Thuis
-    zone.office:
-      friendly_name: Kantoor
-    # zone.university:
-    #   friendly_name: Universiteit
+    zone.cgi_rotterdam:
+      friendly_name: CGI Rotterdam
+    zone.cgi_maastricht:
+      friendly_name: CGI Maastricht
+    zone.cgi_eindhoven:
+      friendly_name: CGI Eindhoven
+    zone.cgi_arnhem:
+      friendly_name: CGI Arnhem
+    zone.cgi_groningen:
+      friendly_name: CGI Groningen
 
 ###############################################################################
 ##                              Entities
 ###############################################################################
 zone:
   ## Override for the default home zone
-  - name: Home
+  - name: home
     latitude: !secret latitude_home
     longitude: !secret longitude_home
     radius: 70
     icon: mdi:home
-    
-  - name: Office
-    latitude: !secret latitude_office
-    longitude: !secret longitude_office
-    radius: 100
-    icon: mdi:domain
-
-  # - name: University
-  #   latitude: !secret latitude_university
-  #   longitude: !secret longitude_university
-  #   radius: 300
-  #   icon: mdi:school
+  - name: CGI Rotterdam
+    latitude: !secret latitude_cgi_rotterdam
+    longitude: !secret longitude_cgi_rotterdam
+    radius: 65
+    icon: mdi:office-building
+  - name: CGI Maastricht
+    latitude: !secret latitude_cgi_maastricht
+    longitude: !secret longitude_cgi_maastricht
+    radius: 70
+    icon: mdi:office-building
+  - name: cgi_eindhoven
+    latitude: !secret latitude_cgi_eindhoven
+    longitude: !secret longitude_cgi_eindhoven
+    radius: 70
+    icon: mdi:office-building
+  - name: cgi_arnhem
+    latitude: !secret latitude_cgi_arnhem
+    longitude: !secret longitude_cgi_arnhem
+    radius: 70
+    icon: mdi:office-building
+  - name: cgi_groningen
+    latitude: !secret latitude_cgi_groningen
+    longitude: !secret longitude_cgi_groningen
+    radius: 70
+    icon: mdi:office-building
 
 ###############################################################################
 ##                               Groups

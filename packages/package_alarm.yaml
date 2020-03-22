@@ -1,7 +1,7 @@
 ## Package file for Home Assistant, used for all alarm sensors and
 ## associated automations and scripts
 ## Type: Home Assistant yaml file
-## Date: 09-11-2019
+## Date: 26-02-2020
 ## Author: R.Bisschops
 ##
 ## Changelog:
@@ -18,6 +18,7 @@
 ## V1.3.1:  Changed states. into states("xx")
 ## V1.3.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 ## V1.4.0   Removed hide_entity form automations (deprecated HA V0.105)
+## V1.4.1  Bugfix refrigerator door sensor battery & linkquality
 
 ###############################################################################
 ##  Homeassistant settings
@@ -179,7 +180,7 @@ sensor:
   ## Refridgerator door battery status monitoring sensor
   - platform: "mqtt"
     name: aqara_refrigerator_door_battery
-    state_topic: "zigbee2mqtt/zigbee2mqtt/aqara_refrigerator_door"
+    state_topic: "zigbee2mqtt/aqara_refrigerator_door"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
@@ -188,7 +189,7 @@ sensor:
   ## Refridgerator door link quality status monitoring sensor
   - platform: "mqtt"
     name: aqara_refrigerator_door_linkquality
-    state_topic: "zigbee2mqtt/zigbee2mqtt/aqara_refrigerator_door"
+    state_topic: "zigbee2mqtt/aqara_refrigerator_door"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"

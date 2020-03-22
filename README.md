@@ -1,4 +1,4 @@
-Last update: December 30th, 2019
+Last update: March 22nd, 2020
 
 ![](https://img.shields.io/badge/Home%20Assistant-0.103.5-blue.svg)
 ![](https://img.shields.io/github/last-commit/rbisschops/homeassistant.svg)
@@ -28,31 +28,31 @@ Here's my [Home Assistant](https://home-assistant.io/) configuration. I have ins
 * [Home Assistant](https://home-assistant.io/), home automation solution running as HASS.io version.
 
 Home assistant add-ons:
-* [Mosquitto](https://mosquitto.org/), my favourite MQTT Broker. Used for exchanging data between a lot of applications and from the outside world (through the reverse proxy).
-* [ESPHome](https://esphome.io/), for connecting all kinds of sensors to Home Assistant. Intend to add a lot of ESP32 based sensors with this (for example for Bluetooth devices)
+* [ESPHome](https://esphome.io/), used for connecting all kinds of sensors to Home Assistant. Intend to add a lot of ESP32 based sensors with this (for example for Bluetooth devices)
 * [Node-RED](https://nodered.org), flow based programming, an intuitive addition to both Home Assistant and Domoticz (or any other home automation system).
 
 Stand alone containers:
+* [Mosquitto](https://mosquitto.org/), my favourite MQTT Broker. Used for exchanging data between a lot of applications and from the outside world (through the reverse proxy).
 * [Zigbee2MQTT](https://koenkk.github.io/zigbee2mqtt/), great development for getting rid of most of the proprietary bridges. I use it for all my ZigBee devices except for Hue.
 * [InfluxDB](https://www.influxdata.com/), a time series database. Installed, tested but not used yet.
 * [Grafana](https://grafana.com/), analytics and monitoring. Installed, tested but not used yet.
 * [Traefik](https://traefik.io/), reverse proxy for secure access from the outside world.
 * [Unifi Controller](https://www.ui.com/), for managing my Ubiquiti Access points.
 * [Portainer](https://www.portainer.io/), makes managing my Docker containers easy.
-
-Some application are still running on the old laptop server. I will move everything to the server PC. Docker and hass.io will make this simple.
+* [Domoticz](https://www.domoticz.com/), running as a legacy solution for collecting the data of the MySensors watermeter.
 
 Standalone solutions
 A number of solutions have their own hardware, mostly raspberry Pi's:
-* [Domoticz](https://www.domoticz.com/), running on two Raspberry Pi’s in master/slave configuration. The master will retire when everything is migrated to Home Assistant (mainly the RFXtrx and the CoCo hardware). The slave will stay as it is logging the smart meter data.
+* [Domoticz](https://www.domoticz.com/), running on a Raspberry Pi. This Domoticz instance will retire when everything is migrated to Home Assistant (mainly the RFXtrx and the CoCo hardware).
 * [HA Bridge](https://www.bwssystems.com/#), running an emulated Hue bridge. I use it for connecting my Amazon Alexa Echo-dot to Home Assistant.
 * [MySensors gateway](https://www.mysensors.org/), The gateway for the MySensors devices around the house. Running on a Raspberry Pi.
+* [DSMR Reader](https://dsmr-reader.readthedocs.io/nl/v3/), Application for monitoring the energy usage in the use. Connects to Homeassistant for displaying the daily usage.
 
 # [Home Assistant](#home-assistant)
 
 Home Assistant and Domoticz are running in parallel at the moment. I spent quite some time to get the two working together. Home Assistant is the main home automation application.
 
-**I regularly update my configuration files as my Home server is still heavily under development.**
+**I regularly update my configuration files as my Home server is still under development.**
 
 ## Home Assistant setup
 
@@ -62,9 +62,9 @@ After looking at a ton of configurations and playing around with them I decided 
 For example package_notification contains the applied notification components (Prowl, Telegram and Pushsafer currently), the associated entities, automations and scripts. Most scripts can be  used by other packages that require  notifications to be sent.
 
 ### Lovelace UI
-I moved to Lovelace as the UI already some time ago. [Isabella Gross Alström](https://github.com/isabellaalstrom) has a wonderful UI that is one of the sources of inspiration for me.
-I use a growing number of custom cards and helpers in my Lovelace. I will do some write up on these later but here are the ones I use now.
-* [compact-custom-header](https://github.com/maykar/compact-custom-header), card by Ryan Meek (maykar) for customizing the header of your UI. 
+Like all by now run Lovelace as the UI.
+I use a number of custom cards and helpers in my Lovelace. I will do some write up on these later but here are the ones I use now.
+* [compact-custom-header](https://github.com/maykar/custom-header), card by Ryan Meek (maykar) for customizing the header of your UI.
 * [decluttering-card](https://github.com/custom-cards/decluttering-card), card by Jérôme W (RomRider). This card significantly reduces the number of lines in your Lovelace configuration. Helps structure your code.
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card), nice graphs of your data can be created with this card. Good work delivered by Karl Kihlström (kalkih).
 * [button-card](https://github.com/custom-cards/button-card), customize your buttons with this card. Started by Alexandre Garcia this card now has many active contributors.
@@ -81,13 +81,13 @@ When things are progressing I will upload some screenshots of my UI.
   * [Fibaro smoke sensors](https://www.fibaro.com/en/) The best looking smoke detectors on the market (IMHO).
 
 * Zigbee:
-  * [Xiaomi Aqara sensors](https://www.aliexpress.com) I use motion sensors, door/window sensors, temp/hum/pressure sensors, vibration sensors, a magic cube (nice gadget!) and some buttons. All sensors are connected to Home Assistant (through Zigbee2mqtt)
+  * [Xiaomi Aqara sensors](https://www.aliexpress.com) I use motion sensors, door/window sensors, temp/hum/pressure sensors, vibration sensors, light sensors, a magic cube (nice gadget!) and some buttons. All sensors are connected to Home Assistant (through Zigbee2mqtt)
   * [Philips Hue](https://www2.meethue.com) Philips Hue bulbs used in the house. Operated through the Hue Bridge. The ambiance (colour) is controlled form Home Assistant where I decided to go for profiles instead of scenes.
   * [IKEA Trådfri](https://www.ikea.com) Cheap ZigBee compatible smart home devices. Currently I use Wireless control outlets for the more critical switches (replacement of Click-On-Click-Off units) and a repeater. I'm not convinced with the quality and the performance.  All entities are connected to Home Assistant (through Zigbee2mqtt)
   * The Aqara bridge is retired. 
 
 * MySensors platform:
-  * [MySensors](https://www.mysensors.org/) The MySensors platform offers a strong solution for developing highly customized sensors and actors. I run a Raspberry Pi as gateway and use NRF24 radio modules. I have developed a [custom water meter sensor](https://www.openhardware.io/view/15/Itron-Aquadis-watermeter-sensor-V10) to read my dumb water meter values. Currently still connected to Domoticz since all my history is logged there as well.
+  * [MySensors](https://www.mysensors.org/) The MySensors platform offers a solution for developing highly customized sensors and actors. I run a Raspberry Pi as gateway and use NRF24 radio modules. I have developed a [custom water meter sensor](https://www.openhardware.io/view/15/Itron-Aquadis-watermeter-sensor-V10) to read my dumb water meter values. Connected to Domoticz since all my history is logged there as well. Planning to replace this with a ESP based solution.
 
 * MQTT:
   * [OwnTracks](https://home-assistant.io/components/device_tracker.owntracks/) Presence detection is an important part of the home automation. OwnTracks is used for Geolocation over MQTT.
@@ -111,11 +111,9 @@ When things are progressing I will upload some screenshots of my UI.
 # [Things planned](#things-planned)
 
 Some projects I have planned:
-* MySensors:
-  * Water meter sensor version 2.0
-  * Light sensor to support better sunscreen control based on ESP32
-  * Presence sensors for the garbage binds based on ESP32 with Bluetooth beacons
-  * Water temperature sensors for monitoring and tuning the heating system (aka zone based heating system)
+* Water meter sensor version 3.0 beade on ESP32
+* Presence sensors for the garbage binds based on ESP32 with Bluetooth beacons
+* Water temperature sensors for monitoring and tuning the heating system (aka zone based heating system)
 * Add camera's for home security
 * Add motion sensors and automations to switch on lights for orientation at night time
 
