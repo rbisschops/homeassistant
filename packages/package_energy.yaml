@@ -1,0 +1,186 @@
+## Package file for Home Assistant, used for energy monitoring
+## Type: Home Assistant yaml file
+## Date: 24-03-2020
+## Author: R.Bisschops
+##
+## Changelog:
+## V0.1.0:  First version
+##          Split of from package environment
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+
+homeassistant:
+  customize:
+    ## Utilities sensors
+    sensor.utilities_electricity:
+      friendly_name: Elektriciteits meters
+    sensor.utilities_gas:
+      friendly_name: Gas meter
+    sensor.utilitises_water:
+      friendly_name: Water meter
+    sensor.dsmr_reading_electricity_currently_delivered_watt:
+      friendly_name: Huidig verbruik
+
+###############################################################################
+#  Entities
+###############################################################################
+
+input_number:
+  water_tariff:
+    name: Tarief water (EUR/m3)
+    initial: 0.927
+    min: 0
+    max: 2
+
+sensor:
+  - platform: template
+    sensors:
+      dsmr_reading_electricity_currently_delivered_watt:
+        value_template: "{{ states('sensor.dsmr_reading_electricity_currently_delivered')|float * 1000 }}"
+        unit_of_measurement: "W"
+      utilities_day_consumption_water_costs:
+        value_template: "{{(states('sensor.utilities_water_usage')|float /1000 * states('input_number.water_tariff')|float)|round(2) }}"
+        unit_of_measurement: "€"
+      utilities_total_cost_day:
+        value_template: "{{ (states('sensor.dsmr_day_consumption_total_cost')|float + states('sensor.utilities_day_consumption_water_costs')|float)|round(2) }}"
+        unit_of_measurement: "€"
+
+  ## DSMR reader integration
+  - platform: dsmr_reader
+
+  ## Utilities sensor water
+  - platform: "mqtt"
+    name: utilities_water
+    state_topic: "home/meter/water"
+    value_template: "{{ value_json.device }}"
+    json_attributes_topic: "home/meter/water"
+
+  ## Utilities sensors
+  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
+  - platform: "mqtt"
+    name: utilities_electricity
+    state_topic: "home/meter/electricity"
+    value_template: "{{ value_json.device }}"
+    json_attributes_topic: "home/meter/electricity"
+  - platform: "mqtt"
+    name: utilities_gas
+    state_topic: "home/meter/gas"
+    value_template: "{{ value_json.device }}"
+    json_attributes_topic: "home/meter/gas"
+  - platform: "mqtt"
+    name: utilities_reference
+    state_topic: "home/meter/reference"
+    value_template: "{{ value_json.device }}"
+    json_attributes_topic: "home/meter/reference"
+
+  - platform: template
+    sensors:
+  ## Utilities sensors
+  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
+      utilities_electricity_current_usage:
+        value_template: "{% set value = state_attr('sensor.utilities_electricity','current_usage') %} {{ value }}"
+        unit_of_measurement: "W"
+      utilities_electricity_low_usage:
+        value_template: >-
+          {% set previous = state_attr('sensor.utilities_reference','e_usage_low')|float %}
+          {% set value = state_attr('sensor.utilities_electricity','usage_low')|float %}
+          {% set value = ((value-previous)/1000)|round(3, 'common') %}
+          {{ value }}
+        unit_of_measurement: "kWh"
+      utilities_electricity_high_usage:
+        value_template: >-
+          {% set previous = state_attr('sensor.utilities_reference','e_usage_high')|float %}
+          {% set value = state_attr('sensor.utilities_electricity','usage_high')|float %}
+          {% set value = ((value-previous)/1000)|round(3, 'common') %}
+          {{ value }}
+        unit_of_measurement: "kWh"
+      utilities_electricity_usage: 
+        value_template: >-
+          {% set previous1 = state_attr('sensor.utilities_reference','e_usage_high')|float %}
+          {% set value1 = state_attr('sensor.utilities_electricity','usage_high')|float %}
+          {% set previous2 = state_attr('sensor.utilities_reference','e_usage_low')|float %}
+          {% set value2 = state_attr('sensor.utilities_electricity','usage_low')|float %}
+          {% set value = (((value1-previous1)+(value2-previous2))/1000)|round(3, 'common') %}
+          {{ value }}
+        unit_of_measurement: "kWh"
+      utilities_gas_usage:
+        value_template: >-
+          {% set previous = state_attr('sensor.utilities_reference','g_usage')|float %}
+          {% set value = state_attr('sensor.utilities_gas','usage')|float %}
+          {% set value = ((value-previous)/1000)|round(3, 'common') %}
+          {{ value }}
+        unit_of_measurement: "m3"
+      utilities_water_usage:
+        value_template: >-
+          {% set previous = state_attr('sensor.utilities_reference','w_usage')|float %}
+          {% set value = state_attr('sensor.utilities_water','usage')|float %}
+          {% set value = (value-previous)|round %}
+          {{ value }}
+        unit_of_measurement: "L"
+
+## Code for testing is not working yet. maybe remove later
+  # - platform: command_line
+  #   name: "Elektricteit Grafana"
+  #   command: "curl -s -H 'Authorization: Bearer eyJrIjoiVFdVWjVJcDZSUnBNajhXVFljb1drWmNCVnFUME9wYk4iLCJuIjoiSG9tZWFzc2lzdGFudCIsImlkIjoxfQ==' 'http://192.168.0.217:3000/render/d-solo/p7Aaxdyik/dashboard?refresh=10s&orgId=1&panelId=2&from=now-24h&to=now&width=1000&height=500&tz=Europe%2FAmsterdam'  > downloads/electricity.png"
+  #   scan_interval: 3000
+
+## Camera used for displaying electricity usage graphs
+camera:
+  # - platform: local_file
+  #   name: grafana_electricity
+  #   file_path: downloads/electricity.png 
+  # - platform: generic
+  #   name: "Elektricteit Grafana"
+  #   still_image_url: 'http://192.168.0.217:3000/render/d-solo/p7Aaxdyik/dashboard?refresh=10s&orgId=1&panelId=2&from=now-24h&to=now&width=1000&height=500&tz=Europe%2FAmsterdam'
+  #   username: !secret grafana_user
+  #   password: !secret grafana_pass
+
+###############################################################################
+##  Groups
+###############################################################################
+
+group:
+
+###############################################################################
+##  Automations
+###############################################################################
+automation:
+  ## Automation for storing the nightly values (00:00) for reference. Reference is used for daily usage graphs 
+  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
+  - alias: "update utilities referentie waarden"
+    initial_state: "on" 
+    trigger:
+      platform: time
+      at: "00:00:00"
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "home/meter/reference"
+          retain: true
+          payload_template: >-
+            {% set e_usage_low = state_attr('sensor.utilities_electricity','usage_low')|float %}
+            {% set e_usage_high = state_attr('sensor.utilities_electricity','usage_high')|float %}
+            {% set g_usage = state_attr('sensor.utilities_gas','usage')|float %}
+            {% set w_usage = state_attr('sensor.utilities_water','usage')|float %}
+            {{ {
+              "e_usage_low": e_usage_low,
+              "e_usage_high": e_usage_high,
+              "g_usage": g_usage,
+              "w_usage": w_usage
+            }|tojson }}
+
+###############################################################################
+##  Templates
+###############################################################################
+
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+
+###############################################################################
+##  Timers
+###############################################################################

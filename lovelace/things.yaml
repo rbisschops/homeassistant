@@ -318,7 +318,7 @@ cards:
         - entity: sensor.room_livingroom_battery
           name: Omgevingscondities woonkamer
         - entity: sensor.fibaro_hallway_101_smoke_sensor_battery_level
-          name: Brandmelder overerloop
+          name: Brandmelder overloop
         - entity: sensor.room_office_battery
           name: Omgevingscondities kantoor
         - entity: sensor.light_level_office_battery

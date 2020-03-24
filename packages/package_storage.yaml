@@ -18,6 +18,7 @@
 ##          Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 ## V0.6.0:  Added timer and spilt notification script in two parts due to script conflict (already running)
 ## V0.7.0   Removed hide_entity form automations (deprecated HA V0.105)
+## V0.8.0   Moved battery sensors to package_batteries.yaml
 
 ###############################################################################
 ##  Homeassistant settings
@@ -69,13 +70,6 @@ sensor:
     availability_topic: "zigbee2mqtt/bridge/state"
     icon: "mdi:gesture-double-tap"
     value_template: "{{ value_json }}"
-  - platform: "mqtt"
-    name: mailbox_battery
-    state_topic: "zigbee2mqtt/aqara_mailbox"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
     name: mailbox_linkquality
     state_topic: "zigbee2mqtt/aqara_mailbox"

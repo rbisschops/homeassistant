@@ -34,6 +34,10 @@
 ## V1.11.0  Fixed error humidity alerts
 ##          Added test sensor humidity
 ##          Added alert for low battery Aqara sensors
+## V1.12.0  Added extra humidity alert
+## V1.13.0  Changed humidity alert automations to avoid multiple alerts around trigger points
+##          Split file, energy is now separated package (package_energy.yaml)
+##                      battry monitoring is now seperate package (package_batteries.yaml)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -44,17 +48,6 @@ homeassistant:
     ## outdoor environment
     sun.sun:
       friendly_name: Dag/Nacht
-
-    ## Utilities sensors
-    sensor.utilities_electricity:
-      friendly_name: Elektriciteits meters
-    sensor.utilities_gas:
-      friendly_name: Gas meter
-    sensor.utilitises_water:
-      friendly_name: Water meter
-    ## Added V1.7.0:
-    sensor.dsmr_reading_electricity_currently_delivered_watt:
-      friendly_name: Huidig verbruik
     ## Temperature sensors
     sensor.room_temp_office:
       friendly_name: Temperatuur Kantoor
@@ -93,9 +86,9 @@ homeassistant:
       friendly_name: Rel. Vochtigheid Ketel ruimte 
     sensor.room_humidity_hallway_floor2:
       friendly_name: Rel. Vochtigheid Overloop 2e verdieping 
-    ## Added V1.11.0
     sensor.room_humidity_test:
       friendly_name: Rel. Vochtigheid Test
+    ## Pressure sensors
     sensor.room_pressure_office:
       friendly_name: Luchtdruk Kantoor
     sensor.room_pressure_livingroom:
@@ -114,34 +107,8 @@ homeassistant:
       friendly_name: Luchtdruk Ketel ruimte
     sensor.room_pressure_hallway_floor2:
       friendly_name: Luchtdruk Overloop 2e verdieping
-    ## Added V1.9.0:
     sensor.light_level_office:
       friendly_name: Licht level kantoor
-    ## Battery level sensors
-    sensor.room_office_battery:
-      friendly_name:  Kantoor (batterij)  
-    sensor.room_livingroom_battery:
-      friendly_name:  Woonkamer (batterij) 
-    sensor.room_bathroom_battery:
-      friendly_name:  Badkamer (batterij)
-    sensor.room_bedroom_battery:
-      friendly_name:  Slaapkamer (batterij)
-    sensor.room_kim_battery:
-      friendly_name:  kamer Kim (batterij)
-    sensor.room_toilet_battery:
-      friendly_name:  Toilet (batterij)
-    sensor.room_storage_battery:
-      friendly_name:  Berging (batterij)  
-    sensor.room_heating_room_battery:
-      friendly_name: Ketel ruimte (batterij)
-    sensor.room_hallway_floor2_battery:
-      friendly_name: Overloop 2e verdieping (batterij)
-    ## Added V1.9.0:
-    sensor.light_level_office_battery:
-      friendly_name: Licht level kantoor (batterij)
-    ## Added V1.11.0:
-    sensor.room_test_battery:
-      friendly_name: Test sensor (batterij)
     ## Link quality sensors
     sensor.room_office_linkquality:
       friendly_name:  Kantoor (link quality)  
@@ -161,19 +128,30 @@ homeassistant:
       friendly_name:  Ketel ruimte (link quality)
     sensor.room_hallway_floor2_linkquality:
       friendly_name:  Overloop 2e verdieping (link quality)
-    ## Added V1.9.0:
     sensor.light_level_office_linkquality:
       friendly_name:  Licht level kantoor (link quality)
+
 ###############################################################################
 #  Entities
 ###############################################################################
 
-input_number:
-  water_tariff:
-    name: Tarief water (EUR/m3)
-    initial: 0.927
-    min: 0
-    max: 2
+input_select:
+  room_humidity_livingroom_state:
+    name: Luchtvochtigheid Woonkamer status
+    options: 
+      - Te laag
+      - Laag
+      - Normaal
+      - Hoog
+      - Te hoog
+  room_humidity_test_state:
+    name: Luchtvochtigheid Test status
+    options: 
+      - Te laag
+      - Laag
+      - Normaal
+      - Hoog
+      - Te hoog
 
 sensor:
   ## SUNRISE/SUNSET SENSORS
@@ -191,95 +169,6 @@ sensor:
   - platform: season
     type: astronomical
 
-  - platform: template
-    sensors:
-      ## Added V1.7.0:
-      dsmr_reading_electricity_currently_delivered_watt:
-        value_template: "{{ states('sensor.dsmr_reading_electricity_currently_delivered')|float * 1000 }}"
-        unit_of_measurement: "W"
-      
-      ## Added V1.8.0:
-      utilities_day_consumption_water_costs:
-        value_template: "{{(states('sensor.utilities_water_usage')|float /1000 * states('input_number.water_tariff')|float)|round(2) }}"
-        unit_of_measurement: "€"
-      utilities_total_cost_day:
-        value_template: "{{ (states('sensor.dsmr_day_consumption_total_cost')|float + states('sensor.utilities_day_consumption_water_costs')|float)|round(2) }}"
-        unit_of_measurement: "€"
-
-  ## Added V1.7.0:
-  ## DSMR reader integration
-  - platform: dsmr_reader
-
-  ## Utilities sensor water
-  - platform: "mqtt"
-    name: utilities_water
-    state_topic: "home/meter/water"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/meter/water"
-
-  ## Utilities sensors
-  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
-  - platform: "mqtt"
-    name: utilities_electricity
-    state_topic: "home/meter/electricity"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/meter/electricity"
-  - platform: "mqtt"
-    name: utilities_gas
-    state_topic: "home/meter/gas"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/meter/gas"
-  - platform: "mqtt"
-    name: utilities_reference
-    state_topic: "home/meter/reference"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/meter/reference"
-
-  - platform: template
-    sensors:
-  ## Utilities sensors
-  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
-      utilities_electricity_current_usage:
-        value_template: "{% set value = state_attr('sensor.utilities_electricity','current_usage') %} {{ value }}"
-        unit_of_measurement: "W"
-      utilities_electricity_low_usage:
-        value_template: >-
-          {% set previous = state_attr('sensor.utilities_reference','e_usage_low')|float %}
-          {% set value = state_attr('sensor.utilities_electricity','usage_low')|float %}
-          {% set value = ((value-previous)/1000)|round(3, 'common') %}
-          {{ value }}
-        unit_of_measurement: "kWh"
-      utilities_electricity_high_usage:
-        value_template: >-
-          {% set previous = state_attr('sensor.utilities_reference','e_usage_high')|float %}
-          {% set value = state_attr('sensor.utilities_electricity','usage_high')|float %}
-          {% set value = ((value-previous)/1000)|round(3, 'common') %}
-          {{ value }}
-        unit_of_measurement: "kWh"
-      utilities_electricity_usage: 
-        value_template: >-
-          {% set previous1 = state_attr('sensor.utilities_reference','e_usage_high')|float %}
-          {% set value1 = state_attr('sensor.utilities_electricity','usage_high')|float %}
-          {% set previous2 = state_attr('sensor.utilities_reference','e_usage_low')|float %}
-          {% set value2 = state_attr('sensor.utilities_electricity','usage_low')|float %}
-          {% set value = (((value1-previous1)+(value2-previous2))/1000)|round(3, 'common') %}
-          {{ value }}
-        unit_of_measurement: "kWh"
-      utilities_gas_usage:
-        value_template: >-
-          {% set previous = state_attr('sensor.utilities_reference','g_usage')|float %}
-          {% set value = state_attr('sensor.utilities_gas','usage')|float %}
-          {% set value = ((value-previous)/1000)|round(3, 'common') %}
-          {{ value }}
-        unit_of_measurement: "m3"
-      utilities_water_usage:
-        value_template: >-
-          {% set previous = state_attr('sensor.utilities_reference','w_usage')|float %}
-          {% set value = state_attr('sensor.utilities_water','usage')|float %}
-          {% set value = (value-previous)|round %}
-          {{ value }}
-        unit_of_measurement: "L"
-
   ## Inhouse environment sensors - temperature
   - platform: "mqtt"
     name: room_temp_office
@@ -288,7 +177,6 @@ sensor:
     unit_of_measurement: "°C"
     device_class: "temperature"
     value_template: "{{ value_json.temperature }}"
-  ## Added in V1.2.0:
   - platform: "mqtt"
     name: room_temp_bathroom
     state_topic: "zigbee2mqtt/aqara_bathroom_env"
@@ -303,7 +191,6 @@ sensor:
     unit_of_measurement: "°C"
     device_class: "temperature"
     value_template: "{{ value_json.temperature }}"
-  ## Added in V1.2.1:
   - platform: "mqtt"
     name: room_temp_kim
     state_topic: "zigbee2mqtt/aqara_kim_env"
@@ -311,7 +198,6 @@ sensor:
     unit_of_measurement: "°C"
     device_class: "temperature"
     value_template: "{{ value_json.temperature }}"
-  ## Added in V1.2.3:
   - platform: "mqtt"
     name: room_temp_livingroom
     state_topic: "zigbee2mqtt/aqara_livingroom_env"
@@ -333,7 +219,6 @@ sensor:
     unit_of_measurement: "°C"
     device_class: "temperature"
     value_template: "{{ value_json.temperature }}"
-  ## Added in V1.3.2:
   - platform: "mqtt"
     name: room_temp_heating_room
     state_topic: "zigbee2mqtt/aqara_heating_room_env"
@@ -341,7 +226,6 @@ sensor:
     unit_of_measurement: "°C"
     device_class: "temperature"
     value_template: "{{ value_json.temperature }}"
-  ## Added in V1.4.3:
   - platform: "mqtt"
     name: room_temp_hallway_floor2
     state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
@@ -358,7 +242,6 @@ sensor:
     unit_of_measurement: "%"
     device_class: "humidity"
     value_template: "{{ value_json.humidity }}"
-  ## Added in V1.2.0:
   - platform: "mqtt"
     name: room_humidity_bathroom
     state_topic: "zigbee2mqtt/aqara_bathroom_env"
@@ -373,7 +256,6 @@ sensor:
     unit_of_measurement: "%"
     device_class: "humidity"
     value_template: "{{ value_json.humidity }}"
-  ## Added in V1.2.1:
   - platform: "mqtt"
     name: room_humidity_kim
     state_topic: "zigbee2mqtt/aqara_kim_env"
@@ -381,7 +263,6 @@ sensor:
     unit_of_measurement: "%"
     device_class: "humidity"
     value_template: "{{ value_json.humidity }}"
-  ## Added in V1.2.3:
   - platform: "mqtt"
     name: room_humidity_livingroom
     state_topic: "zigbee2mqtt/aqara_livingroom_env"
@@ -403,7 +284,6 @@ sensor:
     unit_of_measurement: "%"
     device_class: "humidity"
     value_template: "{{ value_json.humidity }}"
-  ## Added in V1.3.2:
   - platform: "mqtt"
     name: room_humidity_heating_room
     state_topic: "zigbee2mqtt/aqara_heating_room_env"
@@ -411,7 +291,6 @@ sensor:
     unit_of_measurement: "%"
     device_class: "humidity"
     value_template: "{{ value_json.humidity }}"
-  ## Added in V1.4.3:
   - platform: "mqtt"
     name: room_humidity_hallway_floor2
     state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
@@ -419,7 +298,6 @@ sensor:
     unit_of_measurement: "%"
     device_class: "humidity"
     value_template: "{{ value_json.humidity }}"
-  ## Added in V1.11.0:
   - platform: "mqtt"
     name: room_humidity_test
     state_topic: "test/test_sensor_env"
@@ -435,7 +313,6 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
-  ## Added in V1.2.0:
   - platform: "mqtt"
     name: room_pressure_bathroom
     state_topic: "zigbee2mqtt/aqara_bathroom_env"
@@ -450,7 +327,6 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
-  ## Added in V1.2.1:
   - platform: "mqtt"
     name: room_pressure_kim
     state_topic: "zigbee2mqtt/aqara_kim_env"
@@ -458,7 +334,6 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
-  ## Added in V1.2.3:
   - platform: "mqtt"
     name: room_pressure_livingroom
     state_topic: "zigbee2mqtt/aqara_livingroom_env"
@@ -480,7 +355,6 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
-  ## Added in V1.3.2:
   - platform: "mqtt"
     name: room_pressure_heating_room
     state_topic: "zigbee2mqtt/aqara_heating_room_env"
@@ -488,7 +362,6 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
-  ## Added in V1.4.3:
   - platform: "mqtt"
     name: room_pressure_hallway_floor2
     state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
@@ -497,7 +370,6 @@ sensor:
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
 
-  ## Added in V1.9.0:
   ## Inhouse environment sensors - light level
   - platform: "mqtt"
     name: light_level_office
@@ -507,88 +379,6 @@ sensor:
     device_class: "illuminance"
     value_template: "{{ value_json.illuminance }}"
 
-  ## Added in V1.6.0:
-  ## Inhouse environment sensors - battery
-  - platform: "mqtt"
-    name: room_office_battery
-    state_topic: "zigbee2mqtt/aqara_office_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  - platform: "mqtt"
-    name: room_bathroom_battery
-    state_topic: "zigbee2mqtt/aqara_bathroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  - platform: "mqtt"
-    name: room_bedroom_battery
-    state_topic: "zigbee2mqtt/aqara_bedroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  - platform: "mqtt"
-    name: room_kim_battery
-    state_topic: "zigbee2mqtt/aqara_kim_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  - platform: "mqtt"
-    name: room_livingroom_battery
-    state_topic: "zigbee2mqtt/aqara_livingroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  - platform: "mqtt"
-    name: room_toilet_battery
-    state_topic: "zigbee2mqtt/aqara_toilet_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  - platform: "mqtt"
-    name: room_storage_battery
-    state_topic: "zigbee2mqtt/aqara_storage_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  - platform: "mqtt"
-    name: room_heating_room_battery
-    state_topic: "zigbee2mqtt/aqara_heating_room_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  - platform: "mqtt"
-    name: room_hallway_floor2_battery
-    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  ## Added in V1.9.0:
-  - platform: "mqtt"
-    name:  light_level_office_battery
-    state_topic: "zigbee2mqtt/light_sensor"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-  ## Added V1.11.0:
-  - platform: "mqtt"
-    name: room_test_battery
-    state_topic: "test/test_sensor_env"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-
-  ## Added in V1.6.0:
   ## Inhouse environment sensors - link quality
   - platform: "mqtt"
     name: room_office_linkquality
@@ -644,7 +434,6 @@ sensor:
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
-  ## Added in V1.9.0:
   - platform: "mqtt"
     name: light_level_office_linkquality
     state_topic: "zigbee2mqtt/light_sensor"
@@ -652,35 +441,17 @@ sensor:
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
 
-## Code for testing is not working yet. maybe remove later
-  # - platform: command_line
-  #   name: "Elektricteit Grafana"
-  #   command: "curl -s -H 'Authorization: Bearer eyJrIjoiVFdVWjVJcDZSUnBNajhXVFljb1drWmNCVnFUME9wYk4iLCJuIjoiSG9tZWFzc2lzdGFudCIsImlkIjoxfQ==' 'http://192.168.0.217:3000/render/d-solo/p7Aaxdyik/dashboard?refresh=10s&orgId=1&panelId=2&from=now-24h&to=now&width=1000&height=500&tz=Europe%2FAmsterdam'  > downloads/electricity.png"
-  #   scan_interval: 3000
-
-## Camera used for displaying electricity usage graphs
-camera:
-  # - platform: local_file
-  #   name: grafana_electricity
-  #   file_path: downloads/electricity.png 
-  # - platform: generic
-  #   name: "Elektricteit Grafana"
-  #   still_image_url: 'http://192.168.0.217:3000/render/d-solo/p7Aaxdyik/dashboard?refresh=10s&orgId=1&panelId=2&from=now-24h&to=now&width=1000&height=500&tz=Europe%2FAmsterdam'
-  #   username: !secret grafana_user
-  #   password: !secret grafana_pass
-
-
 ###############################################################################
 ##  Groups
 ###############################################################################
 
 group:
-  ## Environment
+  ## Environment >> Not used
   environment:
     name: Omgeving
     entities:
       - sun.sun
-  ## Temperature sensors
+  ## Temperature sensors >> Not used
   temperture_sensors:
     name: Temperatuur
     entities:
@@ -694,7 +465,7 @@ group:
       - sensor.room_temp_heating_room
       - sensor.room_temp_hallway_floor2
 
-  ## Humidity sensors
+  ## Humidity sensors >> Not used
   humidity_sensors:
     name: Relatieve vochtigheid
     entities:
@@ -707,7 +478,7 @@ group:
       - sensor.room_humidity_storage
       - sensor.room_humidity_heating_room
       - sensor.room_humidity_hallway_floor2
-  ## Pressure sensors
+  ## Pressure sensors >> Not used
   pressure_sensors:
     name: Luchtdruk
     entities:
@@ -722,53 +493,53 @@ group:
       - sensor.room_pressure_hallway_floor2
 
   ## Indoor Environment - per room
-  office_room_environment_sensors:
+  office_room_environment_sensors:    ## >> Not used
     name: Omgevings condities kantoor
     entities:
       - sensor.room_temp_office
       - sensor.room_humidity_office
       - sensor.room_pressure_office
-  bathroom_environment_sensors:
+  bathroom_environment_sensors:    ## >> Not used
     name: Omgevings condities badkamer
     entities:
       - sensor.room_temp_bathroom
       - sensor.room_humidity_bathroom
       - sensor.room_pressure_bathroom  
-  masterbedroom_environment_sensors:
+  masterbedroom_environment_sensors:    ## >> Not used
     name: Omgevings condities slaapkamer
     entities:
       - sensor.room_temp_bedroom
       - sensor.room_humidity_bedroom
       - sensor.room_pressure_bedroom
-  kimsbedroom_environment_sensors:
+  kimsbedroom_environment_sensors:    ## >> Not used
     name: Omgevings condities kamer Kim
     entities:
       - sensor.room_temp_kim
       - sensor.room_humidity_kim
       - sensor.room_pressure_kim  
-  livingroom_environment_sensors:
+  livingroom_environment_sensors:    ## >> Not used
     name: Omgevings condities Woonkamer
     entities:
       - sensor.room_temp_livingroom
       - sensor.room_humidity_livingroom
       - sensor.room_pressure_livingroom
-  toilet_environment_sensors:
+  toilet_environment_sensors:    ## >> Not used
     name: Omgevings condities toilet
     entities:
       - sensor.room_temp_toilet
       - sensor.room_humidity_toilet
       - sensor.room_pressure_toilet
-  storage_environment_sensors:
+  storage_environment_sensors:    ## >> Not used
     name: Omgevings condities berging
     entities:
       - sensor.room_temp_storage
       - sensor.room_humidity_storage
       - sensor.room_pressure_storage
-  heating_room_environment_sensors:
+  heating_room_environment_sensors:    ## >> Not used
       - sensor.room_temp_heating_room 
       - sensor.room_humidity_heating_room 
       - sensor.room_pressure_heating_room
-  hallway_2nd_floor_environment_sensors:
+  hallway_2nd_floor_environment_sensors:    ## >> Not used
       - sensor.room_temp_hallway_floor2
       - sensor.room_humidity_hallway_floor2
       - sensor.room_pressure_hallway_floor2
@@ -777,31 +548,43 @@ group:
 ##  Automations
 ###############################################################################
 automation:
-  ## Automation for storing the nightly values (00:00) for reference. Reference is used for daily usage graphs 
-  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
-  - alias: "update utilities referentie waarden"
+  - alias: "Luchtvochtigheid woonkamer laag"
     initial_state: "on" 
     trigger:
-      platform: time
-      at: "00:00:00"
+      platform: numeric_state
+      entity_id: sensor.room_humidity_livingroom
+      # entity_id: sensor.room_humidity_test
+      below: 45
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          before: "22:30:00"
+          after: "08:00:00"
+        - condition: state
+          entity_id: binary_sensor.everybody_away
+          state: "off"
+        - condition: state
+          entity_id: input_select.room_humidity_livingroom_state
+          state: "Normaal"
     action:
-      - service: mqtt.publish
+      - service_template: >
+          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
         data_template:
-          topic: "home/meter/reference"
-          retain: true
-          payload_template: >-
-            {% set e_usage_low = state_attr('sensor.utilities_electricity','usage_low')|float %}
-            {% set e_usage_high = state_attr('sensor.utilities_electricity','usage_high')|float %}
-            {% set g_usage = state_attr('sensor.utilities_gas','usage')|float %}
-            {% set w_usage = state_attr('sensor.utilities_water','usage')|float %}
-            {{ {
-              "e_usage_low": e_usage_low,
-              "e_usage_high": e_usage_high,
-              "g_usage": g_usage,
-              "w_usage": w_usage
-            }|tojson }}
+          value1: "De luchtvochtigheid in de woonkamer is momenteel laag ("
+          value2: "{{ states('sensor.room_humidity_livingroom')|round(2) }}"
+          value3: "%). Zet Oskar aan als de luchtvochtigheid verder daalt!"
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.room_humidity_livingroom_state
+          option: Laag
 
-  ## Added V1.8.0, Updated V1.11.0
   - alias: "Luchtvochtigheid woonkamer te laag"
     initial_state: "on" 
     trigger:
@@ -818,6 +601,9 @@ automation:
         - condition: state
           entity_id: binary_sensor.everybody_away
           state: "off"
+        - condition: state
+          entity_id: input_select.room_humidity_livingroom_state
+          state: "Laag"
     action:
       - service_template: >
           {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
@@ -830,10 +616,75 @@ automation:
         data_template:
           value1: "De luchtvochtigheid in de woonkamer is momenteel te laag ("
           value2: "{{ states('sensor.room_humidity_livingroom')|round(2) }}"
-          value3: "%)."
+          value3: "%). Zet Oskar aan!"
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.room_humidity_livingroom_state
+          option: Te laag
 
-  ## Added V1.8.0, Updated V1.11.0
-  - alias: "Luchtvochtigheid woonkamer te hoog"
+  - alias: "Luchtvochtigheid woonkamer laag reset normaal test"
+    initial_state: "on" 
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.room_humidity_livingroom
+      # entity_id: sensor.room_humidity_test
+      above: 45
+    action:
+      - service_template: >
+          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
+        data_template:
+          value1: "De luchtvochtigheid in de woonkamer is weer op peil ("
+          value2: "{{ states('sensor.room_humidity_livingroom')|round(2) }}"
+          value3: "%). Oskar kan weer uit!"
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.room_humidity_livingroom_state
+          option: Normaal
+
+  - alias: "Luchtvochtigheid woonkamer hoog"
+    initial_state: "on" 
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.room_humidity_livingroom
+      # entity_id: sensor.room_humidity_test
+      above: 55
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          before: "22:30:00"
+          after: "08:00:00"  
+        - condition: state
+          entity_id: binary_sensor.everybody_away
+          state: "off"
+        - condition: state
+          entity_id: input_select.room_humidity_livingroom_state
+          state: "Normaal"
+    action:
+      - service_template: >
+          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
+        data_template:
+          value1: "De luchtvochtigheid in de woonkamer is momenteel hoog ("
+          value2: "{{ states('sensor.room_humidity_livingroom')|round(2) }}"
+          value3: "%). Tijd om te ventileren en/of Oskar uit te zetten."
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.room_humidity_livingroom_state
+          option: Hoog
+
+  - alias: "Luchtvochtigheid woonkamer hoog"
     initial_state: "on" 
     trigger:
       platform: numeric_state
@@ -849,6 +700,9 @@ automation:
         - condition: state
           entity_id: binary_sensor.everybody_away
           state: "off"
+        - condition: state
+          entity_id: input_select.room_humidity_livingroom_state
+          state: "Hoog"
     action:
       - service_template: >
           {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
@@ -861,34 +715,36 @@ automation:
         data_template:
           value1: "De luchtvochtigheid in de woonkamer is momenteel te hoog ("
           value2: "{{ states('sensor.room_humidity_livingroom')|round(2) }}"
-          value3: "%)."
+          value3: "%). Tijd om te ventileren en/of Oskar uit te zetten."
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.room_humidity_livingroom_state
+          option: Te hoog
 
-## Added V1.11.0
-  - alias: "Aqara Batterij niveau laag"
-    initial_state: "on" 
+  - alias: "Luchtvochtigheid woonkamer hoog reset normaal test"
+    initial_state: "on"
     trigger:
       platform: numeric_state
-      entity_id:
-      - sensor.room_humidity_livingroom
-      - sensor.room_office_battery
-      - sensor.room_livingroom_battery
-      - sensor.room_bathroom_battery
-      - sensor.room_bedroom_battery
-      - sensor.room_kim_battery
-      - sensor.room_toilet_battery
-      - sensor.room_storage_battery
-      - sensor.room_heating_room_battery
-      - sensor.room_hallway_floor2_battery
-      - sensor.room_test_battery
-      below: 25
+      entity_id: sensor.room_humidity_livingroom
+      # entity_id: sensor.room_humidity_test
+      below: 55
     action:
-      - service: script.notify_prowl
+      - service_template: >
+          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
         data_template:
-          value1: "Hi Ralph, De "
-          value2: "{{ trigger.to_state.attributes.friendly_name }} "
-          value3: "is laag. Tijd om te vervangen"
-          who: "ralph"
-          prio: -2
+          value1: "De luchtvochtigheid in de woonkamer is weer op peil ("
+          value2: "{{ states('sensor.room_humidity_livingroom')|round(2) }}"
+          value3: "%)."
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.room_humidity_livingroom_state
+          option: Normaal
 
 ###############################################################################
 ##  Templates

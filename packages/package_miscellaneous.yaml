@@ -24,9 +24,9 @@
 ## V0.12.0: Added sunset automations and scripts
 ## V0.13.0: Updated all hue light related scripts
 ##          Updated all climate related scripts
-## V0.13.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V0.13.2:  Syntax error corrections
-## V0.14.0   Removed hide_entity form automations (deprecated HA V0.105)
+## V0.13.1: Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
+## V0.13.2: Syntax error corrections
+## V0.14.0  Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
