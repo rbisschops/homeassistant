@@ -1,31 +1,7 @@
 ## Package file for Home Assistant, used for getting Domoticz data via MQTT 
 ## Type: Home Assistant yaml file
-## Date: 17-11-2019
+## Date added: 2019-11-17
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Updated with additional input booleans
-## V0.3.0:  Added switches that copies bahaviour of HA Bridge sensors
-## V0.3.1:  Removed sensors from domo, removed groups
-## V0.3.2:  Removed sensors from domo, removed groups
-## V0.4.0:  Code cleaned, removed all code for environental sensors
-## V0.5.0:  Added code for receiving Domoticz data from switches 
-##          (lighting2 and Light/Switch types)
-## V0.5.1:  Removed domo entertainment switch
-## V0.5.2:  Added sunscreen switch (first version)
-## V0.6.0:  Added automations and script for electricity meters
-## V0.6.1:  Updated automation for storing E high and low values (swapped them)
-## V0.6.2:  Added retain flag for mqtt utility sensors
-## V0.7.0:  Code cleanup and changes to entities, package ready for migration to new homeserver
-## V0.8.0:  Added seperate automations for various Domo light controls 
-##          to avoid script already running error
-## V0.8.1:  Removed script requirement for domo2hass automation chistmastree (test)
-## V0.8.2:  Removed all domo2hass swtich scripts
-## V0.8.3:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V0.9.0:  Added hardware sensors for Domoticz server and homeserver
-## V0.9.1:  Remove scripts for water meter, e and g meters, all in automation now
-## V0.10.0: Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -58,7 +34,7 @@ input_boolean:
 ###############################################################################
 ##  Groups
 ###############################################################################
-group:
+# group:
 
 
 ###############################################################################

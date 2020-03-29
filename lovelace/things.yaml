@@ -1,17 +1,7 @@
 ## Lovelace-UI file for Home Assistant, Lighting view
 ## Type: Home Assistant yaml file
-## Date: 21-02-2020
+## Date added: 2019-07-21
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Added toilet heating manual control
-## V0.2.1:  Changed UI layout
-## V0.2.2:  Added rooms for future use
-## V0.2.3:  Added input_boolean.sunscreen_manual (moved)
-##          Removed switch.tradfri_high_cabinets_switch (moved)
-## V0.3.0:  Major UI changes based on Decluttering card
-## V0.4.0:  Added battery monitoring
 
 title: Entities
 icon: 'mdi:cogs'
@@ -42,7 +32,7 @@ cards:
         show_name: false
         show_header_toggle: false
         entities:
-          - entity: binary_sensor.people_home
+          - entity: binary_sensor.presence_people_home
       - type: custom:decluttering-card
         template: custom_markdown_card_small
         variables:
@@ -220,7 +210,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - sensor.mailbox
+        - sensor.vibration_mailbox
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -305,37 +295,37 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: sensor.aqara_refrigerator_door_battery
+        - entity: sensor.door_refrigerator_battery
           name: Deursensor Koelkast
-        - entity: sensor.room_toilet_battery
+        - entity: sensor.environment_toilet_battery
           name: Omgevingscondities toilet
-        - entity: sensor.mailbox_battery
+        - entity: sensor.vibration_mailbox_battery
           name: Sensor brievenbus
         - entity: sensor.neo_coolcam_front_door_battery_level
           name: Deursensor voordeur
         - entity: sensor.neo_coolcam_storage_door_battery_level
           name: Deursensor bergingdeur
-        - entity: sensor.room_livingroom_battery
+        - entity: sensor.environment_livingroom_battery
           name: Omgevingscondities woonkamer
         - entity: sensor.fibaro_hallway_101_smoke_sensor_battery_level
           name: Brandmelder overloop
-        - entity: sensor.room_office_battery
+        - entity: sensor.environment_office_battery
           name: Omgevingscondities kantoor
         - entity: sensor.light_level_office_battery
           name: Lichtsensor kantoor
-        - entity: sensor.motion_sensor_office_battery
+        - entity: sensor.motion_office_battery
           name: Bewegingssensor kantoor
-        - entity: sensor.room_bathroom_battery
+        - entity: sensor.environment_bathroom_battery
           name: Omgevingscondities badkamer
-        - entity: sensor.room_bedroom_battery
+        - entity: sensor.environment_bedroom_battery
           name: Omgevingscondities slaapkamer
-        - entity: sensor.room_hallway_floor2_battery
+        - entity: sensor.environment_hallway_floor2_battery
           name: Omgevingscondities overloop 2e verdieping
-        - entity: sensor.room_heating_room_battery
+        - entity: sensor.environment_heating_room_battery
           name: Omgevingscondities ketelkast
-        - entity: sensor.room_kim_battery
+        - entity: sensor.environment_kim_battery
           name: Omgevingscondities kamer kim
-        - entity: sensor.room_storage_battery
+        - entity: sensor.environment_storage_battery
           name: Omgevingscondities berging
   # - type: vertical-stack
   #   cards:

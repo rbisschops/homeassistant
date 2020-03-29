@@ -1,10 +1,7 @@
 ## Lovelace-UI file for Home Assistant, Automations view
 ## Type: Home Assistant yaml file
-## Date: 19-02-2029
+## Date added: 2020-02-19
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
 
 title: Automations
 icon: "mdi:file-code-outline"
@@ -23,7 +20,7 @@ cards:
       entities:
       - entity: automation.koelkast_alarm
         name: Koelkast alarm
-      - entity: automation.alarm_gereset
+      - entity: automation.notification_alarm_state_reset
         name: Alarm gereset
   - type: vertical-stack
     cards:
@@ -36,21 +33,21 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: automation.buitenlamp_bij_thuiskomst
-        name: Buitenlamp bij thuiskomst
-      - entity: automation.er_komt_iemand_thuis
+      - entity: automation.light_porch_on_at_home_coming
+        name: Buitenlamp aan bij thuiskomst
+      - entity: automation.presence_somebody_comes_home
         name: Er komt iemand thuis
-      - entity: automation.iedereen_is_weg  
+      - entity: automation.presence_everybody_is_away
         name: Iedereen is weg
-      - entity: automation.mark_person_as_just_arrived
+      - entity: automation.presence_mark_person_as_just_arrived
         name: Markeer persoon als net thuis
-      - entity: automation.mark_person_as_home
+      - entity: automation.presence_mark_person_as_home
         name: Markeer persoon als thuis
-      - entity: automation.mark_person_as_just_left
+      - entity: automation.presence_mark_person_as_just_left
         name: Markeer persoon als net weg
-      - entity: automation.mark_person_as_away
+      - entity: automation.presence_mark_person_as_away
         name: Markeer persoon als weg
-      - entity: automation.mark_person_as_extended_away
+      - entity: automation.presence_mark_person_as_extended_away
         name: Markeer persoon als langer weg
   - type: vertical-stack
     cards:

@@ -1,24 +1,7 @@
 ## Package file for Home Assistant, used for the storage area
 ## Type: Home Assistant yaml file
-## Date: 17-11-2019
+## Date added: 2019-11-17
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.1.1:  Code cleaning
-## V0.2.0:  Moved in automations and timers from package_presence
-## V0.3.0:  Moved in automations from package_livingroom
-## V0.4.0:  Added inputs for timers porchlight, changed porchlight timers to variables.
-##          Moved in homeasstant settings from package_presence
-## V0.4.1:  Removed test automation for porchlight
-## V0.5.0:  Changed automations for porch light,
-##          Added input_booleans for porch light, 
-##          Added groups for porch light
-## V0.5.1:  Changed states. into states("xx")
-##          Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V0.6.0:  Added timer and spilt notification script in two parts due to script conflict (already running)
-## V0.7.0   Removed hide_entity form automations (deprecated HA V0.105)
-## V0.8.0   Moved battery sensors to package_batteries.yaml
 
 ###############################################################################
 ##  Homeassistant settings
@@ -27,7 +10,7 @@
 homeassistant:
   customize:
     ## Sensors 
-    sensor.mailbox:
+    sensor.vibration_mailbox:
       friendly_name: Brievenbus
     ## Timers
     timer.porchlight:
@@ -59,19 +42,19 @@ input_text:
 sensor:
   ## Mailbox vibration sensor
   - platform: "mqtt"
-    name: mailbox
+    name: vibration_mailbox
     state_topic: "zigbee2mqtt/aqara_mailbox"
     availability_topic: "zigbee2mqtt/bridge/state"
     icon: "mdi:gesture-double-tap"
     value_template: "{{ value_json.action }}"
   - platform: "mqtt"
-    name: mailbox_all
+    name: vibration_mailbox_all
     state_topic: "zigbee2mqtt/aqara_mailbox"
     availability_topic: "zigbee2mqtt/bridge/state"
     icon: "mdi:gesture-double-tap"
     value_template: "{{ value_json }}"
   - platform: "mqtt"
-    name: mailbox_linkquality
+    name: vibration_mailbox_linkquality
     state_topic: "zigbee2mqtt/aqara_mailbox"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
@@ -83,7 +66,7 @@ sensor:
 
 ## Added V0.5.0
 group:
-  porchlight:
+  light_porch:
     name: Buitenlamp
     entities:
       - switch.habridge_porchlight
@@ -135,15 +118,15 @@ automation:
 
   ## Switch on porch light when someone arrives home
   ## Upgraded to use advanced presense (V1.4.0)
-  - alias: "Buitenlamp bij thuiskomst"
+  - alias: "Light porch on at home coming"
     initial_state: "on"
     trigger:
       - platform: state
-        entity_id: input_select.ralph_status_dropdown, input_select.anneke_status_dropdown, input_select.kimberly_status_dropdown
+        entity_id: input_select.presence_state_ralph, input_select.presence_state_anneke, input_select.presence_state_kimberly
         from: "Away"
         to: "Just Arrived"
       - platform: state
-        entity_id: input_select.ralph_status_dropdown, input_select.anneke_status_dropdown, input_select.kimberly_status_dropdown
+        entity_id: input_select.presence_state_ralph, input_select.presence_state_anneke, input_select.presence_state_kimberly
         from: "Extended Away"
         to: "Just Arrived"
     condition:  
@@ -162,7 +145,7 @@ automation:
           duration: "00:{{ states('input_text.timer_minutes_porch_long')|int }}:00"
 
   ## Switch off porchlight based on timer
-  - alias: "Buitenlamp uit xx minuten na trigger"
+  - alias: "Light porch xx minutes after trigger off"
     initial_state: "on"
     trigger:
       platform: event
@@ -173,9 +156,8 @@ automation:
     - service: homeassistant.turn_off
       entity_id: input_boolean.porchlight
 
-  ## Added V0.5.0
-  ## Switch Bar lights on and off
-  - alias: "Verlichting bar aan-uit"
+  ## Switch Porch light on and off
+  - alias: "Light Porch toggle"
     initial_state: "on"
     trigger:
       platform: state
@@ -184,34 +166,26 @@ automation:
         - input_boolean.porchlight
     action:
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
         entity_id: input_boolean.domo_porchlight
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: group.porchlight
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+        entity_id: group.light_porch
 
   ## Actions to perform on mailbox motion
   - alias: "Post ontvangen"
     initial_state: "on"
     trigger:
       platform: state
-      entity_id: sensor.mailbox
+      entity_id: sensor.vibration_mailbox
       to: "vibration"
     action:
       - service_template: >
-          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+          {% if (is_state('input_select.presence_state_ralph', 'Home')) and (is_state('input_select.presence_state_anneke', 'Home'))  %}
             script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+          {% elif is_state('input_select.presence_state_ralph', 'Home') %}
             script.notify_telegram_ralph
-          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+          {% elif is_state('input_select.presence_state_anneke', 'Home') %}
             script.notify_telegram_anneke
           {% endif %}
         data_template:
@@ -220,32 +194,6 @@ automation:
           value3: " "
           prio: -2
 
-      # - service: script.notify_telegram_anneke
-      #   data_template:
-      #     value1: "Er is post!"
-      #     value2: " "
-      #     value3: " "
-      #     prio: -2
-      # - service: timer.start
-      #   data_template:
-      #     entity_id: timer.wait
-      #     duration: "00:00:01"
-
-  # - alias: "Post ontvangen ralph"
-  #   initial_state: "on"
-  #   trigger: 
-  #     platform: event
-  #     event_type: timer.finished
-  #     event_data:
-  #       entity_id: timer.wait
-  #   action:
-  #     - service: script.notify_telegram_ralph
-  #       data_template:
-  #         value1: "Er is post!"
-  #         value2: " "
-  #         value3: " "
-  #         prio: -2
-          
 ###############################################################################
 ##  Templates
 ###############################################################################

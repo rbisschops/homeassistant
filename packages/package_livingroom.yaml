@@ -1,38 +1,7 @@
 ## Package file for Home Assistant, used for the Livingroom
 ## Type: Home Assistant yaml file
-## Date: 10-03-2019
+## Date added: 2019-03-10
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Major updates
-## V0.3.0:  Added various switches for entities based on HA Bridge control
-## V0.3.1:  Bugfix formatting entities 
-## V0.3.2:  Added new sensors/switches
-## V0.3.3:  Changed ha bridge to domo automations to one script - experimental
-## V0.4.0:  Removed HA-Bridge automation for gardenlights (moved to package_garden)
-## V0.4.1:  Removed media modes for lighting
-## v0.4.2:  Moved Domoticz automations and scripts to domo2hass package
-## V0.5.0:  Added Treadfri switch for kitchen high cabinets
-## V0.5.1:  Restored CoCo kitchen high cabinets switch
-## V0.5.2:  Cleanup code
-## V0.6.0:  Moved in automations from package_presence
-## V0.7.0:  Added livingroom lights at sunset
-## V0.8.0:  Moved automations to package_hallway and packag_storage
-## V0.9.0:  Added christmas tree to automations.
-##          Changed script livingroom lights off. Introduced timer.
-## V0.10.0: Changed the offset for sun conditions in automation
-##          Woonkamer verlichting aan bij thuiskomst to -01:00:00
-## V0.11.0: Added test script for hue light control light
-## V0.12.0: Changed automation sunset to start script for slow increase of brightness (package_hue script)
-##          Added timer for kitchen light on at sunset
-## V0.12.1: Updated timer for kitchen high cabinets
-## V0.13.0: Moved out input select for hue modes (to package_hue)
-## V0.14.0: Changed automations for Christmastree,
-##          Added input_booleans for Christmastree, 
-##          Added groups for christmastree
-## V0.15.0: Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V0.16.0  Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -108,17 +77,17 @@ sensor:
 ##  Groups
 ###############################################################################
 group:
-  christmastree:
+  switch_christmastree:
     name: kerstboom
     entities:
       - switch.habridge_christmastree
       - input_boolean.christmastree
-  barlight:
+  light_bar:
     name: Verlichting bar
     entities:
       - switch.habridge_barlight
       - input_boolean.barlight
-  highcabinets:
+  light_high_cabinets:
     name: Verlichting hoge kasten (KaKu)
     entities:
       - switch.habridge_highcabinets
@@ -132,7 +101,7 @@ automation:
   ## Automations using Amazon Alexa through HA-bridge commands
   ## ---------------------------------------------------------
   ## Switch on livingroom lights from HA-Bridge
-  - alias: "Verlichting woonkamer aan (HA Bridge)"
+  - alias: "Light livingroom on (HA Bridge)"
     initial_state: "on"
     trigger:
       platform: state
@@ -143,7 +112,7 @@ automation:
       - service: homeassistant.turn_on
         entity_id: input_boolean.livingroom_lights
   ## Switch off livingroom lights from HA-Bridge
-  - alias: "Verlichting woonkamer uit (HA Bridge)"
+  - alias: "Light livingroom off (HA Bridge)"
     initial_state: "on"
     trigger:
       platform: state
@@ -154,9 +123,8 @@ automation:
       - service: homeassistant.turn_off
         entity_id: input_boolean.livingroom_lights
 
-  ## Added V0.14.0
   ## Switch Christmas tree on and off
-  - alias: "Kerstboom aan-uit"
+  - alias: "Switch christmas tree toggle"
     initial_state: "on"
     trigger:
       platform: state
@@ -165,21 +133,13 @@ automation:
         - input_boolean.christmastree
     action:
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
         entity_id: input_boolean.domo_christmastree
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: group.christmastree
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+        entity_id: group.switch_christmastree
   ## Switch Bar lights on and off
-  - alias: "Verlichting bar aan-uit"
+  - alias: "Light bar toggle"
     initial_state: "on"
     trigger:
       platform: state
@@ -188,21 +148,13 @@ automation:
         - input_boolean.barlight
     action:
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
         entity_id: input_boolean.domo_barlight
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: group.barlight
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+        entity_id: group.light_bar
   ## Switch lights high cabinets on and off
-  - alias: "Verlichting hoge kasten aan-uit"
+  - alias: "Light high cabinets toggle"
     initial_state: "on"
     trigger:
       platform: state
@@ -211,22 +163,14 @@ automation:
         - input_boolean.highcabinets
     action:
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
         entity_id: input_boolean.domo_highcabinets
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: group.highcabinets
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+        entity_id: group.light_high_cabinets
 
   ## Switch livingroom lights on and off
-  - alias: "Verlichting woonkamer"
+  - alias: "Light livingroom toggle"
     initial_state: "on"
     trigger:
       platform: state
@@ -234,15 +178,11 @@ automation:
         - input_boolean.livingroom_lights
     action:
       - service_template: >-
-          {% if is_state('input_boolean.livingroom_lights','on') %}
-            script.livingroom_lights_on
-          {% elif is_state('input_boolean.livingroom_lights','off') %}
-            script.livingroom_lights_off
-          {% endif%}
+          {{ 'script.livingroom_lights_on' if is_state('input_boolean.livingroom_lights','on') else 'script.livingroom_lights_off' }}
 
   ## Added V0.11.0
   ## Switch on kitchen cabinets light based on timer
-  - alias: "Hoge kasten keuken aan xx minuten na trigger"
+  - alias: "Light high cabinets xx minutes after trigger on"
     initial_state: "on"
     trigger:
       platform: event
@@ -258,7 +198,7 @@ automation:
 
   ## Added V0.9.0
   ## Switch off kitchen cabinets light based on timer
-  - alias: "Hoge kasten keuken uit xx minuten na trigger"
+  - alias: "Light high cabinets xx minutes after trigger off"
     initial_state: "on"
     trigger:
       platform: event
@@ -274,7 +214,7 @@ automation:
 
   ## Added V0.11.0
   ## Switch on christmas tree based on timer
-  - alias: "Christmas tree aan xx minuten na trigger"
+  - alias: "Switch christmas tree xx minutes after trigger on"
     initial_state: "on"
     trigger:
       platform: event

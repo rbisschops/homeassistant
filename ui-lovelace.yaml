@@ -1,27 +1,7 @@
 ## Lovelace-UI file for Home Assistant
 ## Type: Home Assistant yaml file
-## Date: 14-12-2019
+## Date added: 2019-12-14
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Added Utilities view
-## V0.3.0:  Added Decluttering-card V0.2.0
-##          Updated button card to V1.11.1
-##          Added templates for buttn card
-## V0.3.1:  Fix for ##0033, button-card action behaviour
-## V0.4.0:  Added new styles for buttons
-## V0.5.0:  Updated buttoncard V1.1.11 > V3.0.0
-##          Updated mini graph card V0.3.0 > V0.8.2
-##          Updated Custom compact header V1.1.0 > V1.4.9
-##          decluttering card = upto date, card-mod will be updated after migration to V0.10x
-## V0.6.0:  Added autoamations tab
-## V0.7.0:  Update custom cards
-##          compact-custom-header.js?V1.4.9 >> custom-header.js?V1.3.2
-##          decluttering-card.js?v=0.2.0 >> decluttering-card.js?v=0.3.0
-##          mini-graph-card-bundle.js?v=0.8.2 >> mini-graph-card-bundle.js?v=0.9.3
-##          card-mod.js?v=0.2 >> card-mod.js?v=13
-## v0.8.0:  Removed resources. Moved to configuration.yaml (as per HA 0.107.x) 
 
 ###############################################################################
 ##  Additional resources used

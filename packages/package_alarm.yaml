@@ -1,25 +1,8 @@
 ## Package file for Home Assistant, used for all alarm sensors and
 ## associated automations and scripts
 ## Type: Home Assistant yaml file
-## Date: 26-02-2020
+## Date added: 2020-02-26
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.3.0:  Added test switches for alarm sensors
-## V0.3.0:  Added refrigerator alarm and automations, renamed to package_alarm
-## V1.0.0:  Production version 1.0.0
-## V1.1.0:  Minor cleanup
-## V1.1.1:  Replaced json_attributes with json_attributes_topic
-## V1.2.0:  Added binary sensors for alarm states
-## V1.2.1:  Added input booleans for garbage bins
-## V1.2.2:  Code cleanup and changes to entities, package ready for migration to new homeserver
-## V1.3.0:  Added icons to input_booleans, added soem windows
-## V1.3.1:  Changed states. into states("xx")
-## V1.3.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V1.4.0   Removed hide_entity form automations (deprecated HA V0.105)
-## V1.4.1   Bugfix refrigerator door sensor battery & linkquality
-## V1.5.0   Moved battery sensors to package_batteries.yaml
 
 ###############################################################################
 ##  Homeassistant settings
@@ -28,21 +11,16 @@
 homeassistant:
   customize:
     ## Binary sensors
-    binary_sensor.refrigerator_door:
+    binary_sensor.door_refrigerator:
       friendly_name: Koelkast deur
     # binary_sensor.freezer_door:
     #   friendly name: Vriezer deur  
-    binary_sensor.motion_sensor_office:
+    binary_sensor.motion_office:
       friendly_name: Bewegingssensor kantoor
-    ## Battery level sensors
-    sensor.aqara_refrigerator_door_battery:
-      friendly_name: Koelkastdeur (batterij)
-    sensor.motion_sensor_office_battery:
-      friendly_name: Bewegingssensor kantoor (batterij)
     ## Link quality sensors
-    sensor.aqara_refrigerator_door_linkquality:
+    sensor.door_refrigerator_linkquality:
       friendly_name: Koelkastdeur (link quality)
-    sensor.motion_sensor_office_linkquality:
+    sensor.motion_office_linkquality:
       friendly_name: Bewegingssensor kantoor (link quality)
 
 ###############################################################################
@@ -125,7 +103,7 @@ input_boolean:
 binary_sensor:
   ## Door/window sensors (Xiaomi)
   - platform: mqtt
-    name: refrigerator_door
+    name: door_refrigerator
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
     availability_topic: "zigbee2mqtt/bridge/state"
     payload_on: false
@@ -135,7 +113,7 @@ binary_sensor:
 
   ## Motion sensors (Xiaomi)
   - platform: mqtt
-    name: motion_sensor_office
+    name: motion_office
     state_topic: "zigbee2mqtt/mijia_office_motion"
     availability_topic: "zigbee2mqtt/bridge/state"
     payload_on: true
@@ -180,7 +158,7 @@ binary_sensor:
 sensor:
   ## Refridgerator door link quality status monitoring sensor
   - platform: "mqtt"
-    name: aqara_refrigerator_door_linkquality
+    name: door_refrigerator_linkquality
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
@@ -188,7 +166,7 @@ sensor:
 
   ## Motion sensor office link quality status monitoring sensor
   - platform: "mqtt"
-    name: motion_sensor_office_linkquality
+    name: motion_office_linkquality
     state_topic: "zigbee2mqtt/mijia_office_motion"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
@@ -198,20 +176,20 @@ sensor:
 #  Groups
 ###############################################################################
 
-group:
-  ## Door/window sensors
-  door_window_sensors:
-    name: Deur/raam sensoren
-    entities:
-      - binary_sensor.refrigerator_door
-  motion_sensors:
-    name: Bewegingssensoren
-    entities:
-      - binary_sensor.motion_sensor_office
-  office_room_motion_sensors:
-    name: Bewegingssensoren kantoor
-    entities:
-      - binary_sensor.motion_sensor_office
+# group:
+  # ## Door/window sensors
+  # door_window_sensors:
+  #   name: Deur/raam sensoren
+  #   entities:
+  #     - binary_sensor.door_refrigerator
+  # motion_sensors:
+  #   name: Bewegingssensoren
+  #   entities:
+  #     - binary_sensor.motion_office
+  # office_room_motion_sensors:
+  #   name: Bewegingssensoren kantoor
+  #   entities:
+  #     - binary_sensor.motion_office
 
 ###############################################################################
 #  Automations
@@ -224,7 +202,7 @@ automation:
     trigger:
       - platform: state
         entity_id:
-          - binary_sensor.refrigerator_door
+          - binary_sensor.door_refrigerator
         to: "on"
         for: "00:10:00"
 #      - platform: state
@@ -244,7 +222,7 @@ automation:
         entity_id: input_boolean.alarm
 
   ## Test if alarm is gereset and perform actions
-  - alias: "Alarm gereset"
+  - alias: "Notification alarm state reset"
     initial_state: "on"
     trigger:
       - platform: state
