@@ -1,12 +1,7 @@
 ## Device trackers configuration file for Home Assistant  
 ## Type: Home Assistant yaml file
-## Date: 04-04-2018
+## Date added: 2018-04-04
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Clean-up
-## V0.3.0:  Moved to homeassistant root
 
 ###############################################################################
 ##  Homeassistant settings

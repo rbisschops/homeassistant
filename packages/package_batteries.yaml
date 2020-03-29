@@ -1,11 +1,7 @@
-## Package file for Home Assistant, used for environment
+## Package file for Home Assistant, used for battery level monitoring
 ## Type: Home Assistant yaml file
-## Date: 10-11-2019
+## Date added: 2020-03-24
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-##          Split of from package environment
 
 ###############################################################################
 ##  Homeassistant settings
@@ -14,38 +10,38 @@
 homeassistant:
   customize:
     ## Environmental sensors
-    sensor.room_office_battery:
+    sensor.environment_office_battery:
       friendly_name:  Batterij multisensor kantoor
-    sensor.room_livingroom_battery:
+    sensor.environment_livingroom_battery:
       friendly_name:  Batterij multisensor woonkamer
-    sensor.room_bathroom_battery:
+    sensor.environment_bathroom_battery:
       friendly_name:  Batterij multisensor badkamer
-    sensor.room_bedroom_battery:
+    sensor.environment_bedroom_battery:
       friendly_name:  Batterij multisensor slaapkamer
-    sensor.room_kim_battery:
+    sensor.environment_kim_battery:
       friendly_name:  Batterij multisensor kamer Kim
-    sensor.room_toilet_battery:
+    sensor.environment_toilet_battery:
       friendly_name:  Batterij multisensor toilet
-    sensor.room_storage_battery:
+    sensor.environment_storage_battery:
       friendly_name:  Batterij multisensor berging
-    sensor.room_heating_room_battery:
+    sensor.environment_heating_room_battery:
       friendly_name: Batterij multisensor ketel ruimte
-    sensor.room_hallway_floor2_battery:
+    sensor.environment_hallway_floor2_battery:
       friendly_name: Batterij multisensor overloop 2e verdieping
     ## Light sensors
     sensor.light_level_office_battery:
       friendly_name: Batterij licht sensor kantoor
     ## Door sensors
-    sensor.aqara_refrigerator_door_battery:
+    sensor.door_refrigerator_battery:
       friendly_name: Batterij koelkastdeur
     ## Motion sensors  
-    sensor.motion_sensor_office_battery:
+    sensor.motion_office_battery:
       friendly_name: Batterij bewegingssensor kantoor
   ## Vibrations sensors
-    sensor.mailbox_battery:
+    sensor.vibration_mailbox_battery:
       friendly_name: Batterij brievenbus sensor
     ## Test sensors (dummies)
-    sensor.room_test_battery:
+    sensor.environment_test_battery:
       friendly_name: Batterij test sensor
 
 ###############################################################################
@@ -55,63 +51,63 @@ homeassistant:
 sensor:
   ## Inhouse environment sensors
   - platform: "mqtt"
-    name: room_office_battery
+    name: environment_office_battery
     state_topic: "zigbee2mqtt/aqara_office_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
-    name: room_bathroom_battery
+    name: environment_bathroom_battery
     state_topic: "zigbee2mqtt/aqara_bathroom_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
-    name: room_bedroom_battery
+    name: environment_bedroom_battery
     state_topic: "zigbee2mqtt/aqara_bedroom_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
-    name: room_kim_battery
+    name: environment_kim_battery
     state_topic: "zigbee2mqtt/aqara_kim_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
-    name: room_livingroom_battery
+    name: environment_livingroom_battery
     state_topic: "zigbee2mqtt/aqara_livingroom_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
-    name: room_toilet_battery
+    name: environment_toilet_battery
     state_topic: "zigbee2mqtt/aqara_toilet_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
-    name: room_storage_battery
+    name: environment_storage_battery
     state_topic: "zigbee2mqtt/aqara_storage_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
-    name: room_heating_room_battery
+    name: environment_heating_room_battery
     state_topic: "zigbee2mqtt/aqara_heating_room_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   - platform: "mqtt"
-    name: room_hallway_floor2_battery
+    name: environment_hallway_floor2_battery
     state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
@@ -127,7 +123,7 @@ sensor:
     value_template: "{{ value_json.battery }}"
   ## Refridgerator door
   - platform: "mqtt"
-    name: aqara_refrigerator_door_battery
+    name: door_refrigerator_battery
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
@@ -135,7 +131,7 @@ sensor:
     value_template: "{{ value_json.battery }}"
   ## Motion sensors
   - platform: "mqtt"
-    name: motion_sensor_office_battery
+    name: motion_office_battery
     state_topic: "zigbee2mqtt/mijia_office_motion"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
@@ -143,7 +139,7 @@ sensor:
     value_template: "{{ value_json.battery }}"
   ## Vibrations sensors
   - platform: "mqtt"
-    name: mailbox_battery
+    name: vibration_mailbox_battery
     state_topic: "zigbee2mqtt/aqara_mailbox"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
@@ -151,7 +147,7 @@ sensor:
     value_template: "{{ value_json.battery }}"
   ## Test sensors (dummies)
   - platform: "mqtt"
-    name: room_test_battery
+    name: environment_test_battery
     state_topic: "test/test_sensor_env"
     unit_of_measurement: "%"
     device_class: "battery"
@@ -167,25 +163,25 @@ sensor:
 ###############################################################################
 
 automation:
-  - alias: "Batterij niveau laag"
+  - alias: "Notification battery level low"
     initial_state: "on" 
     trigger:
       platform: numeric_state
       entity_id:
-      - sensor.room_office_battery
-      - sensor.room_livingroom_battery
-      - sensor.room_bathroom_battery
-      - sensor.room_bedroom_battery
-      - sensor.room_kim_battery
-      - sensor.room_toilet_battery
-      - sensor.room_storage_battery
-      - sensor.room_heating_room_battery
-      - sensor.room_hallway_floor2_battery
+      - sensor.environment_office_battery
+      - sensor.environment_livingroom_battery
+      - sensor.environment_bathroom_battery
+      - sensor.environment_bedroom_battery
+      - sensor.environment_kim_battery
+      - sensor.environment_toilet_battery
+      - sensor.environment_storage_battery
+      - sensor.environment_heating_room_battery
+      - sensor.environment_hallway_floor2_battery
       - sensor.light_level_office_battery
-      - sensor.aqara_refrigerator_door_battery
-      - sensor.motion_sensor_office_battery
-      - sensor.mailbox_battery
-      - sensor.room_test_battery
+      - sensor.door_refrigerator_battery
+      - sensor.motion_office_battery
+      - sensor.vibration_mailbox_battery
+      - sensor.environment_test_battery
       below: 25
     action:
       - service: script.notify_prowl

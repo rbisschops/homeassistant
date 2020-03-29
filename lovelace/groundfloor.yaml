@@ -1,24 +1,8 @@
 ## Lovelace-UI file for Home Assistant, Downstairs view
 ## Type: Home Assistant yaml file
-## Date: 12-07-2019
+## Date added: 2019-07-12
 ## Author: R.Bisschops
 ##
-## Changelog:
-## V1.0.0:  First version
-## V1.1.0:  Added Tradfri switch to replace domo entertainment switch 
-## V1.2.0:  Added Tradfri switch to replace domo high kitchen cabinets
-## V1.2.1:  Minor layout update
-## V1.2.2:  Replaced Trafri switch with domo high kitchen cabinets
-## V1.3.0:  Moved overleays to the top in the code (see remarks)
-## V1.4.0:  Changed layout and updated icons for lamps
-## V1.4.1:  Changed lamp icons
-## V1.4.2:  Minor color updates
-## V1.4.3:  Added overlays for garbage bins
-## V1.5.0:  Updated presence sensors
-## V1.6.0:  Changed everybody away badge to use everybody away instead of people home
-## V1.6.1:  Added christmastree
-## V1.6.2:  Changed people home sensor
-## V1.6.3:  Made christmas tree conditionally visible
 ## Remarks:
 ## overlays for doors and other elements need to be on top in the code, otherwise
 ## the other controlable elements are not accessible anymore in the fontend!!
@@ -54,7 +38,7 @@ cards:
           transform: translate(0%, 0%)
       ## Appliance doors overlays
       - type: image
-        entity: binary_sensor.refrigerator_door
+        entity: binary_sensor.door_refrigerator
         tap_action:
           action: none
         state_image:
@@ -186,7 +170,7 @@ cards:
 #          color: var(--text-primary-color)
       ## Indoor temerature and humdity sensors
       - type: state-label
-        entity: sensor.room_temp_livingroom
+        entity: sensor.environment_livingroom_temperature
         style:
           top: 33%
           left: 25%
@@ -195,7 +179,7 @@ cards:
           color: '#000000'
           font-weight: 'bold'
       - type: state-label
-        entity: sensor.room_humidity_livingroom
+        entity: sensor.environment_livingroom_humidity
         style:
           top: 37%
           left: 25%
@@ -204,7 +188,7 @@ cards:
           color: '#000000'
           font-weight: 'bold'
       - type: state-label
-        entity: sensor.room_temp_storage
+        entity: sensor.environment_storage_temperature
         style:
           top: 25%
           left: 86%
@@ -213,7 +197,7 @@ cards:
           color: '#000000'
           font-weight: 'bold'
       - type: state-label
-        entity: sensor.room_humidity_storage
+        entity: sensor.environment_storage_humidity
         style:
           top: 29%
           left: 86%
@@ -222,7 +206,7 @@ cards:
           color: '#000000'
           font-weight: 'bold'
       - type: state-label
-        entity: sensor.room_temp_toilet
+        entity: sensor.environment_toilet_temperature
         style:
           top: 7%
           left: 73%
@@ -231,7 +215,7 @@ cards:
 #          color: '#FFFFFF'
           font-weight: 'bold'
       - type: state-label
-        entity: sensor.room_humidity_toilet
+        entity: sensor.environment_toilet_humidity
         style:
           top: 11%
           left: 73%
@@ -402,7 +386,7 @@ cards:
       ## People home/away badges
       ## Updated V1.6.2
       - type: image
-        entity: binary_sensor.people_home
+        entity: binary_sensor.presence_people_home
         tap_action:
           action: none
         image: /local/custom_icons/people48_on.png
@@ -416,7 +400,7 @@ cards:
           transform: translate(0%, -50%)
           width: 3%
       - type: image
-        entity: binary_sensor.anneke_home
+        entity: binary_sensor.presence_anneke_home
         tap_action:
           action: none
         image: /local/custom_icons/anneke48_off.png
@@ -430,7 +414,7 @@ cards:
           transform: translate(0%, -50%)
           width: 3%   
       - type: image
-        entity: binary_sensor.kimberly_home
+        entity: binary_sensor.presence_kimberly_home
         tap_action:
           action: none
         image: /local/custom_icons/kimberly48_off.png
@@ -444,7 +428,7 @@ cards:
           transform: translate(0%, -50%)   
           width: 3%          
       - type: image
-        entity: binary_sensor.ralph_home
+        entity: binary_sensor.presence_ralph_home
         tap_action:
           action: none
         image: /local/custom_icons/ralph48_off.png

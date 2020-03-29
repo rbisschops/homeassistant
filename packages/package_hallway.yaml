@@ -1,19 +1,7 @@
 ## Package file for Home Assistant, used for presence  
 ## Type: Home Assistant yaml file
-## Date: 17-11-2019
+## Date added: 2019-11-17
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version, moved in automations and timers from package_presence
-## V0.2.0:  Moved in automations from package_livingroom
-## V0.3.0:  Added inputs for timers hallwatlight, changed hallwaylight timers to variables.
-##          Moved in homeasstant settings from package_presence
-## V0.4.0:  Changed automations for hallway lights,
-##          Added input_booleans for hallway lights, 
-##          Added groups for hallway lights
-## V0.4.1:  Changed states. into states("xx")
-## V0.4.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V0.5.0   Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -50,10 +38,8 @@ input_text:
 ###############################################################################
 ##  Groups
 ###############################################################################
-
-## Added V0.4.0
 group:
-  hallwaylight:
+  light_hallway:
     name: Verlichting halletje
     entities:
       - switch.habridge_hallwaylight
@@ -104,7 +90,7 @@ automation:
             {% endif %}
 
   ## Switch on hallway light when someone arrives home
-  - alias: "Halletje aan bij thuiskomst"
+  - alias: "Light hallway on at home coming"
     initial_state: "on"
     trigger:
       - platform: state
@@ -128,7 +114,7 @@ automation:
           entity_id: timer.hallwaylight
           duration: "00:{{ states('input_text.timer_minutes_hallwaylight_short')|int}}:00"
   ## Switch off hallway light based on timer
-  - alias: "Halletje uit xx minuten na trigger"
+  - alias: "Light hallway xx minutes after trigger off"
     initial_state: "on"
     trigger:
       platform: event
@@ -142,7 +128,7 @@ automation:
   
   ## Added V0.4.0
   ## Switch hallway light on and off
-  - alias: "Verlichting halletje aan-uit"
+  - alias: "Light hallway toggle"
     initial_state: "on"
     trigger:
       platform: state
@@ -151,19 +137,11 @@ automation:
         - input_boolean.hallwaylight
     action:
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
         entity_id: input_boolean.domo_hallwaylight
       - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: group.hallwaylight
+          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+        entity_id: group.light_hallway
 
 ###############################################################################
 ##  Templates

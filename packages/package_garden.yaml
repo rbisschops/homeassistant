@@ -1,41 +1,7 @@
 ## Package file for Home Assistant, used for the garden
 ## Type: Home Assistant yaml file
-## Date: 01-08-2019
+## Date added: 2019-08-01
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V1.0.0:  Production version 1.0.0
-## V1.0.1:  Minor updates in comments
-## V1.1.0:  Added HA-Bridge automation (moved from package_livingroom)
-## V1.1.1:  Added entity to automation Tuinverlichting bij thuiskomst for testing (fix bug #006)  
-## V1.1.2:  Commented after_offset to fix bug #006
-## V1.2.0:  Added script for stopping the sunscreen
-## V1.2.1:  Added sunscreen input_boolean for state monitoring of sunscreen stop actions
-##          Replaced sunscreen stop script with pauze automation triggered by input_boolean
-##          Added automations for auto zonnescherm (notification only for test)
-## V1.2.2:  Udated automations auto zonnescherm (notification only for test)
-## V1.2.3:  Added sunscreen manaul overide input boolean
-##          Added live sunscreen to automations
-## V1.2.4:  Minor update sunscreen in automation
-## V1.2.5:  Added automation for percipitation returning to <0.01
-## V1.2.6:  Changed eleavation trigger to 16 (was 17)
-## V1.3.0:  Fix for #0034
-## V1.3.1:  Code cleanup and code structure
-## V1.3.2:  Commented trigger garden lights for test
-## V1.3.3:  Changed trigger for gardenlights (based on front door trigger)
-## V1.4.0:  Moved in automations from package_presence
-## V1.5.0:  Updated sunscreen scripts due to change in domo2hass automations
-## V1.6.0:  Added gardenlights before sunrise on and oof automations
-##          Changed condtional sensor people_home to everybody_away
-## V1.7.0:  Changed automations for garden lights and fountain,
-##          Added input_booleans for garden lights and fountain, 
-##          Added groups for garden lights and fountain
-## V1.8.0:  Updated buienradar sensors
-##          Moved old state.state annotation to state('xxx') notation, needs testing
-## V1.8.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V1.8.2:  Updated susnset automations for garden lights (added additional triggers as backup/fallback)
-## V1.8.3:  Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -75,12 +41,12 @@ group:
   #     - automation.tuinverlichting_bij_zonsondergang
   #     - automation.tuinverlichting_bij_thuiskomst
   ## Added V1.7.0
-  gardenlight:
+  light_garden:
     name: Tuin verlichting
     entities:
       - switch.habridge_gardenlight
       - input_boolean.gardenlight
-  waterornament:
+  switch_waterornament:
     name: Waterbollen
     entities:
       - switch.habridge_waterornament
@@ -91,7 +57,7 @@ group:
 automation:
   ## Added V1.7.0
   ## Switch garden lights on and off
-  - alias: "Verlichting tuin aan-uit"
+  - alias: "Light garden toggle"
     initial_state: "on"
     trigger:
       platform: state
@@ -112,15 +78,15 @@ automation:
           {% elif is_state(trigger.entity_id, 'off') %}
             homeassistant.turn_off
           {% endif %}
-        entity_id: group.gardenlight
+        entity_id: group.light_garden
       # - service_template: >-
       #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
       #   entity_id: input_boolean.domo_gardenlight
       # - service_template: >-
       #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
-      #   entity_id: group.gardenlight
+      #   entity_id: group.light_garden
   ## Switch fountain lights on and off
-  - alias: "waterbollen aan-uit"
+  - alias: "Switch water ornament toggle"
     initial_state: "on"
     trigger:
       platform: state
@@ -141,7 +107,7 @@ automation:
           {% elif is_state(trigger.entity_id, 'off') %}
             homeassistant.turn_off
           {% endif %}
-        entity_id: group.waterornament
+        entity_id: group.switch_waterornament
 
   ## Updated V1.8.2
   ## Switch on gardenlights at sunset but only if someone is home
@@ -161,7 +127,7 @@ automation:
       condition: and
       conditions: 
         - condition: state
-          entity_id: binary_sensor.everybody_away
+          entity_id: binary_sensor.presence_everybody_away
           state: "off"
         - condition: state
           entity_id: input_boolean.holiday_mode
@@ -185,7 +151,7 @@ automation:
       condition: and
       conditions: 
         - condition: state
-          entity_id: binary_sensor.everybody_away
+          entity_id: binary_sensor.presence_everybody_away
           state: "off"
         - condition: state
           entity_id: input_boolean.holiday_mode
@@ -234,13 +200,13 @@ automation:
         - condition: or
           conditions:
             - condition: state
-              entity_id: input_select.ralph_status_dropdown
+              entity_id: input_select.presence_state_ralph
               state: "Just Arrived"
             - condition: state
-              entity_id: input_select.anneke_status_dropdown
+              entity_id: input_select.presence_state_anneke
               state: "Just Arrived"
             - condition: state
-              entity_id: input_select.kimberly_status_dropdown
+              entity_id: input_select.presence_state_kimberly
               state: "Just Arrived"
     action:
       - service: homeassistant.turn_on

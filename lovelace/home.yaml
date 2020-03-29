@@ -1,14 +1,7 @@
 ## Lovelace-UI file for Home Assistant, Home page view
 ## Type: Home Assistant yaml file
-## Date: 07-12-2019
+## Date added: 2019-07-12
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Added waste bin icons
-## V0.3.0:  Updated presence sensors
-## v0.4.0:  Added christmas buttons (conditional)
-## V0.5.0:  Added scenes for Hue lamps (as selector)
 
 title: Home
 icon: 'mdi:home'
@@ -28,10 +21,10 @@ cards:
       show_state: false
       show_name: false
       entities:
-      - entity: binary_sensor.people_home
-      - entity: binary_sensor.anneke_home
-      - entity: binary_sensor.kimberly_home
-      - entity: binary_sensor.ralph_home
+      - entity: binary_sensor.presence_people_home
+      - entity: binary_sensor.presence_anneke_home
+      - entity: binary_sensor.presence_kimberly_home
+      - entity: binary_sensor.presence_ralph_home
 
   ## Alarm cards
   - type: vertical-stack

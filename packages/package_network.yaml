@@ -1,15 +1,7 @@
 ## Package file for Home Assistant, used for network monitoring
 ## Type: Home Assistant yaml file
-## Date: 19-01-2019
+## Date added: 2019-01-19
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Added automations for notification
-## V1.0.0:  Production version 1.0.0
-## V1.1.0:  Added MySensors Gateway
-## V1.1.1:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V1.2.0   Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -226,59 +218,56 @@ sensor:
 ###############################################################################
 ##  Groups
 ###############################################################################
-group:
-  ## Obsolete, can be deleted
-  all_network_devices:
-    name: Netwerk onderdelen
-    entities:
-      - device_tracker.ipadvandiscript
-      - device_tracker.desktopqf9r6qv
-      - device_tracker.corei7
-      - device_tracker.nl1wf6nh2
-      - device_tracker.harmonyhub
-      - device_tracker.n510ippro
-      - device_tracker.diskstationii
-      - device_tracker.npidcd88c
-      - device_tracker.raspberrypi
-      - device_tracker.habridge
-      - device_tracker.raspberrypi_2
-      - device_tracker.raspberrypi_3
-      - device_tracker.philipshue
-      - device_tracker.amazonacac5ec30
-      - device_tracker.hassio
-      - device_tracker.lumigatewayv3_miio78461469
-      - device_tracker.windellu0981qd
-      - device_tracker.747548355361
-      - device_tracker.a300
-      - device_tracker.appletv
-      - device_tracker.lgwebostv
-      - device_tracker.0005cd141d09
-      - device_tracker.0003789b9e56
-      - device_tracker.boschwawh2643nl68a40e251509
-      - device_tracker.boschwtyh8782nl68a40e22eaca
-  ## Obsolete, can be deleted
-  network_stats:
-    name: Netwerk statistieken
-    entities:
-      - sensor.uptime
-      - sensor.speedtest_download
-      - sensor.speedtest_upload
-      - sensor.speedtest_ping
-  ## Obsolete, can be deleted
-  critical_network_parts:
-    name: Kritische netwerk componenten
-    entities:
-      - sensor.nc_diskstation
-      - sensor.nc_voip
-      - sensor.nc_domoticz_master
-      - sensor.nc_pihole
-      - sensor.nc_mysensors_gateway
-      - sensor.nc_dsmrreader_pi
-      - sensor.nc_harmonyhub
-      - sensor.nc_hue_bridge
-      - sensor.nc_xiaomi_bridge
-      - sensor.nc_amazonecho
-      - sensor.nc_printer
+# group:
+  # all_network_devices:
+  #   name: Netwerk onderdelen
+  #   entities:
+  #     - device_tracker.ipadvandiscript
+  #     - device_tracker.desktopqf9r6qv
+  #     - device_tracker.corei7
+  #     - device_tracker.nl1wf6nh2
+  #     - device_tracker.harmonyhub
+  #     - device_tracker.n510ippro
+  #     - device_tracker.diskstationii
+  #     - device_tracker.npidcd88c
+  #     - device_tracker.raspberrypi
+  #     - device_tracker.habridge
+  #     - device_tracker.raspberrypi_2
+  #     - device_tracker.raspberrypi_3
+  #     - device_tracker.philipshue
+  #     - device_tracker.amazonacac5ec30
+  #     - device_tracker.hassio
+  #     - device_tracker.lumigatewayv3_miio78461469
+  #     - device_tracker.windellu0981qd
+  #     - device_tracker.747548355361
+  #     - device_tracker.a300
+  #     - device_tracker.appletv
+  #     - device_tracker.lgwebostv
+  #     - device_tracker.0005cd141d09
+  #     - device_tracker.0003789b9e56
+  #     - device_tracker.boschwawh2643nl68a40e251509
+  #     - device_tracker.boschwtyh8782nl68a40e22eaca
+  # network_stats:
+  #   name: Netwerk statistieken
+  #   entities:
+  #     - sensor.uptime
+  #     - sensor.speedtest_download
+  #     - sensor.speedtest_upload
+  #     - sensor.speedtest_ping
+  # critical_network_parts:
+  #   name: Kritische netwerk componenten
+  #   entities:
+  #     - sensor.nc_diskstation
+  #     - sensor.nc_voip
+  #     - sensor.nc_domoticz_master
+  #     - sensor.nc_pihole
+  #     - sensor.nc_mysensors_gateway
+  #     - sensor.nc_dsmrreader_pi
+  #     - sensor.nc_harmonyhub
+  #     - sensor.nc_hue_bridge
+  #     - sensor.nc_xiaomi_bridge
+  #     - sensor.nc_amazonecho
+  #     - sensor.nc_printer
 
 ###############################################################################
 ##  Automations

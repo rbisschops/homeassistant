@@ -1,32 +1,7 @@
 ## Package file for Home Assistant, used for miscellaneous configs
 ## Type: Home Assistant yaml file
-## Date: 06-11-2019
+## Date added: 2019-11-06
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Added bed time automation and scripts
-## V0.2.1:  Changed bed time script
-## V0.2.2:  Changed domoticz entertainment switch to Tradfri
-## V0.3.0:  Moved input select toliet heating to package_toilet
-## V0.3.1:  Added Tradfri testswitch
-## V0.3.2:  Minor code clean
-## V0.4.0:  Removed Tradfri testswitch
-## V0.4.1:  Added condition recording mode in bedtime script 
-## V0.5.0:  Added test services in script for toilet heating
-## V0.5.1:  Added toilet heating settings to the the bed time script 
-## V0.6.0:  Added template sensors for waste bin schedular 
-## V0.7.0:  Added comments and some code cleaning
-## V0.8.0:  Remover Domo Virtual heating from script
-## V0.9.0:  Added leaving automations and scripts
-## V0.10.0: Added extended away script
-## V0.11.0: Added hallway and porchlight on with timer to leaving script
-## V0.12.0: Added sunset automations and scripts
-## V0.13.0: Updated all hue light related scripts
-##          Updated all climate related scripts
-## V0.13.1: Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
-## V0.13.2: Syntax error corrections
-## V0.14.0  Removed hide_entity form automations (deprecated HA V0.105)
 
 ###############################################################################
 ##  Homeassistant settings
@@ -130,7 +105,7 @@ binary_sensor:
 automation:
   ## Automation for runnning the bed time script 
   ## Called by Alexa via HA Bridge
-  - alias: "Bed mode ingeschakeld"
+  - alias: "Mode bed time triggered"
     initial_state: "on"
     trigger:
       platform: state
@@ -143,7 +118,7 @@ automation:
 
   ## Automation for running the coming home script
   ## Called by the front door sensor
-  - alias: "Coming home mode ingeschakeld"
+  - alias: "Mode coming home triggered"
     initial_state: "on"
     trigger:
       - platform: state
@@ -159,13 +134,13 @@ automation:
         - condition: or
           conditions:
             - condition: state
-              entity_id: input_select.ralph_status_dropdown
+              entity_id: input_select.presence_state_ralph
               state: "Just Arrived"
             - condition: state
-              entity_id: input_select.anneke_status_dropdown
+              entity_id: input_select.presence_state_anneke
               state: "Just Arrived"
             - condition: state
-              entity_id: input_select.kimberly_status_dropdown
+              entity_id: input_select.presence_state_kimberly
               state: "Just Arrived"
     action:
       - service: script.turn_on
@@ -173,7 +148,7 @@ automation:
 
   ## Automation for runnning the leaving script
   ## Called by Alexa via HA Bridge
-  - alias: "Leaving mode ingeschakeld"
+  - alias: "Mode leaving triggerred"
     initial_state: "on"
     trigger:
       platform: state
@@ -184,16 +159,15 @@ automation:
       - service: script.turn_on
         entity_id: script.leaving
 
-  ## Added V0.10.0
   ## Automation for runnning the extended away script
   ## Called from binary sensor Extended Away
-  ## Note: Potentially replace binary_sensor.everybody_extended_away with a group
-  - alias: "Extended away mode ingeschakeld"
+  ## Note: Potentially replace binary_sensor.presence_everybody_extended_away with a group
+  - alias: "Mode extended away triggered"
     initial_state: "on"
     trigger:
       platform: state
       entity_id: 
-      - binary_sensor.everybody_extended_away
+      - binary_sensor.presence_everybody_extended_away
       to: "on"
     action:
       - service: script.turn_on
@@ -201,7 +175,7 @@ automation:
 
   ## Automation for running the sunset script
   ## Triggered based on sunset minus offset 
-  - alias: "Zonsondergang mode ingeschakeld"
+  - alias: "Mode sunset triggered"
     initial_state: "on"
     trigger:
       platform: sun
@@ -213,7 +187,7 @@ automation:
 
   ## Automation to run when the garbage bins need to go out for collection
   ## Tiggered by sensors based on Google calendar entries
-  - alias: "Vuilnisbak aan de straat"
+  - alias: "Notification garbage bin outside"
     initial_state: "on"
     trigger:
       platform: state
@@ -224,28 +198,17 @@ automation:
       to: "on"
     action:
       - service_template: >
-          {% if (is_state('input_select.ralph_status_dropdown', 'Home')) and (is_state('input_select.anneke_status_dropdown', 'Home'))  %}
+          {% if (is_state('input_select.presence_state_ralph', 'Home')) and (is_state('input_select.presence_state_anneke', 'Home'))  %}
             script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.ralph_status_dropdown', 'Home') %}
+          {% elif is_state('input_select.presence_state_ralph', 'Home') %}
             script.notify_telegram_ralph
-          {% elif is_state('input_select.anneke_status_dropdown', 'Home') %}
+          {% elif is_state('input_select.presence_state_anneke', 'Home') %}
             script.notify_telegram_anneke
           {% endif %}
         data_template:
-          value1: "Vandaag moet de "
-          value2: "{{ trigger.to_state.attributes.friendly_name }}"
-          value3: " bak buiten worden gezet"
-
-      # - service: script.notify_telegram_ralph
-      #   data_template:
-      #     value1: "Vandaag moet de "
-      #     value2: "{{ trigger.to_state.attributes.friendly_name }}"
-      #     value3: " bak buiten worden gezet"
-      # - service: script.notify_telegram_anneke
-      #   data_template:
-      #     value1: "Vandaag moet de "
-      #     value2: "{{ trigger.to_state.attributes.friendly_name }}"
-      #     value3: " bak buiten worden gezet"
+          value1: "Vandaag moet de {{ trigger.to_state.attributes.friendly_name }} bak buiten worden gezet"
+          value2: ""
+          value3: ""
 
 ###############################################################################
 ##  Templates
@@ -389,7 +352,7 @@ script:
     alias: Zonsondergang
     sequence:
       - condition: state
-        entity_id: binary_sensor.people_home
+        entity_id: binary_sensor.presence_people_home
         state: "on"
       - condition: state
         entity_id: input_boolean.holiday_mode

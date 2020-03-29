@@ -1,11 +1,7 @@
 ## Package file for Home Assistant, used for energy monitoring
 ## Type: Home Assistant yaml file
-## Date: 24-03-2020
+## Date added: 2020-03-24
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-##          Split of from package environment
 
 ###############################################################################
 ##  Homeassistant settings

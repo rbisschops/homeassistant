@@ -1,14 +1,8 @@
 ## Lovelace-UI file for Home Assistant, Firstfloor view
 ## Type: Home Assistant yaml file
-## Date: 30-05-2019
+## Date added: 2019-05-30
 ## Author: R.Bisschops
 ##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Moved overleays to the top in the code (see remarks)
-## V0.3.0:  Changed layout
-## V0.3.1:  Minor color updates
-
 ## Remarks:
 ## overlays for doors and other elements need to be on top in the code, otherwise
 ## the other controlable elements are not accessible anymore in the fontend!!
@@ -105,7 +99,7 @@ cards:
           font-weight: 'bold' 
       ## Indoor temerature and humdity sensors
       - type: state-label
-        entity: sensor.room_temp_bathroom
+        entity: sensor.environment_bathroom_temperature
         style:
           top: 54%
           left: 32.5%
@@ -114,7 +108,7 @@ cards:
           color: '#000000'
           font-weight: 'bold' 
       - type: state-label
-        entity: sensor.room_humidity_bathroom
+        entity: sensor.environment_bathroom_humidity
         style:
           top: 58%
           left: 32.5%
@@ -123,7 +117,7 @@ cards:
           color: '#000000'
           font-weight: 'bold'
       - type: state-label
-        entity: sensor.room_temp_office
+        entity: sensor.environment_office_temperature
         style:
           top: 54%
           left: 52%
@@ -132,7 +126,7 @@ cards:
           color: '#000000'
           font-weight: 'bold' 
       - type: state-label
-        entity: sensor.room_humidity_office
+        entity: sensor.environment_office_humidity
         style:
           top: 58%
           left: 52%
@@ -141,7 +135,7 @@ cards:
           color: '#000000'
           font-weight: 'bold'  
       - type: state-label
-        entity: sensor.room_temp_bedroom
+        entity: sensor.environment_bedroom_temperature
         style:
           top: 40%
           left: 15.5%
@@ -150,7 +144,7 @@ cards:
           color: '#000000'
           font-weight: 'bold' 
       - type: state-label
-        entity: sensor.room_humidity_bedroom
+        entity: sensor.environment_bedroom_humidity
         style:
           top: 44%
           left: 15.5%
@@ -176,7 +170,7 @@ cards:
 
       ## Motion sensors
       - type: state-icon
-        entity: binary_sensor.motion_sensor_office
+        entity: binary_sensor.motion_office
         title: Beweging kantoor
         tap_action:
           action: none

@@ -1,17 +1,14 @@
-# Theme file for Home Assistant
-# Type: Home Assistant yaml file
-# Date: 18-07-2019
-# Author: R.Bisschops
-#
-# Based on nest theme by Isabella Gross Alström
-# https://github.com/isabellaalstrom/HomeAssistantConfiguration
-#
-# Changelog:
-# V1.0.0:  First version
-# V1.0.1:  Cleanup and aligned with standard HA styles
+## Theme file for Home Assistant
+## Type: Home Assistant yaml file
+## Date added: 2019-07-18
+## Author: R.Bisschops
+##
+## Notes:
+## Based on nest theme by Isabella Gross Alström
+## https://github.com/isabellaalstrom/HomeAssistantConfiguration
 
 ###############################################################################
-#                              Card specific modifications
+##  Card specific modifications
 ###############################################################################
 
 ha-card-box-shadow: "10px 10px 17px -8px #A9A9A9" # Shadows on cards. Same as `shadow-elevation-2dp_-_box-shadow:
@@ -19,7 +16,7 @@ ha-card-border-radius: "10px" # Rounded corners on cards. NOTE: may not work wit
 # ha-card-background: # Defines the background for cards.
 
 ###############################################################################
-#                              Fonts
+##  Fonts
 ###############################################################################
 
 primary-font-family: 'Open Sans,sans-serif'
@@ -30,7 +27,7 @@ paper-font-subhead_-_font-family: "var(--primary-font-family)"
 paper-font-headline_-_font-family: "var(--primary-font-family)"
 paper-font-caption_-_font-family: "var(--primary-font-family)"
 paper-font-title_-_font-family: "var(--primary-font-family)"
-# Each of the following all have the following elements that can be appended:
+## Each of the following all have the following elements that can be appended:
 # `_-_font-family`, `_-_webkit-font-smoothing`, `_-_white-space`, `_-_overflow`, `_-_text-overflow`, `_-_font-size`, `_-_font-weight`, `_-_letter-spacing`, `_-_line-height`, `_-_text-transform`
 # paper-font-common-base
 # paper-font-common-code
@@ -54,7 +51,7 @@ paper-font-title_-_font-family: "var(--primary-font-family)"
 # app-drawer-font-size: # 14px
 
 ###############################################################################
-#                              Colors
+##  Colors
 ###############################################################################
 
 ## add on colors for this theme
@@ -160,7 +157,6 @@ primary-color: '#636B75'
 # paper-slider-container-color: # Color of the part of the slider which is not active.
 ## mwc
 # mdc-theme-primary: 
-
 
 ### Non documented:
 

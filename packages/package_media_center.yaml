@@ -1,27 +1,10 @@
 ## Package file for Home Assistant, used for mediacenter
 ## Type: Home Assistant yaml file
-## Date: 11-11-2019
+## Date added: 2019-11-11
 ## Author: R.Bisschops
 ##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Added tradfri entertainment switch (replaces domo switch)  
-## V0.2.1:  Removed domo entertainment switch 
-## V0.2.2:  Updated friendly names
-## V0.2.3:  Added HA Bridge selectors and commands
-## V0.2.4:  Added switches for Netflix and Spotify (after Harmony update)
-## V0.3.0:  Added lighting setting for video modes
-## V0.3.1:  Added test input and automation for Harmony hub commands, remove later
-## V0.3.2:  Added setting the video mode input selector. Used for switching lights on in the right mode 
-## V0.3.3:  Code cleanup
-## V0.4.0:  Changed delays in timers, rationalsed some scripts and automations
-## V0.5.0:  Added automation for selecting radio television on Humax
-## V0.6.0:  Added volume control for the Denon AVR
-## V0.7.0:  Changed WebOS (breaking change HA V0.104)
-##          Removed hide_entity form automations (deprecated HA V0.105)
 
 # remove input_select > humax_old_status
-
 
 ###############################################################################
 ##  Homeassistant settings
@@ -420,55 +403,55 @@ switch:
 ###############################################################################
 ##  Groups
 ###############################################################################
-group:
-  ## Group for remotes
-  remote:
-    name: Afstandsbediening
-    entities:
-      - remote.bisschops
-  ## Group for manual selectors
-  input_media_modes:
-    name: Media modes (inputs)
-    entities:
-      - input_boolean.poweroff
-      - input_boolean.television
-      - input_boolean.mediaplayer
-      - input_boolean.appletv
-      - input_boolean.radio
-      - input_boolean.music
-      - input_boolean.dvd
-      - input_boolean.teletext
-      - input_boolean.smarttv
-      - input_boolean.netflix
-      - input_boolean.spotify
-  ## Group for HA Bridge sensors    
-  habridge_media_modes:
-    name: Media modes (HA Bridge)
-    entities:
-      - binary_sensor.habridge_poweroff
-      - binary_sensor.habridge_television
-      - binary_sensor.habridge_smarttv
-      - binary_sensor.habridge_mediaplayer
-      - binary_sensor.habridge_appletv
-      - binary_sensor.habridge_radio
-      - binary_sensor.habridge_music
-      - binary_sensor.habridge_netflix
-      - binary_sensor.habridge_spotify
+# group:
+#   ## Group for remotes
+#   remote:
+#     name: Afstandsbediening
+#     entities:
+#       - remote.bisschops
+  # ## Group for manual selectors
+  # input_media_modes:
+  #   name: Media modes (inputs)
+  #   entities:
+  #     - input_boolean.poweroff
+  #     - input_boolean.television
+  #     - input_boolean.mediaplayer
+  #     - input_boolean.appletv
+  #     - input_boolean.radio
+  #     - input_boolean.music
+  #     - input_boolean.dvd
+  #     - input_boolean.teletext
+  #     - input_boolean.smarttv
+  #     - input_boolean.netflix
+  #     - input_boolean.spotify
+  # ## Group for HA Bridge sensors    
+  # habridge_media_modes:
+  #   name: Media modes (HA Bridge)
+  #   entities:
+  #     - binary_sensor.habridge_poweroff
+  #     - binary_sensor.habridge_television
+  #     - binary_sensor.habridge_smarttv
+  #     - binary_sensor.habridge_mediaplayer
+  #     - binary_sensor.habridge_appletv
+  #     - binary_sensor.habridge_radio
+  #     - binary_sensor.habridge_music
+  #     - binary_sensor.habridge_netflix
+  #     - binary_sensor.habridge_spotify
   ## Group for Harmony template switches
-  harmony_media_modes:
-    name: Media modes (Harmony Hub)
-    entities:
-      - switch.poweroff
-      - switch.television
-      - switch.mediaplayer
-      - switch.appletv
-      - switch.radio
-      - switch.music
-      - switch.dvd
-      - switch.teletext
-      - switch.smarttv      
-      - switch.netflix
-      - switch.spotify
+  # harmony_media_modes:
+  #   name: Media modes (Harmony Hub)
+  #   entities:
+  #     - switch.poweroff
+  #     - switch.television
+  #     - switch.mediaplayer
+  #     - switch.appletv
+  #     - switch.radio
+  #     - switch.music
+  #     - switch.dvd
+  #     - switch.teletext
+  #     - switch.smarttv      
+  #     - switch.netflix
+  #     - switch.spotify
 
 ###############################################################################
 ##  Automations
@@ -666,7 +649,7 @@ automation:
   #   action:
   #   - service: rest_command.denon_volume
 
-  - alias: "Denon Set Volume"
+  - alias: "Media Denon set volume"
     initial_state: "on"
     trigger:
       platform: state
@@ -678,7 +661,7 @@ automation:
           volume_level: >
             {{states('input_number.volume_setpoint') | int / 100}}
 
-  - alias: "Denon Update Volume Slider"
+  - alias: "Media Denon update volume slider"
     initial_state: "on"
     trigger:
       - platform: state

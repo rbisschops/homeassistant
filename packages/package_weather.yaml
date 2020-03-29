@@ -1,16 +1,7 @@
 ## Package file for Home Assistant, used for weather  
 ## Type: Home Assistant yaml file
-## Date: 11-11-2019
+## Date added: 2019-11-11
 ## Author: R.Bisschops
-##
-## Changelog:
-## V0.1.0:  First version
-## V0.2.0:  Added buienradar camera
-## V0.3.0:  Removed DarkSky
-## V1.0.0:  Production version 1.0
-## V1.1.0:  Added timeframe for buienradar sensor
-## V1.1.1:  Code cleaning
-## V1.1.2:  Applied Home Assistant templating rules (see: https://developers.home-assistant.io/docs/en/documentation_standards.html#templates)
 
 ###############################################################################
 ##  Homeassistant settings
