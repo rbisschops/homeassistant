@@ -57,7 +57,7 @@ input_select:
   ## Added V1.5.0
   ## Selector for setting the previous state of selector switches. Used for toggling them
   ## off when a new scene is selected. Used in the script hue_set.
-  scene_old_status:
+  light_scene_old_state:
     name: Oude hue scene
     icon: mdi:lightbulb
     options:
@@ -74,7 +74,7 @@ input_select:
   ## Added V1.5.0
   ## Selector for setting the current state of selector switches. Used for toggling them
   ## on when a new scene is selected. Used in the script hue_set.
-  scene_current_status:
+  light_scene_current_state:
     name: Nieuwe hue scene
     icon: mdi:lightbulb
     options:
@@ -90,8 +90,8 @@ input_select:
       - christmas
   ## Classic selectors for scenes and Rooms (used to manage the HUe bridge scenes)
   ## Depricated selectors 
-  hue_scenes:
-    name: Licht scenes woonkamer
+  light_hue_scenes:
+    name: Hue licht scenes
     icon: mdi:lightbulb
     options:
       - Concentratie
@@ -106,8 +106,8 @@ input_select:
       - Verlichting aan
       - Zonsondergang
     initial: Verlichting aan
-  hue_groups:
-    name: Ruimte
+  light_hue_groups:
+    name: Hue selectie ruimte
     icon: mdi:group
     options:
       - Woonkamer
@@ -115,7 +115,7 @@ input_select:
     initial: Woonkamer
   ## Mode selector for the lights in the livingroom.
   ## Used for the modes the light can be set to from media center
-  livingroom_lights_mode:
+  light_livingroom_mode:
     name: Verlichtsmode Woonkamer
     options:
       - Normaal
@@ -156,8 +156,8 @@ light:
 #     icon: mdi:spotlight
 #     entities:
 #       - light.woonkamer
-#       - input_select.hue_scenes
-#       - input_select.hue_groups
+#       - input_select.light_hue_scenes
+#       - input_select.light_hue_groups
 #       - script.set_hue_scene
 
 ###############################################################################
@@ -166,7 +166,7 @@ light:
 automation:
   ## Added V1.5.0
   ## Automation for selecting the Hue scenes form the UI
-  - alias: "Scene verlichting woonkamer"
+  - alias: "Light - scene lighting livingroom"
     initial_state: "on"
     trigger:
       platform: state
@@ -188,7 +188,7 @@ automation:
           new_scene: >
             {% set trigger = trigger.to_state.object_id|replace('scene_','') %}
             {{ trigger }}
-          old_scene: "{{ states.input_select.scene_current_status.state }}"
+          old_scene: "{{ states.input_select.light_scene_current_state.state }}"
 
 ###############################################################################
 ##  Templates
@@ -215,11 +215,11 @@ script:
           {% endif %}
       - service: input_select.select_option
         data_template:
-          entity_id: input_select.scene_old_status
+          entity_id: input_select.light_scene_old_state
           option: "{{ old_scene }}"
       - service: input_select.select_option
         data_template:
-          entity_id: input_select.scene_current_status
+          entity_id: input_select.light_scene_current_state
           option: "{{ new_scene }}"
       - service: input_boolean.turn_off
         data_template:
@@ -238,8 +238,8 @@ script:
     sequence: 
       - service: script.set_hue_scene
         data_template:
-          group: "{{ states.input_select.hue_groups.state }}"
-          name: "{{ states.input_select.hue_scenes.state }}"
+          group: "{{ states.input_select.light_hue_groups.state }}"
+          name: "{{ states.input_select.light_hue_scenes.state }}"
 
   ## Script for setting the Hue scene manual
   ## used by multiple packages (media_center)
@@ -261,7 +261,7 @@ script:
       - service: script.set_hue_scene_auto
         data_template:
           brightness_value: >
-            {{ '90,100' if is_state('input_select.livingroom_lights_mode','Video') else '100,150' }}
+            {{ '90,100' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
           profile_value: >
             {{ 'christmas' if is_state('input_boolean.christmas_mode','on') else 'normal' }}
           transition: 5

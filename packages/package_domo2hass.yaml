@@ -67,7 +67,7 @@ automation:
   
   ## Added V0.8.1
   ## Publish christmas tree light switch to Domoticz
-  - alias: "Domoticz publish - Kerstboom"
+  - alias: "Domoticz publish - Switch Christmas tree"
     initial_state: "on"
     trigger:
       platform: state
@@ -87,7 +87,7 @@ automation:
 
   ## Added V0.8.0, updated 0.8.1 & 0.8.2
   ## Publish garden light switch to Domoticz
-  - alias: "Domoticz publish - Tuinverlichting"
+  - alias: "Domoticz publish - Light garden"
     initial_state: "on"
     trigger:
       platform: state
@@ -104,8 +104,9 @@ automation:
              "idx": 28,
              "switchcmd": trigger.to_state.state|capitalize
             }|tojson }}
+
   ## Publish porch light switch to Domoticz
-  - alias: "Domoticz publish - Buitenlamp"
+  - alias: "Domoticz publish - Light porch"
     initial_state: "on"
     trigger:     
       platform: state
@@ -123,7 +124,7 @@ automation:
              "switchcmd": trigger.to_state.state|capitalize
             }|tojson }}
   ## Publish hallway light switch to Domoticz
-  - alias: "Domoticz publish - Halletje"
+  - alias: "Domoticz publish - Light hallway"
     initial_state: "on"
     trigger:     
       platform: state
@@ -141,7 +142,7 @@ automation:
              "switchcmd": trigger.to_state.state|capitalize
             }|tojson }}
   ## Publish kitchen cabinets light switch to Domoticz
-  - alias: "Domoticz publish - Hoge kasten"
+  - alias: "Domoticz publish - Light high cabinets"
     initial_state: "on"
     trigger:     
       platform: state
@@ -159,7 +160,7 @@ automation:
              "switchcmd": trigger.to_state.state|capitalize
             }|tojson }}
   ## Publish bar light switch to Domoticz
-  - alias: "Domoticz publish - Lampen bar"
+  - alias: "Domoticz publish - Light bar"
     initial_state: "on"
     trigger:     
       platform: state
@@ -177,7 +178,7 @@ automation:
              "switchcmd": trigger.to_state.state|capitalize
             }|tojson }}
   ## Publish water ornament switch to Domoticz
-  - alias: "Domoticz publish - Waterbollen"
+  - alias: "Domoticz publish - Switch water ornament"
     initial_state: "on"
     trigger:     
       platform: state
@@ -195,7 +196,7 @@ automation:
              "switchcmd": trigger.to_state.state|capitalize
             }|tojson }}
   ## Publish sunscreen switch to Domoticz
-  - alias: "Domoticz publish - Zonnescherm"
+  - alias: "Domoticz publish - Blinds Sunscreen"
     initial_state: "on"
     trigger:     
       platform: state
@@ -214,7 +215,7 @@ automation:
             }|tojson }}
 
   ## Convert Domoticz Zigbee switch (type Light/Switch) to Hass 
-  - alias: "Read domoticz Zigbee switch via MQTT"
+  - alias: "Domoticz subscribe - Read domoticz Zigbee switch"
     initial_state: "on"
     trigger:
       - platform: mqtt
@@ -231,7 +232,7 @@ automation:
             {{ trigger.payload_json.svalue1 }}
 
   ## Convert Domoticz CoCo switch (type Lighting 2) to Hass 
-  - alias: "Read domoticz CoCo switch via MQTT"
+  - alias: "Domoticz subscribe - Read domoticz CoCo switch"
     initial_state: "on"
     trigger:
       - platform: mqtt
@@ -247,10 +248,9 @@ automation:
           state: >-
             {{ trigger.payload_json.nvalue }}
 
-  # Added V0.6.0, Updated V0.9.1
   ## Convert Domoticz Energy meters to Hass
   ## Elektra meter will sent svalue1, svalue2, svalue5
-  - alias: "Domoticz Elektra waarden via MQTT"
+  - alias: "Domoticz publish - Utilities electiricity values"
     initial_state: "on"  
     trigger:
       - platform: mqtt
@@ -280,9 +280,8 @@ automation:
               "usage_low": trigger.payload_json.svalue1,
               "current_usage": trigger.payload_json.svalue5
             }|tojson }}
-  ## Updated V0.9.1
   ## Gas meter will sent svalue1
-  - alias: "Domoticz Gas waarden via MQTT"
+  - alias: "Domoticz publish - Utilities Gas values"
     initial_state: "on"
     trigger:
       - platform: mqtt
@@ -310,7 +309,7 @@ automation:
             }|tojson }}
   ## Updated V0.9.1
   ## Water meter will sent svalue1
-  - alias: Domoticz Water waarden via MQTT
+  - alias: "Domoticz publish - Utilities Water values"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -338,7 +337,7 @@ automation:
             }|tojson }}
   ## Added V0.9.0
   ## Domoticz server memory usage, will sent svalue1
-  - alias: Domoticz geheugen gebruik via MQTT
+  - alias: "Domoticz publish - Domoticz server memory usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -361,7 +360,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Domoticz server HDD-boot partition, will sent svalue1
-  - alias: Domoticz HDD-boot partition gebruik via MQTT
+  - alias: "Domoticz publish - Domoticz server HDD-boot partition usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -384,7 +383,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Domoticz server HDD partition, will sent svalue1
-  - alias: Domoticz HDD partition gebruik via MQTT
+  - alias: "Domoticz publish - Domoticz server HDD partition usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -406,9 +405,10 @@ automation:
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
+  
   ## Domoticz server temperature, will sent svalue1
-  - alias: Domoticz CPU temperature gebruik via MQTT
-    initial_state: "on" 
+  - alias: "Domoticz publish Domoticz server CPU temperature"
+    initial_state: "on"
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -430,7 +430,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Domoticz CPU usage, will sent svalue1
-  - alias: Domoticz CPU usage partition gebruik via MQTT
+  - alias: "Domoticz publish - Domoticz server CPU usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -453,7 +453,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Domoticz process usage, will sent svalue1
-  - alias: Domoticz process usage partition gebruik via MQTT
+  - alias: "Domoticz publish - Domoticz server process usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -476,7 +476,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Homeserver server memory usage, will sent svalue1
-  - alias: Homeserver geheugen gebruik via MQTT
+  - alias: "Domoticz publish - Homeserver memory usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -499,7 +499,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Homeserver server HDD-boot partition, will sent svalue1
-  - alias: Homeserver HDD-boot partition gebruik via MQTT
+  - alias: "Domoticz publish - Homeserver HDD-boot partition usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -522,7 +522,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Homeserver server HDD partition, will sent svalue1
-  - alias: Homeserver HDD partition gebruik via MQTT
+  - alias: "Domoticz publish - Homeserver HDD partition usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -545,7 +545,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Homeserver server temperature, will sent svalue1
-  - alias: Homeserver CPU temperature gebruik via MQTT
+  - alias: "Domoticz publish - Homeserver CPU temperature"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -568,7 +568,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Homeserver CPU usage, will sent svalue1
-  - alias: Homeserver CPU usage partition gebruik via MQTT
+  - alias: "Domoticz publish - Homeserver CPU usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt
@@ -591,7 +591,7 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
   ## Homeserver process usage, will sent svalue1
-  - alias: Homeserver process usage partition gebruik via MQTT
+  - alias: "Domoticz publish - Homeserver process usage"
     initial_state: "on" 
     trigger:
       - platform: mqtt

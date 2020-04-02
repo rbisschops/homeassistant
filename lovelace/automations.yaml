@@ -18,7 +18,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: automation.koelkast_alarm
+      - entity: automation.alarm_refrigerator_door_open
         name: Koelkast alarm
       - entity: automation.notification_alarm_state_reset
         name: Alarm gereset
@@ -60,9 +60,9 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: automation.tuinverlichting_bij_thuiskomst
+      - entity: automation.light_garden_on_at_home_coming
         name: Tuinverlichting aan bij thuiskomst
-      - entity: automation.tuinverlichting_bij_zonsondergang 
+      - entity: automation.light_garden_on_at_sunset 
         name: Tuinverlichting aan bij zonsondergang
   - type: vertical-stack
     cards:
@@ -75,9 +75,9 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: automation.toilet_verwarming_aan_volgens_schema_niet_werkdagen
+      - entity: automation.climate_restroom_heating_scheduled_on_non_working_days
         name: Toilet verwarming aan volgens schema - niet werkdagen
-      - entity: automation.toilet_verwarming_aan_volgens_schema_werkdagen
+      - entity: automation.climate_restroom_heating_scheduled_on_working_days
         name: Toilet verwarming aan volgens schema - werkdagen
   - type: vertical-stack
     cards:
@@ -90,31 +90,31 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: automation.domoticz_publish_buitenlamp
+      - entity: automation.domoticz_publish_light_porch
         name: Publiceer buitenlamp naar Domoticz
-      - entity: automation.domoticz_publish_halletje
+      - entity: automation.domoticz_publish_light_hallway
         name: Publiceer verl. halletje naar Domoticz
-      - entity: automation.domoticz_publish_hoge_kasten
+      - entity: automation.domoticz_publish_light_high_cabinets
         name: Publiceer verl.hoge kasten naar Domoticz
-      - entity: automation.domoticz_publish_kerstboom
+      - entity: automation.domoticz_publish_switch_christmas_tree
         name: Publiceer kerstboom naar Domoticz
-      - entity: automation.domoticz_publish_lampen_bar
+      - entity: automation.domoticz_publish_light_bar
         name: Publiceer lampen bar naar Domoticz
-      - entity: automation.domoticz_publish_tuinverlichting
+      - entity: automation.domoticz_publish_light_garden
         name: Publiceer tuinverlichting naar Domoticz
-      - entity: automation.domoticz_publish_waterbollen
+      - entity: automation.domoticz_publish_switch_water_ornament
         name: Publiceer waterbollen naar Domoticz
-      - entity: automation.domoticz_publish_zonnescherm
+      - entity: automation.domoticz_publish_blinds_sunscreen
         name: Publiceer zonnescherm naar Domoticz
-      - entity: automation.read_domoticz_zigbee_switch_via_mqtt
+      - entity: automation.domoticz_subscribe_read_domoticz_zigbee_switch
         name: Lees zigbee schakelaar
-      - entity: automation.read_domoticz_coco_switch_via_mqtt
+      - entity: automation.domoticz_subscribe_read_domoticz_coco_switch
         name: Lees klik-aan-klik-uit schakelaar
-      - entity: automation.domoticz_elektra_waarden_via_mqtt
+      - entity: automation.domoticz_publish_utilities_electiricity_values
         name: Lees waarden elektriciteit
-      - entity: automation.domoticz_gas_waarden_via_mqtt
+      - entity: automation.domoticz_publish_utilities_gas_values
         name: Lees waarden gas
-      - entity: automation.domoticz_water_waarden_via_mqtt
+      - entity: automation.domoticz_publish_utilities_water_values
         name: Lees waarden water
   - type: vertical-stack
     cards:
@@ -127,5 +127,5 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: automation.post_ontvangen
+      - entity: automation.vibration_mail_received
         name: Melding post ontvangen

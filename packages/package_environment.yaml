@@ -100,7 +100,7 @@ homeassistant:
 ###############################################################################
 
 input_select:
-  room_humidity_livingroom_state:
+  environment_livingroom_humidity_state:
     name: Luchtvochtigheid Woonkamer status
     options: 
       - Te laag
@@ -108,7 +108,7 @@ input_select:
       - Normaal
       - Hoog
       - Te hoog
-  room_humidity_test_state:
+  environment_test_humidity_state:
     name: Luchtvochtigheid Test status
     options: 
       - Te laag
@@ -414,7 +414,7 @@ sensor:
 ##  Automations
 ###############################################################################
 automation:
-  - alias: "Luchtvochtigheid woonkamer laag"
+  - alias: "Environment Livingroom humidity low"
     initial_state: "on" 
     trigger:
       platform: numeric_state
@@ -431,27 +431,27 @@ automation:
           entity_id: binary_sensor.presence_everybody_away
           state: "off"
         - condition: state
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           state: "Normaal"
     action:
-      - service_template: >
-          {% if (is_state('input_select.presence_state_ralph', 'Home')) and (is_state('input_select.presence_state_anneke', 'Home'))  %}
-            script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_state_ralph', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_state_anneke', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "De luchtvochtigheid in de woonkamer is momenteel laag ("
-          value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
-          value3: "%). Zet Oskar aan als de luchtvochtigheid verder daalt!"
+      # - service_template: >
+      #     {% if (is_state('input_select.presence_state_ralph', 'Home')) and (is_state('input_select.presence_state_anneke', 'Home'))  %}
+      #       script.notify_telegram_ralph_and_anneke
+      #     {% elif is_state('input_select.presence_state_ralph', 'Home') %}
+      #       script.notify_telegram_ralph
+      #     {% elif is_state('input_select.presence_state_anneke', 'Home') %}
+      #       script.notify_telegram_anneke
+      #     {% endif %}
+      #   data_template:
+      #     value1: "De luchtvochtigheid in de woonkamer is momenteel laag ("
+      #     value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
+      #     value3: "%). Zet Oskar aan als de luchtvochtigheid verder daalt!"
       - service: input_select.select_option
         data:
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           option: Laag
 
-  - alias: "Luchtvochtigheid woonkamer te laag"
+  - alias: "Environment Livingroom humidity too low"
     initial_state: "on" 
     trigger:
       platform: numeric_state
@@ -468,7 +468,7 @@ automation:
           entity_id: binary_sensor.presence_everybody_away
           state: "off"
         - condition: state
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           state: "Laag"
     action:
       - service_template: >
@@ -485,10 +485,10 @@ automation:
           value3: "%). Zet Oskar aan!"
       - service: input_select.select_option
         data:
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           option: Te laag
 
-  - alias: "Luchtvochtigheid woonkamer laag reset normaal test"
+  - alias: "Environment Livingroom humidity reset low to normal"
     initial_state: "on" 
     trigger:
       platform: numeric_state
@@ -510,10 +510,10 @@ automation:
           value3: "%). Oskar kan weer uit!"
       - service: input_select.select_option
         data:
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           option: Normaal
 
-  - alias: "Luchtvochtigheid woonkamer hoog"
+  - alias: "Environment Livingroom humidity high"
     initial_state: "on" 
     trigger:
       platform: numeric_state
@@ -530,27 +530,27 @@ automation:
           entity_id: binary_sensor.presence_everybody_away
           state: "off"
         - condition: state
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           state: "Normaal"
     action:
-      - service_template: >
-          {% if (is_state('input_select.presence_state_ralph', 'Home')) and (is_state('input_select.presence_state_anneke', 'Home'))  %}
-            script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_state_ralph', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_state_anneke', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "De luchtvochtigheid in de woonkamer is momenteel hoog ("
-          value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
-          value3: "%). Tijd om te ventileren en/of Oskar uit te zetten."
+      # - service_template: >
+      #     {% if (is_state('input_select.presence_state_ralph', 'Home')) and (is_state('input_select.presence_state_anneke', 'Home'))  %}
+      #       script.notify_telegram_ralph_and_anneke
+      #     {% elif is_state('input_select.presence_state_ralph', 'Home') %}
+      #       script.notify_telegram_ralph
+      #     {% elif is_state('input_select.presence_state_anneke', 'Home') %}
+      #       script.notify_telegram_anneke
+      #     {% endif %}
+      #   data_template:
+      #     value1: "De luchtvochtigheid in de woonkamer is momenteel hoog ("
+      #     value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
+      #     value3: "%). Tijd om te ventileren en/of Oskar uit te zetten."
       - service: input_select.select_option
         data:
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           option: Hoog
 
-  - alias: "Luchtvochtigheid woonkamer hoog"
+  - alias: "Environment Livingroom humidity too high"
     initial_state: "on" 
     trigger:
       platform: numeric_state
@@ -567,7 +567,7 @@ automation:
           entity_id: binary_sensor.presence_everybody_away
           state: "off"
         - condition: state
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           state: "Hoog"
     action:
       - service_template: >
@@ -584,10 +584,10 @@ automation:
           value3: "%). Tijd om te ventileren en/of Oskar uit te zetten."
       - service: input_select.select_option
         data:
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           option: Te hoog
 
-  - alias: "Luchtvochtigheid woonkamer hoog reset normaal test"
+  - alias: "Environment Livingroom humidity reset high to normal"
     initial_state: "on"
     trigger:
       platform: numeric_state
@@ -604,12 +604,12 @@ automation:
             script.notify_telegram_anneke
           {% endif %}
         data_template:
-          value1: "De luchtvochtigheid in de woonkamer is weer op peil ("
+          value1: "De luchtvochtigheid in de woonkamer is weer normaal ("
           value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
           value3: "%)."
       - service: input_select.select_option
         data:
-          entity_id: input_select.room_humidity_livingroom_state
+          entity_id: input_select.environment_livingroom_humidity_state
           option: Normaal
 
 ###############################################################################

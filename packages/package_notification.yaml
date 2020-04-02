@@ -59,7 +59,12 @@ input_boolean:
 ##  Automations
 ###############################################################################
 automation:
-  - alias: "Telegram bot reactie op keyboard"
+
+  ##-------------------------------------------------------
+  ## Test automations >> Move or remove ASAP after testing 
+  ##-------------------------------------------------------
+
+  - alias: "Notification - Telegram bot keyboard response"
     trigger:
       platform: event
       event_type: telegram_callback

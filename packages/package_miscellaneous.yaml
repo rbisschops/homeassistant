@@ -37,8 +37,8 @@ binary_sensor:
   ## Used for sending "put the bin out" notifications
   - platform: template
     sensors:
-      gft:
-        friendly_name: GFT
+      garbage_bin_gft:
+        friendly_name: GFT bak
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'GFT' %}
@@ -52,15 +52,15 @@ binary_sensor:
             false
           {% endif %}
         entity_picture_template: >-
-          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.gft.state ~ '.png' }}
+          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
 
   ## Definition of the PMD (Platic and metal) garbage bin
   ## Depends on google calendar for afval_kalender
   ## Used for sending "put the bin out" notifications
   - platform: template
     sensors:
-      pmd:
-        friendly_name: PMD
+      garbage_bin_pmd:
+        friendly_name: PMD bak
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'PMD' %}
@@ -74,15 +74,15 @@ binary_sensor:
             false
           {% endif %}
         entity_picture_template: >-
-          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.pmd.state ~ '.png' }}
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
 
   ## Definition of the PMD and GFT (Plastic and metal and bio) garbage bins
   ## Depends on google calendar for afval_kalender
   ## Used for sending "put both bins out" notifications
   - platform: template
     sensors:
-      gft_pmd:
-        friendly_name: 'GFT en PMD'
+      garbage_bin_gft_pmd:
+        friendly_name: 'GFT en PMD bak'
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'GFT + PMD' %}
@@ -123,7 +123,7 @@ automation:
     trigger:
       - platform: state
         entity_id: 
-          - binary_sensor.neo_coolcam_front_door
+          - binary_sensor.door_front_door
         to: "on"
     condition:
       condition: and
@@ -192,9 +192,9 @@ automation:
     trigger:
       platform: state
       entity_id: 
-      - binary_sensor.gft
-      - binary_sensor.pmd
-      - binary_sensor.gft_pmd
+      - binary_sensor.garbage_bin_gft
+      - binary_sensor.garbage_bin_pmd
+      - binary_sensor.garbage_bin_gft_pmd
       to: "on"
     action:
       - service_template: >
@@ -235,7 +235,7 @@ script:
       ## Change the climate settings for the toilet heating
       - service: input_select.select_option
         data:
-          entity_id: input_select.restroom_heating
+          entity_id: input_select.climate_restroom_heating_mode
           option: "Spaarstand"
       - condition: state
         entity_id: input_boolean.recording_mode
@@ -243,7 +243,6 @@ script:
       - service: homeassistant.turn_off
         entity_id: switch.tradfri_media_switch
 
-  ## Added V0.9.0, Updated V0.13.0
   ## Script when leaving home, also called when everybody is away (from package_presence)
   leaving:
     alias: Leaving script
@@ -257,9 +256,9 @@ script:
       ## Change the climate settings for the toilet heating
       - service: input_select.select_option
         data_template:
-          entity_id: input_select.restroom_heating
+          entity_id: input_select.climate_restroom_heating_mode
           option: >
-            {{ 'Uitgeschakeld' if is_state('input_select.restroom_heating','Uitgeschakeld') else 'Spaarstand' }}
+            {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Spaarstand' }}
       - service_template: >
           {% if is_state('input_boolean.recording_mode', 'on') %}
             homeassistant.turn_on
@@ -277,16 +276,15 @@ script:
       - service: timer.start
         data_template:
           entity_id: timer.porchlight
-          # duration: '00:{{ states.input_text.timer_minutes_porch_short.state | int }}:00'
-          duration: "00:{{ states('input_text.timer_minutes_porch_short')|int}}:00"
+          # duration: '00:{{ states.input_text.light_porch_short_timer.state | int }}:00'
+          duration: "00:{{ states('input_text.light_porch_short_timer')|int}}:00"
       - service: homeassistant.turn_on
         entity_id: input_boolean.hallwaylight
       - service: timer.start
         data_template:
           entity_id: timer.hallwaylight
-          # duration: '00:{{ states.input_text.timer_minutes_hallwaylight_long.state | int }}:00'
-          duration: "00:{{ states('input_text.timer_minutes_hallwaylight_long')|int}}:00"
-  ## Added V0.9.0, Updated V0.13.0
+          # duration: '00:{{ states.input_text.media_hallway_light_long_timer.state | int }}:00'
+          duration: "00:{{ states('input_text.media_hallway_light_long_timer')|int}}:00"
   ## Script when someone comes home
   coming_home:
     alias: Coming home script
@@ -294,9 +292,9 @@ script:
       ## Change the climate settings for the toilet heating  
       - service: input_select.select_option
         data_template:
-          entity_id: input_select.restroom_heating
+          entity_id: input_select.climate_restroom_heating_mode
           option: >
-            {{ 'Uitgeschakeld' if is_state('input_select.restroom_heating','Uitgeschakeld') else 'Verwarmen' }}
+            {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Verwarmen' }}
       ## Turn on lighting, but only when dark
       - condition: state
         entity_id: sun.sun
@@ -334,19 +332,17 @@ script:
         entity_id: 
           - input_boolean.christmastree
 
-  ## Added V0.10.0, updated V0.13.0
   ## Script everybody extended away
   extended_away:
     alias: Iedereen langere tijd weg script
     sequence:
       - service: input_select.select_option
         data:
-          entity_id: input_select.restroom_heating
+          entity_id: input_select.climate_restroom_heating_mode
           option: "Uitgeschakeld"
       - service: homeassistant.turn_on
         entity_id: input_boolean.holiday_mode
 
-  ## Added V0.12.0, updated V0.13.0
   ## Script running at sunset
   sunset:
     alias: Zonsondergang
@@ -369,7 +365,7 @@ script:
           brightness_start_value: >
             {{ '1,1' }}
           brightness_stop_value: >
-            {{ '90,100' if is_state('input_select.livingroom_lights_mode','Video') else '100,150' }}
+            {{ '90,100' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
           profile_start_value: >
             {{ 'christmas' if is_state('input_boolean.christmas_mode','on') else 'normal' }}
           profile_stop_value: >
@@ -398,7 +394,6 @@ script:
   ## Test scripts >> Remove ASAP after testing 
   ##----------------------------------------------
   
-  ## Added V0.12.0
   hue_test:
     alias: hue test
     sequence:
@@ -413,7 +408,6 @@ script:
           profile_stop_value: relax
           transition: 5
 
-  ## Added V0.13.0
   hue_test_auto:
     alias: hue test
     sequence:
@@ -421,7 +415,7 @@ script:
       - service: script.set_hue_scene_auto
         data_template:
           brightness_value: >
-            {{ '50,50' if is_state('input_select.livingroom_lights_mode','Video') else '100,150' }}
+            {{ '50,50' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
           profile_value: >
             {{ 'christmas' if is_state('input_boolean.christmas_mode','on') else 'concentrate' }}
           transition: 5

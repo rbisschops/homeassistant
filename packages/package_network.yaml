@@ -274,7 +274,7 @@ sensor:
 ###############################################################################
 automation:
   ## Sent alert when a critical network device is offline
-  - alias: "Netwerk alarm aan"
+  - alias: "Network - Notification network alert on"
     initial_state: "on"
     trigger:
       platform: state
@@ -298,8 +298,9 @@ automation:
           value3: " is offline!"
           who: "ralph"
           prio: 2
+
   ## Sent alert when a critical network device is online
-  - alias: "Netwerk alarm uit"
+  - alias: "Network - Notification Network alert off"
     initial_state: "on"
     trigger:
       platform: state

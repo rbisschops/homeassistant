@@ -24,7 +24,7 @@ homeassistant:
 ###############################################################################
 
 input_number:
-  water_tariff:
+  utility_water_tariff:
     name: Tarief water (EUR/m3)
     initial: 0.927
     min: 0
@@ -37,7 +37,7 @@ sensor:
         value_template: "{{ states('sensor.dsmr_reading_electricity_currently_delivered')|float * 1000 }}"
         unit_of_measurement: "W"
       utilities_day_consumption_water_costs:
-        value_template: "{{(states('sensor.utilities_water_usage')|float /1000 * states('input_number.water_tariff')|float)|round(2) }}"
+        value_template: "{{(states('sensor.utilities_water_usage')|float /1000 * states('input_number.utility_water_tariff')|float)|round(2) }}"
         unit_of_measurement: "€"
       utilities_total_cost_day:
         value_template: "{{ (states('sensor.dsmr_day_consumption_total_cost')|float + states('sensor.utilities_day_consumption_water_costs')|float)|round(2) }}"
@@ -145,7 +145,7 @@ group:
 automation:
   ## Automation for storing the nightly values (00:00) for reference. Reference is used for daily usage graphs 
   ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
-  - alias: "update utilities referentie waarden"
+  - alias: "Utilities - update utilities reference values"
     initial_state: "on" 
     trigger:
       platform: time

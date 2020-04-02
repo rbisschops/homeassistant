@@ -46,7 +46,7 @@ group:
     entities:
       - switch.habridge_gardenlight
       - input_boolean.gardenlight
-  switch_waterornament:
+  switch_water_ornament:
     name: Waterbollen
     entities:
       - switch.habridge_waterornament
@@ -107,11 +107,11 @@ automation:
           {% elif is_state(trigger.entity_id, 'off') %}
             homeassistant.turn_off
           {% endif %}
-        entity_id: group.switch_waterornament
+        entity_id: group.switch_water_ornament
 
   ## Updated V1.8.2
   ## Switch on gardenlights at sunset but only if someone is home
-  - alias: "Tuinverlichting bij zonsondergang"
+  - alias: "Light garden on at sunset"
     initial_state: 'on'
     trigger:
       - platform: sun
@@ -138,7 +138,7 @@ automation:
 
   ## Added V1.6.0, Updated V1.8.2
   ## Switch on gardenlights before sunrise but only if someone is home
-  - alias: "Tuinverlichting voor zonsopkomst"
+  - alias: "Light garden on before sunrise"
     initial_state: "on"
     trigger:
       - platform: time
@@ -165,7 +165,7 @@ automation:
 
   ## Added V1.6.0, Updated V1.8.2
   ## Switch off gardenlights at sunrise but only if someone is home
-  - alias: "Tuinverlichting uit bij zonsopkomst"
+  - alias: "Light garden off at sunrise"
     initial_state: "on"
     trigger:
       - platform: sun
@@ -181,13 +181,13 @@ automation:
         entity_id: input_boolean.gardenlight
 
   ## Switch gardenlights at home coming but only when dark and before 23:00
-  - alias: "Tuinverlichting bij thuiskomst"
+  - alias: "Light garden on at home coming"
     initial_state: "on"
     trigger:
       - platform: state
         entity_id: 
           ## Added in V1.3.3
-          - binary_sensor.neo_coolcam_front_door
+          - binary_sensor.door_front_door
         to: "on"
     condition:  
       condition: and
@@ -213,7 +213,7 @@ automation:
         entity_id: input_boolean.gardenlight
 
   ## Start and stop sunscreen based on toggle pause/start from frontend 
-  - alias: "Pauzeer zonnescherm"
+  - alias: "Blinds - Pause sunscreen"
     initial_state: "on"
     trigger:
       - platform: state
@@ -226,7 +226,7 @@ automation:
           # new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
 
   ## Open sunscreen based on position of the sun (elevation)
-  - alias: "Zonnescherm uit - elevatie" 
+  - alias: "Blinds - Sunscreen out based on elevation" 
     initial_state: "on"
     trigger:
       - platform: numeric_state
@@ -262,7 +262,7 @@ automation:
           prio: -2   
 
   ## Open sunscreen when percipitation returns to 0.0
-  - alias: "Zonnescherm uit - regenverwachting"
+  - alias: "Blinds - Sunscreen out based on rain precipation"
     initial_state: "on"
     trigger:
       #################################################################  
@@ -312,7 +312,7 @@ automation:
 
   ## Close sunscreen when rain is expected (percipitation > 0.0 or when its 19:30 or when azimuth is over 200.0
   ## Azimuth is trigger commented for now
-  - alias: "Zonnescherm in"
+  - alias: "Blinds - Sunscreen in"
     initial_state: "on"
     trigger:
       #################################################################  

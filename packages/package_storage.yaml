@@ -28,13 +28,13 @@ input_boolean:
 
 ## Added V0.4.0
 input_text:
-  timer_minutes_porch_long:
-    name:  Buitenlamp lang (min)
+  light_porch_long_timer:
+    name: Buitenlamp timer lang (min)
     initial: 10
     min: 1
     max: 60
-  timer_minutes_porch_short:
-    name: Buitenlamp kort (min)
+  light_porch_short_timer:
+    name: Buitenlamp timer kort (min)
     initial: 5
     max: 60
     min: 1
@@ -78,42 +78,42 @@ group:
 automation:
   ## Added V0.4.0
   ## Test min and max settings on long porch light timer input 
-  - alias: "Valideer buitenlamp timer lang"
+  - alias: "Light - Validate porch light long timer"
     initial_state: "on"
     trigger:
       - platform: state
-        entity_id: input_text.timer_minutes_porch_long
+        entity_id: input_text.light_porch_long_timer
     action:
       - service: input_text.set_value
         data_template:
-          entity_id: input_text.timer_minutes_porch_long
+          entity_id: input_text.light_porch_long_timer
           value: >
-            {% if (states('input_text.timer_minutes_porch_long')|int) > 60 %}
+            {% if (states('input_text.light_porch_long_timer')|int) > 60 %}
               60
-            {% elif (states('input_text.timer_minutes_porch_long')|int) < 1 %}
+            {% elif (states('input_text.light_porch_long_timer')|int) < 1 %}
               1
             {% else %}
-              {{ states('input_text.timer_minutes_porch_long')|int }}
+              {{ states('input_text.light_porch_long_timer')|int }}
             {% endif %}
 
   ## Added V0.4.0
   ## Test min and max settings on short porch light timer input 
-  - alias: "Valideer buitenlamp timer kort"
+  - alias: "Light - Validate porch light short timer"
     initial_state: "on"
     trigger:
       - platform: state
-        entity_id: input_text.timer_minutes_porch_short
+        entity_id: input_text.light_porch_short_timer
     action:
       - service: input_text.set_value
         data_template:
-          entity_id: input_text.timer_minutes_porch_short
+          entity_id: input_text.light_porch_short_timer
           value: >
-            {% if (states('input_text.timer_minutes_porch_short')|int) > 60 %}
+            {% if (states('input_text.light_porch_short_timer')|int) > 60 %}
               60
-            {% elif (states('input_text.timer_minutes_porch_short')|int) < 1 %}
+            {% elif (states('input_text.light_porch_short_timer')|int) < 1 %}
               1
             {% else %}
-              {{ states('input_text.timer_minutes_porch_short')|int }}
+              {{ states('input_text.light_porch_short_timer')|int }}
             {% endif %}
 
   ## Switch on porch light when someone arrives home
@@ -142,7 +142,7 @@ automation:
       - service: timer.start
         data_template:
           entity_id: timer.porchlight
-          duration: "00:{{ states('input_text.timer_minutes_porch_long')|int }}:00"
+          duration: "00:{{ states('input_text.light_porch_long_timer')|int }}:00"
 
   ## Switch off porchlight based on timer
   - alias: "Light porch xx minutes after trigger off"
@@ -173,7 +173,7 @@ automation:
         entity_id: group.light_porch
 
   ## Actions to perform on mailbox motion
-  - alias: "Post ontvangen"
+  - alias: "Vibration - Mail received"
     initial_state: "on"
     trigger:
       platform: state

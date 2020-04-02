@@ -15,8 +15,8 @@
 input_select:
   ## Electrical toilet heating controlled by Z-Wave Thermostat
   ## Used for manual control of the toilet heating
-  restroom_heating:
-    name: Verwarming toilet
+  climate_restroom_heating_mode:
+    name: Verwarming toilet mode
     options:
       - "Verwarmen"
       - "Spaarstand"
@@ -34,7 +34,7 @@ input_select:
 automation:
   ## Updated V0.4.0, V0.5.0, V0.6.0
   ## Switch restroom heating based on time for work days
-  - alias: "Toilet verwarming aan volgens schema - werkdagen"
+  - alias: "Climate - Restroom heating scheduled on working days"
     initial_state: "on"
     trigger:
       - platform: time
@@ -56,12 +56,12 @@ automation:
           state: "off"
         - condition: template
           value_template: >
-            {{ not is_state('input_select.restroom_heating','Uitgeschakeld') }}
+            {{ not is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') }}
     action:
       # Set the input selector to new state
       - service: input_select.select_option
         data_template:
-          entity_id: input_select.restroom_heating
+          entity_id: input_select.climate_restroom_heating_mode
           option: "Verwarmen"
       # - service: script.notify_prowl
       #   data_template:
@@ -73,7 +73,7 @@ automation:
 
   ## Updated V0.4.0, V0.5.0, V0.6.0
   ## Switch restroom heating based on time for non-working days
-  - alias: "Toilet verwarming aan volgens schema - niet werkdagen"
+  - alias: "Climate - Restroom heating scheduled on non working days"
     initial_state: "on"
     trigger:
       - platform: time
@@ -92,37 +92,36 @@ automation:
           state: "off"
         - condition: template
           value_template: >
-            {{ not is_state('input_select.restroom_heating','Uitgeschakeld') }}
+            {{ not is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') }}
     action:
       # Set the input selector to new state
       - service: input_select.select_option
         data_template:
-          entity_id: input_select.restroom_heating
+          entity_id: input_select.climate_restroom_heating_mode
           option: "Verwarmen"
       # - service: script.notify_prowl
       #   data_template:
       #     value1: "Toilet verwarming geschakeld. "
       #     value2: "Trigger = Niet-werkdag "
-      #     value3: "{{ states.input_select.restroom_heating.state }}"
+      #     value3: "{{ states.input_select.climate_restroom_heating_mode.state }}"
       #     who: "ralph"
       #     prio: -2
 
-  ## Added V0.4.0, V0.5.0
   ## Switch toilet heating based on input selector state
-  - alias: "Toilet verwarming mode selectie"
+  - alias: "Climate - Restroom heating mode selection"
     initial_state: "on"
     trigger:
       - platform: state
         entity_id: 
-          - input_select.restroom_heating
+          - input_select.climate_restroom_heating_mode
     action:
       ##start the script for setting the heating mode
       - service: script.set_toilet_heating_mode
         data_template:
           mode: >
-            {{ 'off' if is_state('input_select.restroom_heating','Uitgeschakeld') else 'heat' }}
+            {{ 'off' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'heat' }}
           preset: >
-            {{ 'Energy Heat' if is_state('input_select.restroom_heating','Spaarstand') else 'none' }}
+            {{ 'Energy Heat' if is_state('input_select.climate_restroom_heating_mode','Spaarstand') else 'none' }}
 
 ###############################################################################
 ##  Templates
@@ -133,7 +132,6 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
-  ## Added V0.4.0, V0.5.0
   ## Updated simplified script for setting the heating mode
   set_toilet_heating_mode:
     alias: Zend verwarmings mode naar toilet verwarming

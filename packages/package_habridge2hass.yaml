@@ -6,7 +6,37 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-
+homeassistant:
+  customize:
+    ## Media devices from HA Bridge 
+    binary_sensor.habridge_television:
+      friendly_name: Televisie (via HA Bridge)
+    binary_sensor.habridge_smarttv:
+      friendly_name: Smart-TV (via HA Bridge)
+    binary_sensor.habridge_mediaplayer:
+      friendly_name: Mediaplayer (via HA Bridge)
+    binary_sensor.habridge_appletv:
+      friendly_name: Apple-TV (via HA Bridge)
+    binary_sensor.habridge_radio:
+      friendly_name: Radio (via HA Bridge)
+    binary_sensor.habridge_music:
+      friendly_name: Muziek (via HA Bridge)
+    binary_sensor.habridge_netflix:
+      friendly_name: Netflix (via HA Bridge)
+    binary_sensor.habridge_spotify:
+      friendly_name: Spotify (via HA Bridge)
+    binary_sensor.habridge_poweroff:
+      friendly_name: Poweroff (via HA-Bridge)
+    ## Scenes from HA Bridge
+    binary_sensor.habridge_bed_time:
+      friendly_name: Bed tijd (via HA-Bridge)
+    binary_sensor.habridge_leaving:
+      friendly_name: Vertrekken (via HA-Bridge)
+    ## Switches for living room lights (as a scene)
+    binary_sensor.habridge_livingroom_lights_off:
+      friendly_name: Woonkamer licht uit (via HA-Bridge)
+    binary_sensor.habridge_livingroom_lights_on:
+      friendly_name: Woonkamer licht aan (via HA-Bridge)
 
 ###############################################################################
 ##  Entities
@@ -61,7 +91,6 @@ binary_sensor:
     off_delay: 2
     payload_on: "on"
     payload_off: "off"
-  ## added in V0.3.2  
   - platform: mqtt
     name: habridge_poweroff
     state_topic: "media_mode/poweroff"
@@ -69,14 +98,13 @@ binary_sensor:
     payload_on: "on"
     payload_off: "off"
 
-  ## Scenes from HA Bridge
+  ## Modes from HA Bridge
   - platform: mqtt
     name: habridge_bed_time
     state_topic: "scene/bed_time"
     off_delay: 2
     payload_on: "on"
     payload_off: "off"
-  ## Added in V0.4.0
   - platform: mqtt
     name: habridge_leaving
     state_topic: "scene/leaving"
@@ -98,7 +126,6 @@ binary_sensor:
     payload_on: "on"
     payload_off: "off"
 
-## Added V0.5.0
 switch:
   ## Switch for Christmastree (from HA Bridge)
   - platform: "mqtt"

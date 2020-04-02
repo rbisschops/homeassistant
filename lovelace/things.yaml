@@ -98,8 +98,8 @@ cards:
       show_header_toggle: false
       entities:
         - light.woonkamer
-        - input_select.hue_scenes
-        - input_select.hue_groups
+        - input_select.light_hue_scenes
+        - input_select.light_hue_groups
         - script.manual_set_hue_scene
     - type: custom:decluttering-card
       template: custom_markdown_card_small
@@ -110,7 +110,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_select.livingroom_lights_mode
+        - entity: input_select.light_livingroom_mode
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -200,7 +200,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - input_select.restroom_heating
+        - input_select.climate_restroom_heating_mode
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -275,10 +275,10 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_select.harmony_livingroom_new_status
-        - entity: input_select.harmony_livingroom_old_status
-        - entity: input_select.humax_new_status
-        - entity: input_select.humax_old_status
+        - entity: input_select.media_harmony_livingroom_new_state
+        - entity: input_select.media_harmony_livingroom_old_state
+        - entity: input_select.media_humax_new_state
+        - entity: input_select.media_humax_old_state
         - entity: timer.media_center_delay
   - type: vertical-stack
     cards:

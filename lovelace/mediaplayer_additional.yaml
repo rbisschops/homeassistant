@@ -13,8 +13,8 @@
       - entity: remote.bisschops
       - type: section
         label: Instellingen
-      - entity: input_select.harmony_livingroom_new_status
-      - entity: input_select.harmony_livingroom_old_status
+      - entity: input_select.media_harmony_livingroom_new_state
+      - entity: input_select.media_harmony_livingroom_old_state
       - type: section
         label: Homeassistant entities
       - entity: switch.tradfri_media_switch

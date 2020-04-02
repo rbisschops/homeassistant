@@ -124,8 +124,8 @@ binary_sensor:
   ## Binary sensor based on the state of input_boolean.alarm. Used for lovelace tab Home 
   - platform: template
     sensors:
-      alarm:
-        friendly_name: Alarm
+      alarm_generic_alarm:
+        friendly_name: Algemeen alarm
         value_template: >-
           {{ is_state('input_boolean.alarm', 'on') }}
         entity_picture_template: >-
@@ -133,19 +133,19 @@ binary_sensor:
   ## Door open sensor (only outside doors are monitored)
   - platform: template
     sensors:
-      doors:
-        friendly_name: Deuren
+      door_all_doors:
+        friendly_name: Alle deuren
         value_template: >-
-          {{ is_state('binary_sensor.neo_coolcam_front_door', 'on')
-            or is_state('binary_sensor.neo_coolcam_storage_door', 'on')
+          {{ is_state('binary_sensor.door_front_door', 'on')
+            or is_state('binary_sensor.door_storage_door', 'on')
             or is_state('input_boolean.garden_door', 'on') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/door48_' ~ states('binary_sensor.doors') ~ '.png'}}
   ## Window open sensor
   - platform: template
     sensors:
-      windows:
-        friendly_name: Ramen
+      door_all_windows:
+        friendly_name: Alle ramen
         value_template: >-
           {{ is_state('input_boolean.front_window', 'on')
             or is_state('input_boolean.office_window', 'on')
@@ -197,7 +197,7 @@ sensor:
 
 automation:
   ## Test if refigerator door or freezer door is open for more then xx minutes
-  - alias: "Koelkast alarm"
+  - alias: "Alarm refrigerator door open"
     initial_state: "on"
     trigger:
       - platform: state
