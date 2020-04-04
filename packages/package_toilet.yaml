@@ -116,7 +116,7 @@ automation:
           - input_select.climate_restroom_heating_mode
     action:
       ##start the script for setting the heating mode
-      - service: script.set_toilet_heating_mode
+      - service: script.climate_set_rest_room_heating_mode
         data_template:
           mode: >
             {{ 'off' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'heat' }}
@@ -133,7 +133,7 @@ automation:
 ###############################################################################
 script:
   ## Updated simplified script for setting the heating mode
-  set_toilet_heating_mode:
+  climate_set_rest_room_heating_mode:
     alias: Zend verwarmings mode naar toilet verwarming
     sequence: 
       - service: climate.set_hvac_mode

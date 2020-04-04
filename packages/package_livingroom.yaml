@@ -14,10 +14,19 @@ homeassistant:
     switch.tradfri_high_cabinets_switch:
       friendly_name: Verlichting hoge kasten (Tradfri)
     ## Scripts
-    script.livingroom_lights_on:
+    script.light_livingroom_on:
       icon: mdi:lightbulb
-    script.livingroom_lights_off:
+    script.light_livingroom_off:
       icon: mdi:lightbulb
+    ## Timers
+    timer.switch_christmastree_off:
+      friendly_name: Kerstboom uitschakelvertraging
+    timer.switch_christmastree_on:
+      friendly_name: Kerstboom inschakelvertraging
+    timer.light_high_cabinets_off:
+      friendly_name: Hoge kasten uitschakelvertraging
+    timer.light_high_cabinets_on:
+      friendly_name: Hoge kasten inschakelvertraging 
 
 # logger:
 #   default: info
@@ -178,9 +187,8 @@ automation:
         - input_boolean.livingroom_lights
     action:
       - service_template: >-
-          {{ 'script.livingroom_lights_on' if is_state('input_boolean.livingroom_lights','on') else 'script.livingroom_lights_off' }}
+          {{ 'script.light_livingroom_on' if is_state('input_boolean.livingroom_lights','on') else 'script.light_livingroom_off' }}
 
-  ## Added V0.11.0
   ## Switch on kitchen cabinets light based on timer
   - alias: "Light high cabinets xx minutes after trigger on"
     initial_state: "on"
@@ -188,7 +196,7 @@ automation:
       platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.kitchencabinets_on
+        entity_id: timer.light_high_cabinets_on
     condition:
     action:
     - service: homeassistant.turn_on
@@ -196,7 +204,6 @@ automation:
         - input_boolean.highcabinets
         # - switch.tradfri_high_cabinets_switch
 
-  ## Added V0.9.0
   ## Switch off kitchen cabinets light based on timer
   - alias: "Light high cabinets xx minutes after trigger off"
     initial_state: "on"
@@ -204,7 +211,7 @@ automation:
       platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.kitchencabinets_off
+        entity_id: timer.light_high_cabinets_off
     condition:
     action:
     - service: homeassistant.turn_off
@@ -212,7 +219,6 @@ automation:
         - input_boolean.highcabinets
         # - switch.tradfri_high_cabinets_switch
 
-  ## Added V0.11.0
   ## Switch on christmas tree based on timer
   - alias: "Switch christmas tree xx minutes after trigger on"
     initial_state: "on"
@@ -220,7 +226,7 @@ automation:
       platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.christmastree_on
+        entity_id: timer.switch_christmastree_on
     condition:
     action:
     - service: homeassistant.turn_on
@@ -235,7 +241,7 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
-  livingroom_lights_on:
+  light_livingroom_on:
     alias: Woonkamer licht aan script
     sequence:
       ## check if lights are currently off
@@ -248,7 +254,7 @@ script:
       - service: homeassistant.turn_on
         entity_id: 
           - input_boolean.highcabinets
-      - service: script.hue_mode_change
+      - service: script.light_hue_mode_change
       ## check if it is christmas time
       - condition: state
         entity_id: input_boolean.christmas_mode
@@ -257,7 +263,7 @@ script:
       - service: homeassistant.turn_on
         entity_id: 
           - input_boolean.christmastree
-  livingroom_lights_off:
+  light_livingroom_off:
     alias: Woonkamer licht uit script
     sequence:
       ## check if lights are currently on
@@ -269,7 +275,7 @@ script:
           - input_boolean.livingroom_lights_status
       - service: timer.start
         data_template:
-          entity_id: timer.kitchencabinets_off
+          entity_id: timer.light_high_cabinets_off
           duration: "00:01:00"
       - service: homeassistant.turn_off
         entity_id: 
@@ -288,11 +294,11 @@ script:
 timer:
 ## Timers high cabinets in the kitchen
   ## Switch on
-  kitchencabinets_on:
+  light_high_cabinets_on:
   ## Switch off
-  kitchencabinets_off:
+  light_high_cabinets_off:
 ## Timers controlling the christmas tree
   ## Switch on
-  christmastree_on:
+  switch_christmastree_on:
   ## Switch off
-  christmastree_off:
+  switch_christmastree_off:

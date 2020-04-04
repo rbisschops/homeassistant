@@ -220,7 +220,7 @@ automation:
         entity_id: 
           - input_boolean.sunscreen_pause
     action:
-      - service: script.domoticz_sunscreen
+      - service: script.domoticz_domoticz_output_sun_screen
         data_template:
           new_state: "{{ states('input_boolean.domo_sunscreen') }}"
           # new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
@@ -252,7 +252,7 @@ automation:
           entity_id: input_boolean.domo_sunscreen
           state: "off"
     action:
-      - service: script.open_sunscreen
+      - service: script.blinds_open_sunscreen
       - service: script.notify_prowl
         data_template:
           value1: "Zonnescherm: "
@@ -301,7 +301,7 @@ automation:
           entity_id: input_boolean.domo_sunscreen
           state: 'off'
     action: 
-      - service: script.open_sunscreen
+      - service: script.blinds_open_sunscreen
       - service: script.notify_prowl
         data_template:
           value1: "Zonnescherm: "
@@ -343,7 +343,7 @@ automation:
           entity_id: input_boolean.sunscreen_manual
           state: "off"
     action:
-      - service: script.close_sunscreen
+      - service: script.blinds_close_sunscreen
       - service: script.notify_prowl
         data_template:
           value1: "Zonnescherm: "
@@ -361,14 +361,14 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
-  open_sunscreen:
+  blinds_open_sunscreen:
     alias: "Zonnescherm uit"
     sequence:
       - service: homeassistant.turn_on
         entity_id: input_boolean.domo_sunscreen
       - service: homeassistant.turn_on
         entity_id: input_boolean.sunscreen_test
-  close_sunscreen:
+  blinds_close_sunscreen:
     alias: "Zonnescherm in"
     sequence:
       - service: homeassistant.turn_off
@@ -379,7 +379,7 @@ script:
   # pause_sunscreen:
   #   alias: "Pauzeer zonnescherm op huidige positie"
   #   sequence:
-  #     - service: script.domoticz_sunscreen
+  #     - service: script.domoticz_domoticz_output_sun_screen
   #       data_template:
   #         # new_state: '{{ states.input_boolean.domo_sunscreen.state }}'
   #         new_state: '{{ states("input_boolean.domo_sunscreen") }}'

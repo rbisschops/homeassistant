@@ -239,7 +239,7 @@ cards:
           width: 2.5%
       ## Hallway light
       - type: image
-        entity: input_boolean.hallwaylight
+        entity: input_boolean.light_hallway
         tap_action:
           action: toggle
         image: /local/custom_icons/lightbulb48_on.png

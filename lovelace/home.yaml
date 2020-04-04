@@ -102,7 +102,7 @@ cards:
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.hallwaylight 
+            - entity: input_boolean.light_hallway 
             - name: Halletje
             - icon: lightbulb
         - type: custom:decluttering-card

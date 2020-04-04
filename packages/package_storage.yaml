@@ -6,27 +6,24 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-
 homeassistant:
   customize:
     ## Sensors 
     sensor.vibration_mailbox:
       friendly_name: Brievenbus
     ## Timers
-    timer.porchlight:
-      friendly_name: Buitenlamp
+    timer.light_porch:
+      friendly_name: Timer buitenlamp
 
 
 ###############################################################################
 ##  Entities
 ###############################################################################
-## Added V0.5.0
 input_boolean:
   porchlight:
     name: Buitenlamp
     icon: mdi:lightbulb
 
-## Added V0.4.0
 input_text:
   light_porch_long_timer:
     name: Buitenlamp timer lang (min)
@@ -63,8 +60,6 @@ sensor:
 ###############################################################################
 ##  Groups
 ###############################################################################
-
-## Added V0.5.0
 group:
   light_porch:
     name: Buitenlamp
@@ -76,7 +71,6 @@ group:
 ##  Automations
 ###############################################################################
 automation:
-  ## Added V0.4.0
   ## Test min and max settings on long porch light timer input 
   - alias: "Light - Validate porch light long timer"
     initial_state: "on"
@@ -96,7 +90,6 @@ automation:
               {{ states('input_text.light_porch_long_timer')|int }}
             {% endif %}
 
-  ## Added V0.4.0
   ## Test min and max settings on short porch light timer input 
   - alias: "Light - Validate porch light short timer"
     initial_state: "on"
@@ -117,7 +110,6 @@ automation:
             {% endif %}
 
   ## Switch on porch light when someone arrives home
-  ## Upgraded to use advanced presense (V1.4.0)
   - alias: "Light porch on at home coming"
     initial_state: "on"
     trigger:
@@ -141,7 +133,7 @@ automation:
         entity_id: input_boolean.porchlight
       - service: timer.start
         data_template:
-          entity_id: timer.porchlight
+          entity_id: timer.light_porch
           duration: "00:{{ states('input_text.light_porch_long_timer')|int }}:00"
 
   ## Switch off porchlight based on timer
@@ -151,7 +143,7 @@ automation:
       platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.porchlight
+        entity_id: timer.light_porch
     action:
     - service: homeassistant.turn_off
       entity_id: input_boolean.porchlight
@@ -208,5 +200,5 @@ automation:
 ##  Timers
 ###############################################################################
 timer:
-  porchlight:
+  light_porch:
   # wait:

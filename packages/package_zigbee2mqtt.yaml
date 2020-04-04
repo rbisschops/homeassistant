@@ -6,7 +6,11 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-
+homeassistant:
+  customize:
+    ## Timers
+    timer.zigbee_permit_join:
+      friendly_name: Resterende tijd Zigbee joinen toegestaan
 
 ###############################################################################
 ##  Entities

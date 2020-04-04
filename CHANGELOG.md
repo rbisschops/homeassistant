@@ -2,10 +2,22 @@
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
 
+## [0.9.5] - 2020-04-03
+### Bug fixes
+- mediaplayer: Reverted change name webostv to living_room_tv.
+- binary_sensor: picture not presented in LovelaceUI for doors/windows. Updated sensor configuration. 
+
+
+- timer: Changed multiple entities names to more logical names.
+- input_boolean: Changed name 'input_boolean.hallwaylight' to 'input_boolean.light_hallway' in package_hallway.yaml
+- script: Changed multiple entities names to more logical names.
+
 ## [0.9.4] - 2020-04-02
-### Changed
+### Bug fixes
 - automations: bug fixes in referenced automations
-- automations: changed the humidity automations to not notify when humidity is high or low (commented).
+
+### Changed
+- automation: changed the humidity automations to not notify when humidity is high or low (commented).
 - input_text: Changed multiple entities names to more logical names.
 - mediaplayer: Changed name of media_player_living_room_tv.
 
@@ -17,13 +29,13 @@ As of 2020-03-25 All notable changes to my Homeassistant configuration will be d
 
 ## [0.9.2] - 2020-03-31
 ### Changed
-- Automations: Change automation aliases to english and rationalize (continued). See [Issue #008](https://github.com/rbisschops/homeassistant/issues/8)
-- binary_sensors: Changed multiple sensors names to more logical names.
+- automation: Change automation aliases to english and rationalize (continued). See [Issue #008](https://github.com/rbisschops/homeassistant/issues/8)
+- binary_sensor: Changed multiple sensors names to more logical names.
 
 ## [0.9.1] - 2020-03-29
 ### Changed
-- Entities: Changed entity names to match with functional use, example: sensor.room_humidity_livingroom > sensor.environment_livingroom_humidity. see [Issue #007](https://github.com/rbisschops/homeassistant/issues/7)
-- Automations: Change automation aliases to english and rationalize. Example 'Kerstboom aan-uit' to 'Switch christmas tree toggle' in package_livingroom.yaml. See [Issue #008](https://github.com/rbisschops/homeassistant/issues/8)
+- entitie: Changed entity names to match with functional use, example: sensor.room_humidity_livingroom > sensor.environment_livingroom_humidity. see [Issue #007](https://github.com/rbisschops/homeassistant/issues/7)
+- automation: Change automation aliases to english and rationalize. Example 'Kerstboom aan-uit' to 'Switch christmas tree toggle' in package_livingroom.yaml. See [Issue #008](https://github.com/rbisschops/homeassistant/issues/8)
 - Automation: Replaced if-else statements with inline Jinja2 formated statements for 'Switch christmas tree toggle'
 - Automation: Replaced if-else statements with inline Jinja2 formated statements for 'Light bar toggle'
 - Automation: Replaced if-else statements with inline Jinja2 formated statements for 'Light Porch toggle'

@@ -59,7 +59,7 @@ automation:
         # - input_boolean.domo_sunscreen
     # condition:
     # action:
-    #   - service: script.domoticz_switch
+    #   - service: script.domoticz_domoticz_output_switch
     #     data_template:
     #       device: '{{ trigger.to_state.attributes.friendly_name }}'
     #       new_state: >-
@@ -225,7 +225,7 @@ automation:
       value_template: 
         "{{ trigger.payload_json.dtype == 'Light/Switch' }}"
     action:
-      - service: script.domoticz_input
+      - service: script.domoticz_domoticz_input
         data_template:
           device: "{{ trigger.payload_json.idx }}"
           state: >-
@@ -242,7 +242,7 @@ automation:
       value_template: 
         "{{ trigger.payload_json.dtype == 'Lighting 2' }}"
     action:
-      - service: script.domoticz_input
+      - service: script.domoticz_domoticz_input
         data_template:
           device: "{{ trigger.payload_json.idx }}"
           state: >-
@@ -649,8 +649,8 @@ automation:
 script:
   ## Sent sunscreen to Domoticz
   ## Used for controlling the sunscreen based on buttons
-  domoticz_sunscreen:  
-    alias: Set sunscreen via MQTT
+  domoticz_domoticz_output_sun_screen:
+    alias: Stuur Domoticz output zonnescherm via MQTT
     sequence:
       - service: mqtt.publish
         data_template:
@@ -675,7 +675,7 @@ script:
 
   ## Convert Hass switch to Domoticz
 
-  domoticz_switch:  
+  domoticz_domoticz_output_switch:
     alias: Set domoticz switch via MQTT
     sequence:
       - service: mqtt.publish
@@ -709,8 +709,8 @@ script:
             }|tojson }}
 
   ## Convert Domoticz switch to Hass 
-  domoticz_input:
-    alias: Receive domoticz switch via MQTT
+  domoticz_domoticz_input:
+    alias: Ontvang Domoticz input (via MQTT)
     sequence:
       - service: mqtt.publish
         data_template:

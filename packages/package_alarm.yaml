@@ -140,7 +140,7 @@ binary_sensor:
             or is_state('binary_sensor.door_storage_door', 'on')
             or is_state('input_boolean.garden_door', 'on') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/door48_' ~ states('binary_sensor.doors') ~ '.png'}}
+          {{ '/local/custom_icons/door48_' ~ states('binary_sensor.door_all_doors') ~ '.png'}}
   ## Window open sensor
   - platform: template
     sensors:
@@ -153,7 +153,7 @@ binary_sensor:
             or is_state('input_boolean.bedroom_window_l', 'on')
             or is_state('input_boolean.bedroom_window_r', 'on') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/window48_' ~ states('binary_sensor.windows') ~ '.png'}}
+          {{ '/local/custom_icons/window48_' ~ states('binary_sensor.door_all_windows') ~ '.png'}}
 
 sensor:
   ## Refridgerator door link quality status monitoring sensor

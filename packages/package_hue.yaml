@@ -12,7 +12,7 @@
 
 homeassistant:
   customize:
-    script.set_hue_scene:
+    script.light_hue_sent_scene_to_hue_bridge:
       icon: mdi:lightbulb
 
 ## Hue bridges and emulators
@@ -158,7 +158,7 @@ light:
 #       - light.woonkamer
 #       - input_select.light_hue_scenes
 #       - input_select.light_hue_groups
-#       - script.set_hue_scene
+#       - script.light_hue_sent_scene_to_hue_bridge
 
 ###############################################################################
 ##  Automations
@@ -183,7 +183,7 @@ automation:
         - input_boolean.scene_christmas
       to: "on"
     action:
-      - service: script.scene_set
+      - service: script.light_hue_set_scene_from_buttons
         data_template:
           new_scene: >
             {% set trigger = trigger.to_state.object_id|replace('scene_','') %}
@@ -203,7 +203,7 @@ script:
   ## Added V1.5.0
   ## Set hue scene based on button from lovelace home tab
   ## Called form automation.scene_verlichting_woonkamer
-  scene_set:
+  light_hue_set_scene_from_buttons:
     alias: Set Hue scenes vanuit home knoppen
     sequence:
       - condition: template
@@ -226,17 +226,17 @@ script:
           entity_id: >-
             {% set entity = 'input_boolean.scene_' ~ old_scene %}
             {{ entity }}
-      - service: script.set_hue_scene_manual
+      - service: script.light_hue_set_scene_manual
         data_template:
           profile_value: >
             {{ new_scene }}
 
   ## Script for setting the Hue scene manual
   ## Deprecated script
-  manual_set_hue_scene:
+  light_hue_manual_set_scene:
     alias: Set Hue scenes handmatig
     sequence: 
-      - service: script.set_hue_scene
+      - service: script.light_hue_sent_scene_to_hue_bridge
         data_template:
           group: "{{ states.input_select.light_hue_groups.state }}"
           name: "{{ states.input_select.light_hue_scenes.state }}"
@@ -244,7 +244,7 @@ script:
   ## Script for setting the Hue scene manual
   ## used by multiple packages (media_center)
   ## Deprecated script
-  set_hue_scene:
+  light_hue_sent_scene_to_hue_bridge:
     alias: Send Hue scene naar Hue Bridge
     sequence: 
       - service: hue.hue_activate_scene
@@ -255,10 +255,10 @@ script:
   ## Added V1.2.0, Updated V1.6.0
   ## Script for setting Hue lamps in video or normal mode
   ## used in package_media_center
-  hue_mode_change:
+  light_hue_mode_change:
     alias: Licht aanpassen voor video of normale mode
     sequence:
-      - service: script.set_hue_scene_auto
+      - service: script.light_hue_set_scene_automatic
         data_template:
           brightness_value: >
             {{ '90,100' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
@@ -270,8 +270,8 @@ script:
   ## Script for setting Hue lamps from a mode into a new mode
   ## Usage: call this script from any other automation or script.
   ## Variables: brightness_start_value, brightness_stop_value, profile_value
-  set_hue_scene_transition:
-    alias: Set hue mode automatisch
+  light_hue_set_scene_transition:
+    alias: Set hue mode via overgang
     sequence:
       - service: light.turn_on
         data_template:
@@ -310,7 +310,7 @@ script:
   ## Script for setting Hue lamps into a new mode (from off)
   ## Usage: call this script from any other automation or script.
   ## Variables: brightness_value, profile_value
-  set_hue_scene_auto:
+  light_hue_set_scene_automatic:
     alias: Set hue mode overgang naar andere scene
     sequence:
       - service: light.turn_on
@@ -334,7 +334,7 @@ script:
   ## Script for setting Hue lamps into a new mode (manually initiated for UI)
   ## Usage: call this script from any other automation or script. 
   ## Variables: profile_value
-  set_hue_scene_manual:
+  light_hue_set_scene_manual:
     alias: Set hue mode handmatig
     sequence:
       - service: light.turn_on
@@ -357,7 +357,7 @@ script:
   ## Added V1.2.0
   ## Test script for setting Hue lamps
   ## used in package_livingroom
-  lights_adjust_test:
+  light_light_adjust_test:
     alias: licht test aanpassen
     sequence:
       - service: light.turn_on

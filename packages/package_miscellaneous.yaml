@@ -114,7 +114,7 @@ automation:
       to: "on"
     action:
       - service: script.turn_on
-        entity_id: script.bedtime
+        entity_id: script.mode_bed_time_triggered
 
   ## Automation for running the coming home script
   ## Called by the front door sensor
@@ -144,7 +144,7 @@ automation:
               state: "Just Arrived"
     action:
       - service: script.turn_on
-        entity_id: script.coming_home
+        entity_id: script.mode_coming_home_triggered
 
   ## Automation for runnning the leaving script
   ## Called by Alexa via HA Bridge
@@ -157,7 +157,7 @@ automation:
       to: "on"
     action:
       - service: script.turn_on
-        entity_id: script.leaving
+        entity_id: script.mode_leaving_triggered
 
   ## Automation for runnning the extended away script
   ## Called from binary sensor Extended Away
@@ -171,7 +171,7 @@ automation:
       to: "on"
     action:
       - service: script.turn_on
-        entity_id: script.extended_away
+        entity_id: script.mode_extended_away_triggered
 
   ## Automation for running the sunset script
   ## Triggered based on sunset minus offset 
@@ -183,7 +183,7 @@ automation:
       offset: "-01:00:00"
     action:
       - service: script.turn_on
-        entity_id: script.sunset
+        entity_id: script.sun_sunset
 
   ## Automation to run when the garbage bins need to go out for collection
   ## Tiggered by sensors based on Google calendar entries
@@ -220,8 +220,8 @@ automation:
 ###############################################################################
 script:
   ## Script running when we go to bed, sets the house in sleep mode
-  bedtime:
-    alias: Bedtime script
+  mode_bed_time_triggered:
+    alias: Mode bedtime gestart
     sequence:
       ## Switch off the outdoor lighting
       - service: homeassistant.turn_off
@@ -244,8 +244,8 @@ script:
         entity_id: switch.tradfri_media_switch
 
   ## Script when leaving home, also called when everybody is away (from package_presence)
-  leaving:
-    alias: Leaving script
+  mode_leaving_triggered:
+    alias: Mode vertrekken gestart
     sequence:
       ## Switch off the outdoor lighting
       - service: homeassistant.turn_off
@@ -275,19 +275,19 @@ script:
         entity_id: input_boolean.porchlight
       - service: timer.start
         data_template:
-          entity_id: timer.porchlight
+          entity_id: timer.light_porch
           # duration: '00:{{ states.input_text.light_porch_short_timer.state | int }}:00'
           duration: "00:{{ states('input_text.light_porch_short_timer')|int}}:00"
       - service: homeassistant.turn_on
         entity_id: input_boolean.hallwaylight
       - service: timer.start
         data_template:
-          entity_id: timer.hallwaylight
+          entity_id: timer.light_hallway
           # duration: '00:{{ states.input_text.media_hallway_light_long_timer.state | int }}:00'
           duration: "00:{{ states('input_text.media_hallway_light_long_timer')|int}}:00"
   ## Script when someone comes home
-  coming_home:
-    alias: Coming home script
+  mode_coming_home_triggered:
+    alias: Mode thuiskomen gestart
     sequence:
       ## Change the climate settings for the toilet heating  
       - service: input_select.select_option
@@ -308,7 +308,7 @@ script:
       ## Switch on the living room lights
       # - service: homeassistant.turn_on
       #   entity_id: input_boolean.livingroom_lights
-      - service: script.set_hue_scene_auto
+      - service: script.light_hue_set_scene_automatic
         data_template:
           brightness_value: >
             {{ '100,150' }}
@@ -333,8 +333,8 @@ script:
           - input_boolean.christmastree
 
   ## Script everybody extended away
-  extended_away:
-    alias: Iedereen langere tijd weg script
+  mode_extended_away_triggered:
+    alias: Mode iedereen langere tijd weg gestart
     sequence:
       - service: input_select.select_option
         data:
@@ -344,8 +344,8 @@ script:
         entity_id: input_boolean.holiday_mode
 
   ## Script running at sunset
-  sunset:
-    alias: Zonsondergang
+  sun_sunset:
+    alias: Zonsondergang bereikt
     sequence:
       - condition: state
         entity_id: binary_sensor.presence_people_home
@@ -360,7 +360,7 @@ script:
       - service: homeassistant.turn_on
         entity_id: input_boolean.livingroom_lights_status
       ## start hue lampen met de juiste mode
-      - service: script.set_hue_scene_transition
+      - service: script.light_hue_set_scene_transition
         data_template:
           brightness_start_value: >
             {{ '1,1' }}
@@ -375,7 +375,7 @@ script:
       ## start timer for kitchen cabinets, will switch on after xx hour
       - service: timer.start
         data_template:
-          entity_id: timer.kitchencabinets_on
+          entity_id: timer.light_high_cabinets_on
           duration: "00:30:00"
       ## Switch on the living room lights switch
       - service: homeassistant.turn_on
@@ -387,18 +387,18 @@ script:
       ## start timer for christmas tree, will switch on after xx hour
       - service: timer.start
         data_template:
-          entity_id: timer.christmastree_on
+          entity_id: timer.switch_christmastree_on
           duration: "00:30:00"
 
   ##----------------------------------------------
   ## Test scripts >> Remove ASAP after testing 
   ##----------------------------------------------
   
-  hue_test:
+  light_hue_test:
     alias: hue test
     sequence:
       ## start hue lampen met de juiste mode
-      - service: script.set_hue_scene_transition
+      - service: script.light_hue_set_scene_transition
         data_template:
           brightness_start_value: >
             {{ '1,1' }}
@@ -408,11 +408,11 @@ script:
           profile_stop_value: relax
           transition: 5
 
-  hue_test_auto:
+  light_hue_test_auto:
     alias: hue test
     sequence:
       ## start hue lampen met de juiste mode
-      - service: script.set_hue_scene_auto
+      - service: script.light_hue_set_scene_automatic
         data_template:
           brightness_value: >
             {{ '50,50' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}

@@ -367,7 +367,7 @@ automation:
       to: "on"
     action:
       - service: script.turn_on
-        entity_id: script.leaving
+        entity_id: script.mode_leaving_triggered
       - service: script.notify_prowl
         data_template:
           value1: "Afwezigheidsmelding: "

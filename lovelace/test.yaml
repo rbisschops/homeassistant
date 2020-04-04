@@ -45,8 +45,8 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: timer.hallwaylight
-        - entity: timer.porchlight
+        - entity: timer.light_hallway
+        - entity: timer.light_porch
 
   ## Added V0.6.0
   - type: vertical-stack

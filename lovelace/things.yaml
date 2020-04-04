@@ -100,7 +100,7 @@ cards:
         - light.woonkamer
         - input_select.light_hue_scenes
         - input_select.light_hue_groups
-        - script.manual_set_hue_scene
+        - script.light_hue_manual_set_scene
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -190,7 +190,7 @@ cards:
       show_header_toggle: false
       entities:
         - entity: input_boolean.porchlight
-        - entity: input_boolean.hallwaylight
+        - entity: input_boolean.light_hallway
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -279,7 +279,7 @@ cards:
         - entity: input_select.media_harmony_livingroom_old_state
         - entity: input_select.media_humax_new_state
         - entity: input_select.media_humax_old_state
-        - entity: timer.media_center_delay
+        - entity: timer.media_media_center_delay
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card

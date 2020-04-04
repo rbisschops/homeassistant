@@ -41,8 +41,12 @@ homeassistant:
       friendly_name: Spotify
 
     ## Media player switch-on delay  
-    timer.media_center_delay:
-      friendly_name: Inschakelvertraging
+    timer.media_media_center_delay:
+      friendly_name: Inschakelvertraging media center
+    timer.media_media_center_wait:
+      friendly_name: Wachttijd media center
+    timer.media_media_tv_radio_wait:
+      friendly_name: Wachttijd tv-radio omschakeling
 
 ## Remotes
 remote:
@@ -59,7 +63,7 @@ remote:
 ##  LG television
 webostv:
   host: !secret ip_lgtelevision
-  name: Televisie woonkamer
+  name: living_room_tv
   # filename: webostv.conf
   turn_on_action:
     service: persistent_notification.create
@@ -442,15 +446,15 @@ automation:
         - input_boolean.spotify
       to: "on"
     action:
-      - service: script.media_mode
+      - service: script.media_media_settings_mode_generic
         data_template:
           new_state: "{{ trigger.to_state.attributes.friendly_name }}"
           old_state: "{{ states('input_select.media_harmony_livingroom_new_state') }}"
       - service_template: >-
           {% if is_state('switch.tradfri_media_switch', 'on') %}
-            script.media_from_on
+            script.media_media_settings_from_mains_on
           {% elif is_state('switch.tradfri_media_switch', 'off') %}
-            script.media_from_off
+            script.media_media_settings_from_mains_off
           {% endif%}
 
   ## Automation for Harmony mode selector from HA Bridge, 
@@ -471,7 +475,7 @@ automation:
         - binary_sensor.habridge_poweroff
       to: "on"
     action:
-      - service: script.set_media_input
+      - service: script.media_set_media_input_mode
         data_template:
           name: "{{ trigger.to_state.object_id }}"  
 
@@ -494,7 +498,7 @@ automation:
     action:
       - service: homeassistant.turn_off
         entity_id: input_boolean.enable_media_buttons
-      - service: script.set_media_input
+      - service: script.media_set_media_input_mode
         data_template:
           name: "{{ trigger.to_state.object_id }}"
           type: "harmony"
@@ -506,9 +510,9 @@ automation:
       platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.media_center_delay
+        entity_id: timer.media_media_center_delay
     action:
-      - service: script.media_from_off_followup
+      - service: script.media_media_settings_from_mains_off_followup
 
   ##  Automation to run action after media_center_wait timer ends
   - alias: "Media - Timer media center wait ending"
@@ -517,7 +521,7 @@ automation:
       platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.media_center_wait
+        entity_id: timer.media_media_center_wait
     action:
       - service: remote.send_command
         data:
@@ -533,7 +537,7 @@ automation:
       platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.media_tv_radio_wait
+        entity_id: timer.media_media_tv_radio_wait
     action:
       - service: remote.send_command
         data:
@@ -606,7 +610,7 @@ automation:
 script:
   ## Script for updating the state of the input buttons in Lovelace
   ## Triggered from automation "Media acties lovelace buttons"
-  media_mode:
+  media_media_settings_mode_generic:
     alias: Set media mode script
     sequence:
       - condition: template
@@ -647,7 +651,7 @@ script:
   
   ## Script for changing the lovelace buttons to sync with HA Bridge input or Harmony updates
   ## Triggered from automations "Media acties HA-Bridge" and "Media acties Harmony Hub"
-  set_media_input:
+  media_set_media_input_mode:
     alias: Set media mode vanuit ha bridge of harmony
     sequence:
       - service: homeassistant.turn_on
@@ -659,42 +663,42 @@ script:
 
   ## Script for setting up media when main media switch is still off
   ## Tiggered from automation "Media acties lovelace buttons"
-  media_from_off:
+  media_media_settings_from_mains_off:
     alias: Media start als media switch uit
     sequence:
       - service: homeassistant.turn_on
         entity_id: switch.tradfri_media_switch
       - service: timer.start
         data_template:
-          entity_id: timer.media_center_delay
+          entity_id: timer.media_media_center_delay
           duration: "00:00:{{ states('input_text.media_media_delay_timer')|int}}"
 
   ## Script for setting media when main media switch is off (followup)
   ## triggered from automation "Timer media center start einde"
-  media_from_off_followup:
+  media_media_settings_from_mains_off_followup:
     alias: Media start als media switch uit - follow-up
     sequence:
-      - service: script.media_set_harmony
+      - service: script.media_media_settings_harmony
         data_template:
           current_state: "{{ states('input_select.media_harmony_livingroom_new_state') }}"
       # - delay: "00:00:10"
       - service: timer.start
         data_template:
-          entity_id: timer.media_center_wait
+          entity_id: timer.media_media_center_wait
           duration: "00:00:{{ states('input_text.media_media_wait_timer')|int}}"
 
   ## Script for setting up media when main media switch is already on 
   ## Tiggered from automation "Media acties lovelace buttons"
-  media_from_on:
+  media_media_settings_from_mains_on:
     alias: Media start als media switch aan
     sequence:
-      - service: script.media_set_harmony
+      - service: script.media_media_settings_harmony
         data_template:
           current_state: "{{ states('input_select.media_harmony_livingroom_new_state') }}"
 
   ## Script for setting up the Harmony actions 
   ## Triggerd from scripts "Media start als media switch uit - follow-up" and "Media start als media switch aan"
-  media_set_harmony:
+  media_media_settings_harmony:
     alias: Start Harmony acties
     sequence:
       - service: homeassistant.turn_on
@@ -721,24 +725,24 @@ script:
           milliseconds: 250
       - service_template: >-
           {% if current_state == "Spotify"%}
-            script.media_mode_spotify 
+            script.media_media_settings_mode_spotify 
           {% elif current_state == "Netflix" %}
-            script.media_mode_netflix 
+            script.media_media_settings_mode_netflix 
           {% elif current_state == "Televisie" %}
-            script.media_mode_television 
+            script.media_media_settings_mode_television 
           {% elif current_state == "Radio" %}
-            script.media_mode_radio 
+            script.media_media_settings_mode_radio 
           {% elif current_state == "Muziek" %}
-            script.media_mode_music 
+            script.media_media_settings_mode_music 
           {% elif current_state == "PowerOff" %}
-            script.media_mode_poweroff 
+            script.media_media_settings_mode_poweroff 
           {% else %}
-            script.media_mode_video
+            script.media_media_settings_mode_video
           {% endif %}
 
   ## Script for additional settings when Spotify mode is set 
   ## Triggered from script "Start Harmony acties"
-  media_mode_spotify:
+  media_media_settings_mode_spotify:
     alias: Aanvullende media settings Spotify
     sequence:
       - delay: "{{ '00:00:05' if is_state('input_select.media_harmony_livingroom_old_state','PowerOff') else '00:00:00' }}"
@@ -761,11 +765,11 @@ script:
       - condition: state
         entity_id: input_boolean.livingroom_lights
         state: "on"
-      - service: script.hue_mode_change
+      - service: script.light_hue_mode_change
 
   ## Script for additional settings when Netflix mode is set 
   ## Triggered from script "Start Harmony acties"
-  media_mode_netflix:
+  media_media_settings_mode_netflix:
     alias: Aanvullende media settings Netflix
     sequence:
       - delay: "{{ '00:00:05' if is_state('input_select.media_harmony_livingroom_old_state','PowerOff') else '00:00:00' }}"
@@ -785,14 +789,14 @@ script:
       - condition: state
         entity_id: input_boolean.livingroom_lights
         state: "on"
-      - service: script.hue_mode_change
+      - service: script.light_hue_mode_change
 
   ## Script for additional settings when Television mode is set
   ## Triggered from script "Start Harmony acties"
-  media_mode_television:
+  media_media_settings_mode_television:
     alias: Aanvullende media settings Television
     sequence:
-      - service: script.set_humax_mode
+      - service: script.media_set_humax_mode
         data_template:
           new_state: "Televisie"
           old_state: "{{ states('input_select.media_humax_old_state') }}"
@@ -808,14 +812,14 @@ script:
       - condition: state
         entity_id: input_boolean.livingroom_lights
         state: "on"
-      - service: script.hue_mode_change
+      - service: script.light_hue_mode_change
 
   ## Script for additional settings when Radio mode is set 
   ## Triggered from script "Start Harmony acties"
-  media_mode_radio:
+  media_media_settings_mode_radio:
     alias: Aanvullende media settings Radio
     sequence:
-      - service: script.set_humax_mode
+      - service: script.media_set_humax_mode
         data_template:
           new_state: "Radio"
           old_state: "{{ states('input_select.media_humax_old_state') }}"
@@ -831,11 +835,11 @@ script:
       - condition: state
         entity_id: input_boolean.livingroom_lights
         state: "on"
-      - service: script.hue_mode_change
+      - service: script.light_hue_mode_change
 
   ## Script for additional settings when Music mode is set 
   ## Triggered from script "Start Harmony acties"
-  media_mode_music:
+  media_media_settings_mode_music:
     alias: Aanvullende media settings Music
     sequence:
       - service: input_select.select_option
@@ -845,11 +849,11 @@ script:
       - condition: state
         entity_id: input_boolean.livingroom_lights
         state: "on"
-      - service: script.hue_mode_change
+      - service: script.light_hue_mode_change
 
   ## Script for additional settings when Poweroff is set 
   ## Triggered from script "Start Harmony acties"
-  media_mode_poweroff:
+  media_media_settings_mode_poweroff:
     alias: Aanvullende media settings PowerOff
     sequence:
       - service: input_select.select_option
@@ -859,11 +863,11 @@ script:
       - condition: state
         entity_id: input_boolean.livingroom_lights
         state: "on"
-      - service: script.hue_mode_change
+      - service: script.light_hue_mode_change
 
   ## Script for additional Humax settings when Television mode or radio mode is set
   ## Triggered from scripts "Aanvullende media settings Televisie" and "Aanvullende media settings Radio"
-  set_humax_mode:
+  media_set_humax_mode:
     alias: Zet Radio of Televisie mode Humax
     sequence:
       - service: input_select.select_option
@@ -887,12 +891,12 @@ script:
           {% endif %}
       - service: timer.start
         data_template:
-          entity_id: timer.media_tv_radio_wait
+          entity_id: timer.media_media_tv_radio_wait
           duration: "00:00:{{ states('input_text.media_tv_radio_mode_timer')|int}}"
 
   ## Script for additional settings when any video mode is set 
   ## Triggered from script "Start Harmony acties"
-  media_mode_video:
+  media_media_settings_mode_video:
     alias: Aanvullende media settings video
     sequence:
       - service: input_select.select_option
@@ -902,11 +906,11 @@ script:
       - condition: state
         entity_id: input_boolean.livingroom_lights
         state: "on"
-      - service: script.hue_mode_change
+      - service: script.light_hue_mode_change
 
   ## Script for audio mode settings when music modes are selected 
   ## Not used, romove?
-  amplifier_mode_music:
+  media_amplifier_mode_music:
     alias: Set device mode muziek
     sequence:
       - service:  
@@ -919,7 +923,7 @@ script:
 
   ## Script for audio mode settings when video modes are selected 
   ## Not used, romove?
-  amplifier_mode_dolby:
+  media_amplifier_mode_dolby:
     alias: Set device mode Dolby
     sequence:
       - service:  
@@ -934,8 +938,8 @@ script:
 ##  Timers
 ###############################################################################
 timer:
-  media_center_delay:
-  media_center_wait:
-  media_tv_radio_wait:
+  media_media_center_delay:
+  media_media_center_wait:
+  media_media_tv_radio_wait:
   # media_center_dummy:
   #   duration: "00:00:00"

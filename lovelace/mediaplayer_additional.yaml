@@ -19,7 +19,7 @@
         label: Homeassistant entities
       - entity: switch.tradfri_media_switch
       - entity: input_boolean.enable_media_buttons
-      - entity: timer.media_center_delay
+      - entity: timer.media_media_center_delay
       - type: section
         label: Schakelaars Harmony
       - entity: switch.television

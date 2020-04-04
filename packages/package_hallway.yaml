@@ -9,7 +9,7 @@
 homeassistant:
   customize:
     ## Timers
-    timer.hallwaylight:
+    timer.light_hallway:
       friendly_name: Halletje
 
 ###############################################################################
@@ -18,7 +18,7 @@ homeassistant:
 
 ## Added V0.4.0
 input_boolean:
-  hallwaylight:
+  light_hallway:
     name: Verlichting halletje
     icon: mdi:lightbulb
 
@@ -43,7 +43,7 @@ group:
     name: Verlichting halletje
     entities:
       - switch.habridge_hallwaylight
-      - input_boolean.hallwaylight
+      - input_boolean.light_hallway
 
 ###############################################################################
 ##  Automations
@@ -108,10 +108,10 @@ automation:
           after_offset: "00:15:00"
     action:
       - service: homeassistant.turn_on
-        entity_id: input_boolean.hallwaylight
+        entity_id: input_boolean.light_hallway
       - service: timer.start
         data_template:
-          entity_id: timer.hallwaylight
+          entity_id: timer.light_hallway
           duration: "00:{{ states('input_text.light_hallway_short_timer')|int}}:00"
   ## Switch off hallway light based on timer
   - alias: "Light hallway xx minutes after trigger off"
@@ -120,11 +120,11 @@ automation:
       platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.hallwaylight
+        entity_id: timer.light_hallway
     condition:
     action:
     - service: homeassistant.turn_off
-      entity_id: input_boolean.hallwaylight
+      entity_id: input_boolean.light_hallway
   
   ## Added V0.4.0
   ## Switch hallway light on and off
@@ -134,7 +134,7 @@ automation:
       platform: state
       entity_id: 
         - switch.habridge_hallwaylight
-        - input_boolean.hallwaylight
+        - input_boolean.light_hallway
     action:
       - service_template: >-
           {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
@@ -171,4 +171,4 @@ automation:
 ##  Timers
 ###############################################################################
 timer:
-  hallwaylight:
+  light_hallway:
