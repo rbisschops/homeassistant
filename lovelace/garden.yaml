@@ -14,7 +14,7 @@ cards:
     elements:
       ## Sunscreen overlay
       - type: image
-        entity: input_boolean.domo_sunscreen
+        entity: input_boolean.domoticz_blinds_sunscreen
         tap_action:
           action: none
         state_image:
@@ -43,7 +43,7 @@ cards:
           font-weight: 'bold'
       ## Controls for the garden
       - type: image
-        entity: input_boolean.gardenlight
+        entity: input_boolean.light_garden
         tap_action:
           action: toggle
         image: /local/custom_icons/customlight48_on.png
@@ -56,7 +56,7 @@ cards:
           position: absolute
           width: 2.5%                                                 
       - type: image
-        entity: input_boolean.waterornament
+        entity: input_boolean.switch_water_ornament
         tap_action:
           action: toggle
         image: /local/custom_icons/fountain48_on.png
@@ -70,7 +70,7 @@ cards:
           width: 2.5%
       ## Sunscreen control buttons
       - type: image
-        entity: input_boolean.domo_sunscreen
+        entity: input_boolean.domoticz_blinds_sunscreen
         tap_action:
           action: call-service
           service: script.blinds_open_sunscreen          
@@ -84,7 +84,7 @@ cards:
           position: absolute
           width: 2.5%
       - type: image
-        entity: input_boolean.sunscreen_pause
+        entity: input_boolean.blinds_sunscreen_pause
         tap_action:
           action: toggle
         image: /local/custom_icons/play48_on.png
@@ -97,7 +97,7 @@ cards:
           position: absolute
           width: 2.5%
       - type: image
-        entity: input_boolean.domo_sunscreen
+        entity: input_boolean.domoticz_blinds_sunscreen
         tap_action:
           action: call-service
           service: script.blinds_close_sunscreen
@@ -111,7 +111,7 @@ cards:
           position: absolute
           width: 2.5%
       - type: image
-        entity: input_boolean.sunscreen_manual
+        entity: input_boolean.blinds_sunscreen_manual
         tap_action:
           action:  toggle
         image: /local/custom_icons/manual48_on.png

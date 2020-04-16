@@ -9,6 +9,7 @@ background: "#e3e3e3"
 cards:
   - type: vertical-stack
     cards:
+    ## Headers
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
@@ -16,85 +17,122 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
-        - title: Activiteit 
-## Selection part for media modes.
+        - title: Activiteit
+    ## Selection part for media modes
     ## Mode selection, first row 
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
-            - entity: input_boolean.television 
+            - entity: input_boolean.media_television 
             - name: Televisie 
             - icon: television
+            - picture: television.png
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
-            - entity: input_boolean.netflix 
+            - entity: input_boolean.media_netflix 
             - name: Netflix 
             - icon: netflix
+            - picture: netflix.png
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
-            - entity: input_boolean.spotify 
-            - name: Spotify 
-            - icon: spotify
-        - type: custom:decluttering-card
-          template: media_button_large
-          variables: 
-            - entity: input_boolean.smarttv
-            - name: Smart-TV 
+            - entity: input_boolean.media_disney 
+            - name: Disney+ 
             - icon: television
+            - picture: disney.png
+        - type: custom:decluttering-card
+          template: media_button_large
+          variables: 
+            - entity: input_boolean.media_pathe 
+            - name: Pathe 
+            - icon: television
+            - picture: pathe.png
     ## Mode selection, second row
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
-            - entity: input_boolean.mediaplayer 
-            - name: Mediaspeler 
-            - icon: movie
+            - entity: input_boolean.media_program_missed 
+            - name: NPO start 
+            - icon: television
+            - picture: npostart.png
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
-            - entity: input_boolean.appletv 
+            - entity: input_boolean.media_smarttv
+            - name: Smart-TV 
+            - icon: television
+            - picture: smarttv.png
+        - type: custom:decluttering-card
+          template: media_button_large
+          variables: 
+            - entity: input_boolean.media_appletv 
             - name: Apple-TV 
             - icon: apple
+            - picture: apple.png
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
-            - entity: input_boolean.radio 
-            - name: Radio 
-            - icon: radio
-        - type: custom:decluttering-card
-          template: media_button_large
-          variables: 
-            - entity: input_boolean.music
-            - name: Muziek 
-            - icon: music
+            - entity: input_boolean.media_mediaplayer
+            - name: Mediaspeler 
+            - icon: movie
+            - picture: movie.png
     ## Mode selection, third row
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
           template: media_button_large
-          variables:
-            - entity: input_boolean.dvd
-            - name: DVD
-            - icon: movie
+          variables: 
+            - entity: input_boolean.media_spotify 
+            - name: Spotify 
+            - icon: spotify
+            - picture: spotify.png
+        - type: custom:decluttering-card
+          template: media_button_large
+          variables: 
+            - entity: input_boolean.media_radio 
+            - name: Radio 
+            - icon: radio
+            - picture: radio.png
+        - type: custom:decluttering-card
+          template: media_button_large
+          variables: 
+            - entity: input_boolean.media_music
+            - name: Muziek 
+            - icon: music
+            - picture: music.png
         - type: custom:decluttering-card
           template: media_button_large
           variables:
-            - entity: input_boolean.teletext
+            - entity: input_boolean.media_dvd
+            - name: DVD
+            - icon: movie
+            - picture: movie.png
+    ## Mode selection, fourth row
+    - type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
+          template: media_button_large
+          variables:
+            - entity: input_boolean.media_teletext
             - name: Teletext
             - icon: comment-text-outline
+            - picture: teletext.png
+        - type: custom:button-card
+          color_type: blank-card
         - type: custom:button-card
           color_type: blank-card
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
-            - entity: input_boolean.poweroff
+            - entity: input_boolean.media_poweroff
             - name: Uit
             - icon: power
+            - picture: power.png
     ## Conditional buttons. 1st row (empty as seperator)
     - type: horizontal-stack
       cards: 
@@ -938,9 +976,7 @@ cards:
                   - device: Versterker
                   - command: ModeDirect
 
-  ## Additional selectors and information stack 
-  ## (hidden for normal use)
-
+  ## Additional selectors and information stack
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card

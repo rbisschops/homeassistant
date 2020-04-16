@@ -62,7 +62,7 @@ cards:
           - type: custom:decluttering-card
             template: stats_critical_small_icon
             variables:
-              - sensor: harmonyhub
+              - sensor: harmony_hub
               - name: Harmony Hub
               - icon: router-wireless
           - type: custom:decluttering-card
@@ -88,7 +88,7 @@ cards:
           - type: custom:decluttering-card
             template: stats_critical_small_icon
             variables:
-              - sensor: amazonecho
+              - sensor: amazon_echo
               - name: Echo Dot
               - icon: microphone
           - type: custom:button-card
@@ -142,13 +142,13 @@ cards:
           - type: custom:decluttering-card
             template: stats_normal_small_icon
             variables:
-              - sensor: appletv
+              - sensor: apple_tv
               - name: Apple-TV
               - icon: apple
           - type: custom:decluttering-card
             template: stats_normal_small_icon
             variables:
-              - sensor: lgtelevision
+              - sensor: lg_television
               - name: LG TV
               - icon: television
           - type: custom:decluttering-card
@@ -338,7 +338,7 @@ cards:
         cards:
           - type: custom:mini-graph-card
             entities: 
-            - sensor.speedtest_download 
+            - sensor.speedtest_download
           - type: custom:mini-graph-card
             entities: 
             - sensor.speedtest_upload 

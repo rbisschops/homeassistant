@@ -15,7 +15,7 @@ cards:
     elements:
       ## Doors and windows overlays
       - type: image
-        entity: input_boolean.heating_room_door
+        entity: input_boolean.dummy_heating_room_door
         tap_action:
           action: none
         state_image:
@@ -26,7 +26,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.top_floor_room
+        entity: input_boolean.dummy_kims_room_door
         tap_action:
           action: none
         state_image:

@@ -52,7 +52,7 @@ automation:
           entity_id: binary_sensor.presence_everybody_extended_away
           state: "off"
         - condition: state
-          entity_id: input_boolean.holiday_mode
+          entity_id: input_boolean.mode_holiday
           state: "off"
         - condition: template
           value_template: >
@@ -88,7 +88,7 @@ automation:
           entity_id: binary_sensor.presence_everybody_away
           state: "off"
         - condition: state
-          entity_id: input_boolean.holiday_mode
+          entity_id: input_boolean.mode_holiday
           state: "off"
         - condition: template
           value_template: >

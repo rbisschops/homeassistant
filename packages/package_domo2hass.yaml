@@ -13,23 +13,24 @@ homeassistant:
 ###############################################################################
 input_boolean:
   ## Light switches
-  domo_gardenlight:
-    name: Verlichting tuin
-  domo_porchlight:
-    name: Buiten lamp
-  domo_hallwaylight:
-    name: Verlichting halletje
-  domo_highcabinets:
-    name: Verlichting hoge kasten (KaKu)
-  domo_barlight:
-    name: Verlichting bar
-  domo_christmastree:
-    name: Kerstboom
-  ## Other switches
-  domo_waterornament:
-    name: Waterbollen tuin
-  domo_sunscreen:
-    name: Zonnescherm
+  domoticz_light_garden:
+    name: Verlichting tuin (via Domoticz)
+  domoticz_light_porch:
+    name: Buiten lamp (via Domoticz)
+  domoticz_light_hallway:
+    name: Verlichting halletje (via Domoticz)
+  domoticz_light_high_cabinets:
+    name: Verlichting hoge kasten (via Domoticz)
+  domoticz_light_bar:
+    name: Verlichting bar (via Domoticz)
+  domoticz_switch_christmas_tree:
+    name: Kerstboom (via Domoticz)
+  ## Generic switches
+  domoticz_switch_water_ornament:
+    name: Waterbollen tuin (via Domoticz)
+  ## Blinds
+  domoticz_blinds_sunscreen:
+    name: Zonnescherm (via Domoticz)
 
 ###############################################################################
 ##  Groups
@@ -49,14 +50,14 @@ automation:
   #     platform: state
   #     entity_id:
         # - input_boolean.domo_entertainment
-        # - input_boolean.domo_gardenlight
-        # - input_boolean.domo_porchlight
-        # - input_boolean.domo_hallwaylight
-        # - input_boolean.highcabinets
-        # - input_boolean.domo_christmastree
-        # - input_boolean.domo_barlight
-        # - input_boolean.domo_waterornament
-        # - input_boolean.domo_sunscreen
+        # - input_boolean.domoticz_light_garden
+        # - input_boolean.domoticz_light_porch
+        # - input_boolean.domoticz_light_hallway
+        # - input_boolean.light_high_cabinets
+        # - input_boolean.domoticz_switch_christmas_tree
+        # - input_boolean.domoticz_light_bar
+        # - input_boolean.domoticz_switch_water_ornament
+        # - input_boolean.domoticz_blinds_sunscreen
     # condition:
     # action:
     #   - service: script.domoticz_domoticz_output_switch
@@ -72,7 +73,7 @@ automation:
     trigger:
       platform: state
       entity_id:
-        - input_boolean.domo_christmastree
+        - input_boolean.domoticz_switch_christmas_tree
     condition:
     action:
       - service: mqtt.publish
@@ -92,7 +93,7 @@ automation:
     trigger:
       platform: state
       entity_id:
-        - input_boolean.domo_gardenlight
+        - input_boolean.domoticz_light_garden
     condition:
     action:
       - service: mqtt.publish
@@ -111,7 +112,7 @@ automation:
     trigger:     
       platform: state
       entity_id:
-        - input_boolean.domo_porchlight
+        - input_boolean.domoticz_light_porch
     condition:
     action:
       - service: mqtt.publish
@@ -129,7 +130,7 @@ automation:
     trigger:     
       platform: state
       entity_id:
-        - input_boolean.domo_hallwaylight
+        - input_boolean.domoticz_light_hallway
     condition:
     action:
       - service: mqtt.publish
@@ -147,7 +148,7 @@ automation:
     trigger:     
       platform: state
       entity_id:
-        - input_boolean.highcabinets
+        - input_boolean.light_high_cabinets
     condition:
     action:
       - service: mqtt.publish
@@ -165,7 +166,7 @@ automation:
     trigger:     
       platform: state
       entity_id:
-        - input_boolean.domo_barlight
+        - input_boolean.domoticz_light_bar
     condition:
     action:
       - service: mqtt.publish
@@ -183,7 +184,7 @@ automation:
     trigger:     
       platform: state
       entity_id:
-        - input_boolean.domo_waterornament
+        - input_boolean.domoticz_switch_water_ornament
     condition:
     action:
       - service: mqtt.publish
@@ -201,7 +202,7 @@ automation:
     trigger:     
       platform: state
       entity_id:
-        - input_boolean.domo_sunscreen
+        - input_boolean.domoticz_blinds_sunscreen
     condition:
     action:
       - service: mqtt.publish
@@ -623,7 +624,7 @@ automation:
   #   trigger:     
   #     platform: state
   #     entity_id:
-  #       - input_boolean.domo_barlight
+  #       - input_boolean.domoticz_light_bar
   #   condition:
   #   action:
   #     - service: mqtt.publish

@@ -17,8 +17,8 @@
       - entity: input_select.media_harmony_livingroom_old_state
       - type: section
         label: Homeassistant entities
-      - entity: switch.tradfri_media_switch
-      - entity: input_boolean.enable_media_buttons
+      - entity: switch.switch_media
+      - entity: input_boolean.media_enable_ui_buttons
       - entity: timer.media_media_center_delay
       - type: section
         label: Schakelaars Harmony
@@ -35,7 +35,7 @@
 ###############################################################
 # Code kept for reference:
 # - type: custom:button-card
-#   entity: input_boolean.television
+#   entity: input_boolean.media_television
 #   icon: mdi:television
 #   size: 40%
 #   color_type: card

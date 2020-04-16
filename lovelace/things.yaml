@@ -19,7 +19,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: input_boolean.alarm
+      - entity: input_boolean.alarm_generic_alarm
         icon: mdi:alarm-light
   - type: vertical-stack
     cards:
@@ -120,8 +120,8 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.highcabinets
-        - entity: input_boolean.barlight
+        - entity: input_boolean.light_high_cabinets
+        - entity: input_boolean.light_bar
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -131,7 +131,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.christmastree   
+        - entity: input_boolean.switch_christmas_tree   
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -147,7 +147,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.gardenlight
+        - entity: input_boolean.light_garden
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -157,7 +157,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.waterornament
+        - entity: input_boolean.switch_water_ornament
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -167,10 +167,10 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.domo_sunscreen
+        - entity: input_boolean.domoticz_blinds_sunscreen
           name: Zonnescherm
           icon: "mdi:white-balance-sunny"
-        - entity: input_boolean.sunscreen_manual 
+        - entity: input_boolean.blinds_sunscreen_manual 
           name: Zonnescherm handbediening
           icon: "mdi:white-balance-sunny"
 
@@ -189,7 +189,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.porchlight
+        - entity: input_boolean.light_porch
         - entity: input_boolean.light_hallway
     - type: custom:decluttering-card
       template: custom_markdown_card_small
@@ -237,7 +237,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: switch.tradfri_media_switch
+        - entity: switch.switch_media
           icon: mdi:power
     - type: custom:decluttering-card
       template: custom_markdown_card_small

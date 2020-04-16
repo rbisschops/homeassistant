@@ -15,7 +15,7 @@ cards:
     elements:
       ## Garbage bins overlays
       - type: image
-        entity: input_boolean.plastic_bin
+        entity: input_boolean.dummy_garbage_bin_plastic
         tap_action:
           action: none
         state_image:
@@ -26,7 +26,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.bio_bin
+        entity: input_boolean.dummy_garbage_bin_bio
         tap_action:
           action: none
         state_image:
@@ -49,7 +49,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.freezer
+        entity: input_boolean.dummy_freezer_door
         tap_action:
           action: none
         state_image:
@@ -83,7 +83,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.garden_door
+        entity: input_boolean.dummy_garden_door
         tap_action:
           action: none
         state_image:
@@ -94,7 +94,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.front_window
+        entity: input_boolean.dummy_groundfloor_front_window
         tap_action:
           action: none
         state_image:
@@ -105,7 +105,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.hallway_livingroom_door
+        entity: input_boolean.dummy_groundfloor_hallway_door
         tap_action:
           action: none
         state_image:
@@ -116,7 +116,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.hallway_storage_door
+        entity: input_boolean.dummy_hallway_storage_door
         tap_action:
           action: none
         state_image:
@@ -127,7 +127,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.metering_cabinet_door
+        entity: input_boolean.dummy_metering_cabinet_door
         tap_action:
           action: none
         state_image:
@@ -138,7 +138,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.toilet_door
+        entity: input_boolean.dummy_rest_room_door
         tap_action:
           action: none
         state_image:
@@ -225,7 +225,7 @@ cards:
           font-weight: 'bold'
       ## Porch light
       - type: image
-        entity: input_boolean.porchlight
+        entity: input_boolean.light_porch
         tap_action:
           action: toggle
         image: /local/custom_icons/lightbulb48_on.png
@@ -306,7 +306,7 @@ cards:
           width: 2.5%
       ## Bar lights 
       - type: image
-        entity: input_boolean.barlight
+        entity: input_boolean.light_bar
         tap_action:
           action: toggle
         image: /local/custom_icons/lightbulb48_on.png
@@ -320,8 +320,8 @@ cards:
           width: 2.5%
       ## High cabinet lights 
       - type: image
-        # entity: switch.tradfri_high_cabinets_switch
-        entity: input_boolean.highcabinets
+        # entity: switch.switch_high_cabinets
+        entity: input_boolean.light_high_cabinets
         tap_action:
           action: toggle
         image: /local/custom_icons/lightbulb48_on.png
@@ -337,11 +337,11 @@ cards:
       ## X-mastree
       - type: conditional
         conditions:
-          - entity: 'input_boolean.christmas_mode'
+          - entity: 'input_boolean.mode_christmas'
             state: 'on'
         elements:
           - type: image
-            entity: input_boolean.christmastree
+            entity: input_boolean.switch_christmas_tree
             tap_action:
               action: toggle
             image: /local/custom_icons/lightbulb48_on.png
@@ -356,7 +356,7 @@ cards:
 
       ## Home states
       - type: image
-        entity: input_boolean.holiday_mode
+        entity: input_boolean.mode_holiday
         tap_action:
           action: toggle
         image: /local/custom_icons/suitecase48_off.png
@@ -370,7 +370,7 @@ cards:
           transform: translate(0%, -50%)
           width: 3% 
       - type: image
-        entity: input_boolean.recording_mode
+        entity: input_boolean.media_recording_mode
         tap_action:
           action: toggle
         image: /local/custom_icons/recorder48_off.png
@@ -443,7 +443,7 @@ cards:
           width: 3%
       ## Master switches
       - type: image
-        entity: input_boolean.livingroom_lights
+        entity: input_boolean.light_livingroom
         tap_action:
           action: toggle
         image: /local/custom_icons/lightbulb48_off.png
@@ -458,7 +458,7 @@ cards:
           width: 3%
       ## Media center status
       - type: image
-        entity: switch.tradfri_media_switch
+        entity: switch.switch_media
         tap_action:
           action: none
         image: /local/custom_icons/mediacenter48_on.png
@@ -473,7 +473,7 @@ cards:
 
       ## Alarms
       - type: image
-        entity: input_boolean.alarm
+        entity: input_boolean.alarm_generic_alarm
         tap_action:
           action: toggle
         state_image:

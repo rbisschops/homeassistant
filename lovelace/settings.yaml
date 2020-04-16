@@ -21,20 +21,20 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: input_boolean.text_notifications
+      - entity: input_boolean.notifications_notifications_allowed
         name: Tekst notificaties
         icon: "mdi:bell"
-      - entity: input_boolean.holiday_mode 
+      - entity: input_boolean.mode_holiday 
         name: Vakantie mode
         icon: "mdi:briefcase"
       ## Added V0.8.0
-      - entity: input_boolean.christmas_mode
+      - entity: input_boolean.mode_christmas
         name: Kerst mode
         icon: "mdi:pine-tree"
-      - entity: input_boolean.recording_mode
+      - entity: input_boolean.media_recording_mode
         name: Recorder mode
         icon: "mdi:video"
-      - entity: input_boolean.livingroom_lights_status
+      - entity: input_boolean.light_livingroom_state
         name: Licht aan status
         icon: "mdi:lightbulb"
   - type: vertical-stack
@@ -68,7 +68,7 @@ cards:
       entities: 
       - entity: input_select.zigbee2mqtt_log_level_state
         name: Zigbee2mqtt log level 
-      - entity: input_boolean.zigbee_permit_join
-        name: Zigbee2mqtt permit join
+      - entity: input_boolean.zigbee2mqtt_permit_join
+        name: Zigbee joinen toegestaan
       - entity: timer.zigbee_permit_join
         name: Resterende join tijd

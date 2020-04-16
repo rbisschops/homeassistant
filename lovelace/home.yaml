@@ -59,6 +59,78 @@ cards:
           entities:
           - entity: binary_sensor.garbage_bin_gft
           - entity: binary_sensor.garbage_bin_pmd
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Beneden verdieping
+    - type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: livingroom
+            - name: Woonkamer
+            - icon: water-percent
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: toilet
+            - name: Toilet
+            - icon: water-percent
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: storage
+            - name: Berging
+            - icon: water-percent
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Eerste verdieping
+    - type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: bedroom
+            - name: Slaapkamer
+            - icon: water-percent
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: bathroom
+            - name: Badkamer
+            - icon: water-percent
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: office
+            - name: Kantoor
+            - icon: water-percent
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Tweede verdieping
+    - type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: kim
+            - name: Kamer Kim
+            - icon: water-percent
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: hallway_floor2
+            - name: Overloop
+            - icon: water-percent
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: heating_room
+            - name: Ketelkast
+            - icon: alert-circle
 
   ## Control cards
   - type: vertical-stack
@@ -76,19 +148,19 @@ cards:
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.livingroom_lights
+            - entity: input_boolean.light_livingroom
             - name: Woonkamer 
             - icon: lightbulb
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.highcabinets
+            - entity: input_boolean.light_high_cabinets
             - name: Hoge kasten
             - icon: lightbulb
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.gardenlight
+            - entity: input_boolean.light_garden
             - name: Tuin 
             - icon: lightbulb
     - type: horizontal-stack
@@ -96,7 +168,7 @@ cards:
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.barlight
+            - entity: input_boolean.light_bar
             - name: Bar 
             - icon: lightbulb
         - type: custom:decluttering-card
@@ -108,7 +180,7 @@ cards:
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.porchlight 
+            - entity: input_boolean.light_porch 
             - name: Buitenlamp 
             - icon: lightbulb
 
@@ -121,19 +193,19 @@ cards:
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_normal
+            - entity: input_boolean.light_normal_scene
             - name: Normaal 
             - icon: lightbulb
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_relax
+            - entity: input_boolean.light_relax_scene
             - name: Ontspannen
             - icon: lightbulb
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_reading
+            - entity: input_boolean.light_reading_scene
             - name: Lezen 
             - icon: lightbulb
     - type: horizontal-stack
@@ -141,19 +213,19 @@ cards:
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_concentrate
+            - entity: input_boolean.light_concentrate_scene
             - name: Concentratie
             - icon: lightbulb
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_cleaning 
+            - entity: input_boolean.light_cleaning_scene 
             - name: Schoonmaken
             - icon: lightbulb
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_dimmed 
+            - entity: input_boolean.light_dimmed_scene 
             - name: Gedimd
             - icon: lightbulb
     - type: horizontal-stack
@@ -161,24 +233,24 @@ cards:
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_energy
+            - entity: input_boolean.light_energy_scene
             - name: Energie
             - icon: lightbulb
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_clear
+            - entity: input_boolean.light_clear_scene
             - name: Helder
             - icon: lightbulb
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: input_boolean.scene_nightlight
+            - entity: input_boolean.light_nightlight_scene
             - name: Nachtlampje
             - icon: lightbulb
     - type: conditional
       conditions:
-        - entity: 'input_boolean.christmas_mode'
+        - entity: 'input_boolean.mode_christmas'
           state: 'on' 
       card:
         type: horizontal-stack
@@ -186,7 +258,7 @@ cards:
           - type: custom:decluttering-card
             template: light_button_large
             variables: 
-              - entity: input_boolean.scene_christmas
+              - entity: input_boolean.light_christmas_scene
               - name: Kerst
               - icon: lightbulb
           - type: custom:button-card
@@ -195,7 +267,7 @@ cards:
             color_type: blank-card
     - type: conditional
       conditions:
-        - entity: 'input_boolean.christmas_mode'
+        - entity: 'input_boolean.mode_christmas'
           state: 'on' 
       card:
         type: custom:decluttering-card
@@ -204,7 +276,7 @@ cards:
           - title: Kerstversiering
     - type: conditional
       conditions:
-        - entity: 'input_boolean.christmas_mode'
+        - entity: 'input_boolean.mode_christmas'
           state: 'on' 
       card:
         type: horizontal-stack
@@ -212,7 +284,7 @@ cards:
           - type: custom:decluttering-card
             template: light_button_large
             variables: 
-              - entity: input_boolean.christmastree
+              - entity: input_boolean.switch_christmas_tree
               - name: Kerstboom 
               - icon: pine-tree
           - type: custom:button-card
@@ -228,7 +300,7 @@ cards:
         - type: custom:decluttering-card
           template: light_button_large
           variables: 
-            - entity: switch.tradfri_media_switch 
+            - entity: switch.switch_media 
             - name: Media center 
             - icon: television
         - type: custom:button-card

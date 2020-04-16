@@ -101,7 +101,7 @@ automation:
       condition: and
       conditions:
         - condition: state
-          entity_id: input_boolean.porchlight
+          entity_id: input_boolean.light_porch
           state: "on"
         - condition: sun
           after: sunset
@@ -138,7 +138,7 @@ automation:
     action:
       - service_template: >-
           {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: input_boolean.domo_hallwaylight
+        entity_id: input_boolean.domoticz_light_hallway
       - service_template: >-
           {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
         entity_id: group.light_hallway

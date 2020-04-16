@@ -2,12 +2,85 @@
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
 
+## [0.9.14] - 2020-04-15
+### Added
+- Added experimental dashboard items for showing the humidity in the house by means of RAG (Red-Amber-Green) indicators.[Issue #025](https://github.com/rbisschops/homeassistant/issues/25)
+
+### Removed
+- removed template sensors for RAG from package.environment.yaml (sensor.environment_livingroom_humidity_rag & sensor.environment_test_humidity_rag) Not used.
+
+## [0.9.13] - 2020-04-13
+### Changed
+- Changed behavior of humidity warmings for livingroom. [Issue #024](https://github.com/rbisschops/homeassistant/issues/24)
+
+## [0.9.12] - 2020-04-12
+### Bug fixes
+- Fixed: Triggers  missing for Pathe thuis and Disney+ in automations: Media - actions triggered from UI, Media - actions triggered from HA-Bridge, Media - actions triggered from Harmony Hub
+- Fixed: Trigger for Uitzending gemist from HA Bridge in automation Media - actions triggered from HA-Bridge was wrong, no binanry sensor used.
+
+## [0.9.11] - 2020-04-11
+### Bug fixes
+- Fixed: Friendly name input_boolean.dummy_side_room_window [Issue #022](https://github.com/rbisschops/homeassistant/issues/22)
+- Fixed: Name changed to Zigbee joinen toegestaan voor input_boolean.zigbee2mqtt_permit_join [Issue #023](https://github.com/rbisschops/homeassistant/issues/23)
+
+### Changed
+- Changed name of most network sensors from nc_xxx to network_xxx in all files
+- Changed decluttering template for stats_critical_small_icon and stats_normal_small_icon to match network_ instead of nc_
+- sensors: Changed multiple entities names to more logical names.
+- Sensors: Added missing friendly names
+
+### Removed
+- Removed unused groups from file package_network.yaml
+
+### Added
+- Support for Disney+ source selection on LG television. Requires testing! [Issue #019](https://github.com/rbisschops/homeassistant/issues/19)
+- Support for Pathé Thuis source selection on LG television. Requires testing! [Issue #020](https://github.com/rbisschops/homeassistant/issues/20)
+- Support for Uitzending gemist source selection on LG television. Requires testing! [Issue #018](https://github.com/rbisschops/homeassistant/issues/18)
+
+## [0.9.10] - 2020-04-07
+### Bug fixes
+- Fixed: File media_center.yaml. Multiple wrong names for input_booolean.media_program_missed (Uitzending gemist).
+- Fixed: File media_center.yaml. Wrong reference for input_boolean.media_mediaplayer (still media_player used in dict).
+
+## [0.9.9] - 2020-04-07
+### Added
+- Lovelace: Button for Uitzending gemist added to mediaplayer tab (mediaplayer.yaml). [Issue #018](https://github.com/rbisschops/homeassistant/issues/18)
+- Lovelace: Button for Disney+ added to mediaplayer tab (mediaplayer.yaml). [Issue #019](https://github.com/rbisschops/homeassistant/issues/19)
+- Lovelace: Button for Pathe thuis added to mediaplayer tab (mediaplayer.yaml). [Issue #020](https://github.com/rbisschops/homeassistant/issues/20)
+
+### Changed
+- Lovelace: Changed media_button_large to support pictures additional to icons. [Issue #021](https://github.com/rbisschops/homeassistant/issues/21)
+- Lovelace: Changed mediaplayer buttons for media modes to support entity_pictures. [Issue #021](https://github.com/rbisschops/homeassistant/issues/21)
+
+## [0.9.8] - 2020-04-06
+### Bug fixes
+- Fixed: Reversed some names for media modes to match Harmony names. [Issue #010](https://github.com/rbisschops/homeassistant/issues/10)
+- FIxed: Changed selection for light modes. [Issue #016](https://github.com/rbisschops/homeassistant/issues/16)
+
+### Added
+- Option to select Uitzending gemist added to media_center.yaml. [Issue #018](https://github.com/rbisschops/homeassistant/issues/18)
+
+## [0.9.7] - 2020-04-05
+### Bug fixes
+- Fixed: Top floor showing door in loverlace instead of right window. [Issue #015](https://github.com/rbisschops/homeassistant/issues/15)
+- Fixed: Hallway light not working anymore. [Issue #011](https://github.com/rbisschops/homeassistant/issues/11)
+- Fixed: Livingroom lights not working from lovelace button anymore. [Issue #017](https://github.com/rbisschops/homeassistant/issues/17)
+- Fixed: First floor hallway door showing as groundfloor door on floorplan. [Issue #014](https://github.com/rbisschops/homeassistant/issues/14)
+
+## [0.9.6] - 2020-04-04
+### Bug fixes
+- hue scripts: Fixed bug in script names.
+
+### Changed
+- input_boolean: Changed multiple entities names to more logical names.
+- timer: Changed entity_id 'timer.zigbee_permit_join' to 'timer.zigbee2mqtt_permit_join' in package_zigbee2mqtt.yaml
+
 ## [0.9.5] - 2020-04-03
 ### Bug fixes
 - mediaplayer: Reverted change name webostv to living_room_tv.
 - binary_sensor: picture not presented in LovelaceUI for doors/windows. Updated sensor configuration. 
 
-
+### Changed
 - timer: Changed multiple entities names to more logical names.
 - input_boolean: Changed name 'input_boolean.hallwaylight' to 'input_boolean.light_hallway' in package_hallway.yaml
 - script: Changed multiple entities names to more logical names.

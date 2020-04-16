@@ -15,7 +15,7 @@ cards:
     elements:
       ## Doors and windows overlays
       - type: image
-        entity: input_boolean.bath_room_door
+        entity: input_boolean.dummy_bath_room_door
         tap_action:
           action: none
         state_image:
@@ -26,7 +26,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.bed_room_door
+        entity: input_boolean.dummy_bed_room_door
         tap_action:
           action: none
         state_image:
@@ -37,7 +37,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.hallway_door
+        entity: input_boolean.dummy_first_floor_hallway_door
         tap_action:
           action: none
         state_image:
@@ -48,7 +48,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.office_door
+        entity: input_boolean.dummy_office_door
         tap_action:
           action: none
         state_image:
@@ -59,7 +59,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.office_window
+        entity: input_boolean.dummy_office_window
         tap_action:
           action: none
         state_image:
@@ -70,7 +70,7 @@ cards:
           position: absolute
           transform: translate(0%, 0%)
       - type: image
-        entity: input_boolean.side_room_window
+        entity: input_boolean.dummy_side_room_window
         tap_action:
           action: none
         state_image:

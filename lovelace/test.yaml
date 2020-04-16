@@ -13,18 +13,18 @@ cards:
       template: custom_markdown_card
       variables:
         - title: Algemeen
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Presence test
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - input_select.presence_state_ralph
-        - input_select.presence_state_anneke
-        - input_select.presence_state_kimberly
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card_small
+  #     variables:
+  #       - title: Presence test
+  #   - type: entities
+  #     show_state: false
+  #     show_name: false
+  #     show_header_toggle: false
+  #     entities:
+  #       - input_select.presence_state_ralph
+  #       - input_select.presence_state_anneke
+  #       - input_select.presence_state_kimberly
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -48,7 +48,6 @@ cards:
         - entity: timer.light_hallway
         - entity: timer.light_porch
 
-  ## Added V0.6.0
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -64,7 +63,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.sunscreen_test
+        - entity: input_boolean.blinds_sunscreen_test
 
   - type: vertical-stack
     cards:
@@ -81,7 +80,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: switch.tradfri_high_cabinets_switch
+        - entity: switch.switch_high_cabinets
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -91,8 +90,9 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.front_window
-        - entity: input_boolean.garden_door
+        - entity: input_boolean.dummy_groundfloor_front_window
+        - entity: input_boolean.dummy_garden_door
+
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -108,10 +108,10 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.hallway_livingroom_door
-        - entity: input_boolean.hallway_storage_door
-        - entity: input_boolean.metering_cabinet_door
-        - entity: input_boolean.toilet_door
+        - entity: input_boolean.dummy_groundfloor_hallway_door
+        - entity: input_boolean.dummy_hallway_storage_door
+        - entity: input_boolean.dummy_metering_cabinet_door
+        - entity: input_boolean.dummy_rest_room_door
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -121,9 +121,10 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.freezer
-        - entity: input_boolean.plastic_bin
-        - entity: input_boolean.bio_bin
+        - entity: input_boolean.dummy_freezer_door
+        - entity: input_boolean.dummy_garbage_bin_plastic
+        - entity: input_boolean.dummy_garbage_bin_bio
+
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -140,8 +141,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: sensor.light_level_office
-
+        - entity: sensor.light_level_office_level
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -151,7 +151,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.bath_room_door
+        - entity: input_boolean.dummy_bath_room_door
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -161,9 +161,9 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.bed_room_door
-        - entity: input_boolean.bed_room_window_l
-        - entity: input_boolean.bed_room_window_r
+        - entity: input_boolean.dummy_bed_room_door
+        - entity: input_boolean.dummy_bed_room_window_left
+        - entity: input_boolean.dummy_bed_room_window_right
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -173,7 +173,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.hallway_door
+        - entity: input_boolean.dummy_first_floor_hallway_door
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -183,8 +183,8 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.office_door
-        - entity: input_boolean.office_window
+        - entity: input_boolean.dummy_office_door
+        - entity: input_boolean.dummy_office_window
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -194,7 +194,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.side_room_window
+        - entity: input_boolean.dummy_side_room_window
 
   - type: vertical-stack
     cards:
@@ -211,7 +211,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.heating_room_door
+        - entity: input_boolean.dummy_heating_room_door
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -221,6 +221,38 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.top_floor_room
-        - entity: input_boolean.top_floor_window_l
-        - entity: input_boolean.top_floor_window_r
+        - entity: input_boolean.dummy_kims_room_door
+        - entity: input_boolean.dummy_kims_room_window_left
+        - entity: input_boolean.dummy_kims_room_window_right
+
+##########################################################################################
+## Experimental RAG (Red-Amber-Green) buttons for quick overview of hummidity in the house
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card 
+      template: custom_markdown_card
+      variables:
+        - title: Luchtvochtigheid
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Test sensors
+    - type: horizontal-stack
+      cards:
+        # - type: custom:decluttering-card
+        #   template: stats_rh_rag_icon
+        #   variables:
+        #     - sensor: test
+        #     - name: Test
+        #     - icon: water-percent
+        - type: custom:decluttering-card
+          template: stats_rh_rag_icon_rh
+          variables:
+            - sensor: test
+            - name: Test sensor (MQTT)
+        - type: custom:button-card
+          color_type: blank-card
+        - type: custom:button-card
+          color_type: blank-card
+
+##########################################################################################

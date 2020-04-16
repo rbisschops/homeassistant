@@ -14,14 +14,14 @@
 input_boolean:
   ## Holiday mode toggle switch, used for setting when on holiday 
   ## Several automations depend on this
-  holiday_mode:
+  mode_holiday:
     name: Vakantie mode aan
     icon: mdi:toggle-switch
 
   ## Christmas mode toggle switch, used for setting when on ehem the holiday season is there 
   ## Several automations depend on this
-  christmas_mode:
-    name: Kerst periode
+  mode_christmas:
+    name: Kerst periode mode
     icon: mdi:toggle-switch
 
 binary_sensor:
@@ -129,7 +129,7 @@ automation:
       condition: and
       conditions:
         - condition: state
-          entity_id: input_boolean.livingroom_lights
+          entity_id: input_boolean.light_livingroom
           state: "off"
         - condition: or
           conditions:
@@ -225,23 +225,23 @@ script:
     sequence:
       ## Switch off the outdoor lighting
       - service: homeassistant.turn_off
-        entity_id: input_boolean.gardenlight
+        entity_id: input_boolean.light_garden
       ## Switch off the christmastree
       - service: homeassistant.turn_off
-        entity_id: input_boolean.christmastree
+        entity_id: input_boolean.switch_christmas_tree
         ## Switch off the living room lights
       - service: homeassistant.turn_off
-        entity_id: input_boolean.livingroom_lights
+        entity_id: input_boolean.light_livingroom
       ## Change the climate settings for the toilet heating
       - service: input_select.select_option
         data:
           entity_id: input_select.climate_restroom_heating_mode
           option: "Spaarstand"
       - condition: state
-        entity_id: input_boolean.recording_mode
+        entity_id: input_boolean.media_recording_mode
         state: "off"
       - service: homeassistant.turn_off
-        entity_id: switch.tradfri_media_switch
+        entity_id: switch.switch_media
 
   ## Script when leaving home, also called when everybody is away (from package_presence)
   mode_leaving_triggered:
@@ -249,10 +249,10 @@ script:
     sequence:
       ## Switch off the outdoor lighting
       - service: homeassistant.turn_off
-        entity_id: input_boolean.gardenlight
+        entity_id: input_boolean.light_garden
       ## Switch off the living room lights
       - service: homeassistant.turn_off
-        entity_id: input_boolean.livingroom_lights
+        entity_id: input_boolean.light_livingroom
       ## Change the climate settings for the toilet heating
       - service: input_select.select_option
         data_template:
@@ -260,26 +260,26 @@ script:
           option: >
             {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Spaarstand' }}
       - service_template: >
-          {% if is_state('input_boolean.recording_mode', 'on') %}
+          {% if is_state('input_boolean.media_recording_mode', 'on') %}
             homeassistant.turn_on
-          {% elif is_state('input_boolean.recording_mode', 'off') %}
+          {% elif is_state('input_boolean.media_recording_mode', 'off') %}
             homeassistant.turn_off
           {% endif %}
-        entity_id: switch.tradfri_media_switch
+        entity_id: switch.switch_media
       ## Turn on lighting, but only when dark
       - condition: state
         entity_id: sun.sun
         state: "below_horizon"
       ## Switch on the outdoor lighting
       - service: homeassistant.turn_on
-        entity_id: input_boolean.porchlight
+        entity_id: input_boolean.light_porch
       - service: timer.start
         data_template:
           entity_id: timer.light_porch
           # duration: '00:{{ states.input_text.light_porch_short_timer.state | int }}:00'
           duration: "00:{{ states('input_text.light_porch_short_timer')|int}}:00"
       - service: homeassistant.turn_on
-        entity_id: input_boolean.hallwaylight
+        entity_id: input_boolean.light_hallway
       - service: timer.start
         data_template:
           entity_id: timer.light_hallway
@@ -301,36 +301,36 @@ script:
         state: "below_horizon"
       ## Switch on the outdoor lighting
       - service: homeassistant.turn_on
-        entity_id: input_boolean.gardenlight
+        entity_id: input_boolean.light_garden
       - service: homeassistant.turn_on
         entity_id:
-          - input_boolean.livingroom_lights_status
+          - input_boolean.light_livingroom_state
       ## Switch on the living room lights
       # - service: homeassistant.turn_on
-      #   entity_id: input_boolean.livingroom_lights
+      #   entity_id: input_boolean.light_livingroom
       - service: script.light_hue_set_scene_automatic
         data_template:
           brightness_value: >
             {{ '100,150' }}
           profile_value: >
-            {{ 'christmas' if is_state('input_boolean.christmas_mode','on') else 'normal' }}
+            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
           transition: 2
       ## Turn on the high cabinets lights
       - service: homeassistant.turn_on
         entity_id: 
-          - input_boolean.highcabinets
-          # - switch.tradfri_high_cabinets_switch
+          - input_boolean.light_high_cabinets
+          # - switch.switch_high_cabinets
       ## Switch on the living room lights switch
       - service: homeassistant.turn_on
-        entity_id: input_boolean.livingroom_lights
+        entity_id: input_boolean.light_livingroom
       ## check if it is christmas time
       - condition: state
-        entity_id: input_boolean.christmas_mode
+        entity_id: input_boolean.mode_christmas
         state: "on"
       ## Switch on the chritmas tree lights
       - service: homeassistant.turn_on
         entity_id: 
-          - input_boolean.christmastree
+          - input_boolean.switch_christmas_tree
 
   ## Script everybody extended away
   mode_extended_away_triggered:
@@ -341,7 +341,7 @@ script:
           entity_id: input_select.climate_restroom_heating_mode
           option: "Uitgeschakeld"
       - service: homeassistant.turn_on
-        entity_id: input_boolean.holiday_mode
+        entity_id: input_boolean.mode_holiday
 
   ## Script running at sunset
   sun_sunset:
@@ -351,14 +351,14 @@ script:
         entity_id: binary_sensor.presence_people_home
         state: "on"
       - condition: state
-        entity_id: input_boolean.holiday_mode
+        entity_id: input_boolean.mode_holiday
         state: "off"
       - condition: state
-        entity_id: input_boolean.livingroom_lights_status
+        entity_id: input_boolean.light_livingroom_state
         state: "off"
       ## Switch on the living room lights switch
       - service: homeassistant.turn_on
-        entity_id: input_boolean.livingroom_lights_status
+        entity_id: input_boolean.light_livingroom_state
       ## start hue lampen met de juiste mode
       - service: script.light_hue_set_scene_transition
         data_template:
@@ -367,9 +367,9 @@ script:
           brightness_stop_value: >
             {{ '90,100' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
           profile_start_value: >
-            {{ 'christmas' if is_state('input_boolean.christmas_mode','on') else 'normal' }}
+            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
           profile_stop_value: >
-            {{ 'christmas' if is_state('input_boolean.christmas_mode','on') else 'normal' }}
+            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
           transition: 1800
       # - service: script.hue_sunset_mode
       ## start timer for kitchen cabinets, will switch on after xx hour
@@ -379,10 +379,10 @@ script:
           duration: "00:30:00"
       ## Switch on the living room lights switch
       - service: homeassistant.turn_on
-        entity_id: input_boolean.livingroom_lights
+        entity_id: input_boolean.light_livingroom
       ## check if it is christmas time
       - condition: state
-        entity_id: input_boolean.christmas_mode
+        entity_id: input_boolean.mode_christmas
         state: "on"
       ## start timer for christmas tree, will switch on after xx hour
       - service: timer.start
@@ -417,7 +417,7 @@ script:
           brightness_value: >
             {{ '50,50' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
           profile_value: >
-            {{ 'christmas' if is_state('input_boolean.christmas_mode','on') else 'concentrate' }}
+            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'concentrate' }}
           transition: 5
 
 ###############################################################################

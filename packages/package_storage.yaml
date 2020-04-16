@@ -11,6 +11,13 @@ homeassistant:
     ## Sensors 
     sensor.vibration_mailbox:
       friendly_name: Brievenbus
+    sensor.vibration_mailbox_all:
+      friendly_name: Brievenbus (compleet)
+    sensor.vibration_mailbox_battery:
+      friendly_name: 
+    sensor.vibration_mailbox_linkquality:
+      friendly_name: Brievenbus (link quality)
+
     ## Timers
     timer.light_porch:
       friendly_name: Timer buitenlamp
@@ -20,7 +27,7 @@ homeassistant:
 ##  Entities
 ###############################################################################
 input_boolean:
-  porchlight:
+  light_porch:
     name: Buitenlamp
     icon: mdi:lightbulb
 
@@ -65,7 +72,7 @@ group:
     name: Buitenlamp
     entities:
       - switch.habridge_porchlight
-      - input_boolean.porchlight
+      - input_boolean.light_porch
 
 ###############################################################################
 ##  Automations
@@ -130,7 +137,7 @@ automation:
           before: sunrise
     action:
       - service: homeassistant.turn_on
-        entity_id: input_boolean.porchlight
+        entity_id: input_boolean.light_porch
       - service: timer.start
         data_template:
           entity_id: timer.light_porch
@@ -146,7 +153,7 @@ automation:
         entity_id: timer.light_porch
     action:
     - service: homeassistant.turn_off
-      entity_id: input_boolean.porchlight
+      entity_id: input_boolean.light_porch
 
   ## Switch Porch light on and off
   - alias: "Light Porch toggle"
@@ -155,11 +162,11 @@ automation:
       platform: state
       entity_id: 
         - switch.habridge_porchlight
-        - input_boolean.porchlight
+        - input_boolean.light_porch
     action:
       - service_template: >-
           {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: input_boolean.domo_porchlight
+        entity_id: input_boolean.domoticz_light_porch
       - service_template: >-
           {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
         entity_id: group.light_porch

@@ -7,6 +7,33 @@
 ##  Homeassistant settings
 ###############################################################################
 
+homeassistant:
+  customize:
+    ## Server sensors
+    sensor.server_domoticz_cpu_temp:
+      friendly_name: Domoticz server CPU temperatuur
+    sensor.server_domoticz_cpu_usage:
+      friendly_name: Domoticz server CPU gebruik
+    sensor.server_domoticz_hdd:
+      friendly_name: Domoticz server HDD
+    sensor.server_domoticz_hdd_boot:
+      friendly_name: Domoticz server HDD boot
+    sensor.server_domoticz_memory_usage:
+      friendly_name: Domoticz server geheugen gebruik
+    sensor.server_domoticz_process_usage:
+      friendly_name: Domoticz server gebruik processen
+    sensor.server_homeserver_cpu_temp:
+      friendly_name: Homerserver CPU temperatuur
+    sensor.server_homeserver_cpu_usage:
+      friendly_name: Homerserver CPU gebruik
+    sensor.server_homeserver_hdd:
+      friendly_name: Homerserver HDD
+    sensor.server_homeserver_hdd_boot:
+      friendly_name: Homerserver HDD boot
+    sensor.server_homeserver_memory_usage:
+      friendly_name: Homerserver HDD geheugen gebruik
+    sensor.server_homeserver_process_usage:
+      friendly_name: Homerserver gebruik processen
 
 ###############################################################################
 ##  Entities

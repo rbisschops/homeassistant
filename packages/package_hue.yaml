@@ -31,26 +31,26 @@ input_boolean:
   ## Added V1.5.0
   ## Input booleans used for selecting the scene for the Hue lamps
   ## Used in the UI and in the script hue_set
-  scene_normal:
-    name: Normaal
-  scene_relax:
-    name: Ontspannen
-  scene_reading:
-    name: Lezen
-  scene_concentrate:
-    name: Concentratie
-  scene_cleaning:
-    name: Schoonmaken
-  scene_dimmed:
-    name: Gedimd
-  scene_energy:
-    name: Energie
-  scene_clear:
-    name: Helder
-  scene_nightlight:
-    name: Nachtlampje
-  scene_christmas:
-    name: Kerst
+  light_normal_scene:
+    name: Normaal licht scene
+  light_relax_scene:
+    name: Ontspannen licht scene
+  light_reading_scene:
+    name: Lezen licht scene
+  light_concentrate_scene:
+    name: Concentratie licht scene
+  light_cleaning_scene:
+    name: Schoonmaken licht scene
+  light_dimmed_scene:
+    name: Gedimd licht scene
+  light_energy_scene:
+    name: Energie licht scene
+  light_clear_scene:
+    name: Helder licht scene
+  light_nightlight_scene:
+    name: Nachtlampje licht scene
+  light_christmas_scene:
+    name: Kerst licht scene
 
 ## Input selectors for scenes and Rooms
 input_select:
@@ -171,22 +171,22 @@ automation:
     trigger:
       platform: state
       entity_id:
-        - input_boolean.scene_normal
-        - input_boolean.scene_relax
-        - input_boolean.scene_reading
-        - input_boolean.scene_concentrate
-        - input_boolean.scene_cleaning
-        - input_boolean.scene_dimmed
-        - input_boolean.scene_energy
-        - input_boolean.scene_clear
-        - input_boolean.scene_nightlight
-        - input_boolean.scene_christmas
+        - input_boolean.light_normal_scene
+        - input_boolean.light_relax_scene
+        - input_boolean.light_reading_scene
+        - input_boolean.light_concentrate_scene
+        - input_boolean.light_cleaning_scene
+        - input_boolean.light_dimmed_scene
+        - input_boolean.light_energy_scene
+        - input_boolean.light_clear_scene
+        - input_boolean.light_nightlight_scene
+        - input_boolean.light_christmas_scene
       to: "on"
     action:
       - service: script.light_hue_set_scene_from_buttons
         data_template:
           new_scene: >
-            {% set trigger = trigger.to_state.object_id|replace('scene_','') %}
+            {% set trigger = trigger.to_state.object_id|replace("_scene","")|replace("light_","") %}
             {{ trigger }}
           old_scene: "{{ states.input_select.light_scene_current_state.state }}"
 
@@ -200,7 +200,6 @@ automation:
 ###############################################################################
 
 script:
-  ## Added V1.5.0
   ## Set hue scene based on button from lovelace home tab
   ## Called form automation.scene_verlichting_woonkamer
   light_hue_set_scene_from_buttons:
@@ -224,7 +223,7 @@ script:
       - service: input_boolean.turn_off
         data_template:
           entity_id: >-
-            {% set entity = 'input_boolean.scene_' ~ old_scene %}
+            {% set entity = "input_boolean.light_" ~ old_scene ~ "_scene" %}
             {{ entity }}
       - service: script.light_hue_set_scene_manual
         data_template:
@@ -263,7 +262,7 @@ script:
           brightness_value: >
             {{ '90,100' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
           profile_value: >
-            {{ 'christmas' if is_state('input_boolean.christmas_mode','on') else 'normal' }}
+            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
           transition: 5
 
   ## Updated V1.6.0

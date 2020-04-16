@@ -9,7 +9,7 @@
 homeassistant:
   customize:
     ## Timers
-    timer.zigbee_permit_join:
+    timer.zigbee2mqtt_permit_join:
       friendly_name: Resterende tijd Zigbee joinen toegestaan
 
 ###############################################################################
@@ -29,7 +29,7 @@ input_select:
 
 input_boolean:
   ## Input boolean for enabling/disabling joining
-  zigbee_permit_join:
+  zigbee2mqtt_permit_join:
     name: Allow devices to join
     initial: off
     icon: mdi:cellphone-wireless
@@ -84,7 +84,7 @@ automation:
     alias: "Zigbee2mqtt - Enable Zigbee joining"
     trigger:
       platform: state
-      entity_id: input_boolean.zigbee_permit_join
+      entity_id: input_boolean.zigbee2mqtt_permit_join
       to: "on"
     action:
     - service: mqtt.publish
@@ -93,12 +93,12 @@ automation:
         payload: "true"
     - service: timer.start
       data:
-        entity_id: timer.zigbee_permit_join
+        entity_id: timer.zigbee2mqtt_permit_join
 
   - id: disable_zigbee_join
     alias: "Zigbee2mqtt - Disable Zigbee joining"
     trigger:
-    - entity_id: input_boolean.zigbee_permit_join
+    - entity_id: input_boolean.zigbee2mqtt_permit_join
       platform: state
       to: "off"
     action:
@@ -107,7 +107,7 @@ automation:
         topic: zigbee2mqtt/bridge/config/permit_join
       service: mqtt.publish
     - data:
-        entity_id: timer.zigbee_permit_join
+        entity_id: timer.zigbee2mqtt_permit_join
       service: timer.cancel
 
   - id: disable_zigbee_join_timer
@@ -116,7 +116,7 @@ automation:
     - platform: event
       event_type: timer.finished
       event_data:
-        entity_id: timer.zigbee_permit_join
+        entity_id: timer.zigbee2mqtt_permit_join
     action:
     - service: mqtt.publish
       data:
@@ -124,7 +124,7 @@ automation:
         payload: "false"
     - service: input_boolean.turn_off
       data:
-        entity_id: input_boolean.zigbee_permit_join
+        entity_id: input_boolean.zigbee2mqtt_permit_join
 
 ###############################################################################
 ##  Templates
@@ -141,8 +141,8 @@ automation:
 ###############################################################################
 timer:
   ## Timer for joining time remaining (120 sec = 2 min)
-  zigbee_permit_join:
-    name: Time remaining
+  zigbee2mqtt_permit_join:
+    name: Resterende tijd Zigbee joinen toegestaan
     duration: 120
 
 

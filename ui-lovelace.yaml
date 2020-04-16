@@ -177,7 +177,6 @@ button_card_templates:
       name:
         - font-size: 1.0em
         - font-weight: normal
-
   light_button_large:
     styles:
       card:
@@ -188,6 +187,20 @@ button_card_templates:
       name:
         - font-size: 1.2em
         - font-weight: normal
+
+##########################################################################################
+## Experimental RAG (Red-Amber-Green) buttons for quick overview of hummidity in the house
+  stats_rh_rag_icon:
+    styles:
+      card:
+        - height: 60px
+        - padding: 2%
+      name:
+        - font-size: 0.9em
+        - font-weight: normal
+        - text-align: left
+
+##########################################################################################
 
 ###############################################################################
 ##  Settings for Declustering-card
@@ -229,6 +242,8 @@ decluttering_templates:
       template:  media_button_large
       entity: '[[entity]]'
       icon: 'mdi:[[icon]]'
+      show_entity_picture: true
+      entity_picture: /local/custom_media_icons/[[picture]]
       size: 40%
       show_state: false
       tap_action:
@@ -392,7 +407,7 @@ decluttering_templates:
   stats_critical_small_icon:
     card:
       type: custom:button-card
-      entity: 'sensor.nc_[[sensor]]'
+      entity: 'sensor.network_[[sensor]]'
       template: stats_button_card_small_icon
       name: '[[name]]'
       tap_action:
@@ -414,7 +429,7 @@ decluttering_templates:
   stats_normal_small_icon:
     card:
       type: custom:button-card
-      entity: 'sensor.nc_[[sensor]]'
+      entity: 'sensor.network_[[sensor]]'
       template: stats_button_card_small_icon
       name: '[[name]]'
       tap_action:
@@ -456,6 +471,82 @@ decluttering_templates:
               - color: rgb(56, 150, 56)
             icon:
               - color: rgb(56, 150, 56)
+
+##########################################################################################
+## Experimental RAG (Red-Amber-Green) buttons for quick overview of hummidity in the house
+  stats_rh_rag_icon:
+    card:
+      type: custom:button-card
+      entity: 'sensor.environment_[[sensor]]_humidity'
+      template: stats_rh_rag_icon
+      name: '[[name]]'
+      tap_action:
+        action: more-info
+      icon: 'mdi:[[icon]]'
+      layout: icon_name
+      styles:
+        icon:
+          - color: >
+             [[[
+              if (parseFloat(entity.state) < 40) return 'rgb(216, 0, 0)';
+              if (parseFloat(entity.state) < 45 && parseFloat(entity.state) >= 40) return 'rgb(244, 180, 0)';
+              if (parseFloat(entity.state) >= 45 && parseFloat(entity.state) <= 55) return 'rgb(56, 150, 56)';
+              if (parseFloat(entity.state) > 55 && parseFloat(entity.state) <= 60) return 'rgb(244, 180, 0)';
+              if (parseFloat(entity.state) > 60) return 'rgb(216, 0, 0)';
+              else return 'rgb(224, 224, 224)';
+             ]]]
+
+
+## Experimental RAG (Red-Amber-Green) buttons with RH value
+  stats_rh_rag_icon_rh:
+    card:
+      type: custom:button-card
+      entity: 'sensor.environment_[[sensor]]_humidity'
+      icon: >
+        [[[
+          if (parseFloat(entity.state) < 40) return 'mdi:alpha-l-circle';
+          if (parseFloat(entity.state) < 45 && parseFloat(entity.state) >= 40) return 'mdi:alpha-l-circle';
+          if (parseFloat(entity.state) >= 45 && parseFloat(entity.state) <= 55) return 'mdi:alpha-n-circle';
+          if (parseFloat(entity.state) > 55 && parseFloat(entity.state) <= 60) return 'mdi:alpha-h-circle';
+          if (parseFloat(entity.state) > 60) return 'mdi:alpha-h-circle';
+          else return 'mdi:alert-circle';
+        ]]]
+      template: stats_rh_rag_icon
+      name: '[[name]]'
+      tap_action:
+        action: more-info
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+             [[[
+              if (parseFloat(entity.state) < 40) return 'rgb(216, 0, 0)';
+              if (parseFloat(entity.state) < 45 && parseFloat(entity.state) >= 40) return 'rgb(244, 180, 0)';
+              if (parseFloat(entity.state) >= 45 && parseFloat(entity.state) <= 55) return 'rgb(56, 150, 56)';
+              if (parseFloat(entity.state) > 55 && parseFloat(entity.state) <= 60) return 'rgb(244, 180, 0)';
+              if (parseFloat(entity.state) > 60) return 'rgb(216, 0, 0)';
+              else return 'rgb(224, 224, 224)';
+             ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+      custom_fields:
+        temp: >
+          [[[
+            return `<ha-icon
+              icon="mdi:water-percent"
+              style="width: 12px; height: 1em;">
+              </ha-icon><span style="font-size: 0.8em;">${entity.state}%</span>`
+          ]]]
+##########################################################################################
 
 ###############################################################################
 ##  Main Lovemace settings

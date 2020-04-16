@@ -29,75 +29,75 @@ homeassistant:
 
 input_boolean:
   ## Generic alarm input switch
-  alarm:
-    name: Alarm
-  ## Test switches for doors and windows, will be replaced with sensors in the future
+  alarm_generic_alarm:
+    name: Algemeen alarm
+  ## Dummy inputs for doors and windows, will be replaced with sensors in the future
   ## Groundfloor
-  front_window:
-    name: Voorraam
+  dummy_groundfloor_front_window:
+    name: Voorraam benedenverdieping (dummy)
     icon: mdi:window-closed-variant
-  garden_door:
-    name: Tuindeur
+  dummy_garden_door:
+    name: Tuindeur (dummy)
     icon: mdi:door-closed
-  hallway_livingroom_door:
-    name: Tussendeur woonkamer
+  dummy_groundfloor_hallway_door:
+    name: Tussendeur woonkamer (dummy)
     icon: mdi:door-closed
-  hallway_storage_door:
-    name: Tussendeur berging
+  dummy_hallway_storage_door:
+    name: Tussendeur berging (dummy)
     icon: mdi:door-closed
-  metering_cabinet_door:
-    name: Meterkast deur
+  dummy_metering_cabinet_door:
+    name: Meterkast deur (dummy)
     icon: mdi:door-closed
-  toilet_door:
-    name: Toiletdeur
+  dummy_rest_room_door:
+    name: Toiletdeur (dummy)
     icon: mdi:door-closed
-  freezer:
-    name: Vriezerdeur
+  dummy_freezer_door:
+    name: Vriezerdeur (dummy)
     icon: mdi:door-closed
   ## First floor
-  bath_room_door:
-    name: Badkamer deur
+  dummy_bath_room_door:
+    name: Badkamer deur (dummy)
     icon: mdi:door-closed
-  bed_room_door:
-    name: Slaapkamer deur
+  dummy_bed_room_door:
+    name: Slaapkamer deur (dummy)
     icon: mdi:door-closed
-  bed_room_window_l:
-    name: Slaapkamer raam links
+  dummy_bed_room_window_left:
+    name: Slaapkamer raam links (dummy)
     icon: mdi:window-closed-variant
-  bed_room_window_r:
-    name: Slaapkamer raam rechts
+  dummy_bed_room_window_right:
+    name: Slaapkamer raam rechts (dummy)
     icon: mdi:window-closed-variant
-  hallway_door:
-    name: Tussendeur
+  dummy_first_floor_hallway_door:
+    name: Tussendeur 1e verdieping (dummy)
     icon: mdi:door-closed
-  office_door:
-    name: Kantoor deur
+  dummy_office_door:
+    name: Kantoor deur (dummy)
     icon: mdi:door-closed
-  office_window:
-    name: Kantoor raam
+  dummy_office_window:
+    name: Kantoor raam (dummy)
     icon: mdi:window-closed-variant
-  side_room_window:
-    name: Kastenkamer raam
+  dummy_side_room_window:
+    name: Kastenkamer raam (dummy)
     icon: mdi:window-closed-variant
   ## Second floor
-  heating_room_door:
-    name: Ketelkast deur
+  dummy_heating_room_door:
+    name: Ketelkast deur (dummy)
     icon: mdi:door-closed
-  top_floor_room: #rename!!
-    name: Kamer Kim
+  dummy_kims_room_door:
+    name: Kamer Kim (dummy)
     icon: mdi:door-closed
-  top_floor_window_l:
-    name: Kamer Kim raam links
+  dummy_kims_room_window_left:
+    name: Kamer Kim raam links (dummy)
     icon: mdi:window-closed-variant
-  top_floor_window_r:
-    name: Kamer Kim raam rechts
+  dummy_kims_room_window_right:
+    name: Kamer Kim raam rechts (dummy)
     icon: mdi:window-closed-variant
   ## Special pupose test switches
-  bio_bin:
-    name: GFT bak
+  dummy_garbage_bin_bio:
+    name: GFT bak (dummy)
     icon: mdi:delete-outline
-  plastic_bin:
-    name: PMD bak
+  dummy_garbage_bin_plastic:
+    name: PMD bak (dummy)
     icon: mdi:delete-outline
 
 binary_sensor:
@@ -121,15 +121,15 @@ binary_sensor:
     value_template: "{{ value_json.occupancy }}"
     device_class: "motion"
 
-  ## Binary sensor based on the state of input_boolean.alarm. Used for lovelace tab Home 
+  ## Binary sensor based on the state of input_boolean.alarm_generic_alarm. Used for lovelace tab Home 
   - platform: template
     sensors:
       alarm_generic_alarm:
         friendly_name: Algemeen alarm
         value_template: >-
-          {{ is_state('input_boolean.alarm', 'on') }}
+          {{ is_state('input_boolean.alarm_generic_alarm', 'on') }}
         entity_picture_template: >-
-          {{ '/local/custom_icons/alarm48_' ~ states('input_boolean.alarm') ~ '.png'}}
+          {{ '/local/custom_icons/alarm48_' ~ states('input_boolean.alarm_generic_alarm') ~ '.png'}}
   ## Door open sensor (only outside doors are monitored)
   - platform: template
     sensors:
@@ -138,7 +138,7 @@ binary_sensor:
         value_template: >-
           {{ is_state('binary_sensor.door_front_door', 'on')
             or is_state('binary_sensor.door_storage_door', 'on')
-            or is_state('input_boolean.garden_door', 'on') }}
+            or is_state('input_boolean.dummy_garden_door', 'on') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/door48_' ~ states('binary_sensor.door_all_doors') ~ '.png'}}
   ## Window open sensor
@@ -147,9 +147,9 @@ binary_sensor:
       door_all_windows:
         friendly_name: Alle ramen
         value_template: >-
-          {{ is_state('input_boolean.front_window', 'on')
-            or is_state('input_boolean.office_window', 'on')
-            or is_state('input_boolean.side_room_window', 'on')
+          {{ is_state('input_boolean.dummy_groundfloor_front_window', 'on')
+            or is_state('input_boolean.dummy_office_window', 'on')
+            or is_state('input_boolean.dummy_side_room_window', 'on')
             or is_state('input_boolean.bedroom_window_l', 'on')
             or is_state('input_boolean.bedroom_window_r', 'on') }}
         entity_picture_template: >-
@@ -219,7 +219,7 @@ automation:
           who: "ralph"
           prio: 2
       - service: homeassistant.turn_on
-        entity_id: input_boolean.alarm
+        entity_id: input_boolean.alarm_generic_alarm
 
   ## Test if alarm is gereset and perform actions
   - alias: "Notification alarm state reset"
@@ -227,7 +227,7 @@ automation:
     trigger:
       - platform: state
         entity_id:
-          - input_boolean.alarm
+          - input_boolean.alarm_generic_alarm
         to: "off"
     action:
       - service: script.notify_prowl

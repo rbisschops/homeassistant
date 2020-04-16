@@ -104,10 +104,10 @@ cards:
         entities:
           - entity: sun.sun
             name: Zon
-          - entity: sensor.sunrise
+          - entity: sensor.time_sunrise
             name: Zon op
             icon: mdi:weather-sunset-up
-          - entity: sensor.sunset
+          - entity: sensor.time_sunset
             name: Zon onder
             icon: mdi:weather-sunset-down
       - type: custom:decluttering-card

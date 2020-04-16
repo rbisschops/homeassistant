@@ -25,6 +25,8 @@ homeassistant:
       friendly_name: Netflix (via HA Bridge)
     binary_sensor.habridge_spotify:
       friendly_name: Spotify (via HA Bridge)
+    binary_sensor.habridge_program_missed:
+      friendly_name: Uitzending gemist (via HA Bridge)  
     binary_sensor.habridge_poweroff:
       friendly_name: Poweroff (via HA-Bridge)
     ## Scenes from HA Bridge
@@ -64,6 +66,24 @@ binary_sensor:
   - platform: mqtt
     name: habridge_spotify
     state_topic: "media_mode/spotify"
+    off_delay: 2
+    payload_on: "on"
+    payload_off: "off"
+  - platform: mqtt
+    name: habridge_program_missed
+    state_topic: "media_mode/program_missed"
+    off_delay: 2
+    payload_on: "on"
+    payload_off: "off"
+  - platform: mqtt
+    name: habridge_disney
+    state_topic: "media_mode/disney"
+    off_delay: 2
+    payload_on: "on"
+    payload_off: "off"
+  - platform: mqtt
+    name: habridge_pathe
+    state_topic: "media_mode/pathe"
     off_delay: 2
     payload_on: "on"
     payload_off: "off"

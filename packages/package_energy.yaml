@@ -19,6 +19,28 @@ homeassistant:
     sensor.dsmr_reading_electricity_currently_delivered_watt:
       friendly_name: Huidig verbruik
 
+    ## Utilities usage sensors
+    sensor.utilities_electricity_usage:
+      friendly_name: Elektriciteitsverbruik
+    sensor.utilities_electricity_current_usage:
+      friendly_name: Elektriciteitsverbruik huidig
+    sensor.utilities_electricity_high_usage:
+      friendly_name: Elektriciteitsverbruik hoog tarief
+    sensor.utilities_electricity_low_usage:
+      friendly_name: Elektriciteitsverbruik laag tarief
+    sensor.utilities_gas_usage:
+      friendly_name: Gas verbruik
+    sensor.utilities_day_consumption_water_costs:
+      friendly_name: Kosten dagvebruik water
+    sensor.utilities_water_usage:
+      friendly_name: Water verbruik
+
+    ## Reference values
+    sensor.utilities_reference:
+      friendly_name: Referentie (E, G, W)
+    sensor.utilities_total_cost_day:
+      friendly_name: Totale kosten per dag (E, G, W)
+
 ###############################################################################
 #  Entities
 ###############################################################################
