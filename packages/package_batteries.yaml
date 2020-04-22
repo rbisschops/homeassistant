@@ -163,6 +163,7 @@ sensor:
 ###############################################################################
 
 automation:
+  ## automation to run when a environmental sensors battery is running low
   - alias: "Notification battery level low"
     initial_state: "on" 
     trigger:
@@ -184,13 +185,21 @@ automation:
       - sensor.environment_test_battery
       below: 25
     action:
-      - service: script.notify_prowl
+      # - service: script.notify_prowl
+      #   data_template:
+      #     value1: "Hi Ralph, "
+      #     value2: "{{ trigger.to_state.attributes.friendly_name }} "
+      #     value3: "is laag. Tijd om te vervangen"
+      #     who: "ralph"
+      #     prio: -2
+      - service_template: >-
+          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_state_ralph', 'Home') %}
+            script.battery_alert_notification
+          {% else %}
+            script.battery_alert_store
+          {% endif %} 
         data_template:
-          value1: "Hi Ralph, "
-          value2: "{{ trigger.to_state.attributes.friendly_name }} "
-          value3: "is laag. Tijd om te vervangen"
-          who: "ralph"
-          prio: -2
+          sensor: "{{ trigger.to_state.attributes.friendly_name }}"
 
 ###############################################################################
 ##  Templates
@@ -200,7 +209,34 @@ automation:
 ###############################################################################
 ##  Scripts
 ###############################################################################
-
+script:
+  ## script for sending alerts when a environmetal sensors is not updating for a set time
+  battery_alert_notification:
+    alias: Omgevings sensor battery low notify
+    sequence:
+      - service: script.notify_prowl
+        data_template:
+          value1: "{% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %} {{ timestamp }}: "
+          value2: "{{ sensor }} "
+          value3: "is laag."
+          who: "ralph"
+          prio: -2
+  ## script for storing the alert when Ralph is not home or during night time
+  battery_alert_store:
+    alias: Omgevings sensor update niet meer bewaar
+    sequence:
+      - service: mqtt.publish
+        data_template:
+          topic: "home/alert/sensor_battery"
+          retain: true
+          payload_template: >-
+            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
+            {{ {
+              "time": timestamp,
+              "sensor": sensor,
+              "topic": "battery",
+              "status" : "active"
+            }|tojson }}
 
 ###############################################################################
 ##  Timers

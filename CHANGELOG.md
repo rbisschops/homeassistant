@@ -2,9 +2,32 @@
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
 
+## [0.9.17] - 2020-04-20
+#### Removed
+- Removed MySensors integration as it is currently not used. [Issue #029](https://github.com/rbisschops/homeassistant/issues/29)
+
+## [0.9.16] - 2020-04-20
+#### Changed
+- Changed Z-Wave sensor names to more logical names. [Issue #007](https://github.com/rbisschops/homeassistant/issues/7)
+- Changed Z-Wave device names to more logical names. [Issue #007](https://github.com/rbisschops/homeassistant/issues/7)
+
+### Added
+- Added seperate automation for sending alerts when not home. Now every trigger of someone coming home is kicking of the automation. 
+
+## [0.9.15] - 2020-04-18
+#### Changed
+- Promoted dashboard items for showing the humidity in the house by means of RAG (Red-Amber-Green) indicators to final. [Issue #025](https://github.com/rbisschops/homeassistant/issues/25)
+
+### Bug fixes
+- Fixed wrong entity ID for timer Zigbee2MQTT in Lovelace UI tab settings. [Issue #026](https://github.com/rbisschops/homeassistant/issues/26)
+
+### Added
+- Mechanism to send alerts at 08:00 (after nightly silence) and at homecoming See [Issue #028](https://github.com/rbisschops/homeassistant/issues/28)
+- Added functions for monitoring sensors that are no longer updating See [Issue #027](https://github.com/rbisschops/homeassistant/issues/27)  
+
 ## [0.9.14] - 2020-04-15
 ### Added
-- Added experimental dashboard items for showing the humidity in the house by means of RAG (Red-Amber-Green) indicators.[Issue #025](https://github.com/rbisschops/homeassistant/issues/25)
+- Added experimental dashboard items for showing the humidity in the house by means of RAG (Red-Amber-Green) indicators. [Issue #025](https://github.com/rbisschops/homeassistant/issues/25)
 
 ### Removed
 - removed template sensors for RAG from package.environment.yaml (sensor.environment_livingroom_humidity_rag & sensor.environment_test_humidity_rag) Not used.

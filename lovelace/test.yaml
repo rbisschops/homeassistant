@@ -225,8 +225,12 @@ cards:
         - entity: input_boolean.dummy_kims_room_window_left
         - entity: input_boolean.dummy_kims_room_window_right
 
-##########################################################################################
-## Experimental RAG (Red-Amber-Green) buttons for quick overview of hummidity in the house
+
+###############################################################################
+## Experimental code move or remove after testing
+###############################################################################
+
+  ## Experimental RAG buttons for testing
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card 
@@ -239,14 +243,8 @@ cards:
         - title: Test sensors
     - type: horizontal-stack
       cards:
-        # - type: custom:decluttering-card
-        #   template: stats_rh_rag_icon
-        #   variables:
-        #     - sensor: test
-        #     - name: Test
-        #     - icon: water-percent
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: test
             - name: Test sensor (MQTT)

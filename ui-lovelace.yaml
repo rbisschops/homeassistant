@@ -4,30 +4,9 @@
 ## Author: R.Bisschops
 
 ###############################################################################
-##  Additional resources used
-###############################################################################
-
-# resources:
-#   ## Updated V0.7.0
-#   - url: /local/custom_cards/mini-graph-card-bundle.js?v=0.9.3
-#     type: module
-#   - url: /local/custom_cards/button-card.js?v=3.0.0
-#     type: module
-#   ## Updated V0.7.0
-#   - url: /local/custom_cards/custom-header/custom-header.js?V1.3.2
-#     type: module
-#   ## Updated V0.7.0
-#   - url: /local/custom_cards/decluttering-card.js?v=0.3.0
-#     type: module
-#   ## Updated V0.7.0    
-#   - url: /local/custom_cards/card-mod.js?v=13
-#     type: module
-
-###############################################################################
 ##  Custom compact header settings
 ##  https://github.com/maykar/compact-custom-header
 ###############################################################################
-
 cch:
   header: hide
   menu: show
@@ -43,7 +22,6 @@ cch:
 ##  Custom button card templates
 ##  https://github.com/custom-cards/button-card
 ###############################################################################
-
 button_card_templates:
   media_button_large:
     styles:
@@ -187,10 +165,8 @@ button_card_templates:
       name:
         - font-size: 1.2em
         - font-weight: normal
-
-##########################################################################################
-## Experimental RAG (Red-Amber-Green) buttons for quick overview of hummidity in the house
-  stats_rh_rag_icon:
+  ## Style for RAG indicators
+  stats_rag_icon:
     styles:
       card:
         - height: 60px
@@ -199,8 +175,6 @@ button_card_templates:
         - font-size: 0.9em
         - font-weight: normal
         - text-align: left
-
-##########################################################################################
 
 ###############################################################################
 ##  Settings for Declustering-card
@@ -472,33 +446,8 @@ decluttering_templates:
             icon:
               - color: rgb(56, 150, 56)
 
-##########################################################################################
-## Experimental RAG (Red-Amber-Green) buttons for quick overview of hummidity in the house
-  stats_rh_rag_icon:
-    card:
-      type: custom:button-card
-      entity: 'sensor.environment_[[sensor]]_humidity'
-      template: stats_rh_rag_icon
-      name: '[[name]]'
-      tap_action:
-        action: more-info
-      icon: 'mdi:[[icon]]'
-      layout: icon_name
-      styles:
-        icon:
-          - color: >
-             [[[
-              if (parseFloat(entity.state) < 40) return 'rgb(216, 0, 0)';
-              if (parseFloat(entity.state) < 45 && parseFloat(entity.state) >= 40) return 'rgb(244, 180, 0)';
-              if (parseFloat(entity.state) >= 45 && parseFloat(entity.state) <= 55) return 'rgb(56, 150, 56)';
-              if (parseFloat(entity.state) > 55 && parseFloat(entity.state) <= 60) return 'rgb(244, 180, 0)';
-              if (parseFloat(entity.state) > 60) return 'rgb(216, 0, 0)';
-              else return 'rgb(224, 224, 224)';
-             ]]]
-
-
-## Experimental RAG (Red-Amber-Green) buttons with RH value
-  stats_rh_rag_icon_rh:
+  ## RAG (Red-Amber-Green) buttons with RH value
+  stats_rag_icon_humidity:
     card:
       type: custom:button-card
       entity: 'sensor.environment_[[sensor]]_humidity'
@@ -511,7 +460,7 @@ decluttering_templates:
           if (parseFloat(entity.state) > 60) return 'mdi:alpha-h-circle';
           else return 'mdi:alert-circle';
         ]]]
-      template: stats_rh_rag_icon
+      template: stats_rag_icon
       name: '[[name]]'
       tap_action:
         action: more-info
@@ -541,17 +490,38 @@ decluttering_templates:
       custom_fields:
         temp: >
           [[[
-            return `<ha-icon
-              icon="mdi:water-percent"
-              style="width: 12px; height: 1em;">
-              </ha-icon><span style="font-size: 0.8em;">${entity.state}%</span>`
+            if (entity.state == "unknown") return '<ha-icon icon="mdi:water-percent" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">--</span>';
+            else return `<ha-icon icon="mdi:water-percent" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">${entity.state}%</span>`;
           ]]]
-##########################################################################################
+
+###############################################################################
+## Experimental code move or remove after testing
+###############################################################################
+  stats_rh_rag_icon_test:
+    card:
+      type: custom:button-card
+      entity: 'sensor.environment_[[sensor]]_humidity'
+      template: stats_rag_icon
+      name: '[[name]]'
+      tap_action:
+        action: more-info
+      icon: 'mdi:[[icon]]'
+      layout: icon_name
+      styles:
+        icon:
+          - color: >
+             [[[
+              if (parseFloat(entity.state) < 40) return 'rgb(216, 0, 0)';
+              if (parseFloat(entity.state) < 45 && parseFloat(entity.state) >= 40) return 'rgb(244, 180, 0)';
+              if (parseFloat(entity.state) >= 45 && parseFloat(entity.state) <= 55) return 'rgb(56, 150, 56)';
+              if (parseFloat(entity.state) > 55 && parseFloat(entity.state) <= 60) return 'rgb(244, 180, 0)';
+              if (parseFloat(entity.state) > 60) return 'rgb(216, 0, 0)';
+              else return 'rgb(224, 224, 224)';
+             ]]]
 
 ###############################################################################
 ##  Main Lovemace settings
 ###############################################################################
-
 title: Bisschops Mansion
 # background: center / cover no-repeat url("/local/background2.jpg") fixed
 views:

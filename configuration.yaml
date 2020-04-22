@@ -115,16 +115,16 @@ mqtt:
     payload: 'offline'
 
 ## MySensors gateway
-mysensors:
-  gateways:
-    - device: !secret ip_mysensors
-      # persistence_file: 'mysensors.json'
-      nodes:
-        2:
-          name: Watermeter (MYS)
-        4:
-          name: 'Light sensor (test)'
-  version: 2.3
+# mysensors:
+#   gateways:
+#     - device: !secret ip_mysensors
+#       # persistence_file: 'mysensors.json'
+#       nodes:
+#         2:
+#           name: Watermeter (MYS)
+#         4:
+#           name: 'Light sensor (test)'
+#   version: 2.3
 
 ## Tracked history is kept for 10 days
 recorder:

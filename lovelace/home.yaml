@@ -66,19 +66,19 @@ cards:
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: livingroom
             - name: Woonkamer
             - icon: water-percent
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: toilet
             - name: Toilet
             - icon: water-percent
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: storage
             - name: Berging
@@ -90,19 +90,19 @@ cards:
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: bedroom
             - name: Slaapkamer
             - icon: water-percent
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: bathroom
             - name: Badkamer
             - icon: water-percent
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: office
             - name: Kantoor
@@ -114,19 +114,19 @@ cards:
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: kim
             - name: Kamer Kim
             - icon: water-percent
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: hallway_floor2
             - name: Overloop
             - icon: water-percent
         - type: custom:decluttering-card
-          template: stats_rh_rag_icon_rh
+          template: stats_rag_icon_humidity
           variables:
             - sensor: heating_room
             - name: Ketelkast

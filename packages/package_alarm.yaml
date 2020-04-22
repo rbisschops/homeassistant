@@ -172,6 +172,25 @@ sensor:
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
 
+  ## Sensor alarm status sensor - last update
+  - platform: "mqtt"
+    name: alert_sensors_update
+    state_topic: "home/alert/sensor_update"
+    value_template: "{{ value_json.device }}"
+    json_attributes_topic: "home/alert/sensor_update"
+  ## Sensor alarm status sensor - battery
+  - platform: "mqtt"
+    name: alert_sensors_battery
+    state_topic: "home/alert/sensor_battery"
+    value_template: "{{ value_json.device }}"
+    json_attributes_topic: "home/alert/sensor_battery"
+  ## Sensor alarm status Water meter
+  - platform: "mqtt"
+    name: alert_water_meter
+    state_topic: "home/alert/water_meter_update"
+    value_template: "{{ value_json.device }}"
+    json_attributes_topic: "home/alert/water_meter_update"
+
 ###############################################################################
 #  Groups
 ###############################################################################
@@ -246,7 +265,88 @@ automation:
 ###############################################################################
 #  Scripts
 ###############################################################################
-
+script:
+  ## script for checking if alerts were generated during night time or absence of people
+  ## resets the mqtt topic to passive after processing
+  alert_check_active_alerts:
+    alias: check actieve sensor alarmen
+    sequence:
+      - service: script.notify_prowl
+        data_template:
+          value1: >-
+            {% if (state_attr('sensor.alert_sensors_update','status') == "active") %}
+              {{state_attr('sensor.alert_sensors_update','time') }}: Sensor {{ state_attr('sensor.alert_sensors_update','sensor') }} is niet meer geupdate.
+            {% else %}
+              Er zijn geen actieve sensor update alarmen.
+            {% endif %}
+          value2: ""
+          value3: ""
+          who: "ralph"
+          prio: -2
+      - service: mqtt.publish
+        data_template:
+          topic: "home/alert/sensor_update"
+          retain: true
+          payload_template: >-
+            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
+            {{ {
+              "time": timestamp,
+              "sensor": "none",
+              "topic": "last update",
+              "status" : "passive"
+            }|tojson }}
+      - delay: 
+          milliseconds: 500
+      - service: script.notify_prowl
+        data_template:
+          value1: >-
+            {% if (state_attr('sensor.alert_sensors_battery','status') == "active") %}
+              {{state_attr('sensor.alert_sensors_battery','time') }}: {{ state_attr('sensor.alert_sensors_battery','sensor') }} niveau is laag.
+            {% else %}
+              Er zijn geen actieve sensor batterij alarmen.
+            {% endif %}
+          value2: ""
+          value3: ""
+          who: "ralph"
+          prio: -2
+      - service: mqtt.publish
+        data_template:
+          topic: "home/alert/sensor_battery"
+          retain: true
+          payload_template: >-
+            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
+            {{ {
+              "time": timestamp,
+              "sensor": "none",
+              "topic": "battery",
+              "status" : "passive"
+            }|tojson }}
+      - delay: 
+          milliseconds: 500
+      - service: script.notify_prowl
+        data_template:
+          value1: >-
+            {% if (state_attr('sensor.alert_water_meter','status') == "active") %}
+              {{state_attr('sensor.alert_water_meter','time') }}: Sensor {{ state_attr('sensor.alert_water_meter','sensor') }} is niet meer geupdate.
+            {% else %}
+              Er zijn geen actieve water meter alarmen.
+            {% endif %}
+          value2: ""
+          value3: ""
+          who: "ralph"
+          prio: -2
+      - service: mqtt.publish
+        data_template:
+          topic: "home/alert/water_meter_update"
+          retain: true
+          payload_template: >-
+            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
+            {{ {
+              "time": timestamp,
+              "sensor": "Water meter",
+              "topic": "last update",
+              "status" : "passive"
+            }|tojson }}
 
 ###############################################################################
 #  Timers

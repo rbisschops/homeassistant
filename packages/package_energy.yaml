@@ -72,6 +72,8 @@ sensor:
   - platform: "mqtt"
     name: utilities_water
     state_topic: "home/meter/water"
+    expire_after: 43200
+    force_update: true
     value_template: "{{ value_json.device }}"
     json_attributes_topic: "home/meter/water"
 
@@ -138,12 +140,6 @@ sensor:
           {{ value }}
         unit_of_measurement: "L"
 
-## Code for testing is not working yet. maybe remove later
-  # - platform: command_line
-  #   name: "Elektricteit Grafana"
-  #   command: "curl -s -H 'Authorization: Bearer eyJrIjoiVFdVWjVJcDZSUnBNajhXVFljb1drWmNCVnFUME9wYk4iLCJuIjoiSG9tZWFzc2lzdGFudCIsImlkIjoxfQ==' 'http://192.168.0.217:3000/render/d-solo/p7Aaxdyik/dashboard?refresh=10s&orgId=1&panelId=2&from=now-24h&to=now&width=1000&height=500&tz=Europe%2FAmsterdam'  > downloads/electricity.png"
-  #   scan_interval: 3000
-
 ## Camera used for displaying electricity usage graphs
 camera:
   # - platform: local_file
@@ -189,6 +185,29 @@ automation:
               "w_usage": w_usage
             }|tojson }}
 
+
+  ## automation to run when water meter is not seen for a set time
+  ## expire_after parameter for the MQTT sensor is triggering this (changes to "unknown")
+  - alias: "Water meter no longer updating"
+    initial_state: "on"
+    trigger:
+      platform: state
+      entity_id:
+        - sensor.utilities_water
+      to: "unknown"
+      for: 
+        hours: 1
+    action:
+      - service_template: >-
+          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_state_ralph', 'Home') %}
+            script.water_alert_notification
+          {% else %}
+            script.water_alert_store
+          {% endif %} 
+        data_template:
+          sensor: "{{ trigger.to_state.attributes.friendly_name }}"
+
+
 ###############################################################################
 ##  Templates
 ###############################################################################
@@ -197,7 +216,34 @@ automation:
 ###############################################################################
 ##  Scripts
 ###############################################################################
-
+script:
+  ## script for sending alerts when water meter is not updating for a set time
+  water_alert_notification:
+    alias: Water meter update niet meer notify
+    sequence:
+      - service: script.notify_prowl
+        data_template:
+          value1: "{% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %} {{ timestamp }}: Water meter"
+          value2: "{{ sensor }}"
+          value3: " is niet meer geupdate."
+          who: "ralph"
+          prio: -2
+  ## script for storing the alert when Ralph is not home or during night time
+  water_alert_store:
+    alias:  Water meter update niet meer bewaar
+    sequence:
+      - service: mqtt.publish
+        data_template:
+          topic: "home/alert/water_meter_update"
+          retain: true
+          payload_template: >-
+            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
+            {{ {
+              "time": timestamp,
+              "sensor": sensor,
+              "topic": "last update",
+              "status" : "active"
+            }|tojson }}
 
 ###############################################################################
 ##  Timers

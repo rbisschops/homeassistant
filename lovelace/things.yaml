@@ -301,13 +301,13 @@ cards:
           name: Omgevingscondities toilet
         - entity: sensor.vibration_mailbox_battery
           name: Sensor brievenbus
-        - entity: sensor.neo_coolcam_front_door_battery_level
+        - entity: sensor.door_front_door_battery_level
           name: Deursensor voordeur
-        - entity: sensor.neo_coolcam_storage_door_battery_level
+        - entity: sensor.door_storage_door_battery_level
           name: Deursensor bergingdeur
         - entity: sensor.environment_livingroom_battery
           name: Omgevingscondities woonkamer
-        - entity: sensor.fibaro_hallway_101_smoke_sensor_battery_level
+        - entity: sensor.smoke_sensor_hallway_101_battery_level
           name: Brandmelder overloop
         - entity: sensor.environment_office_battery
           name: Omgevingscondities kantoor

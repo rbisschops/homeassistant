@@ -70,5 +70,5 @@ cards:
         name: Zigbee2mqtt log level 
       - entity: input_boolean.zigbee2mqtt_permit_join
         name: Zigbee joinen toegestaan
-      - entity: timer.zigbee_permit_join
+      - entity: timer.zigbee2mqtt_permit_join
         name: Resterende join tijd
