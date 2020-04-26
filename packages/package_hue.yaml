@@ -134,12 +134,12 @@ light:
       - light.staande_lamp_links
       - light.staande_lamp_rechts
   - platform: group
-    name: Lage kasten Hue
+    name: light low cabinets
     entities:
       - light.lage_kast_links
       - light.lage_kast_rechts
   - platform: group
-    name: Staande lampen Hue
+    name: light standing lights
     entities:
       - light.staande_lamp_links
       - light.staande_lamp_rechts
@@ -274,14 +274,14 @@ script:
     sequence:
       - service: light.turn_on
         data_template:
-          entity_id: light.lage_kasten_hue
+          entity_id: light.light_low_cabinets
           brightness: >
             {{ brightness_start_value.split(',')[0]|int }}
           profile: >
             {{ '{}_1'.format(profile_start_value) }}
       - service: light.turn_on
         data_template:
-          entity_id: light.staande_lampen_hue
+          entity_id: light.light_standing_lights
           brightness: >
             {{ brightness_start_value.split(',')[1]|int }}
           profile: >
@@ -290,7 +290,7 @@ script:
           seconds: 1
       - service: light.turn_on
         data_template:
-          entity_id: light.lage_kasten_hue
+          entity_id: light.light_low_cabinets
           brightness: >
             {{ brightness_stop_value.split(',')[0]|int }}
           profile: >
@@ -298,7 +298,7 @@ script:
           transition: "{{ transition|float }}"
       - service: light.turn_on
         data_template:
-          entity_id: light.staande_lampen_hue
+          entity_id: light.light_standing_lights
           brightness: >
             {{ brightness_stop_value.split(',')[1]|int }}
           profile: >
@@ -314,7 +314,7 @@ script:
     sequence:
       - service: light.turn_on
         data_template:
-          entity_id: light.lage_kasten_hue
+          entity_id: light.light_low_cabinets
           brightness: >
             {{ brightness_value.split(',')[0]|int }}
           profile: >
@@ -322,7 +322,7 @@ script:
           transition: "{{ transition|float }}"
       - service: light.turn_on
         data_template:
-          entity_id: light.staande_lampen_hue
+          entity_id: light.light_standing_lights
           brightness: >
             {{ brightness_value.split(',')[1]|int }}
           profile: >
@@ -338,13 +338,13 @@ script:
     sequence:
       - service: light.turn_on
         data_template:
-          entity_id: light.lage_kasten_hue
+          entity_id: light.light_low_cabinets
           profile: >
             {{ '{}_1'.format(profile_value) }}
           transition: 2
       - service: light.turn_on
         data_template:
-          entity_id: light.staande_lampen_hue
+          entity_id: light.light_standing_lights
           profile: >
             {{ '{}_2'.format(profile_value) }}
           transition: 2
@@ -361,14 +361,14 @@ script:
     sequence:
       - service: light.turn_on
         data_template:
-          entity_id: light.lage_kasten_hue
+          entity_id: light.light_low_cabinets
           brightness: 1
           xy_color: [0.3698, 0.3723]
       - delay:
           seconds: 1
       - service: light.turn_on
         data_template:
-          entity_id: light.lage_kasten_hue
+          entity_id: light.light_low_cabinets
           brightness: 255
           transition: 10
 

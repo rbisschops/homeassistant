@@ -66,27 +66,24 @@ automation:
     #       new_state: >-
     #         {{ trigger.to_state.state }}
   
-  ## Added V0.8.1
   ## Publish christmas tree light switch to Domoticz
-  - alias: "Domoticz publish - Switch Christmas tree"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id:
-        - input_boolean.domoticz_switch_christmas_tree
-    condition:
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "domoticz/in"
-          payload_template: >-
-            {{ {
-             "command": "switchlight",
-             "idx": 26,
-             "switchcmd": trigger.to_state.state|capitalize
-            }|tojson }}
-
-  ## Added V0.8.0, updated 0.8.1 & 0.8.2
+  # - alias: "Domoticz publish - Switch Christmas tree"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_switch_christmas_tree
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 26,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
   ## Publish garden light switch to Domoticz
   - alias: "Domoticz publish - Light garden"
     initial_state: "on"
@@ -105,7 +102,6 @@ automation:
              "idx": 28,
              "switchcmd": trigger.to_state.state|capitalize
             }|tojson }}
-
   ## Publish porch light switch to Domoticz
   - alias: "Domoticz publish - Light porch"
     initial_state: "on"
@@ -214,7 +210,6 @@ automation:
              "idx": 30,
              "switchcmd": trigger.to_state.state|capitalize
             }|tojson }}
-
   ## Convert Domoticz Zigbee switch (type Light/Switch) to Hass 
   - alias: "Domoticz subscribe - Read domoticz Zigbee switch"
     initial_state: "on"
@@ -308,7 +303,6 @@ automation:
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
-  ## Updated V0.9.1
   ## Water meter will sent svalue1
   - alias: "Domoticz publish - Utilities Water values"
     initial_state: "on" 
@@ -336,7 +330,6 @@ automation:
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
-  ## Added V0.9.0
   ## Domoticz server memory usage, will sent svalue1
   - alias: "Domoticz publish - Domoticz server memory usage"
     initial_state: "on" 

@@ -55,19 +55,19 @@ cards:
           left: 22.5% 
           position: absolute
           width: 2.5%                                                 
-      - type: image
-        entity: input_boolean.switch_water_ornament
-        tap_action:
-          action: toggle
-        image: /local/custom_icons/fountain48_on.png
-        state_image:
-          'on': /local/custom_icons/fountain48_on.png
-          'off': /local/custom_icons/fountain48_off.png 
-        style:
-          top: 42%
-          left: 10% 
-          position: absolute
-          width: 2.5%
+      # - type: image
+      #   entity: input_boolean.switch_water_ornament
+      #   tap_action:
+      #     action: toggle
+      #   image: /local/custom_icons/fountain48_on.png
+      #   state_image:
+      #     'on': /local/custom_icons/fountain48_on.png
+      #     'off': /local/custom_icons/fountain48_off.png 
+      #   style:
+      #     top: 42%
+      #     left: 10% 
+      #     position: absolute
+      #     width: 2.5%
       ## Sunscreen control buttons
       - type: image
         entity: input_boolean.domoticz_blinds_sunscreen

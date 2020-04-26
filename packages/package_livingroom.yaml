@@ -130,21 +130,21 @@ automation:
       - service: homeassistant.turn_off
         entity_id: input_boolean.light_livingroom
 
-  ## Switch Christmas tree on and off
-  - alias: "Switch christmas tree toggle"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-        - switch.habridge_christmastree
-        - input_boolean.switch_christmas_tree
-    action:
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: input_boolean.domoticz_switch_christmas_tree
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: group.switch_christmastree
+  # ## Switch Christmas tree on and off
+  # - alias: "Switch christmas tree toggle"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #       - switch.habridge_christmastree
+  #       - input_boolean.switch_christmas_tree
+  #   action:
+  #     - service_template: >-
+  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+  #       entity_id: input_boolean.domoticz_switch_christmas_tree
+  #     - service_template: >-
+  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+  #       entity_id: group.switch_christmastree
   ## Switch Bar lights on and off
   - alias: "Light bar toggle"
     initial_state: "on"

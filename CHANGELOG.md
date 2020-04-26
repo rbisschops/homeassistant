@@ -2,7 +2,20 @@
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
 
-## [0.9.17] - 2020-04-20
+## [0.9.19] - 2020-04-24
+#### Changed
+- Changed switch entities. Mostly only added freindly names [Issue #007](https://github.com/rbisschops/homeassistant/issues/7)
+- Updated HA to version 0.108.8
+
+## [0.9.18] - 2020-04-23
+#### Changed
+- Changed light entity types. Most come from hue bridge, so not possible to change these.
+- Removed water ornament from UI as this item is removed from the garden.
+
+### Bug fixes
+-entity light.program_missed was showing as light.dim_bar_lights. Removed device from HA Brdige and re-entered it
+
+## [0.9.17] - 2020-04-22
 #### Removed
 - Removed MySensors integration as it is currently not used. [Issue #029](https://github.com/rbisschops/homeassistant/issues/29)
 

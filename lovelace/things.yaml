@@ -148,16 +148,16 @@ cards:
       show_header_toggle: false
       entities:
         - entity: input_boolean.light_garden
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Waterbollen
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - entity: input_boolean.switch_water_ornament
+    # - type: custom:decluttering-card
+    #   template: custom_markdown_card_small
+    #   variables:
+    #     - title: Waterbollen
+    # - type: entities
+    #   show_state: false
+    #   show_name: false
+    #   show_header_toggle: false
+    #   entities:
+    #     - entity: input_boolean.switch_water_ornament
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
