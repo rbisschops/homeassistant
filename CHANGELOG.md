@@ -2,6 +2,17 @@
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
 
+## [0.10.2] - 2020-04-27
+#### Changed
+- Experimental: Migrated automations for the garden lights to Node-RED. [Issue #031](https://github.com/rbisschops/homeassistant/issues/31)
+
+## [0.10.1] - 2020-04-26
+#### Changed
+- Experimental: Migrated automations for the christmas tree to Node-RED. [Issue #030](https://github.com/rbisschops/homeassistant/issues/30)
+
+## [0.1.0] - 2020-04-24
+- Release before introduction of Node-RED
+
 ## [0.9.19] - 2020-04-24
 #### Changed
 - Changed switch entities. Mostly only added freindly names [Issue #007](https://github.com/rbisschops/homeassistant/issues/7)

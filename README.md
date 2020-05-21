@@ -1,4 +1,4 @@
-Last update: March 22nd, 2020
+Last update: April 24th, 2020
 
 ![](https://img.shields.io/badge/Home%20Assistant-0.103.5-blue.svg)
 ![](https://img.shields.io/github/last-commit/rbisschops/homeassistant.svg)
@@ -111,7 +111,7 @@ When things are progressing I will upload some screenshots of my UI.
 # [Things planned](#things-planned)
 
 Some projects I have planned:
-* Water meter sensor version 3.0 beade on ESP32
+* Water meter sensor version 3.0 based on ESP32
 * Presence sensors for the garbage binds based on ESP32 with Bluetooth beacons
 * Water temperature sensors for monitoring and tuning the heating system (aka zone based heating system)
 * Add camera's for home security
