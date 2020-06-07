@@ -199,7 +199,7 @@ automation:
         hours: 1
     action:
       - service_template: >-
-          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_state_ralph', 'Home') %}
+          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_ralph_bisschops', 'Home') %}
             script.water_alert_notification
           {% else %}
             script.water_alert_store

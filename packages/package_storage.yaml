@@ -19,29 +19,62 @@ homeassistant:
       friendly_name: Brievenbus (link quality)
 
     ## Timers
-    timer.light_porch:
-      friendly_name: Timer buitenlamp
-
+    # timer.light_porch:
+    #   friendly_name: Timer buitenlamp
 
 ###############################################################################
 ##  Entities
 ###############################################################################
 input_boolean:
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_boolean
+##-----------------------------------------------------------------------------------------------
+  ## switches for things (will be replaced with CoCo direct after integration RfxTrx)
   light_porch:
     name: Buitenlamp
     icon: mdi:lightbulb
 
-input_text:
+  ## Manual mode switches for things
+  light_porch_button:
+    name: Buitenlamp
+    icon: mdi:lightbulb
+
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_select
+##-----------------------------------------------------------------------------------------------
+input_select:
+  ## State indicators for things
+  light_porch:
+    name: Buitenlamp
+    options:
+      - "on"
+      - "off"
+      - auto
+
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_number
+##-----------------------------------------------------------------------------------------------
+input_number:
   light_porch_long_timer:
     name: Buitenlamp timer lang (min)
     initial: 10
     min: 1
-    max: 60
+    max: 30
+    step: 1 
   light_porch_short_timer:
     name: Buitenlamp timer kort (min)
     initial: 5
-    max: 60
     min: 1
+    max: 30
+    step: 1
+  light_porch_off_delay:
+    name: Buitenlamp uit vertraging (sec)
+    initial: 1
+    min: 0
+    max: 10
+    step: 0.5
+
+##-----------------------------------------------------------------------------------------------
 
 sensor:
   ## Mailbox vibration sensor
@@ -67,109 +100,115 @@ sensor:
 ###############################################################################
 ##  Groups
 ###############################################################################
-group:
-  light_porch:
-    name: Buitenlamp
-    entities:
-      - switch.habridge_porchlight
-      - input_boolean.light_porch
+## Moved automations to Node-RED for test
+# group:
+#   light_porch:
+#     name: Buitenlamp
+#     entities:
+#       # - switch.habridge_porchlight
+#       - input_boolean.light_porch
 
 ###############################################################################
 ##  Automations
 ###############################################################################
 automation:
   ## Test min and max settings on long porch light timer input 
-  - alias: "Light - Validate porch light long timer"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id: input_text.light_porch_long_timer
-    action:
-      - service: input_text.set_value
-        data_template:
-          entity_id: input_text.light_porch_long_timer
-          value: >
-            {% if (states('input_text.light_porch_long_timer')|int) > 60 %}
-              60
-            {% elif (states('input_text.light_porch_long_timer')|int) < 1 %}
-              1
-            {% else %}
-              {{ states('input_text.light_porch_long_timer')|int }}
-            {% endif %}
+  ## Replaced with input_number (slider)
+  # - alias: "Light - Validate porch light long timer"
+  #   initial_state: "on"
+  #   trigger:
+  #     - platform: state
+  #       entity_id: input_text.light_porch_long_timer
+  #   action:
+  #     - service: input_text.set_value
+  #       data_template:
+  #         entity_id: input_text.light_porch_long_timer
+  #         value: >
+  #           {% if (states('input_text.light_porch_long_timer')|int) > 60 %}
+  #             60
+  #           {% elif (states('input_text.light_porch_long_timer')|int) < 1 %}
+  #             1
+  #           {% else %}
+  #             {{ states('input_text.light_porch_long_timer')|int }}
+  #           {% endif %}
 
   ## Test min and max settings on short porch light timer input 
-  - alias: "Light - Validate porch light short timer"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id: input_text.light_porch_short_timer
-    action:
-      - service: input_text.set_value
-        data_template:
-          entity_id: input_text.light_porch_short_timer
-          value: >
-            {% if (states('input_text.light_porch_short_timer')|int) > 60 %}
-              60
-            {% elif (states('input_text.light_porch_short_timer')|int) < 1 %}
-              1
-            {% else %}
-              {{ states('input_text.light_porch_short_timer')|int }}
-            {% endif %}
+    ## Replaced with input_number (slider)
+  # - alias: "Light - Validate porch light short timer"
+  #   initial_state: "on"
+  #   trigger:
+  #     - platform: state
+  #       entity_id: input_text.light_porch_short_timer
+  #   action:
+  #     - service: input_text.set_value
+  #       data_template:
+  #         entity_id: input_text.light_porch_short_timer
+  #         value: >
+  #           {% if (states('input_text.light_porch_short_timer')|int) > 60 %}
+  #             60
+  #           {% elif (states('input_text.light_porch_short_timer')|int) < 1 %}
+  #             1
+  #           {% else %}
+  #             {{ states('input_text.light_porch_short_timer')|int }}
+  #           {% endif %}
 
   ## Switch on porch light when someone arrives home
-  - alias: "Light porch on at home coming"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id: input_select.presence_state_ralph, input_select.presence_state_anneke, input_select.presence_state_kimberly
-        from: "Away"
-        to: "Just Arrived"
-      - platform: state
-        entity_id: input_select.presence_state_ralph, input_select.presence_state_anneke, input_select.presence_state_kimberly
-        from: "Extended Away"
-        to: "Just Arrived"
-    condition:  
-      condition: or
-      conditions:
-        - condition: sun
-          after: sunset
-        - condition: sun
-          before: sunrise
-    action:
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_porch
-      - service: timer.start
-        data_template:
-          entity_id: timer.light_porch
-          duration: "00:{{ states('input_text.light_porch_long_timer')|int }}:00"
+  ## Moved automations to Node-RED for test
+  # - alias: "Light porch on at home coming"
+  #   initial_state: "on"
+  #   trigger:
+  #     - platform: state
+  #       entity_id: input_select.presence_ralph_bisschops, input_select.presence_anneke_bisschops, input_select.presence_kimberly_bisschops
+  #       from: "Away"
+  #       to: "Just Arrived"
+  #     - platform: state
+  #       entity_id: input_select.presence_ralph_bisschops, input_select.presence_anneke_bisschops, input_select.presence_kimberly_bisschops
+  #       from: "Extended Away"
+  #       to: "Just Arrived"
+  #   condition:  
+  #     condition: or
+  #     conditions:
+  #       - condition: sun
+  #         after: sunset
+  #       - condition: sun
+  #         before: sunrise
+  #   action:
+  #     - service: homeassistant.turn_on
+  #       entity_id: input_boolean.light_porch
+  #     - service: timer.start
+  #       data_template:
+  #         entity_id: timer.light_porch
+  #         duration: "00:{{ states('input_text.light_porch_long_timer')|int }}:00"
 
   ## Switch off porchlight based on timer
-  - alias: "Light porch xx minutes after trigger off"
-    initial_state: "on"
-    trigger:
-      platform: event
-      event_type: timer.finished
-      event_data:
-        entity_id: timer.light_porch
-    action:
-    - service: homeassistant.turn_off
-      entity_id: input_boolean.light_porch
+  ## Moved automations to Node-RED for test
+  # - alias: "Light porch xx minutes after trigger off"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: event
+  #     event_type: timer.finished
+  #     event_data:
+  #       entity_id: timer.light_porch
+  #   action:
+  #   - service: homeassistant.turn_off
+  #     entity_id: input_boolean.light_porch
 
   ## Switch Porch light on and off
-  - alias: "Light Porch toggle"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-        - switch.habridge_porchlight
-        - input_boolean.light_porch
-    action:
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: input_boolean.domoticz_light_porch
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: group.light_porch
+  ## Moved automations to Node-RED for test
+  # - alias: "Light Porch toggle"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #       - switch.habridge_porchlight
+  #       - input_boolean.light_porch
+  #   action:
+  #     - service_template: >-
+  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+  #       entity_id: input_boolean.domoticz_light_porch
+  #     - service_template: >-
+  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+  #       entity_id: group.light_porch
 
   ## Actions to perform on mailbox motion
   - alias: "Vibration - Mail received"
@@ -180,11 +219,11 @@ automation:
       to: "vibration"
     action:
       - service_template: >
-          {% if (is_state('input_select.presence_state_ralph', 'Home')) and (is_state('input_select.presence_state_anneke', 'Home'))  %}
+          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
             script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_state_ralph', 'Home') %}
+          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
             script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_state_anneke', 'Home') %}
+          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
             script.notify_telegram_anneke
           {% endif %}
         data_template:
@@ -206,6 +245,6 @@ automation:
 ###############################################################################
 ##  Timers
 ###############################################################################
-timer:
-  light_porch:
+# timer:
+#   light_porch:
   # wait:

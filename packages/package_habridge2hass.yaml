@@ -30,29 +30,29 @@ homeassistant:
     binary_sensor.habridge_poweroff:
       friendly_name: Poweroff (via HA-Bridge)
     ## Scenes from HA Bridge
-    binary_sensor.habridge_bed_time:
-      friendly_name: Bed tijd (via HA-Bridge)
-    binary_sensor.habridge_leaving:
-      friendly_name: Vertrekken (via HA-Bridge)
+    # binary_sensor.habridge_bed_time:
+    #   friendly_name: Bed tijd (via HA-Bridge)
+    # binary_sensor.habridge_leaving:
+    #   friendly_name: Vertrekken (via HA-Bridge)
     ## Switches for living room lights (as a scene)
-    binary_sensor.habridge_livingroom_lights_off:
-      friendly_name: Woonkamer licht uit (via HA-Bridge)
-    binary_sensor.habridge_livingroom_lights_on:
-      friendly_name: Woonkamer licht aan (via HA-Bridge)
-    switch.habridge_barlight:
-      friendly_name: Verlichting bar (via HA-Bridge)
-    switch.habridge_christmastree:
-      friendly_name: Kerstboom  (via HA-Bridge)
-    switch.habridge_gardenlight:
-      friendly_name: Verlichting tuin (via HA-Bridge)
-    switch.habridge_hallwaylight:
-      friendly_name: Halletje (via HA-Bridge)
-    switch.habridge_highcabinets:
-      friendly_name: Verlichting hoge kasten (via HA-Bridge)
-    switch.habridge_porchlight:
-      friendly_name: Buitenlamp (via HA-Bridge)
-    switch.habridge_waterornament:
-      friendly_name: Waterornament (via HA-Bridge)
+    # binary_sensor.habridge_livingroom_lights_off:
+    #   friendly_name: Woonkamer licht uit (via HA-Bridge)
+    # binary_sensor.habridge_livingroom_lights_on:
+    #   friendly_name: Woonkamer licht aan (via HA-Bridge)
+    # switch.habridge_barlight:
+    #   friendly_name: Verlichting bar (via HA-Bridge)
+    # switch.habridge_christmastree:
+    #   friendly_name: Kerstboom  (via HA-Bridge)
+    # switch.habridge_gardenlight:
+    #   friendly_name: Verlichting tuin (via HA-Bridge)
+    # switch.habridge_hallwaylight:
+    #   friendly_name: Halletje (via HA-Bridge)
+    # switch.habridge_highcabinets:
+    #   friendly_name: Verlichting hoge kasten (via HA-Bridge)
+    # switch.habridge_porchlight:
+    #   friendly_name: Buitenlamp (via HA-Bridge)
+    # switch.habridge_waterornament:
+    #   friendly_name: Waterornament (via HA-Bridge)
 
 ###############################################################################
 ##  Entities
@@ -133,90 +133,97 @@ binary_sensor:
     payload_off: "off"
 
   ## Modes from HA Bridge
-  - platform: mqtt
-    name: habridge_bed_time
-    state_topic: "scene/bed_time"
-    off_delay: 2
-    payload_on: "on"
-    payload_off: "off"
-  - platform: mqtt
-    name: habridge_leaving
-    state_topic: "scene/leaving"
-    off_delay: 2
-    payload_on: "on"
-    payload_off: "off"
+  # - platform: mqtt
+  #   name: habridge_bed_time
+  #   state_topic: "scene/bed_time"
+  #   off_delay: 2
+  #   payload_on: "on"
+  #   payload_off: "off"
+  ## Moved automations to Node-RED for test
+  # - platform: mqtt
+  #   name: habridge_leaving
+  #   state_topic: "scene/leaving"
+  #   off_delay: 2
+  #   payload_on: "on"
+  #   payload_off: "off"
 
   ## Switches for living room lights (as a scene)
-  - platform: mqtt
-    name: habridge_livingroom_lights_on
-    state_topic: "scene/livingroom_lights_on"
-    off_delay: 2
-    payload_on: "on"
-    payload_off: "off"
-  - platform: mqtt
-    name: habridge_livingroom_lights_off
-    state_topic: "scene/livingroom_lights_off"
-    off_delay: 2
-    payload_on: "on"
-    payload_off: "off"
+  # - platform: mqtt
+  #   name: habridge_livingroom_lights_on
+  #   state_topic: "scene/livingroom_lights_on"
+  #   off_delay: 2
+  #   payload_on: "on"
+  #   payload_off: "off"
+  # - platform: mqtt
+  #   name: habridge_livingroom_lights_off
+  #   state_topic: "scene/livingroom_lights_off"
+  #   off_delay: 2
+  #   payload_on: "on"
+  #   payload_off: "off"
 
-switch:
-  ## Switch for Christmastree (from HA Bridge)
-  - platform: "mqtt"
-    name: habridge_christmastree
-    state_topic: "switch/christmastree"
-    payload_on: "on"
-    payload_off: "off"
-    command_topic: "switch/christmastree"
-  - platform: "mqtt"
-    name: habridge_barlight
-    state_topic: "switch/barlight"
-    payload_on: "on"
-    payload_off: "off"
-    command_topic: "switch/barlight"
-  - platform: "mqtt"
-    name: habridge_gardenlight
-    state_topic: "switch/gardenlight"
-    payload_on: "on"
-    payload_off: "off"
-    command_topic: "switch/gardenlight"
-  - platform: "mqtt"
-    name: habridge_waterornament
-    state_topic: "switch/waterornament"
-    payload_on: "on"
-    payload_off: "off"
-    command_topic: "switch/waterornament"
-  - platform: "mqtt"
-    name: habridge_hallwaylight
-    state_topic: "switch/hallwaylight"
-    payload_on: "on"
-    payload_off: "off"
-    command_topic: "switch/hallwaylight"
-  - platform: "mqtt"
-    name: habridge_porchlight
-    state_topic: "switch/porchlight"
-    payload_on: "on"
-    payload_off: "off"
-    command_topic: "switch/porchlight"
-  - platform: "mqtt"
-    name: habridge_highcabinets
-    state_topic: "switch/highcabinets"
-    payload_on: "on"
-    payload_off: "off"
-    command_topic: "switch/highcabinets"
+# switch:
+  ## MQTT based switches from HA Bridge
+  ## Moved automations to Node-RED for test
+  # - platform: "mqtt"
+  #   name: habridge_christmastree
+  #   state_topic: "switch/christmastree"
+  #   payload_on: "on"
+  #   payload_off: "off"
+  #   command_topic: "switch/christmastree"
+  ## Moved automations to Node-RED for test
+  # - platform: "mqtt"
+  #   name: habridge_barlight
+  #   state_topic: "switch/barlight"
+  #   payload_on: "on"
+  #   payload_off: "off"
+  #   command_topic: "switch/barlight"
+  ## Moved automations to Node-RED for test
+  # - platform: "mqtt"
+  #   name: habridge_gardenlight
+  #   state_topic: "switch/gardenlight"
+  #   payload_on: "on"
+  #   payload_off: "off"
+  #   command_topic: "switch/gardenlight"
+  # - platform: "mqtt"
+  #   name: habridge_waterornament
+  #   state_topic: "switch/waterornament"
+  #   payload_on: "on"
+  #   payload_off: "off"
+  #   command_topic: "switch/waterornament"
+  ## Moved automations to Node-RED for test
+  # - platform: "mqtt"
+  #   name: habridge_hallwaylight
+  #   state_topic: "switch/hallwaylight"
+  #   payload_on: "on"
+  #   payload_off: "off"
+  #   command_topic: "switch/hallwaylight"
+  ## Moved automations to Node-RED for test
+  # - platform: "mqtt"
+  #   name: habridge_porchlight
+  #   state_topic: "switch/porchlight"
+  #   payload_on: "on"
+  #   payload_off: "off"
+  #   command_topic: "switch/porchlight"
+  ## Moved automations to Node-RED for test
+  # - platform: "mqtt"
+  #   name: habridge_highcabinets
+  #   state_topic: "switch/highcabinets"
+  #   payload_on: "on"
+  #   payload_off: "off"
+  #   command_topic: "switch/highcabinets"
 
 ##----------------------------------------------
 ## Test entities >> Remove ASAP after testing 
 ##----------------------------------------------
 
-light:
-  - platform: "mqtt"
-    name: habridge_barlight
-    state_topic: "light/barlight"
-    payload_on: "on"
-    payload_off: "off"
-    brightness_state_topic: "light/barlight/level"
-    command_topic: "light/barlight"
+# light:
+#   - platform: "mqtt"
+#     name: habridge_barlight
+#     state_topic: "light/barlight"
+#     payload_on: "on"
+#     payload_off: "off"
+#     brightness_state_topic: "light/barlight/level"
+#     command_topic: "light/barlight"
 
 ###############################################################################
 ##  Groups

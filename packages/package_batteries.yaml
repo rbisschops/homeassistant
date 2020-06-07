@@ -193,7 +193,7 @@ automation:
       #     who: "ralph"
       #     prio: -2
       - service_template: >-
-          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_state_ralph', 'Home') %}
+          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_ralph_bisschops', 'Home') %}
             script.battery_alert_notification
           {% else %}
             script.battery_alert_store

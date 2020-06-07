@@ -12,6 +12,9 @@ homeassistant:
 ##  Entities
 ###############################################################################
 input_boolean:
+##-----------------------------------------------------------------------------------------------
+## Older entities - input_boolean
+##-----------------------------------------------------------------------------------------------
   ## Pause state toggle for sunscreen lovelace
   blinds_sunscreen_pause:
     name: Pauze zonnescherm
@@ -22,13 +25,43 @@ input_boolean:
   ## Manual mode switch for the sunscreen 
   blinds_sunscreen_manual:
     name: Zonnescherm handmatig  
-  ## Added V1.7.0
+
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_boolean
+##-----------------------------------------------------------------------------------------------
+  ## switches for things (will be replaced with CoCo direct after integration RfxTrx)
   light_garden:
     name: Tuin verlichting
     icon: mdi:lightbulb
   switch_water_ornament:
     name: Waterbollen
     icon: mdi:fountain
+
+  ## Manual mode switches for things
+  light_garden_button:
+    name: Tuin verlichting
+    icon: mdi:lightbulb
+  switch_water_ornament_button:
+    name: Waterbollen
+    icon: mdi:fountain
+
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_select
+##-----------------------------------------------------------------------------------------------
+input_select:
+  ## State indicators for things
+  light_garden:
+    name: Tuin verlichting
+    options:
+      - "on"
+      - "off"
+      - auto
+  switch_water_ornament:
+    name: Waterbollen
+    options:
+      - "on"
+      - "off"
+      - auto
 
 ###############################################################################
 ##  Groups
@@ -40,45 +73,45 @@ group:
   #     - input_boolean.light_garden
   #     - automation.tuinverlichting_bij_zonsondergang
   #     - automation.tuinverlichting_bij_thuiskomst
-  ## Added V1.7.0
-  light_garden:
-    name: Tuin verlichting
-    entities:
-      - switch.habridge_gardenlight
-      - input_boolean.light_garden
-  switch_water_ornament:
-    name: Waterbollen
-    entities:
-      - switch.habridge_waterornament
-      - input_boolean.switch_water_ornament
+  # light_garden:
+  #   name: Tuin verlichting
+  #   entities:
+  #     - switch.habridge_gardenlight
+  #     - input_boolean.light_garden
+  # switch_water_ornament:
+  #   name: Waterbollen
+  #   entities:
+  #     - switch.habridge_waterornament
+  #     - input_boolean.switch_water_ornament
+
 ###############################################################################
 ##  Automations
 ###############################################################################
 automation:
-  ## Added V1.7.0
   ## Switch garden lights on and off
-  - alias: "Light garden toggle"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-        - switch.habridge_gardenlight
-        - input_boolean.light_garden
-    action:
-      - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: input_boolean.domoticz_light_garden
-      - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: group.light_garden
+  ## Moved automations to Node-RED for test
+  # - alias: "Light garden toggle"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #       - switch.habridge_gardenlight
+  #       - input_boolean.light_garden
+  #   action:
+  #     - service_template: >-
+  #         {% if is_state(trigger.entity_id, 'on') %}
+  #           homeassistant.turn_on
+  #         {% elif is_state(trigger.entity_id, 'off') %}
+  #           homeassistant.turn_off
+  #         {% endif %}
+  #       entity_id: input_boolean.domoticz_light_garden
+  #     - service_template: >-
+  #         {% if is_state(trigger.entity_id, 'on') %}
+  #           homeassistant.turn_on
+  #         {% elif is_state(trigger.entity_id, 'off') %}
+  #           homeassistant.turn_off
+  #         {% endif %}
+  #       entity_id: group.light_garden
       # - service_template: >-
       #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
       #   entity_id: input_boolean.domoticz_light_garden
@@ -86,131 +119,133 @@ automation:
       #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
       #   entity_id: group.light_garden
   ## Switch fountain lights on and off
-  - alias: "Switch water ornament toggle"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-        - switch.habridge_waterornament
-        - input_boolean.switch_water_ornament
-    action:
-      - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: input_boolean.domoticz_switch_water_ornament
-      - service_template: >-
-          {% if is_state(trigger.entity_id, 'on') %}
-            homeassistant.turn_on
-          {% elif is_state(trigger.entity_id, 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: group.switch_water_ornament
+  ## Moved automations to Node-RED for test
+  # - alias: "Switch water ornament toggle"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #       - switch.habridge_waterornament
+  #       - input_boolean.switch_water_ornament
+  #   action:
+  #     - service_template: >-
+  #         {% if is_state(trigger.entity_id, 'on') %}
+  #           homeassistant.turn_on
+  #         {% elif is_state(trigger.entity_id, 'off') %}
+  #           homeassistant.turn_off
+  #         {% endif %}
+  #       entity_id: input_boolean.domoticz_switch_water_ornament
+  #     - service_template: >-
+  #         {% if is_state(trigger.entity_id, 'on') %}
+  #           homeassistant.turn_on
+  #         {% elif is_state(trigger.entity_id, 'off') %}
+  #           homeassistant.turn_off
+  #         {% endif %}
+  #       entity_id: group.switch_water_ornament
 
-  ## Updated V1.8.2
   ## Switch on gardenlights at sunset but only if someone is home
-  - alias: "Light garden on at sunset"
-    initial_state: 'on'
-    trigger:
-      - platform: sun
-        event: sunset
-        offset: '00:15:00'
-      - platform: sun
-        event: sunset
-        offset: '00:16:00'
-      - platform: sun
-        event: sunset
-        offset: '00:17:00'
-    condition:
-      condition: and
-      conditions: 
-        - condition: state
-          entity_id: binary_sensor.presence_everybody_away
-          state: "off"
-        - condition: state
-          entity_id: input_boolean.mode_holiday
-          state: "off"
-    action:
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_garden
+  ## Moved automations to Node-RED for test
+  # - alias: "Light garden on at sunset"
+  #   initial_state: 'on'
+  #   trigger:
+  #     - platform: sun
+  #       event: sunset
+  #       offset: '00:15:00'
+  #     - platform: sun
+  #       event: sunset
+  #       offset: '00:16:00'
+  #     - platform: sun
+  #       event: sunset
+  #       offset: '00:17:00'
+  #   condition:
+  #     condition: and
+  #     conditions: 
+  #       - condition: state
+  #         entity_id: binary_sensor.presence_everybody_away
+  #         state: "off"
+  #       - condition: state
+  #         entity_id: input_boolean.mode_holiday
+  #         state: "off"
+  #   action:
+  #     - service: homeassistant.turn_on
+  #       entity_id: input_boolean.light_garden
 
-  ## Added V1.6.0, Updated V1.8.2
   ## Switch on gardenlights before sunrise but only if someone is home
-  - alias: "Light garden on before sunrise"
-    initial_state: "on"
-    trigger:
-      - platform: time
-        at: "06:30:00"
-      - platform: time
-        at: "06:31:00"
-      - platform: time
-        at: "06:32:00"
-    condition:
-      condition: and
-      conditions: 
-        - condition: state
-          entity_id: binary_sensor.presence_everybody_away
-          state: "off"
-        - condition: state
-          entity_id: input_boolean.mode_holiday
-          state: "off"
-        - condition: state
-          entity_id: sun.sun
-          state: "below_horizon"
-    action:
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_garden
+  ## Moved automations to Node-RED for test
+  # - alias: "Light garden on before sunrise"
+  #   initial_state: "on"
+  #   trigger:
+  #     - platform: time
+  #       at: "06:30:00"
+  #     - platform: time
+  #       at: "06:31:00"
+  #     - platform: time
+  #       at: "06:32:00"
+  #   condition:
+  #     condition: and
+  #     conditions: 
+  #       - condition: state
+  #         entity_id: binary_sensor.presence_everybody_away
+  #         state: "off"
+  #       - condition: state
+  #         entity_id: input_boolean.mode_holiday
+  #         state: "off"
+  #       - condition: state
+  #         entity_id: sun.sun
+  #         state: "below_horizon"
+  #   action:
+  #     - service: homeassistant.turn_on
+  #       entity_id: input_boolean.light_garden
 
-  ## Added V1.6.0, Updated V1.8.2
   ## Switch off gardenlights at sunrise but only if someone is home
-  - alias: "Light garden off at sunrise"
-    initial_state: "on"
-    trigger:
-      - platform: sun
-        event: sunrise
-        offset: "-00:15:00"
-      - platform: sun
-        event: sunrise
-      - platform: sun
-        event: sunrise
-        offset: "00:05:00"
-    action:
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.light_garden
+  ## Moved automations to Node-RED for test
+  # - alias: "Light garden off at sunrise"
+  #   initial_state: "on"
+  #   trigger:
+  #     - platform: sun
+  #       event: sunrise
+  #       offset: "-00:15:00"
+  #     - platform: sun
+  #       event: sunrise
+  #     - platform: sun
+  #       event: sunrise
+  #       offset: "00:05:00"
+  #   action:
+  #     - service: homeassistant.turn_off
+  #       entity_id: input_boolean.light_garden
 
   ## Switch gardenlights at home coming but only when dark and before 23:00
-  - alias: "Light garden on at home coming"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id: 
-          ## Added in V1.3.3
-          - binary_sensor.door_front_door
-        to: "on"
-    condition:  
-      condition: and
-      conditions:
-        - condition: sun
-          after: sunset
-        - condition: time
-          before: "23:00:00"
-        ## Added in V1.3.3
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: input_select.presence_state_ralph
-              state: "Just Arrived"
-            - condition: state
-              entity_id: input_select.presence_state_anneke
-              state: "Just Arrived"
-            - condition: state
-              entity_id: input_select.presence_state_kimberly
-              state: "Just Arrived"
-    action:
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_garden
+  ## Moved automations to Node-RED for test
+  # - alias: "Light garden on at home coming"
+  #   initial_state: "on"
+  #   trigger:
+  #     - platform: state
+  #       entity_id: 
+  #         ## Added in V1.3.3
+  #         - binary_sensor.door_front_door
+  #       to: "on"
+  #   condition:  
+  #     condition: and
+  #     conditions:
+  #       - condition: sun
+  #         after: sunset
+  #       - condition: time
+  #         before: "23:00:00"
+  #       ## Added in V1.3.3
+  #       - condition: or
+  #         conditions:
+  #           - condition: state
+  #             entity_id: input_select.presence_ralph_bisschops
+  #             state: "Just Arrived"
+  #           - condition: state
+  #             entity_id: input_select.presence_anneke_bisschops
+  #             state: "Just Arrived"
+  #           - condition: state
+  #             entity_id: input_select.presence_kimberly_bisschops
+  #             state: "Just Arrived"
+  #   action:
+  #     - service: homeassistant.turn_on
+  #       entity_id: input_boolean.light_garden
 
   ## Start and stop sunscreen based on toggle pause/start from frontend 
   - alias: "Blinds - Pause sunscreen"

@@ -22,48 +22,48 @@ cards:
         name: Koelkast alarm
       - entity: automation.notification_alarm_state_reset
         name: Alarm gereset
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Aanwezigheidsautomatiseringen
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-      - entity: automation.light_porch_on_at_home_coming
-        name: Buitenlamp aan bij thuiskomst
-      - entity: automation.presence_somebody_comes_home
-        name: Er komt iemand thuis
-      - entity: automation.presence_everybody_is_away
-        name: Iedereen is weg
-      - entity: automation.presence_mark_person_as_just_arrived
-        name: Markeer persoon als net thuis
-      - entity: automation.presence_mark_person_as_home
-        name: Markeer persoon als thuis
-      - entity: automation.presence_mark_person_as_just_left
-        name: Markeer persoon als net weg
-      - entity: automation.presence_mark_person_as_away
-        name: Markeer persoon als weg
-      - entity: automation.presence_mark_person_as_extended_away
-        name: Markeer persoon als langer weg
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Tuin automatiseringen
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-      - entity: automation.light_garden_on_at_home_coming
-        name: Tuinverlichting aan bij thuiskomst
-      - entity: automation.light_garden_on_at_sunset 
-        name: Tuinverlichting aan bij zonsondergang
+  # - type: vertical-stack
+  #   cards:
+    # - type: custom:decluttering-card
+    #   template: custom_markdown_card_small
+    #   variables:
+    #     - title: Aanwezigheidsautomatiseringen
+    # - type: entities
+    #   show_state: false
+    #   show_name: false
+    #   show_header_toggle: false
+    #   entities:
+      # - entity: automation.light_porch_on_at_home_coming
+      #   name: Buitenlamp aan bij thuiskomst
+      # - entity: automation.presence_somebody_comes_home
+      #   name: Er komt iemand thuis
+      # - entity: automation.presence_everybody_is_away
+      #   name: Iedereen is weg
+      # - entity: automation.presence_mark_person_as_just_arrived
+      #   name: Markeer persoon als net thuis
+      # - entity: automation.presence_mark_person_as_home
+      #   name: Markeer persoon als thuis
+      # - entity: automation.presence_mark_person_as_just_left
+      #   name: Markeer persoon als net weg
+      # - entity: automation.presence_mark_person_as_away
+      #   name: Markeer persoon als weg
+      # - entity: automation.presence_mark_person_as_extended_away
+      #   name: Markeer persoon als langer weg
+  # - type: vertical-stack
+  #   cards:
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card_small
+  #     variables:
+  #       - title: Tuin automatiseringen
+    # - type: entities
+    #   show_state: false
+    #   show_name: false
+    #   show_header_toggle: false
+    #   entities:
+      # - entity: automation.light_garden_on_at_home_coming
+      #   name: Tuinverlichting aan bij thuiskomst
+      # - entity: automation.light_garden_on_at_sunset 
+      #   name: Tuinverlichting aan bij zonsondergang
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -90,20 +90,20 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-      - entity: automation.domoticz_publish_light_porch
-        name: Publiceer buitenlamp naar Domoticz
-      - entity: automation.domoticz_publish_light_hallway
-        name: Publiceer verl. halletje naar Domoticz
-      - entity: automation.domoticz_publish_light_high_cabinets
-        name: Publiceer verl.hoge kasten naar Domoticz
-      - entity: automation.domoticz_publish_switch_christmas_tree
-        name: Publiceer kerstboom naar Domoticz
-      - entity: automation.domoticz_publish_light_bar
-        name: Publiceer lampen bar naar Domoticz
-      - entity: automation.domoticz_publish_light_garden
-        name: Publiceer tuinverlichting naar Domoticz
-      - entity: automation.domoticz_publish_switch_water_ornament
-        name: Publiceer waterbollen naar Domoticz
+      # - entity: automation.domoticz_publish_light_porch
+      #   name: Publiceer buitenlamp naar Domoticz
+      # - entity: automation.domoticz_publish_light_hallway
+      #   name: Publiceer verl. halletje naar Domoticz
+      # - entity: automation.domoticz_publish_light_high_cabinets
+      #   name: Publiceer verl.hoge kasten naar Domoticz
+      # - entity: automation.domoticz_publish_switch_christmas_tree
+      #   name: Publiceer kerstboom naar Domoticz
+      # - entity: automation.domoticz_publish_light_bar
+      #   name: Publiceer lampen bar naar Domoticz
+      # - entity: automation.domoticz_publish_light_garden
+      #   name: Publiceer tuinverlichting naar Domoticz
+      # - entity: automation.domoticz_publish_switch_water_ornament
+      #   name: Publiceer waterbollen naar Domoticz
       - entity: automation.domoticz_publish_blinds_sunscreen
         name: Publiceer zonnescherm naar Domoticz
       - entity: automation.domoticz_subscribe_read_domoticz_zigbee_switch

@@ -27,34 +27,65 @@ cards:
       - entity: input_boolean.mode_holiday 
         name: Vakantie mode
         icon: "mdi:briefcase"
-      ## Added V0.8.0
       - entity: input_boolean.mode_christmas
         name: Kerst mode
         icon: "mdi:pine-tree"
       - entity: input_boolean.media_recording_mode
         name: Recorder mode
         icon: "mdi:video"
-      - entity: input_boolean.light_livingroom_state
-        name: Licht aan status
-        icon: "mdi:lightbulb"
+      # - entity: input_boolean.light_livingroom_state
+      #   name: Licht aan status
+      #   icon: "mdi:lightbulb"
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
-        - title: Timers
+        - title: Timers buitenlamp
     - type: entities
       show_state: false
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_text.light_porch_long_timer
-        - entity: input_text.light_porch_short_timer
-        - entity: input_text.light_hallway_long_timer
-        - entity: input_text.light_hallway_short_timer
+        - entity: input_number.light_porch_long_timer
+          name: Uit lang (min)
+        - entity: input_number.light_porch_short_timer
+          name: Uit kort (min)
+        ## Replaced with input_number (slider)
+        # - entity: input_text.light_porch_long_timer
+        # - entity: input_text.light_porch_short_timer
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Timers halletje
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_number.light_hallway_long_timer
+          name: Uit lang (min)
+        - entity: input_number.light_hallway_short_timer
+          name: Uit kort (min)
+        # - entity: input_text.light_hallway_long_timer
+        # - entity: input_text.light_hallway_short_timer
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Timers Media center
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
         - entity: input_text.media_media_delay_timer
         - entity: input_text.media_media_wait_timer
         - entity: input_text.media_tv_radio_mode_timer
+
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card

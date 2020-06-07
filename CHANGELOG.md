@@ -2,15 +2,22 @@
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
 
-## [0.10.2] - 2020-04-27
-#### Changed
-- Experimental: Migrated automations for the garden lights to Node-RED. [Issue #031](https://github.com/rbisschops/homeassistant/issues/31)
 
-## [0.10.1] - 2020-04-26
+## [1.1.0] - 2020-06-07
 #### Changed
-- Experimental: Migrated automations for the christmas tree to Node-RED. [Issue #030](https://github.com/rbisschops/homeassistant/issues/30)
+- Migrated rest room heating to Node-RED. [Issue #040](https://github.com/rbisschops/homeassistant/issues/40)
+- Migrated scenes to Node-RED. [Issue #039](https://github.com/rbisschops/homeassistant/issues/39)
+- Migrated presence detection to Node-RED. [Issue #038](https://github.com/rbisschops/homeassistant/issues/38)
+- Migrated porch light to Node-RED. [Issue #037](https://github.com/rbisschops/homeassistant/issues/37)
+- Migrated hallway lights to Node-RED. [Issue #036](https://github.com/rbisschops/homeassistant/issues/36)
+- Migrated livingroom hue lights to Node-RED. [Issue #035](https://github.com/rbisschops/homeassistant/issues/35)
+- Migrated high cabinets lights to Node-RED. [Issue #034](https://github.com/rbisschops/homeassistant/issues/34)
+- Migrating bar lights to Node-RED. [Issue #033](https://github.com/rbisschops/homeassistant/issues/33)
+- NodeRed: Migrating water ornament to Node-RED. [Issue #032](https://github.com/rbisschops/homeassistant/issues/32)
+- NodeRed: Migratedthe christmas tree to Node-RED. [Issue #030](https://github.com/rbisschops/homeassistant/issues/30)
+- NodeRed: Migrated the garden lights to Node-RED. [Issue #031](https://github.com/rbisschops/homeassistant/issues/31)
 
-## [0.1.0] - 2020-04-24
+## [1.0.0] - 2020-04-24
 - Release before introduction of Node-RED
 
 ## [0.9.19] - 2020-04-24

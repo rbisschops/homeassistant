@@ -13,21 +13,28 @@ homeassistant:
 ###############################################################################
 input_boolean:
   ## Light switches
-  domoticz_light_garden:
-    name: Verlichting tuin (via Domoticz)
-  domoticz_light_porch:
-    name: Buiten lamp (via Domoticz)
-  domoticz_light_hallway:
-    name: Verlichting halletje (via Domoticz)
-  domoticz_light_high_cabinets:
-    name: Verlichting hoge kasten (via Domoticz)
-  domoticz_light_bar:
-    name: Verlichting bar (via Domoticz)
-  domoticz_switch_christmas_tree:
-    name: Kerstboom (via Domoticz)
+  ## Moved automations to Node-RED for test
+  # domoticz_light_garden:
+  #   name: Verlichting tuin (via Domoticz)
+  ## Moved automations to Node-RED for test
+  # domoticz_light_porch:
+  #   name: Buiten lamp (via Domoticz)
+  ## Moved automations to Node-RED for test
+  # domoticz_light_hallway:
+  #   name: Verlichting halletje (via Domoticz)
+  ## Moved automations to Node-RED for test
+  # domoticz_light_high_cabinets:
+  #   name: Verlichting hoge kasten (via Domoticz)
+  ## Moved automations to Node-RED for test
+  # domoticz_light_bar:
+  #   name: Verlichting bar (via Domoticz)
+  ## Moved automations to Node-RED for test
+  # domoticz_switch_christmas_tree:
+  #   name: Kerstboom (via Domoticz)
   ## Generic switches
-  domoticz_switch_water_ornament:
-    name: Waterbollen tuin (via Domoticz)
+  ## Moved automations to Node-RED for test
+  # domoticz_switch_water_ornament:
+  #   name: Waterbollen tuin (via Domoticz)
   ## Blinds
   domoticz_blinds_sunscreen:
     name: Zonnescherm (via Domoticz)
@@ -67,7 +74,8 @@ automation:
     #         {{ trigger.to_state.state }}
   
   ## Publish christmas tree light switch to Domoticz
-  # - alias: "Domoticz publish - Switch Christmas tree"
+  ## Moved automations to Node-RED for test
+  # - alias: "
   #   initial_state: "on"
   #   trigger:
   #     platform: state
@@ -85,113 +93,119 @@ automation:
   #            "switchcmd": trigger.to_state.state|capitalize
   #           }|tojson }}
   ## Publish garden light switch to Domoticz
-  - alias: "Domoticz publish - Light garden"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id:
-        - input_boolean.domoticz_light_garden
-    condition:
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "domoticz/in"
-          payload_template: >-
-            {{ {
-             "command": "switchlight",
-             "idx": 28,
-             "switchcmd": trigger.to_state.state|capitalize
-            }|tojson }}
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light garden"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_light_garden
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 28,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
   ## Publish porch light switch to Domoticz
-  - alias: "Domoticz publish - Light porch"
-    initial_state: "on"
-    trigger:     
-      platform: state
-      entity_id:
-        - input_boolean.domoticz_light_porch
-    condition:
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "domoticz/in"
-          payload_template: >-
-            {{ {
-             "command": "switchlight",
-             "idx": 20,
-             "switchcmd": trigger.to_state.state|capitalize
-            }|tojson }}
+    ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light porch"
+  #   initial_state: "on"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_light_porch
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 20,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
   ## Publish hallway light switch to Domoticz
-  - alias: "Domoticz publish - Light hallway"
-    initial_state: "on"
-    trigger:     
-      platform: state
-      entity_id:
-        - input_boolean.domoticz_light_hallway
-    condition:
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "domoticz/in"
-          payload_template: >-
-            {{ {
-             "command": "switchlight",
-             "idx": 21,
-             "switchcmd": trigger.to_state.state|capitalize
-            }|tojson }}
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light hallway"
+  #   initial_state: "on"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_light_hallway
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 21,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
   ## Publish kitchen cabinets light switch to Domoticz
-  - alias: "Domoticz publish - Light high cabinets"
-    initial_state: "on"
-    trigger:     
-      platform: state
-      entity_id:
-        - input_boolean.light_high_cabinets
-    condition:
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "domoticz/in"
-          payload_template: >-
-            {{ {
-             "command": "switchlight",
-             "idx": 23,
-             "switchcmd": trigger.to_state.state|capitalize
-            }|tojson }}
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light high cabinets"
+  #   initial_state: "on"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.light_high_cabinets
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 23,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
   ## Publish bar light switch to Domoticz
-  - alias: "Domoticz publish - Light bar"
-    initial_state: "on"
-    trigger:     
-      platform: state
-      entity_id:
-        - input_boolean.domoticz_light_bar
-    condition:
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "domoticz/in"
-          payload_template: >-
-            {{ {
-             "command": "switchlight",
-             "idx": 27,
-             "switchcmd": trigger.to_state.state|capitalize
-            }|tojson }}
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light bar"
+  #   initial_state: "on"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_light_bar
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 27,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
   ## Publish water ornament switch to Domoticz
-  - alias: "Domoticz publish - Switch water ornament"
-    initial_state: "on"
-    trigger:     
-      platform: state
-      entity_id:
-        - input_boolean.domoticz_switch_water_ornament
-    condition:
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "domoticz/in"
-          payload_template: >-
-            {{ {
-             "command": "switchlight",
-             "idx": 29,
-             "switchcmd": trigger.to_state.state|capitalize
-            }|tojson }}
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Switch water ornament"
+  #   initial_state: "on"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_switch_water_ornament
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 29,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
   ## Publish sunscreen switch to Domoticz
   - alias: "Domoticz publish - Blinds Sunscreen"
     initial_state: "on"
@@ -608,30 +622,6 @@ automation:
               "usage": trigger.payload_json.svalue1
             }|tojson }}
 
-  ##----------------------------------------------
-  ## Test automations >> Remove ASAP after testing 
-  ##----------------------------------------------
-
-  ## Publish bar lamps light switch to Domoticz with dim level
-  # - alias: Domoticz publish - Lampen bar dim level
-  #   trigger:     
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.domoticz_light_bar
-  #   condition:
-  #   action:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: 'domoticz/in'
-  #         payload_template: >-
-  #           {{ {
-  #            "command": "switchlight",
-  #            "idx": 27,
-  #            "switchcmd":set,
-  #            "level": 50
-  #           }|tojson }}
-
-
 ###############################################################################
 ##  Templates
 ###############################################################################
@@ -721,7 +711,6 @@ script:
              "source": device
             }|tojson }}
 
-  ## Added V0.6, Updated 0.6.x remove V0.9.1
   # ## Read electiricity values from Domoticz
   # domoticz_electricity:
   #   alias: Receive domoticz elektra readings via MQTT

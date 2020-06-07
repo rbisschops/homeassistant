@@ -12,19 +12,19 @@ homeassistant:
     switch.switch_high_cabinets:
       friendly_name: Verlichting hoge kasten (Tradfri)
     ## Scripts
-    script.light_livingroom_on:
-      icon: mdi:lightbulb
-    script.light_livingroom_off:
-      icon: mdi:lightbulb
+    # script.light_livingroom_on:
+    #   icon: mdi:lightbulb
+    # script.light_livingroom_off:
+    #   icon: mdi:lightbulb
     ## Timers
-    timer.switch_christmastree_off:
-      friendly_name: Kerstboom uitschakelvertraging
-    timer.switch_christmastree_on:
-      friendly_name: Kerstboom inschakelvertraging
-    timer.light_high_cabinets_off:
-      friendly_name: Hoge kasten uitschakelvertraging
-    timer.light_high_cabinets_on:
-      friendly_name: Hoge kasten inschakelvertraging 
+    # timer.switch_christmastree_off:
+    #   friendly_name: Kerstboom uitschakelvertraging
+    # timer.switch_christmastree_on:
+    #   friendly_name: Kerstboom inschakelvertraging
+    # timer.light_high_cabinets_off:
+    #   friendly_name: Hoge kasten uitschakelvertraging
+    # timer.light_high_cabinets_on:
+    #   friendly_name: Hoge kasten inschakelvertraging 
 
 # logger:
 #   default: info
@@ -35,31 +35,118 @@ homeassistant:
 ##  Entities
 ###############################################################################
 input_boolean:
+##-----------------------------------------------------------------------------------------------
+## Older entities - input_boolean
+##-----------------------------------------------------------------------------------------------
   ## Living roon light input
   ## Used in multiple automations and scripts
-  light_livingroom:
-    name: Verlichting woonkamer
+
   ## Status of lighting in the livingroom used to see if lighitng is on 
   ## several automations depend on this
-  light_livingroom_state:
-    name: Status woonkamer lampen
-  ## Added V0.14.0
-  ## Christmas tree switch
-  ## Used in multiple automations and scripts
-  switch_christmas_tree:
-    name: Kerstboom
-    icon: mdi:pine-tree
-  ## Barlight switch
-  ## Used in multiple automations and scripts
-  light_bar:
-    name: Verlichting bar (input Lovelace)
+  # light_livingroom_state:
+  #   name: Status woonkamer lampen
+
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_boolean
+##-----------------------------------------------------------------------------------------------
+  ## switches for things (will be replaced with CoCo direct after integration RfxTrx)
+  light_livingroom:
+    name: Verlichting woonkamer
     icon: mdi:lightbulb
-  ## High cabinets switch
-  ## Used in multiple automations and scripts
   light_high_cabinets:
     name: Verlichting hoge kasten (KaKu)
     icon: mdi:lightbulb
+  switch_christmas_tree:
+    name: Kerstboom
+    icon: mdi:pine-tree
+  light_bar:
+    name: Verlichting bar
+    icon: mdi:lightbulb
 
+  ## Manual mode switches for things
+  light_livingroom_button:
+    name: Verlichting woonkamer
+    icon: mdi:lightbulb
+  light_high_cabinets_button:
+    name: Button hoge kasten
+    icon: mdi:lightbulb
+  switch_christmas_tree_button:
+    name: Kerstboom
+    icon: mdi:pine-tree
+  light_bar_button:
+    name: Verlichting bar
+    icon: mdi:lightbulb
+
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_select
+##-----------------------------------------------------------------------------------------------
+input_select:
+  ## State indicators for things
+  light_livingroom:
+    name: Verlichting woonkamer
+    options:
+      - "on"
+      - "off"
+      - auto    
+  light_high_cabinets:
+    name: Hoge kasten Status
+    options:
+      - "on"
+      - "off"
+      - auto
+  switch_christmas_tree:
+    name: Kerstboom
+    options:
+      - "on"
+      - "off"
+      - auto
+  ## light_bar
+    ## not used, dimmer
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_number
+##-----------------------------------------------------------------------------------------------
+input_number:
+  ## Timers
+  ## Livingroom lights short timer (configurable from UI)
+  light_livingroom_short_timer:
+    initial: 1
+    min: 0
+    max: 10
+    step: 1
+  ## High cabinets short timer (configurable from UI)
+  light_high_cabinets_short_timer:
+    name: Verlichting bar
+    initial: 1
+    min: 0
+    max: 10
+    step: 1
+  ## switch_christmas_tree
+    ## not used, no timer
+  ## light_bar
+    ## not used, no timer
+
+  ## Dimmers
+  ## Barlight slider for dimming
+  light_livingroom_dimmer:
+    name: Verlichting woonkamer
+    initial: 100
+    min: 0
+    max: 100
+    step: 1
+  ## light_high_cabinets_dimmer
+    ## not used, no dimmer
+  ## switch_christmas_tree
+    ## not used, no dimmer 
+  light_bar_dimmer:
+    name: Verlichting bar
+    initial: 100
+    min: 0
+    max: 100
+    step: 1 
+
+##-----------------------------------------------------------------------------------------------
+## Currently not used entities - switch
+##-----------------------------------------------------------------------------------------------
 switch:
   ## Switch for high cabinets (Tradfri via Zigbee2MQTT)
   - platform: "mqtt"
@@ -71,6 +158,9 @@ switch:
     value_template: "{{ value_json.state }}"
     command_topic: "zigbee2mqtt/tradfri_high_cabinets_switch/set"
 
+##-----------------------------------------------------------------------------------------------
+## Currently not used entities - sensor
+##-----------------------------------------------------------------------------------------------
 sensor:
   ## Switch for high cabinets, sensor (Tradfri via Zigbee2MQTT)
   - platform: "mqtt"
@@ -83,54 +173,55 @@ sensor:
 ###############################################################################
 ##  Groups
 ###############################################################################
-group:
-  switch_christmastree:
-    name: kerstboom
-    entities:
-      - switch.habridge_christmastree
-      - input_boolean.switch_christmas_tree
-  light_bar:
-    name: Verlichting bar
-    entities:
-      - switch.habridge_barlight
-      - input_boolean.light_bar
-  light_high_cabinets:
-    name: Verlichting hoge kasten (KaKu)
-    entities:
-      - switch.habridge_highcabinets
-      - input_boolean.light_high_cabinets
+# group:
+  # switch_christmastree:
+  #   name: kerstboom
+  #   entities:
+  #     # - switch.habridge_christmastree
+  #     - input_boolean.switch_christmas_tree
+  # light_bar:
+  #   name: Verlichting bar
+  #   entities:
+  #     # - switch.habridge_barlight
+  #     - input_boolean.light_bar
+  # light_high_cabinets:
+  #   name: Verlichting hoge kasten (KaKu)
+  #   entities:
+  #     - switch.habridge_highcabinets
+  #     - input_boolean.light_high_cabinets
 
 ###############################################################################
 ##  Automations
 ###############################################################################
-automation:
+# automation:
   ## ---------------------------------------------------------
   ## Automations using Amazon Alexa through HA-bridge commands
   ## ---------------------------------------------------------
   ## Switch on livingroom lights from HA-Bridge
-  - alias: "Light livingroom on (HA Bridge)"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id:
-        - binary_sensor.habridge_livingroom_lights_on
-      to: 'on'
-    action:
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_livingroom
+  # - alias: "Light livingroom on (HA Bridge)"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id:
+  #       - binary_sensor.habridge_livingroom_lights_on
+  #     to: 'on'
+  #   action:
+  #     - service: homeassistant.turn_on
+  #       entity_id: input_boolean.light_livingroom
   ## Switch off livingroom lights from HA-Bridge
-  - alias: "Light livingroom off (HA Bridge)"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id:
-        - binary_sensor.habridge_livingroom_lights_off
-      to: 'on'
-    action:
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.light_livingroom
+  # - alias: "Light livingroom off (HA Bridge)"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id:
+  #       - binary_sensor.habridge_livingroom_lights_off
+  #     to: 'on'
+  #   action:
+  #     - service: homeassistant.turn_off
+  #       entity_id: input_boolean.light_livingroom
 
-  # ## Switch Christmas tree on and off
+  ## Switch Christmas tree on and off
+  ## Moved automations to Node-RED for test
   # - alias: "Switch christmas tree toggle"
   #   initial_state: "on"
   #   trigger:
@@ -146,90 +237,92 @@ automation:
   #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
   #       entity_id: group.switch_christmastree
   ## Switch Bar lights on and off
-  - alias: "Light bar toggle"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-        - switch.habridge_barlight
-        - input_boolean.light_bar
-    action:
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: input_boolean.domoticz_light_bar
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: group.light_bar
+  ## Moved automations to Node-RED for test
+  # - alias: "Light bar toggle"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #       - switch.habridge_barlight
+  #       - input_boolean.light_bar
+  #   action:
+  #     - service_template: >-
+  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+  #       entity_id: input_boolean.domoticz_light_bar
+  #     - service_template: >-
+  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+  #       entity_id: group.light_bar
   ## Switch lights high cabinets on and off
-  - alias: "Light high cabinets toggle"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-        - switch.habridge_highcabinets
-        - input_boolean.light_high_cabinets
-    action:
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: input_boolean.domoticz_light_high_cabinets
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-        entity_id: group.light_high_cabinets
+  # - alias: "Light high cabinets toggle"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #       - switch.habridge_highcabinets
+  #       - input_boolean.light_high_cabinets
+  #   action:
+  #     - service_template: >-
+  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+  #       entity_id: input_boolean.domoticz_light_high_cabinets
+  #     - service_template: >-
+  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
+  #       entity_id: group.light_high_cabinets
 
   ## Switch livingroom lights on and off
-  - alias: "Light livingroom toggle"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id:
-        - input_boolean.light_livingroom
-    action:
-      - service_template: >-
-          {{ 'script.light_livingroom_on' if is_state('input_boolean.light_livingroom','on') else 'script.light_livingroom_off' }}
+  # - alias: "Light livingroom toggle"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.light_livingroom
+  #   action:
+  #     - service_template: >-
+  #         {{ 'script.light_livingroom_on' if is_state('input_boolean.light_livingroom','on') else 'script.light_livingroom_off' }}
 
   ## Switch on kitchen cabinets light based on timer
-  - alias: "Light high cabinets xx minutes after trigger on"
-    initial_state: "on"
-    trigger:
-      platform: event
-      event_type: timer.finished
-      event_data:
-        entity_id: timer.light_high_cabinets_on
-    condition:
-    action:
-    - service: homeassistant.turn_on
-      entity_id: 
-        - input_boolean.light_high_cabinets
+  # - alias: "Light high cabinets xx minutes after trigger on"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: event
+  #     event_type: timer.finished
+  #     event_data:
+  #       entity_id: timer.light_high_cabinets_on
+  #   condition:
+  #   action:
+  #   - service: homeassistant.turn_on
+  #     entity_id: 
+  #       - input_boolean.light_high_cabinets
         # - switch.switch_high_cabinets
 
   ## Switch off kitchen cabinets light based on timer
-  - alias: "Light high cabinets xx minutes after trigger off"
-    initial_state: "on"
-    trigger:
-      platform: event
-      event_type: timer.finished
-      event_data:
-        entity_id: timer.light_high_cabinets_off
-    condition:
-    action:
-    - service: homeassistant.turn_off
-      entity_id: 
-        - input_boolean.light_high_cabinets
+  # - alias: "Light high cabinets xx minutes after trigger off"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: event
+  #     event_type: timer.finished
+  #     event_data:
+  #       entity_id: timer.light_high_cabinets_off
+  #   condition:
+  #   action:
+  #   - service: homeassistant.turn_off
+  #     entity_id: 
+  #       - input_boolean.light_high_cabinets
         # - switch.switch_high_cabinets
 
   ## Switch on christmas tree based on timer
-  - alias: "Switch christmas tree xx minutes after trigger on"
-    initial_state: "on"
-    trigger:
-      platform: event
-      event_type: timer.finished
-      event_data:
-        entity_id: timer.switch_christmastree_on
-    condition:
-    action:
-    - service: homeassistant.turn_on
-      entity_id: 
-        - input_boolean.switch_christmas_tree
+  ## Moved automations to Node-RED for test
+  # - alias: "Switch christmas tree xx minutes after trigger on"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: event
+  #     event_type: timer.finished
+  #     event_data:
+  #       entity_id: timer.switch_christmastree_on
+  #   condition:
+  #   action:
+  #   - service: homeassistant.turn_on
+  #     entity_id: 
+  #       - input_boolean.switch_christmas_tree
 
   ##----------------------------------------------
   ## Test automations >> Remove ASAP after testing 
@@ -238,65 +331,66 @@ automation:
 ###############################################################################
 ##  Scripts
 ###############################################################################
-script:
-  light_livingroom_on:
-    alias: Woonkamer licht aan script
-    sequence:
+# script:
+  # light_livingroom_on:
+    # alias: Woonkamer licht aan script
+    # sequence:
       ## check if lights are currently off
-      - condition: state
-        entity_id: input_boolean.light_livingroom_state
-        state: "off"
-      - service: homeassistant.turn_on
-        entity_id:
-          - input_boolean.light_livingroom_state
-      - service: homeassistant.turn_on
-        entity_id: 
-          - input_boolean.light_high_cabinets
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom_state
+      #   state: "off"
+      # - service: homeassistant.turn_on
+      #   entity_id:
+      #     - input_boolean.light_livingroom_state
+      # - service: homeassistant.turn_on
+      #   entity_id: 
+      #     - input_boolean.light_high_cabinets
+      # - service: script.light_hue_mode_change
       ## check if it is christmas time
-      - condition: state
-        entity_id: input_boolean.mode_christmas
-        state: "on"
-      ## Switch on the chritmas tree lights
-      - service: homeassistant.turn_on
-        entity_id: 
-          - input_boolean.switch_christmas_tree
-  light_livingroom_off:
-    alias: Woonkamer licht uit script
-    sequence:
+      # - condition: state
+      #   entity_id: input_boolean.mode_christmas
+      #   state: "on"
+      # ## Switch on the chritmas tree lights
+      # - service: homeassistant.turn_on
+      #   entity_id: 
+      #     - input_boolean.switch_christmas_tree
+
+  # light_livingroom_off:
+    # alias: Woonkamer licht uit script
+    # sequence:
       ## check if lights are currently on
-      - condition: state
-        entity_id: input_boolean.light_livingroom_state
-        state: "on"
-      - service: homeassistant.turn_off
-        entity_id:
-          - input_boolean.light_livingroom_state
-      - service: timer.start
-        data_template:
-          entity_id: timer.light_high_cabinets_off
-          duration: "00:01:00"
-      - service: homeassistant.turn_off
-        entity_id: 
-          - light.woonkamer
+      # - condition: state
+        # entity_id: input_boolean.light_livingroom_state
+        # state: "on"
+      # - service: homeassistant.turn_off
+      #   entity_id:
+      #     - input_boolean.light_livingroom_state
+      # - service: timer.start
+      #   data_template:
+      #     entity_id: timer.light_high_cabinets_off
+      #     duration: "00:01:00"
+      # - service: homeassistant.turn_off
+      #   entity_id: 
+      #     - light.woonkamer
       ## check if it is christmas time
-      - condition: state
-        entity_id: input_boolean.mode_christmas
-        state: "on"
-      - service: homeassistant.turn_off
-        entity_id:
-          - input_boolean.switch_christmas_tree
+      # - condition: state
+      #   entity_id: input_boolean.mode_christmas
+      #   state: "on"
+      # - service: homeassistant.turn_off
+      #   entity_id:
+      #     - input_boolean.switch_christmas_tree
 
 ###############################################################################
 ##  Timers
 ###############################################################################
-timer:
-## Timers high cabinets in the kitchen
-  ## Switch on
-  light_high_cabinets_on:
-  ## Switch off
-  light_high_cabinets_off:
-## Timers controlling the christmas tree
-  ## Switch on
-  switch_christmastree_on:
-  ## Switch off
-  switch_christmastree_off:
+# timer:
+# ## Timers high cabinets in the kitchen
+#   ## Switch on
+#   light_high_cabinets_on:
+#   ## Switch off
+#   light_high_cabinets_off:
+# ## Timers controlling the christmas tree
+#   ## Switch on
+#   switch_christmastree_on:
+#   ## Switch off
+#   switch_christmastree_off:

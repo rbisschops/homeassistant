@@ -22,9 +22,9 @@ cards:
   #     show_name: false
   #     show_header_toggle: false
   #     entities:
-  #       - input_select.presence_state_ralph
-  #       - input_select.presence_state_anneke
-  #       - input_select.presence_state_kimberly
+  #       - input_select.presence_ralph_bisschops
+  #       - input_select.presence_anneke_bisschops
+  #       - input_select.presence_kimberly_bisschops
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -84,6 +84,18 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
+        - title: Verlichting bar
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_number.light_bar_dimmer
+        - entity: input_boolean.light_bar
+
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
         - title: Virtuele schakelaars begane grond
     - type: entities
       show_state: false
@@ -112,6 +124,18 @@ cards:
         - entity: input_boolean.dummy_hallway_storage_door
         - entity: input_boolean.dummy_metering_cabinet_door
         - entity: input_boolean.dummy_rest_room_door
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Timers berging
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_number.light_porch_long_timer
+        - entity: input_number.light_porch_short_timer
+
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:

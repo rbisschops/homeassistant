@@ -105,46 +105,46 @@ binary_sensor:
 automation:
   ## Automation for runnning the bed time script 
   ## Called by Alexa via HA Bridge
-  - alias: "Mode bed time triggered"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-      - binary_sensor.habridge_bed_time
-      to: "on"
-    action:
-      - service: script.turn_on
-        entity_id: script.mode_bed_time_triggered
+  # - alias: "Mode bed time triggered"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #     - binary_sensor.habridge_bed_time
+  #     to: "on"
+  #   action:
+  #     - service: script.turn_on
+  #       entity_id: script.mode_bed_time_triggered
 
   ## Automation for running the coming home script
   ## Called when the  front door sensor is triggered
-  - alias: "Mode coming home triggered"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id: 
-          - binary_sensor.door_front_door
-        to: "on"
-    condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.light_livingroom
-          state: "off"
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: input_select.presence_state_ralph
-              state: "Just Arrived"
-            - condition: state
-              entity_id: input_select.presence_state_anneke
-              state: "Just Arrived"
-            - condition: state
-              entity_id: input_select.presence_state_kimberly
-              state: "Just Arrived"
-    action:
-      - service: script.turn_on
-        entity_id: script.mode_coming_home_triggered
+  # - alias: "Mode coming home triggered"
+  #   initial_state: "on"
+  #   trigger:
+  #     - platform: state
+  #       entity_id: 
+  #         - binary_sensor.door_front_door
+  #       to: "on"
+  #   condition:
+  #     condition: and
+  #     conditions:
+  #       - condition: state
+  #         entity_id: input_boolean.light_livingroom
+  #         state: "off"
+  #       - condition: or
+  #         conditions:
+  #           - condition: state
+  #             entity_id: input_select.presence_ralph_bisschops
+  #             state: "Just Arrived"
+  #           - condition: state
+  #             entity_id: input_select.presence_anneke_bisschops
+  #             state: "Just Arrived"
+  #           - condition: state
+  #             entity_id: input_select.presence_kimberly_bisschops
+  #             state: "Just Arrived"
+  #   action:
+  #     - service: script.turn_on
+  #       entity_id: script.mode_coming_home_triggered
 
   ## Automation for running the Ralph is coming home script
   ## Called when the  front door sensor is triggered
@@ -157,7 +157,7 @@ automation:
         to: "on"
     condition:
       - condition: state
-        entity_id: input_select.presence_state_ralph
+        entity_id: input_select.presence_ralph_bisschops
         state: "Just Arrived"
     action:
       - service: script.turn_on
@@ -165,42 +165,43 @@ automation:
 
   ## Automation for runnning the leaving script
   ## Called by Alexa via HA Bridge
-  - alias: "Mode leaving triggerred"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-      - binary_sensor.habridge_leaving
-      to: "on"
-    action:
-      - service: script.turn_on
-        entity_id: script.mode_leaving_triggered
+  ## Moved automations to Node-RED for test
+  # - alias: "Mode leaving triggerred"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #     - binary_sensor.habridge_leaving
+  #     to: "on"
+  #   action:
+  #     - service: script.turn_on
+  #       entity_id: script.mode_leaving_triggered
 
   ## Automation for runnning the extended away script
   ## Called from binary sensor Extended Away
   ## Note: Potentially replace binary_sensor.presence_everybody_extended_away with a group
-  - alias: "Mode extended away triggered"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-      - binary_sensor.presence_everybody_extended_away
-      to: "on"
-    action:
-      - service: script.turn_on
-        entity_id: script.mode_extended_away_triggered
+  # - alias: "Mode extended away triggered"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: state
+  #     entity_id: 
+  #     - binary_sensor.presence_everybody_extended_away
+  #     to: "on"
+  #   action:
+  #     - service: script.turn_on
+  #       entity_id: script.mode_extended_away_triggered
 
   ## Automation for running the sunset script
   ## Triggered based on sunset minus offset 
-  - alias: "Mode sunset triggered"
-    initial_state: "on"
-    trigger:
-      platform: sun
-      event: sunset
-      offset: "-01:00:00"
-    action:
-      - service: script.turn_on
-        entity_id: script.sun_sunset
+  # - alias: "Mode sunset triggered"
+  #   initial_state: "on"
+  #   trigger:
+  #     platform: sun
+  #     event: sunset
+  #     offset: "-01:00:00"
+  #   action:
+  #     - service: script.turn_on
+  #       entity_id: script.sun_sunset
 
   ## Automation to run when the garbage bins need to go out for collection
   ## Tiggered by sensors based on Google calendar entries
@@ -215,11 +216,11 @@ automation:
       to: "on"
     action:
       - service_template: >
-          {% if (is_state('input_select.presence_state_ralph', 'Home')) and (is_state('input_select.presence_state_anneke', 'Home'))  %}
+          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
             script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_state_ralph', 'Home') %}
+          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
             script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_state_anneke', 'Home') %}
+          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
             script.notify_telegram_anneke
           {% endif %}
         data_template:
@@ -247,205 +248,210 @@ automation:
 ###############################################################################
 script:
   ## Script running when we go to bed, sets the house in sleep mode
-  mode_bed_time_triggered:
-    alias: Mode bedtime gestart
-    sequence:
+  # mode_bed_time_triggered:
+  #   alias: Mode bedtime gestart
+  #   sequence:
       ## Switch off the outdoor lighting
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.light_garden
+      # - service: homeassistant.turn_off
+      #   entity_id: input_boolean.light_garden
       ## Switch off the christmastree
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.switch_christmas_tree
+      # - service: homeassistant.turn_off
+      #   entity_id: input_boolean.switch_christmas_tree
         ## Switch off the living room lights
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.light_livingroom
+      # - service: homeassistant.turn_off
+      #   entity_id: input_boolean.light_livingroom
       ## Change the climate settings for the toilet heating
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.climate_restroom_heating_mode
-          option: "Spaarstand"
-      - condition: state
-        entity_id: input_boolean.media_recording_mode
-        state: "off"
-      - service: homeassistant.turn_off
-        entity_id: switch.switch_media
+      # - service: input_select.select_option
+      #   data:
+      #     entity_id: input_select.climate_restroom_heating_mode
+      #     option: "Spaarstand"
+      # - condition: state
+      #   entity_id: input_boolean.media_recording_mode
+      #   state: "off"
+      # - service: homeassistant.turn_off
+      #   entity_id: switch.switch_media
 
   ## Script when leaving home, also called when everybody is away (from package_presence)
-  mode_leaving_triggered:
-    alias: Mode vertrekken gestart
-    sequence:
+  # mode_leaving_triggered:
+  #   alias: Mode vertrekken gestart
+  #   sequence:
       ## Switch off the outdoor lighting
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.light_garden
+      ## Moved automations to Node-RED for test
+      # - service: homeassistant.turn_off
+      #   entity_id: input_boolean.light_garden
       ## Switch off the living room lights
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.light_livingroom
+      ## Moved automations to Node-RED for test
+      # - service: homeassistant.turn_off
+      #   entity_id: input_boolean.light_livingroom
       ## Change the climate settings for the toilet heating
-      - service: input_select.select_option
-        data_template:
-          entity_id: input_select.climate_restroom_heating_mode
-          option: >
-            {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Spaarstand' }}
-      - service_template: >
-          {% if is_state('input_boolean.media_recording_mode', 'on') %}
-            homeassistant.turn_on
-          {% elif is_state('input_boolean.media_recording_mode', 'off') %}
-            homeassistant.turn_off
-          {% endif %}
-        entity_id: switch.switch_media
+      ## Moved automations to Node-RED for test
+      # - service: input_select.select_option
+      #   data_template:
+      #     entity_id: input_select.climate_restroom_heating_mode
+      #     option: >
+      #       {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Spaarstand' }}
+      ## Moved automations to Node-RED for test
+      # - service_template: >
+      #     {% if is_state('input_boolean.media_recording_mode', 'on') %}
+      #       homeassistant.turn_on
+      #     {% elif is_state('input_boolean.media_recording_mode', 'off') %}
+      #       homeassistant.turn_off
+      #     {% endif %}
+      #   entity_id: switch.switch_media
       ## Turn on lighting, but only when dark
-      - condition: state
-        entity_id: sun.sun
-        state: "below_horizon"
+      # - condition: state
+      #   entity_id: sun.sun
+      #   state: "below_horizon"
       ## Switch on the outdoor lighting
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_porch
-      - service: timer.start
-        data_template:
-          entity_id: timer.light_porch
-          # duration: '00:{{ states.input_text.light_porch_short_timer.state | int }}:00'
-          duration: "00:{{ states('input_text.light_porch_short_timer')|int}}:00"
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_hallway
-      - service: timer.start
-        data_template:
-          entity_id: timer.light_hallway
-          # duration: '00:{{ states.input_text.media_hallway_light_long_timer.state | int }}:00'
-          duration: "00:{{ states('input_text.media_hallway_light_long_timer')|int}}:00"
+      ## Moved automations to Node-RED for test
+      # - service: homeassistant.turn_on
+      #   entity_id: input_boolean.light_porch
+      # - service: timer.start
+      #   data_template:
+      #     entity_id: timer.light_porch
+      #     duration: "00:{{ states('input_text.light_porch_short_timer')|int}}:00"
+      ## Moved automations to Node-RED for test
+      # - service: homeassistant.turn_on
+      #   entity_id: input_boolean.light_hallway
+      # - service: timer.start
+      #   data_template:
+      #     entity_id: timer.light_hallway
+      #     duration: "00:{{ states('input_text.media_hallway_light_long_timer')|int}}:00"
   ## Script when someone comes home
-  mode_coming_home_triggered:
-    alias: Mode thuiskomen gestart
-    sequence:
+  # mode_coming_home_triggered:
+  #   alias: Mode thuiskomen gestart
+  #   sequence:
       ## Change the climate settings for the toilet heating  
-      - service: input_select.select_option
-        data_template:
-          entity_id: input_select.climate_restroom_heating_mode
-          option: >
-            {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Verwarmen' }}
+      # - service: input_select.select_option
+      #   data_template:
+      #     entity_id: input_select.climate_restroom_heating_mode
+      #     option: >
+      #       {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Verwarmen' }}
       ## Turn on lighting, but only when dark
-      - condition: state
-        entity_id: sun.sun
-        state: "below_horizon"
+      # - condition: state
+      #   entity_id: sun.sun
+      #   state: "below_horizon"
       ## Switch on the outdoor lighting
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_garden
-      - service: homeassistant.turn_on
-        entity_id:
-          - input_boolean.light_livingroom_state
+      # - service: homeassistant.turn_on
+      #   entity_id: input_boolean.light_garden
+      # - service: homeassistant.turn_on
+      #   entity_id:
+      #     - input_boolean.light_livingroom_state
       ## Switch on the living room lights
       # - service: homeassistant.turn_on
-      #   entity_id: input_boolean.light_livingroom
-      - service: script.light_hue_set_scene_automatic
-        data_template:
-          brightness_value: >
-            {{ '100,150' }}
-          profile_value: >
-            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
-          transition: 2
+      # #   entity_id: input_boolean.light_livingroom
+      # - service: script.light_hue_set_scene_automatic
+      #   data_template:
+      #     brightness_value: >
+      #       {{ '100,150' }}
+      #     profile_value: >
+      #       {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
+      #     transition: 2
       ## Turn on the high cabinets lights
-      - service: homeassistant.turn_on
-        entity_id: 
-          - input_boolean.light_high_cabinets
+      # - service: homeassistant.turn_on
+      #   entity_id: 
+      #     - input_boolean.light_high_cabinets
           # - switch.switch_high_cabinets
       ## Switch on the living room lights switch
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_livingroom
+      # - service: homeassistant.turn_on
+      #   entity_id: input_boolean.light_livingroom
       ## check if it is christmas time
-      - condition: state
-        entity_id: input_boolean.mode_christmas
-        state: "on"
+      # - condition: state
+      #   entity_id: input_boolean.mode_christmas
+      #   state: "on"
       ## Switch on the chritmas tree lights
-      - service: homeassistant.turn_on
-        entity_id: 
-          - input_boolean.switch_christmas_tree
+      # - service: homeassistant.turn_on
+      #   entity_id: 
+      #     - input_boolean.switch_christmas_tree
 
   ## Script everybody extended away
-  mode_extended_away_triggered:
-    alias: Mode iedereen langere tijd weg gestart
-    sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.climate_restroom_heating_mode
-          option: "Uitgeschakeld"
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.mode_holiday
+  # mode_extended_away_triggered:
+  #   alias: Mode iedereen langere tijd weg gestart
+  #   sequence:
+  #     - service: input_select.select_option
+  #       data:
+  #         entity_id: input_select.climate_restroom_heating_mode
+  #         option: "Uitgeschakeld"
+  #     - service: homeassistant.turn_on
+  #       entity_id: input_boolean.mode_holiday
 
   ## Script running at sunset
-  sun_sunset:
-    alias: Zonsondergang bereikt
-    sequence:
-      - condition: state
-        entity_id: binary_sensor.presence_people_home
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.mode_holiday
-        state: "off"
-      - condition: state
-        entity_id: input_boolean.light_livingroom_state
-        state: "off"
-      ## Switch on the living room lights switch
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_livingroom_state
-      ## start hue lampen met de juiste mode
-      - service: script.light_hue_set_scene_transition
-        data_template:
-          brightness_start_value: >
-            {{ '1,1' }}
-          brightness_stop_value: >
-            {{ '90,100' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
-          profile_start_value: >
-            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
-          profile_stop_value: >
-            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
-          transition: 1800
+  # sun_sunset:
+  #   alias: Zonsondergang bereikt
+  #   sequence:
+  #     - condition: state
+  #       entity_id: binary_sensor.presence_people_home
+  #       state: "on"
+  #     - condition: state
+  #       entity_id: input_boolean.mode_holiday
+  #       state: "off"
+  #     - condition: state
+  #       entity_id: input_boolean.light_livingroom_state
+  #       state: "off"
+  #     ## Switch on the living room lights switch
+      # - service: homeassistant.turn_on
+      #   entity_id: input_boolean.light_livingroom_state
+      # ## start hue lampen met de juiste mode
+      # - service: script.light_hue_set_scene_transition
+      #   data_template:
+      #     brightness_start_value: >
+      #       {{ '1,1' }}
+      #     brightness_stop_value: >
+      #       {{ '90,100' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
+      #     profile_start_value: >
+      #       {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
+      #     profile_stop_value: >
+      #       {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
+      #     transition: 1800
       # - service: script.hue_sunset_mode
       ## start timer for kitchen cabinets, will switch on after xx hour
-      - service: timer.start
-        data_template:
-          entity_id: timer.light_high_cabinets_on
-          duration: "00:30:00"
+      # - service: timer.start
+      #   data_template:
+      #     entity_id: timer.light_high_cabinets_on
+      #     duration: "00:30:00"
       ## Switch on the living room lights switch
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.light_livingroom
-      ## check if it is christmas time
-      - condition: state
-        entity_id: input_boolean.mode_christmas
-        state: "on"
+      # - service: homeassistant.turn_on
+      #   entity_id: input_boolean.light_livingroom
+      # ## check if it is christmas time
+      # - condition: state
+      #   entity_id: input_boolean.mode_christmas
+      #   state: "on"
       ## start timer for christmas tree, will switch on after xx hour
-      - service: timer.start
-        data_template:
-          entity_id: timer.switch_christmastree_on
-          duration: "00:30:00"
+      ## Moved automations to Node-RED for test
+      # - service: timer.start
+      #   data_template:
+      #     entity_id: timer.switch_christmastree_on
+      #     duration: "00:30:00"
 
   ##----------------------------------------------
   ## Test scripts >> Remove ASAP after testing 
   ##----------------------------------------------
 
-  light_hue_test:
-    alias: hue test
-    sequence:
-      ## start hue lampen met de juiste mode
-      - service: script.light_hue_set_scene_transition
-        data_template:
-          brightness_start_value: >
-            {{ '1,1' }}
-          brightness_stop_value: >
-            {{ '100,150' }}
-          profile_start_value: concentrate
-          profile_stop_value: relax
-          transition: 5
+  # light_hue_test:
+  #   alias: hue test
+  #   sequence:
+  #     ## start hue lampen met de juiste mode
+  #     - service: script.light_hue_set_scene_transition
+  #       data_template:
+  #         brightness_start_value: >
+  #           {{ '1,1' }}
+  #         brightness_stop_value: >
+  #           {{ '100,150' }}
+  #         profile_start_value: concentrate
+  #         profile_stop_value: relax
+  #         transition: 5
 
-  light_hue_test_auto:
-    alias: hue test
-    sequence:
-      ## start hue lampen met de juiste mode
-      - service: script.light_hue_set_scene_automatic
-        data_template:
-          brightness_value: >
-            {{ '50,50' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
-          profile_value: >
-            {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'concentrate' }}
-          transition: 5
+  # light_hue_test_auto:
+  #   alias: hue test
+  #   sequence:
+  #     ## start hue lampen met de juiste mode
+  #     - service: script.light_hue_set_scene_automatic
+  #       data_template:
+  #         brightness_value: >
+  #           {{ '50,50' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
+  #         profile_value: >
+  #           {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'concentrate' }}
+  #         transition: 5
 
 ###############################################################################
 ##  Timers

@@ -828,10 +828,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Normaal"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Netflix mode is set 
   ## Triggered from script "Start Harmony acties"
@@ -852,10 +852,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Video"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Uitzending gemist mode is set
   ## Triggered from script "Start Harmony acties"
@@ -876,10 +876,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Video"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Disney+ mode is set
   ## Triggered from script "Start Harmony acties"
@@ -900,10 +900,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Video"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Pathe thuis mode is set
   ## Triggered from script "Start Harmony acties"
@@ -924,10 +924,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Video"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Television mode is set
   ## Triggered from script "Start Harmony acties"
@@ -947,10 +947,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Video"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Radio mode is set 
   ## Triggered from script "Start Harmony acties"
@@ -970,10 +970,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Normaal"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Music mode is set 
   ## Triggered from script "Start Harmony acties"
@@ -984,10 +984,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Normaal"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Poweroff is set 
   ## Triggered from script "Start Harmony acties"
@@ -998,10 +998,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Normaal"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for additional Humax settings when Television mode or radio mode is set
   ## Triggered from scripts "Aanvullende media settings Televisie" and "Aanvullende media settings Radio"
@@ -1041,10 +1041,10 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Video"
-      - condition: state
-        entity_id: input_boolean.light_livingroom
-        state: "on"
-      - service: script.light_hue_mode_change
+      # - condition: state
+      #   entity_id: input_boolean.light_livingroom
+      #   state: "on"
+      # - service: script.light_hue_mode_change
 
   ## Script for audio mode settings when music modes are selected 
   ## Not used, romove?
