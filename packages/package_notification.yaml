@@ -23,9 +23,9 @@ notify:
   - name: pushsafer
     platform: pushsafer
     private_key: !secret pushsafer_api_key
-  - name: pushbullet
-    platform: pushbullet
-    api_key: !secret pushbullet_api_key
+  # - name: pushbullet
+  #   platform: pushbullet
+  #   api_key: !secret pushbullet_api_key
   - name: telegram_ralph
     platform: telegram
     chat_id: !secret ralph_telegram_chat_id
@@ -49,11 +49,7 @@ input_boolean:
 ###############################################################################
 ## Groups
 ###############################################################################
-# group:
-#   enable_scripts:
-#     name: Scripts aan/uit
-#     entities:
-#       - input_boolean.notifications_notifications_allowed
+
 
 ###############################################################################
 ##  Automations
@@ -86,7 +82,7 @@ automation:
 ###############################################################################
 script:
 ## Prowl:
-## Script to send notifications to a Prowl. Syntax:
+## Script to send notifications to Prowl. Syntax:
 ## action:
 ##   service:  script.notify_prowl
 ##   data_template:
@@ -108,7 +104,7 @@ script:
 ##   input_boolean.notifications_notifications_allowed
 
   notify_prowl:
-    alias: Prowl notificaties 
+    alias: Prowl notificaties
     sequence:
       - condition: or
         conditions:
@@ -145,18 +141,18 @@ script:
 ## Dependancies:
 ##   input_boolean.notifications_notifications_allowed
 
-  notify_pushbullet:
-    alias: Pushbullet notfications
-    sequence:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_boolean.notifications_notifications_allowed
-            state: "on"
-      - service: notify.pushbullet
-        data_template:
-          title: "{{ title }}"
-          message: "{{ value1 }} {{ value2 }} {{ value3 }}"
+  # notify_pushbullet:
+  #   alias: Pushbullet notfications
+  #   sequence:
+  #     - condition: or
+  #       conditions:
+  #         - condition: state
+  #           entity_id: input_boolean.notifications_notifications_allowed
+  #           state: "on"
+  #     - service: notify.pushbullet
+  #       data_template:
+  #         title: "{{ title }}"
+  #         message: "{{ value1 }} {{ value2 }} {{ value3 }}"
 
 ## Telegram:
 ## Script to send notifications to Pushbullet. Syntax:

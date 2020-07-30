@@ -36,17 +36,17 @@ cards:
       entities:
         - entity: binary_sensor.door_front_door
         - entity: binary_sensor.door_storage_door
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Timers
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - entity: timer.light_hallway
-        - entity: timer.light_porch
+    # - type: custom:decluttering-card
+    #   template: custom_markdown_card_small
+    #   variables:
+    #     - title: Timers
+    # - type: entities
+    #   show_state: false
+    #   show_name: false
+    #   show_header_toggle: false
+    #   entities:
+    #     - entity: timer.light_hallway
+    #     - entity: timer.light_porch
 
   - type: vertical-stack
     cards:
@@ -90,7 +90,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_number.light_bar_dimmer
+        # - entity: input_number.light_bar_dimmer
         - entity: input_boolean.light_bar
 
     - type: custom:decluttering-card
@@ -124,17 +124,17 @@ cards:
         - entity: input_boolean.dummy_hallway_storage_door
         - entity: input_boolean.dummy_metering_cabinet_door
         - entity: input_boolean.dummy_rest_room_door
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Timers berging
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - entity: input_number.light_porch_long_timer
-        - entity: input_number.light_porch_short_timer
+    # - type: custom:decluttering-card
+    #   template: custom_markdown_card_small
+    #   variables:
+    #     - title: Timers berging
+    # - type: entities
+    #   show_state: false
+    #   show_name: false
+    #   show_header_toggle: false
+    #   entities:
+    #     - entity: input_number.light_porch_long_timer
+    #     - entity: input_number.light_porch_short_timer
 
     - type: custom:decluttering-card
       template: custom_markdown_card_small
@@ -255,26 +255,26 @@ cards:
 ###############################################################################
 
   ## Experimental RAG buttons for testing
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card 
-      template: custom_markdown_card
-      variables:
-        - title: Luchtvochtigheid
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Test sensors
-    - type: horizontal-stack
-      cards:
-        - type: custom:decluttering-card
-          template: stats_rag_icon_humidity
-          variables:
-            - sensor: test
-            - name: Test sensor (MQTT)
-        - type: custom:button-card
-          color_type: blank-card
-        - type: custom:button-card
-          color_type: blank-card
+  # - type: vertical-stack
+  #   cards:
+  #   - type: custom:decluttering-card 
+  #     template: custom_markdown_card
+  #     variables:
+  #       - title: Luchtvochtigheid
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card_small
+  #     variables:
+  #       - title: Test sensors
+  #   - type: horizontal-stack
+  #     cards:
+  #       - type: custom:decluttering-card
+  #         template: stats_rag_icon_humidity
+  #         variables:
+  #           - sensor: test
+  #           - name: Test sensor (MQTT)
+  #       - type: custom:button-card
+  #         color_type: blank-card
+  #       - type: custom:button-card
+  #         color_type: blank-card
 
 ##########################################################################################

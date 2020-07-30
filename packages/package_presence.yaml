@@ -392,16 +392,25 @@ automation:
   #           {% endif %}
   #         option: Extended Away
 
+
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## No longer in use with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
   ## Test if everybody is away and perform actions
   - alias: "Presence everybody is away"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: state
       entity_id: binary_sensor.presence_everybody_away
-      to: "on"
+      to: "off"
     action:
-      - service: script.turn_on
-        entity_id: script.mode_leaving_triggered
+      # - service: script.turn_on
+      #   entity_id: script.mode_leaving_triggered
       - service: script.notify_prowl
         data_template:
           value1: "Afwezigheidsmelding: "
@@ -412,7 +421,7 @@ automation:
 
   ## Test if anybody comes home and perform actions
   - alias: "Presence somebody comes home"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: state
       entity_id: input_select.presence_ralph_bisschops, input_select.presence_anneke_bisschops, input_select.presence_kimberly_bisschops

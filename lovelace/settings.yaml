@@ -4,7 +4,7 @@
 ## Author: R.Bisschops
 
 title: Settings
-icon: "mdi:settings-outline"
+icon: "mdi:cog-outline"
 background: "#e3e3e3"
 cards:
   - type: vertical-stack
@@ -36,6 +36,24 @@ cards:
       # - entity: input_boolean.light_livingroom_state
       #   name: Licht aan status
       #   icon: "mdi:lightbulb"
+
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Timers woonkamer
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_number.light_livingroom_short_timer
+          name: Woonkamer uit (min)
+        - entity: input_number.light_high_cabinets_short_timer
+          name: Koof uit (min)
+        - entity: input_number.light_christmas_tree_short_timer
+          name: Kerstboom (min)
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -51,9 +69,6 @@ cards:
           name: Uit lang (min)
         - entity: input_number.light_porch_short_timer
           name: Uit kort (min)
-        ## Replaced with input_number (slider)
-        # - entity: input_text.light_porch_long_timer
-        # - entity: input_text.light_porch_short_timer
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -69,8 +84,6 @@ cards:
           name: Uit lang (min)
         - entity: input_number.light_hallway_short_timer
           name: Uit kort (min)
-        # - entity: input_text.light_hallway_long_timer
-        # - entity: input_text.light_hallway_short_timer
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -82,10 +95,11 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_text.media_media_delay_timer
-        - entity: input_text.media_media_wait_timer
+        - entity: input_number.media_media_center_delay
+        - entity: input_number.media_media_wait_delay
+        # - entity: input_text.media_media_delay_timer
+        # - entity: input_text.media_media_wait_timer
         - entity: input_text.media_tv_radio_mode_timer
-
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card

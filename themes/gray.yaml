@@ -134,7 +134,7 @@ primary-color: '#636B75'
 # light-primary-opacity: 
 
 ## derived colors, to keep existing themes mostly working
-# paper-card-background-color: # background of the cards
+# ha-card-background: # background of the cards
 # paper-listbox-background-color: # CSS color value 
 # paper-item-icon-color: # color of entities icons when off
 # paper-item-icon-active-color: # color of entities icons when on, gets overriden by lights color if available

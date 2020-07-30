@@ -55,13 +55,15 @@ input_select:
     options:
       - "on"
       - "off"
-      - auto
+      - "auto"
+      - "hand"
   switch_water_ornament:
     name: Waterbollen
     options:
       - "on"
       - "off"
-      - auto
+      - "auto"
+      - "hand"
 
 ###############################################################################
 ##  Groups

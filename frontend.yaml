@@ -37,7 +37,7 @@
     #   sidebar-icon-color: 'var(--primary-color)'
     #   # Paper card
     #   paper-card-header-color: var(--accent-color)'                                   # Card header text colour
-    #   paper-card-background-color: "#333333"                                          # Card background colour
+    #   ha-card-background: "#333333"                                          # Card background colour
     #   paper-dialog-background-color: var(--primary-background-color)                  # Card dialog background colour
     #   paper-item-icon-color: 'var(--accent-color)'                                    # Icon color
     #   paper-item-icon-active-color: 'var(--accent-color)'                             # Icon color active
@@ -74,7 +74,7 @@
     #   primary-color: "#389638"
     #   disabled-text-color: "#545454"
     #   divider-color: "rgba(255, 255, 255, 0.12)"
-    #   paper-card-background-color: "#202020"
+    #   ha-card-background: "#202020"
     #   paper-grey-200: "#191919"
     #   paper-item-icon-color: "#d3d3d3"
     #   paper-listbox-background-color: "#202020"
@@ -140,7 +140,7 @@
       label-badge-text-color: "#FFFFFF"
       label-badge-red: "#343443"
       ## Cards
-      paper-card-background-color: "#23232E"
+      ha-card-background: "#23232E"
       paper-listbox-background-color: var(--primary-background-color)
       ## Toggles
       paper-toggle-button-checked-button-color: "#04E762"
@@ -183,7 +183,7 @@
     #   label-badge-text-color: "#F1F1F1"
     #   label-badge-red: "#6FA6FE"
     #   ### Cards ###
-    #   paper-card-background-color: "#23232E"
+    #   ha-card-background: "#23232E"
     #   paper-listbox-background-color: var(--primary-background-color)
     #   ### Toggles ###
     #   paper-toggle-button-checked-button-color: "#2F7EFD"
@@ -226,7 +226,7 @@
       # label-badge-text-color: "#4D5575"
       # label-badge-red: "#6FA6FE"
       # ### Cards ###
-      # paper-card-background-color: "#FCFCFC"
+      # ha-card-background: "#FCFCFC"
       # paper-listbox-background-color: var(--primary-background-color)
       # ### Toggles ###
       # paper-toggle-button-checked-button-color: "#2F7EFD"
@@ -269,7 +269,7 @@
       # label-badge-text-color: "#F1F1F1"
       # label-badge-red: "#FFA23F"
       # ### Cards ###
-      # paper-card-background-color: "#23232E"
+      # ha-card-background: "#23232E"
       # paper-listbox-background-color: var(--primary-background-color)
       # ### Toggles ###
       # paper-toggle-button-checked-button-color: "#FF8300"

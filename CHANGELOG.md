@@ -2,6 +2,22 @@
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
 
+## [1.3.0] - 2020-07-29
+- Bugfix: Wrong payload send to livingroom lights state input_select
+- Migrated media center control to Node-RED.
+- Updated: Node-RED flows for lighting.
+- Removed: Hue from config files (yaml). Is now integration.
+- Updated: theme files to remove paper as class.
+- Updated HA to version 0.113.2
+
+## [1.2.0] - 2020-07-04
+- Updated custome header configuration
+- Updated mini-graph-card-bundle to version 0.9.4
+- Updated button-card to version 3.3.6
+- Updated custom-header to version 1.6.5
+- Updated decluttering-card to version 0.6.3
+- Updated card-mod to version 14
+- Updated HA to version 0.112.2
 
 ## [1.1.0] - 2020-06-07
 #### Changed
@@ -14,7 +30,7 @@ As of 2020-03-25 All notable changes to my Homeassistant configuration will be d
 - Migrated high cabinets lights to Node-RED. [Issue #034](https://github.com/rbisschops/homeassistant/issues/34)
 - Migrating bar lights to Node-RED. [Issue #033](https://github.com/rbisschops/homeassistant/issues/33)
 - NodeRed: Migrating water ornament to Node-RED. [Issue #032](https://github.com/rbisschops/homeassistant/issues/32)
-- NodeRed: Migratedthe christmas tree to Node-RED. [Issue #030](https://github.com/rbisschops/homeassistant/issues/30)
+- NodeRed: Migrated the christmas tree to Node-RED. [Issue #030](https://github.com/rbisschops/homeassistant/issues/30)
 - NodeRed: Migrated the garden lights to Node-RED. [Issue #031](https://github.com/rbisschops/homeassistant/issues/31)
 
 ## [1.0.0] - 2020-04-24

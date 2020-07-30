@@ -101,7 +101,7 @@ paper-item-icon-color: 'var(--text-light-color)'
 # # Card Elements
 
 # paper-card-header-color:
-# paper-card-background-color: # background of the cards
+# ha-card-background: # background of the cards
 # paper-dialog-background-color: # background color of dialogs that appear when clicking on a entity
 # paper-dialog-color: # text color of dialogs that appear when clicking on a entity 
 # paper-item-icon-color: # color of entities icons when off,

@@ -96,6 +96,12 @@ binary_sensor:
     payload_on: "on"
     payload_off: "off"
   - platform: mqtt
+    name: habridge_amazon
+    state_topic: "media_mode/amazon"
+    off_delay: 2
+    payload_on: "on"
+    payload_off: "off"
+  - platform: mqtt
     name: habridge_pathe
     state_topic: "media_mode/pathe"
     off_delay: 2

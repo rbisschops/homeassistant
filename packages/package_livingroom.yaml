@@ -87,19 +87,22 @@ input_select:
     options:
       - "on"
       - "off"
-      - auto    
+      - "auto"
+      - "hand"
   light_high_cabinets:
     name: Hoge kasten Status
     options:
       - "on"
       - "off"
-      - auto
+      - "auto"
+      - "hand"
   switch_christmas_tree:
     name: Kerstboom
     options:
       - "on"
       - "off"
-      - auto
+      - "auto"
+      - "hand"
   ## light_bar
     ## not used, dimmer
 ##-----------------------------------------------------------------------------------------------
@@ -109,7 +112,8 @@ input_number:
   ## Timers
   ## Livingroom lights short timer (configurable from UI)
   light_livingroom_short_timer:
-    initial: 1
+    name: Woonkamer
+    initial: 0
     min: 0
     max: 10
     step: 1
@@ -120,8 +124,15 @@ input_number:
     min: 0
     max: 10
     step: 1
-  ## switch_christmas_tree
+  ## Christmas tree short timer (configurable from UI)
     ## not used, no timer
+  light_christmas_tree_short_timer:
+    name: Kerstboom
+    initial: 0
+    min: 0
+    max: 10
+    step: 1
+
   ## light_bar
     ## not used, no timer
 

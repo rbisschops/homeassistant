@@ -226,7 +226,7 @@ automation:
             }|tojson }}
   ## Convert Domoticz Zigbee switch (type Light/Switch) to Hass 
   - alias: "Domoticz subscribe - Read domoticz Zigbee switch"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -243,7 +243,7 @@ automation:
 
   ## Convert Domoticz CoCo switch (type Lighting 2) to Hass 
   - alias: "Domoticz subscribe - Read domoticz CoCo switch"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -260,8 +260,8 @@ automation:
 
   ## Convert Domoticz Energy meters to Hass
   ## Elektra meter will sent svalue1, svalue2, svalue5
-  - alias: "Domoticz publish - Utilities electiricity values"
-    initial_state: "on"  
+  - alias: "Domoticz publish - Utilities electricity values"
+    initial_state: "off"
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -292,7 +292,7 @@ automation:
             }|tojson }}
   ## Gas meter will sent svalue1
   - alias: "Domoticz publish - Utilities Gas values"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       - platform: mqtt
         topic: "domoticz/out"

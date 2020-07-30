@@ -453,7 +453,7 @@ cards:
           width: 3%
       ## Media center status
       - type: image
-        entity: switch.switch_media
+        entity: switch.switch_media_center
         tap_action:
           action: none
         image: /local/custom_icons/mediacenter48_on.png

@@ -46,13 +46,20 @@ cards:
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
+            - entity: input_boolean.media_amazon
+            - name: Amazon 
+            - icon: television
+            - picture: amazon.png
+    ## Mode selection, second row
+    - type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
+          template: media_button_large
+          variables: 
             - entity: input_boolean.media_pathe 
             - name: Pathe 
             - icon: television
             - picture: pathe.png
-    ## Mode selection, second row
-    - type: horizontal-stack
-      cards:
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
@@ -74,6 +81,9 @@ cards:
             - name: Apple-TV 
             - icon: apple
             - picture: apple.png
+    ## Mode selection, third row
+    - type: horizontal-stack
+      cards:
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
@@ -81,9 +91,6 @@ cards:
             - name: Mediaspeler 
             - icon: movie
             - picture: movie.png
-    ## Mode selection, third row
-    - type: horizontal-stack
-      cards:
         - type: custom:decluttering-card
           template: media_button_large
           variables: 
@@ -105,6 +112,10 @@ cards:
             - name: Muziek 
             - icon: music
             - picture: music.png
+
+    ## Mode selection, fourth row
+    - type: horizontal-stack
+      cards:
         - type: custom:decluttering-card
           template: media_button_large
           variables:
@@ -112,9 +123,6 @@ cards:
             - name: DVD
             - icon: movie
             - picture: movie.png
-    ## Mode selection, fourth row
-    - type: horizontal-stack
-      cards:
         - type: custom:decluttering-card
           template: media_button_large
           variables:
@@ -122,8 +130,6 @@ cards:
             - name: Teletext
             - icon: comment-text-outline
             - picture: teletext.png
-        - type: custom:button-card
-          color_type: blank-card
         - type: custom:button-card
           color_type: blank-card
         - type: custom:decluttering-card

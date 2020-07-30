@@ -39,7 +39,8 @@ input_select:
     options:
       - "on"
       - "off"
-      - auto
+      - "auto"
+      - "hand"
 
 ##-----------------------------------------------------------------------------------------------
 ## Updated and changed entities - input_number

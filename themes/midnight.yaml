@@ -33,7 +33,7 @@ paper-grey-200: '#414A59'                                                       
 sidebar-icon-color: 'var(--primary-color)'
 ## Paper card
 paper-card-header-color: var(--accent-color)'                                   # Card header text colour
-paper-card-background-color: "#333333"                                          # Card background colour
+ha-card-background: "#333333"                                                   # Card background colour
 paper-dialog-background-color: var(--primary-background-color)                  # Card dialog background colour
 paper-item-icon-color: 'var(--accent-color)'                                    # Icon color
 paper-item-icon-active-color: 'var(--accent-color)'                             # Icon color active

@@ -39,7 +39,7 @@ label-badge-background-color: "#363647"
 label-badge-text-color: "#F1F1F1"
 label-badge-red: "#FFA23F"
 ## Cards
-paper-card-background-color: "#23232E"
+ha-card-background: "#23232E"
 paper-listbox-background-color: var(--primary-background-color)
 ## Toggles
 paper-toggle-button-checked-button-color: "#FF8300"

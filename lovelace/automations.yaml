@@ -64,21 +64,21 @@ cards:
       #   name: Tuinverlichting aan bij thuiskomst
       # - entity: automation.light_garden_on_at_sunset 
       #   name: Tuinverlichting aan bij zonsondergang
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Toilet automatiseringen
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-      - entity: automation.climate_restroom_heating_scheduled_on_non_working_days
-        name: Toilet verwarming aan volgens schema - niet werkdagen
-      - entity: automation.climate_restroom_heating_scheduled_on_working_days
-        name: Toilet verwarming aan volgens schema - werkdagen
+  # - type: vertical-stack
+  #   cards:
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card_small
+  #     variables:
+  #       - title: Toilet automatiseringen
+  #   - type: entities
+  #     show_state: false
+  #     show_name: false
+  #     show_header_toggle: false
+  #     entities:
+  #     - entity: automation.climate_restroom_heating_scheduled_on_non_working_days
+  #       name: Toilet verwarming aan volgens schema - niet werkdagen
+  #     - entity: automation.climate_restroom_heating_scheduled_on_working_days
+  #       name: Toilet verwarming aan volgens schema - werkdagen
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -129,3 +129,20 @@ cards:
       entities:
       - entity: automation.vibration_mail_received
         name: Melding post ontvangen
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title:Media center automatiseringen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+      - entity: automation.media_actions_triggered_from_ui
+        name: Media van UI
+      - entity: automation.media_actions_triggered_from_ha_bridge
+        name: Media van HA-bridge
+      - entity: automation.media_actions_triggered_from_harmony_hub
+        name: Media van Harmony Hub

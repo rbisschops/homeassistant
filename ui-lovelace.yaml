@@ -7,16 +7,26 @@
 ##  Custom compact header settings
 ##  https://github.com/maykar/compact-custom-header
 ###############################################################################
-cch:
-  header: hide
-  menu: show
-  options: show
-  voice: show
-  notifications: clock
-  clock_format: '24'
-  clock_date: true
-  date_locale: nl-NL
-  disable: false
+# cch:
+#   header: hide
+#   menu: show
+#   options: show
+#   voice: show
+#   notifications: clock
+#   clock_format: '24'
+#   clock_date: true
+#   date_locale: nl-NL
+#   disable: false
+
+###############################################################################
+##  Custom header settings
+##  https://maykar.github.io/custom-header/#configuration/config
+###############################################################################
+custom_header:
+  compact_mode: true
+  hide_header: false
+  disabled_mode: false
+  voice_hide: false
 
 ###############################################################################
 ##  Custom button card templates
@@ -202,7 +212,10 @@ decluttering_templates:
           background: none;
           box-shadow: 0px 0px;
         }
-        ha-markdown.markdown.no-header {
+        ha-markdown {
+          padding: 0;
+        }
+        ha-markdown.no-header {
           padding: 0;
         }
   custom_markdown_card_small:
@@ -214,10 +227,13 @@ decluttering_templates:
         ha-card {
           background: none;
           box-shadow: 0px 0px;
-          font-size: 0.9em;
+          font-size: 1em;
           font-weight: bold
         }
-        ha-markdown.markdown.no-header {
+        ha-markdown {
+          padding: 0;
+        }
+        ha-markdown.no-header {
           padding: 0;
         }
   media_button_large:
@@ -800,15 +816,15 @@ title: Bisschops Mansion
 # background: center / cover no-repeat url("/local/background2.jpg") fixed
 views:
   - !include lovelace/home.yaml
-  - !include lovelace/groundfloor.yaml
-  - !include lovelace/firstfloor.yaml
-  - !include lovelace/secondfloor.yaml
-  - !include lovelace/garden.yaml
   - !include lovelace/mediaplayer.yaml
   - !include lovelace/weather.yaml
   - !include lovelace/utilities.yaml
   - !include lovelace/stats.yaml
   - !include lovelace/things.yaml
   - !include lovelace/settings.yaml
+  - !include lovelace/groundfloor.yaml
+  - !include lovelace/firstfloor.yaml
+  - !include lovelace/secondfloor.yaml
+  - !include lovelace/garden.yaml
   - !include lovelace/automations.yaml
   - !include lovelace/test.yaml

@@ -120,8 +120,10 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.light_high_cabinets
-        - entity: input_boolean.light_bar
+        - entity: input_boolean.light_high_cabinets_button
+          name: Hoge kasten
+        - entity: input_boolean.light_bar_button
+          name: Bar
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -131,7 +133,8 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.switch_christmas_tree   
+        - entity: input_boolean.switch_christmas_tree_button
+          name: Kerstboom
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -147,7 +150,8 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.light_garden
+        - entity: input_boolean.light_garden_button
+          naam: Tuin
     # - type: custom:decluttering-card
     #   template: custom_markdown_card_small
     #   variables:
@@ -189,8 +193,10 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: input_boolean.light_porch
-        - entity: input_boolean.light_hallway
+        - entity: input_boolean.light_porch_button
+          name: Buitenlamp
+        - entity: input_boolean.light_hallway_button
+          name: Halletje
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -237,7 +243,7 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: switch.switch_media
+        - entity: switch.switch_media_center
           icon: mdi:power
     - type: custom:decluttering-card
       template: custom_markdown_card_small

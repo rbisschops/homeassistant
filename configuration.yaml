@@ -83,20 +83,17 @@ logger:
 ## Lovelace UI
 lovelace:
   mode: yaml
-  ## V0.11.0 Added lovelace resources from ui-=lovelace
   ## Additional resources used
   resources:
-  - url: /local/custom_cards/mini-graph-card-bundle.js?v=0.9.3
+  - url: /local/custom_cards/mini-graph-card-bundle.js?v=0.9.4
     type: module
-  ## Updated V0.11.0
-  - url: /local/custom_cards/button-card.js?v=3.2.3
+  - url: /local/custom_cards/button-card.js?v=3.3.6
     type: module
-  - url: /local/custom_cards/custom-header/custom-header.js?V1.3.2
+  - url: /local/custom_cards/custom-header.js?v=1.6.7
     type: module
-  ## Updated V0.11.0
-  - url: /local/custom_cards/decluttering-card.js?v=0.4.3
+  - url: /local/custom_cards/decluttering-card.js?v=0.6.3
     type: module
-  - url: /local/custom_cards/card-mod.js?v=13
+  - url: /local/custom_cards/card-mod.js?v=14
     type: module
 
 ## Enables a map showing the location of tracked devices

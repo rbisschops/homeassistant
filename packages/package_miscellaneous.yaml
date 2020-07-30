@@ -32,18 +32,16 @@ binary_sensor:
     workdays: [mon, tue, wed, thu, fri, sat]
     excludes: [sun]
 
-  ## Definition of the GFT (Bio) garbage bin
+  ## Definition of the GFT (Bio) garbage
   ## Depends on google calendar for afval_kalender
   ## Used for sending "put the bin out" notifications
   - platform: template
     sensors:
-      garbage_bin_gft:
+      garbage_gft:
         friendly_name: GFT bak
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'GFT' %}
-              true
-            {% elif state_attr('calendar.afval_kalender', 'message') == 'GFT + PMD' %}
               true
             {% else %}
               false
@@ -54,18 +52,16 @@ binary_sensor:
         entity_picture_template: >-
           {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
 
-  ## Definition of the PMD (Platic and metal) garbage bin
+  ## Definition of the PMD (Plastic and metal) garbage
   ## Depends on google calendar for afval_kalender
   ## Used for sending "put the bin out" notifications
   - platform: template
     sensors:
-      garbage_bin_pmd:
+      garbage_pmd:
         friendly_name: PMD bak
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'PMD' %}
-              true
-            {% elif state_attr('calendar.afval_kalender', 'message') == 'GFT + PMD' %}
               true
             {% else %}
               false
@@ -76,12 +72,12 @@ binary_sensor:
         entity_picture_template: >-
           {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
 
-  ## Definition of the PMD and GFT (Plastic and metal and bio) garbage bins
+  ## Definition of the PMD and GFT (Plastic and metal and bio) garbage
   ## Depends on google calendar for afval_kalender
   ## Used for sending "put both bins out" notifications
   - platform: template
     sensors:
-      garbage_bin_gft_pmd:
+      garbage_gft_pmd:
         friendly_name: 'GFT en PMD bak'
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
@@ -93,6 +89,38 @@ binary_sensor:
           {% else %}
             false
           {% endif %}
+
+  ## Definition of the GFT (Bio) garbage bin
+  ## Depends on binary sensors GTT and GFT+PMD
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_gft:
+        friendly_name: 'GFT bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_gft', 'on') or is_state('binary_sensor.garbage_gft_pmd', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
+
+  ## Definition of thePMD (Platic and metal) garbage bin
+  ## Depends on binary sensors PMD and GFT+PMD
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_pmd:
+        friendly_name: 'PMD bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_pmd', 'on') or is_state('binary_sensor.garbage_gft_pmd', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
 
 ###############################################################################
 ##  Groups
@@ -210,9 +238,9 @@ automation:
     trigger:
       platform: state
       entity_id: 
-      - binary_sensor.garbage_bin_gft
-      - binary_sensor.garbage_bin_pmd
-      - binary_sensor.garbage_bin_gft_pmd
+      - binary_sensor.garbage_gft
+      - binary_sensor.garbage_pmd
+      - binary_sensor.garbage_gft_pmd
       to: "on"
     action:
       - service_template: >
@@ -269,7 +297,7 @@ script:
       #   entity_id: input_boolean.media_recording_mode
       #   state: "off"
       # - service: homeassistant.turn_off
-      #   entity_id: switch.switch_media
+      #   entity_id: switch.switch_media_center
 
   ## Script when leaving home, also called when everybody is away (from package_presence)
   # mode_leaving_triggered:
@@ -297,7 +325,7 @@ script:
       #     {% elif is_state('input_boolean.media_recording_mode', 'off') %}
       #       homeassistant.turn_off
       #     {% endif %}
-      #   entity_id: switch.switch_media
+      #   entity_id: switch.switch_media_center
       ## Turn on lighting, but only when dark
       # - condition: state
       #   entity_id: sun.sun

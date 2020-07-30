@@ -15,13 +15,14 @@ homeassistant:
     script.light_hue_sent_scene_to_hue_bridge:
       icon: mdi:lightbulb
 
+## Depricated option
 ## Hue bridges and emulators
-hue:
-  bridges:
-    - host: !secret ip_hue_bridge
-      # filename: phue_bridge.conf
-      allow_unreachable: true
-      allow_hue_groups: true
+# hue:
+#   bridges:
+#     - host: !secret ip_hue_bridge
+#       # filename: phue_bridge.conf
+#       allow_unreachable: true
+#       allow_hue_groups: true
 
 ###############################################################################
 ##  Entities
@@ -118,7 +119,7 @@ input_select:
       - Energie
       - Helder
       - Nachtlampje
-      - Kerst
+      - Video
 
 ##-----------------------------------------------------------------------------------------------
 ## Depricated entities - input_select

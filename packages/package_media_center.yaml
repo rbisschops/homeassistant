@@ -49,6 +49,8 @@ homeassistant:
       friendly_name: Disney+
     switch.pathe:
       friendly_name: Pathe thuis
+    switch.amazon:
+      friendly_name: Amazon Prime  
 
     ## Media center timers  
     timer.media_media_center_delay:
@@ -69,7 +71,6 @@ remote:
 webostv:
   host: !secret ip_lgtelevision
   name: living_room_tv
-  # filename: webostv.conf
   turn_on_action:
     service: persistent_notification.create
     data:
@@ -86,17 +87,14 @@ webostv:
       - HDMI1
       - HDMI2
 
-media_player:
-  - platform: denonavr
-    host: !secret ip_denonavr 
-    name: Denon AVR
-    show_all_sources: true
-    timeout: 2
-
 ###############################################################################
 ##  Entities
 ###############################################################################
 input_select: 
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
   ## Current Harmony activity, used for automations and scripts
   media_harmony_livingroom_new_state:
     name: Activiteiten Harmony 
@@ -107,6 +105,7 @@ input_select:
       - Spotify
       - Uitzending gemist
       - Disney+
+      - Amazon Prime
       - Pathe thuis
       - Mediaplayer
       - Apple-TV
@@ -116,7 +115,9 @@ input_select:
       - Teletekst
       - PowerOff
     icon: mdi:remote
+
   ## Previous Harmony activity, used for aurtomations and scripts
+  ## MIGHT BE OBSOLTE, HOWEVER STILL FILLED FROM NODE_RED
   media_harmony_livingroom_old_state:
     name: Oude status
     options:
@@ -126,6 +127,7 @@ input_select:
       - Spotify
       - Uitzending gemist
       - Disney+
+      - Amazon Prime
       - Pathe thuis
       - Mediaplayer
       - Apple-TV
@@ -135,13 +137,31 @@ input_select:
       - Teletekst
       - PowerOff 
     icon: mdi:remote
+
+  ## Activity state for the Harmony Hub (used for follow-up actions per activity
+  media_harmony_livingroom_state:
+    name: Harmony status
+    options: 
+      - Turned off
+      - Starting
+      - Started
+      - Turning off
+      - Started cashed
+
+
   ## Previous state of the Humax, used for swapping the TV/Radio mode
   media_humax_old_state:
     name: Humax oude status
     options:
       - Televisie
       - Radio
+
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
   ## Obsolete, remove after check
+  ## CHECK IF REALLY NO LONGER USED
   media_humax_new_state:
     name: Humax nieuwe status
     options:
@@ -149,6 +169,14 @@ input_select:
       - Radio
 
 input_number:
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
   media_volume_setpoint:
     name: Denon Volume
     initial: 45
@@ -156,7 +184,29 @@ input_number:
     max: 75
     step: 1
 
+##-----------------------------------------------------------------------------------------------
+## Updated and changed entities - input_number
+##-----------------------------------------------------------------------------------------------
+  media_media_center_delay:
+    name: Media start vertraging (sec)
+    initial: 30
+    min: 0
+    max: 60
+    step: 1
+  media_media_wait_delay:
+    name: Media wacht vertraging (sec)
+    initial: 10
+    min: 1
+    max: 60    
+
 input_text:
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
   media_media_delay_timer:
     name: Media start vertraging (sec)
     initial: 30
@@ -174,6 +224,9 @@ input_text:
     max: 60
 
 input_boolean:
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
   ## Switch used for setting the recorder mode on   
   ## used for disabling the media center switch-off when a recording is programmed
   media_recording_mode:
@@ -185,12 +238,6 @@ input_boolean:
   media_enable_ui_buttons:
     name: UI buttons ingeschakeld
     initial: on
-  ## Test buttons me3dia mode
-  ## used for testing commands to Harmony Hub
-  ## remove after completion of media package
-  media_test_hub_command:
-    name: Test Harmony Hub commando
-    initial: off  
   ## Harmony mode selector inputs,
   ## used for manual selection from lovelace interface
   media_poweroff:
@@ -221,8 +268,23 @@ input_boolean:
     name: Disney+
   media_pathe:
     name: Pathe thuis
+  media_amazon:
+    name: Amazon Prime
+
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+  ## Test buttons me3dia mode
+  ## used for testing commands to Harmony Hub
+  ## remove after completion of media package
+  media_test_hub_command:
+    name: Test Harmony Hub commando
+    initial: off 
 
 sensor:
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
   ## Media center operations, sensor (Tradfri via Zigbee2MQTT)
   - platform: "mqtt"
     name: switch_media
@@ -240,18 +302,14 @@ sensor:
         friendly_name: Receiver Volume Level
         icon_template: mdi:volume-medium
 
-switch:
-  ## Media center operations, switch (Tradfri via Zigbee2MQTT)
-  ## used for powering up all media devices
-  - platform: "mqtt"
-    name: switch_media
-    state_topic: "zigbee2mqtt/tradfri_media_switch"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    payload_off: "OFF"
-    payload_on: "ON"
-    value_template: "{{ value_json.state }}"
-    command_topic: "zigbee2mqtt/tradfri_media_switch/set"
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
 
+switch:
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
   ## Template switches synchronizing with the Harmony Hub. Operates reciproke
   ## switches are updated from the Harmony hub and set the Harmony hub from Hass
   - platform: template
@@ -424,6 +482,32 @@ switch:
           data:
             entity_id: remote.bisschops
             activity: ""
+      amazon:
+        value_template: "{{ is_state_attr('remote.bisschops', 'current_activity', 'Amazon Prime') }}"
+        turn_on:
+          service: remote.turn_on
+          data:
+            entity_id: remote.bisschops
+            activity: "Amazon Prime"
+        turn_off:
+          service: remote.turn_on
+          data:
+            entity_id: remote.bisschops
+            activity: ""
+
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+  ## Media center operations, switch (Tradfri via Zigbee2MQTT)
+  ## used for powering up all media devices
+  - platform: "mqtt"
+    name: switch_media
+    state_topic: "zigbee2mqtt/tradfri_media_switch"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state }}"
+    command_topic: "zigbee2mqtt/tradfri_media_switch/set"
 
 ###############################################################################
 ##  Groups
@@ -434,78 +518,9 @@ switch:
 ##  Automations
 ###############################################################################
 automation:
-  ## Test min and max settings on media start timer
-  - alias: "Media - validate media start timer"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id: input_text.media_media_delay_timer
-    action:
-      - service: input_text.set_value
-        data_template:
-          entity_id: input_text.media_media_delay_timer
-          value: >
-            {% if (states('input_text.media_media_delay_timer')|int) > 60 %}
-              60
-            {% elif (states('input_text.media_media_delay_timer')|int) < 1 %}
-              1
-            {% else %}
-              {{ states('input_text.media_media_delay_timer')|int }}
-            {% endif %}
-
-  ## Test min and max settings on media wait timer
-  - alias: "Media - validate media wait timer"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id: input_text.media_media_wait_timer
-    action:
-      - service: input_text.set_value
-        data_template:
-          entity_id: input_text.media_media_wait_timer
-          value: >
-            {% if (states('input_text.media_media_wait_timer')|int) > 60 %}
-              60
-            {% elif (states('input_text.media_media_wait_timer')|int) < 1 %}
-              1
-            {% else %}
-              {{ states('input_text.media_media_wait_timer')|int }}
-            {% endif %}
-
-  ## Automation for Harmony mode selector inputs, 
-  ## used for manual selection from UI
-  - alias: "Media - actions triggered from UI"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: 
-        - input_boolean.media_poweroff
-        - input_boolean.media_television
-        - input_boolean.media_mediaplayer
-        - input_boolean.media_appletv
-        - input_boolean.media_radio
-        - input_boolean.media_music
-        - input_boolean.media_dvd
-        - input_boolean.media_teletext
-        - input_boolean.media_smarttv
-        - input_boolean.media_netflix
-        - input_boolean.media_spotify
-        - input_boolean.media_program_missed
-        - input_boolean.media_disney
-        - input_boolean.media_pathe
-      to: "on"
-    action:
-      - service: script.media_media_settings_mode_generic
-        data_template:
-          new_state: "{{ trigger.to_state.attributes.friendly_name }}"
-          old_state: "{{ states('input_select.media_harmony_livingroom_new_state') }}"
-      - service_template: >-
-          {% if is_state('switch.switch_media', 'on') %}
-            script.media_media_settings_from_mains_on
-          {% elif is_state('switch.switch_media', 'off') %}
-            script.media_media_settings_from_mains_off
-          {% endif%}
-
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
   ## Automation for Harmony mode selector from HA Bridge,
   ## used for selection from HA Bridge (Alexa commands)
   - alias: "Media - actions triggered from HA-Bridge"
@@ -523,8 +538,9 @@ automation:
         - binary_sensor.habridge_spotify
         - binary_sensor.habridge_poweroff
         - binary_sensor.habridge_program_missed
-        - binary_sensor.media_disney
-        - binary_sensor.media_pathe
+        - binary_sensor.habridge_disney
+        - binary_sensor.habridge_pathe
+        - binary_sensor.habridge_amazon
       to: "on"
     action:
       - service: script.media_set_media_input_mode
@@ -549,6 +565,7 @@ automation:
         - switch.program_missed
         - switch.disney
         - switch.pathe
+        - switch.amazon
       to: "on"
     action:
       - service: homeassistant.turn_off
@@ -558,9 +575,85 @@ automation:
           name: "{{ trigger.to_state.object_id }}"
           type: "harmony"
 
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+  ## Test min and max settings on media start timer
+  - alias: "Media - validate media start timer"
+    initial_state: "off"
+    trigger:
+      - platform: state
+        entity_id: input_text.media_media_delay_timer
+    action:
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.media_media_delay_timer
+          value: >
+            {% if (states('input_text.media_media_delay_timer')|int) > 60 %}
+              60
+            {% elif (states('input_text.media_media_delay_timer')|int) < 1 %}
+              1
+            {% else %}
+              {{ states('input_text.media_media_delay_timer')|int }}
+            {% endif %}
+
+  ## Test min and max settings on media wait timer
+  - alias: "Media - validate media wait timer"
+    initial_state: "off"
+    trigger:
+      - platform: state
+        entity_id: input_text.media_media_wait_timer
+    action:
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.media_media_wait_timer
+          value: >
+            {% if (states('input_text.media_media_wait_timer')|int) > 60 %}
+              60
+            {% elif (states('input_text.media_media_wait_timer')|int) < 1 %}
+              1
+            {% else %}
+              {{ states('input_text.media_media_wait_timer')|int }}
+            {% endif %}
+
+  ## Automation for Harmony mode selector inputs, 
+  ## used for manual selection from UI
+  - alias: "Media - actions triggered from UI"
+    initial_state: "off"
+    trigger:
+      platform: state
+      entity_id: 
+        - input_boolean.media_poweroff
+        - input_boolean.media_television
+        - input_boolean.media_mediaplayer
+        - input_boolean.media_appletv
+        - input_boolean.media_radio
+        - input_boolean.media_music
+        - input_boolean.media_dvd
+        - input_boolean.media_teletext
+        - input_boolean.media_smarttv
+        - input_boolean.media_netflix
+        - input_boolean.media_spotify
+        - input_boolean.media_program_missed
+        - input_boolean.media_disney
+        - input_boolean.media_pathe
+        - input_boolean.media_amazon
+      to: "on"
+    action:
+      - service: script.media_media_settings_mode_generic
+        data_template:
+          new_state: "{{ trigger.to_state.attributes.friendly_name }}"
+          old_state: "{{ states('input_select.media_harmony_livingroom_new_state') }}"
+      - service_template: >-
+          {% if is_state('switch.switch_media_center', 'on') %}
+            script.media_media_settings_from_mains_on
+          {% elif is_state('switch.switch_media_center', 'off') %}
+            script.media_media_settings_from_mains_off
+          {% endif%}
+
   ##  Continue script based on media_center_delay timer einde
   - alias: "Media - Timer media center start ending"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: event
       event_type: timer.finished
@@ -571,7 +664,7 @@ automation:
 
   ##  Automation to run actions after media_center_wait timer ends
   - alias: "Media - Timer media center wait ending"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: event
       event_type: timer.finished
@@ -587,7 +680,7 @@ automation:
 
   ##  Automation to run actions after tv radio timer ends
   - alias: "Media - Timer tv-radio wait ending"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: event
       event_type: timer.finished
@@ -603,27 +696,27 @@ automation:
 
   ## Automation for Denon Volume control
   - alias: "Media - Denon set volume"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: state
       entity_id: input_number.media_volume_setpoint
     action:
       - service: media_player.volume_set
         data_template:
-          entity_id: media_player.denon_avr
+          entity_id: media_player.living_room_avr
           volume_level: >
             {{states('input_number.media_volume_setpoint') | int / 100}}
 
   ## Automation for updating the Denon Volume control slider in the UI
   ## receiver must be on to set the volume, without this would throw error on startup
   - alias: "Media - Denon update volume slider"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       - platform: state
         entity_id: sensor.denon_volume
     condition:
       condition: state
-      entity_id: media_player.denon_avr
+      entity_id: media_player.living_room_avr
       state: "on"
     action:
       - delay:
@@ -640,7 +733,7 @@ automation:
   ## Test automation for testing Harmony hub commands
   ## remove after completion of media package
   - alias: "Media - Test actions Harmony Hub"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: state
       entity_id:
@@ -663,6 +756,14 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
   ## Script for updating the state of the input buttons in Lovelace
   ## Triggered from automation "Media acties lovelace buttons"
   media_media_settings_mode_generic:
@@ -701,8 +802,9 @@ script:
               "Spotify":"spotify",
               "Uitzending gemist":"program_missed",
               "Disney+":"disney",
-              "Pathe thuis":"pathe"
-              } 
+              "Pathe thuis":"pathe",
+              "Amazon Prime":"amazon"
+              }
             %}
             {% set entity = ["input_boolean.media_",media_devices[old_state]]|join %}
             {{ entity }}
@@ -725,7 +827,7 @@ script:
     alias: Media start als media switch uit
     sequence:
       - service: homeassistant.turn_on
-        entity_id: switch.switch_media
+        entity_id: switch.switch_media_center
       - service: timer.start
         data_template:
           entity_id: timer.media_media_center_delay
@@ -776,7 +878,8 @@ script:
               "Spotify":"spotify",
               "Uitzending gemist":"program_missed",
               "Disney+":"disney",
-              "Pathe thuis":"pathe"
+              "Pathe thuis":"pathe",
+              "Amazon Prime":"amazon"
               }
             %}
             {% set entity = ["switch",media_devices[current_state]]|join(".") %}
@@ -819,19 +922,10 @@ script:
           device: "Denon AV Receiver"
           command:
             - ModeStereo
-      # Removed as the AV Receiver is now the Spotify device
-      # - service: media_player.select_source
-      #   data:
-      #     entity_id: media_player.living_room_tv
-      #     source: Spotify Music - Luister gratis op LG TV
       - service: input_select.select_option
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Normaal"
-      # - condition: state
-      #   entity_id: input_boolean.light_livingroom
-      #   state: "on"
-      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Netflix mode is set 
   ## Triggered from script "Start Harmony acties"
@@ -852,10 +946,6 @@ script:
         data:
           entity_id: input_select.light_livingroom_mode
           option: "Video"
-      # - condition: state
-      #   entity_id: input_boolean.light_livingroom
-      #   state: "on"
-      # - service: script.light_hue_mode_change
 
   ## Script for additional settings when Uitzending gemist mode is set
   ## Triggered from script "Start Harmony acties"
@@ -1075,6 +1165,14 @@ script:
 ###############################################################################
 ##  Timers
 ###############################################################################
+
+##-----------------------------------------------------------------------------------------------
+## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## No longer in used with Node-RED configuration
+##-----------------------------------------------------------------------------------------------
 timer:
   ## timer for delaying the media center mains power on switch whewn off
   media_media_center_delay:
