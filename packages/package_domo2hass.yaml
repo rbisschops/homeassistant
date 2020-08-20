@@ -208,7 +208,7 @@ automation:
   #           }|tojson }}
   ## Publish sunscreen switch to Domoticz
   - alias: "Domoticz publish - Blinds Sunscreen"
-    initial_state: "on"
+    initial_state: "off"
     trigger:     
       platform: state
       entity_id:
@@ -346,7 +346,7 @@ automation:
             }|tojson }}
   ## Domoticz server memory usage, will sent svalue1
   - alias: "Domoticz publish - Domoticz server memory usage"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -369,7 +369,7 @@ automation:
             }|tojson }}
   ## Domoticz server HDD-boot partition, will sent svalue1
   - alias: "Domoticz publish - Domoticz server HDD-boot partition usage"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -392,7 +392,7 @@ automation:
             }|tojson }}
   ## Domoticz server HDD partition, will sent svalue1
   - alias: "Domoticz publish - Domoticz server HDD partition usage"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -416,7 +416,7 @@ automation:
   
   ## Domoticz server temperature, will sent svalue1
   - alias: "Domoticz publish Domoticz server CPU temperature"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -439,7 +439,7 @@ automation:
             }|tojson }}
   ## Domoticz CPU usage, will sent svalue1
   - alias: "Domoticz publish - Domoticz server CPU usage"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -462,7 +462,7 @@ automation:
             }|tojson }}
   ## Domoticz process usage, will sent svalue1
   - alias: "Domoticz publish - Domoticz server process usage"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -483,29 +483,8 @@ automation:
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
-  ## Homeserver server memory usage, will sent svalue1
-  - alias: "Domoticz publish - Homeserver memory usage"
-    initial_state: "on" 
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: and
-      conditions:
-      - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
-      - condition: template
-        value_template: "{{ trigger.payload_json.name == 'Memory Usage (Homeserver)' }}"
-    action: 
-      - service: mqtt.publish
-        data_template:
-          topic: "home/server/homeserver/mem_usage"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": trigger.payload_json.name,
-              "usage": trigger.payload_json.svalue1
-            }|tojson }}
+
+
   ## Homeserver server HDD-boot partition, will sent svalue1
   - alias: "Domoticz publish - Homeserver HDD-boot partition usage"
     initial_state: "on" 
@@ -552,9 +531,37 @@ automation:
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
+
+##-----------------------------------------------------------------------------------------------
+## No longer in use, moved to integration Glances on HA
+##-----------------------------------------------------------------------------------------------
+
+  ## Homeserver server memory usage, will sent svalue1
+  - alias: "Domoticz publish - Homeserver memory usage"
+    initial_state: "off" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Memory Usage (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/mem_usage"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
   ## Homeserver server temperature, will sent svalue1
   - alias: "Domoticz publish - Homeserver CPU temperature"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -577,7 +584,7 @@ automation:
             }|tojson }}
   ## Homeserver CPU usage, will sent svalue1
   - alias: "Domoticz publish - Homeserver CPU usage"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       - platform: mqtt
         topic: "domoticz/out"

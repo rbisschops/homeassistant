@@ -7,7 +7,7 @@
 ##  Homeassistant settings
 ###############################################################################
 homeassistant:
-  customize:
+  # customize:
     ## Customizations for advanced presence states
     # Sensors currently not used. review for future use ore remove
     # sensor.presence_state_ralph:
@@ -187,8 +187,10 @@ group:
   presence_anneke:
     name: Aanwezigheid Anneke
     entities:
-      - device_tracker.wifi_anneke_s7
-      - device_tracker.anneke_s7 
+#      - device_tracker.wifi_anneke_s7
+      - device_tracker.wifi_anneke_iphone_se
+#      - device_tracker.anneke_s7 
+      - device_tracker.anneke_ipone_se
   presence_kimberly:
     name: Aanwezigheid Kimberly
     entities:

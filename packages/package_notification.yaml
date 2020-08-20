@@ -19,7 +19,13 @@ telegram_bot:
 notify:
   - name: prowl_ralph
     platform: prowl
-    api_key: !secret prowl_api_key
+    api_key: !secret prowl_api_ralph
+  - name: prowl_kim
+    platform: prowl
+    api_key: !secret prowl_api_kim
+  - name: prowl_anneke
+    platform: prowl
+    api_key: !secret prowl_api_anneke
   - name: pushsafer
     platform: pushsafer
     private_key: !secret pushsafer_api_key
@@ -115,9 +121,9 @@ script:
             {% if who == 'ralph' %}
               notify.prowl_ralph
             {% elif who == 'anneke' %}
-              notify.prowl_ralph
+              notify.prowl_anneke
             {% elif who == 'kimbery' %}
-              notify.prowl_ralph
+              notify.prowl_kim
             {% else %}
               notify.prowl_ralph
             {% endif %}

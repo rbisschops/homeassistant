@@ -25,7 +25,7 @@ weather:
 sensor:
   ## Buienradar
   - platform: buienradar
-    timeframe: 10
+    timeframe: 5
     monitored_conditions:
       - stationname
       - conditioncode

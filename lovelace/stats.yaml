@@ -189,22 +189,86 @@ cards:
               - icon: tumble-dryer
           - type: custom:button-card
             color_type: blank-card
-  ## Added V0.7.0
   - type: vertical-stack
     cards:
       - type: custom:decluttering-card
         template: custom_markdown_card
         variables:
           - title: Server status
+      # - type: custom:decluttering-card
+      #   template: custom_markdown_card_small
+      #   variables:
+      #     - title: Domoticz server
+      # - type: horizontal-stack
+      #   cards:
+      #     - type: gauge
+      #       entity: sensor.server_domoticz_cpu_temp
+      #       name: Temperatuur
+      #       icon: 'mdi:flash'
+      #       unit: '°C'
+      #       min: 0
+      #       max: 100
+      #       severity:
+      #         green: 0
+      #         yellow: 50
+      #         red: 65
+      #       style: |
+      #         div.gauge-a {
+      #           background-color: #E0E0E0;  
+      #         }
+      #     - type: gauge
+      #       entity: sensor.server_domoticz_cpu_usage
+      #       name: CPU gebruik
+      #       icon: 'mdi:flash'
+      #       unit: '%'
+      #       min: 0
+      #       max: 100
+      #       severity:
+      #         green: 0
+      #         yellow: 90
+      #         red: 95
+      #       style: |
+      #         div.gauge-a {
+      #           background-color: #E0E0E0;  
+      #         }
+      #     - type: gauge
+      #       entity: sensor.server_domoticz_memory_usage
+      #       name: Geheugen
+      #       icon: 'mdi:flash'
+      #       unit: '%'
+      #       min: 0
+      #       max: 100
+      #       severity:
+      #         green: 0
+      #         yellow: 80
+      #         red: 90
+      #       style: |
+      #         div.gauge-a {
+      #           background-color: #E0E0E0;  
+      #         }
+      # - type: entities
+      #   show_state: false
+      #   show_name: false
+      #   show_header_toggle: false
+      #   entities: 
+      #     - entity: sensor.server_domoticz_hdd_boot
+      #       name: HDD boot partitie
+      #       icon: mdi:harddisk
+      #     - entity: sensor.server_domoticz_hdd
+      #       name: HDD data partitie
+      #       icon: mdi:harddisk
+      #     - entity: sensor.server_domoticz_process_usage
+      #       name: Proces geheugen gebruik
+      #       icon: mdi:memory
       - type: custom:decluttering-card
         template: custom_markdown_card_small
         variables:
-          - title: Domoticz server
+          - title: Homeserver
       - type: horizontal-stack
         cards:
           - type: gauge
-            entity: sensor.server_domoticz_cpu_temp
-            name: Temperatuur
+            entity: sensor.server_homeserver_cpu_temp
+            name: CPU Temp
             icon: 'mdi:flash'
             unit: '°C'
             min: 0
@@ -218,7 +282,7 @@ cards:
                 background-color: #E0E0E0;  
               }
           - type: gauge
-            entity: sensor.server_domoticz_cpu_usage
+            entity: sensor.glances_cpu_used
             name: CPU gebruik
             icon: 'mdi:flash'
             unit: '%'
@@ -233,7 +297,7 @@ cards:
                 background-color: #E0E0E0;  
               }
           - type: gauge
-            entity: sensor.server_domoticz_memory_usage
+            entity: sensor.glances_ram_used_percent
             name: Geheugen
             icon: 'mdi:flash'
             unit: '%'
@@ -247,73 +311,8 @@ cards:
               div.gauge-a {
                 background-color: #E0E0E0;  
               }
-      - type: entities
-        show_state: false
-        show_name: false
-        show_header_toggle: false
-        entities: 
-          - entity: sensor.server_domoticz_hdd_boot
-            name: HDD boot partitie
-            icon: mdi:harddisk
-          - entity: sensor.server_domoticz_hdd
-            name: HDD data partitie
-            icon: mdi:harddisk
-          - entity: sensor.server_domoticz_process_usage
-            name: Proces geheugen gebruik
-            icon: mdi:memory
-      - type: custom:decluttering-card
-        template: custom_markdown_card_small
-        variables:
-          - title: Homeserver
-      - type: horizontal-stack
-        cards:
-          # - type: gauge
-          #   entity: sensor.server_homeserver_cpu_temp
-          #   name: Temperatuur
-          #   icon: 'mdi:flash'
-          #   unit: '°C'
-          #   min: 0
-          #   max: 100
-          #   severity:
-          #     green: 0
-          #     yellow: 50
-          #     red: 65
-          #   style: |
-          #     div.gauge-a {
-          #       background-color: #E0E0E0;  
-          #     }
-          - type: gauge
-            entity: sensor.server_homeserver_cpu_usage
-            name: CPU gebruik
-            icon: 'mdi:flash'
-            unit: '%'
-            min: 0
-            max: 100
-            severity:
-              green: 0
-              yellow: 90
-              red: 95
-            style: |
-              div.gauge-a {
-                background-color: #E0E0E0;  
-              }
-          - type: gauge
-            entity: sensor.server_homeserver_memory_usage
-            name: Geheugen
-            icon: 'mdi:flash'
-            unit: '%'
-            min: 0
-            max: 100
-            severity:
-              green: 0
-              yellow: 80
-              red: 90
-            style: |
-              div.gauge-a {
-                background-color: #E0E0E0;  
-              }
-          - type: custom:button-card
-            color_type: blank-card
+          # - type: custom:button-card
+          #   color_type: blank-card
       - type: entities
         show_state: false
         show_name: false
@@ -325,9 +324,83 @@ cards:
           - entity: sensor.server_homeserver_hdd
             name: HDD data partitie
             icon: mdi:harddisk
-          - entity: sensor.server_homeserver_process_usage
+          - entity: sensor.glances_ram_used
             name: Proces geheugen gebruik
             icon: mdi:memory
+  - type: vertical-stack
+    cards:
+      - type: custom:decluttering-card
+        template: custom_markdown_card
+        variables:
+          - title: Printer status
+      - type: custom:decluttering-card
+        template: custom_markdown_card_small
+        variables:
+          - title: Cartridges
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.hp_laserjet_black_cartridge
+            name: Zwart
+            icon: 'mdi:water'
+            unit: '%'
+            min: 0
+            max: 100
+            severity:
+              red: 0
+              yellow: 10
+              green: 30
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+          - type: gauge
+            entity: sensor.hp_laserjet_cyan_cartridge
+            name: Cyaan
+            icon: 'mdi:water'
+            unit: '%'
+            min: 0
+            max: 100
+            severity:
+              red: 0
+              yellow: 10
+              green: 30
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+          - type: gauge
+            entity: sensor.hp_laserjet_magenta_cartridge
+            name: Magenta
+            icon: 'mdi:water'
+            unit: '%'
+            min: 0
+            max: 100
+            severity:
+              red: 0
+              yellow: 10
+              green: 30
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+          - type: gauge
+            entity: sensor.hp_laserjet_yellow_cartridge
+            name: Geel
+            icon: 'mdi:water'
+            unit: '%'
+            min: 0
+            max: 100
+            severity:
+              red: 0
+              yellow: 10
+              green: 30
+            style: |
+              div.gauge-a {
+                background-color: #E0E0E0;  
+              }
+
+
   - type: vertical-stack
     cards:
       - type: custom:decluttering-card

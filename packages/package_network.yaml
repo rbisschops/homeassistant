@@ -163,7 +163,6 @@ sensor:
         entity_id:
           - device_tracker.boschwawh2643nl68a40e251509
         value_template: "{{ 'on' if is_state('device_tracker.boschwawh2643nl68a40e251509', 'home') else 'off' }}"
-      ## Update V1.1.1
       network_denon:
         friendly_name: "Denon-AVR-X3600H"
         entity_id:
@@ -226,7 +225,7 @@ sensor:
 automation:
   ## Sent alert when a critical network device is offline
   - alias: "Network - Notification network alert on"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: state
       entity_id:
@@ -252,7 +251,7 @@ automation:
 
   ## Sent alert when a critical network device is online
   - alias: "Network - Notification Network alert off"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       platform: state
       entity_id:

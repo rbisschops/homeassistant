@@ -37,8 +37,8 @@ binary_sensor:
   ## Used for sending "put the bin out" notifications
   - platform: template
     sensors:
-      garbage_gft:
-        friendly_name: GFT bak
+      garbage_calendar_gft:
+        friendly_name: GFT
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'GFT' %}
@@ -57,8 +57,8 @@ binary_sensor:
   ## Used for sending "put the bin out" notifications
   - platform: template
     sensors:
-      garbage_pmd:
-        friendly_name: PMD bak
+      garbage_calendar_pmd:
+        friendly_name: PMD
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'PMD' %}
@@ -77,8 +77,8 @@ binary_sensor:
   ## Used for sending "put both bins out" notifications
   - platform: template
     sensors:
-      garbage_gft_pmd:
-        friendly_name: 'GFT en PMD bak'
+      garbage_calendar_gft_pmd:
+        friendly_name: 'GFT en PMD'
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'GFT + PMD' %}
@@ -98,7 +98,7 @@ binary_sensor:
       garbage_bin_gft:
         friendly_name: 'GFT bak'
         value_template: >-
-          {% if is_state('binary_sensor.garbage_gft', 'on') or is_state('binary_sensor.garbage_gft_pmd', 'on') %}
+          {% if is_state('binary_sensor.garbage_calendar_gft', 'on') or is_state('binary_sensor.garbage_calendar_gft_pmd', 'on') %}
             {{true}}
           {% else %}
             {{false}}
@@ -114,7 +114,7 @@ binary_sensor:
       garbage_bin_pmd:
         friendly_name: 'PMD bak'
         value_template: >-
-          {% if is_state('binary_sensor.garbage_pmd', 'on') or is_state('binary_sensor.garbage_gft_pmd', 'on') %}
+          {% if is_state('binary_sensor.garbage_calendar_pmd', 'on') or is_state('binary_sensor.garbage_calendar_gft_pmd', 'on') %}
             {{true}}
           {% else %}
             {{false}}
@@ -131,53 +131,83 @@ binary_sensor:
 ##  Automations
 ###############################################################################
 automation:
+
+##-----------------------------------------------------------------------------------------------
+## Automations moved to Node_RED
+##-----------------------------------------------------------------------------------------------
+
+  ## Automation to run when the garbage bins need to go out for collection
+  ## Tiggered by sensors based on Google calendar entries
+  - alias: "Notification garbage bin outside"
+    initial_state: "off"
+    trigger:
+      platform: state
+      entity_id: 
+      - binary_sensor.garbage_calendar_gft
+      - binary_sensor.garbage_calendar_pmd
+      - binary_sensor.garbage_calendar_gft_pmd
+      to: "on"
+    action:
+      - service_template: >
+          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
+            script.notify_telegram_ralph_and_anneke
+          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
+            script.notify_telegram_ralph
+          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
+            script.notify_telegram_anneke
+          {% endif %}
+        data_template:
+          value1: "Vandaag moet de {{ trigger.to_state.attributes.friendly_name }} bak buiten worden gezet"
+          value2: ""
+          value3: ""
+
   ## Automation for runnning the bed time script 
   ## Called by Alexa via HA Bridge
-  # - alias: "Mode bed time triggered"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #     - binary_sensor.habridge_bed_time
-  #     to: "on"
-  #   action:
-  #     - service: script.turn_on
-  #       entity_id: script.mode_bed_time_triggered
+  - alias: "Mode bed time triggered"
+    initial_state: "off"
+    trigger:
+      platform: state
+      entity_id: 
+      - binary_sensor.habridge_bed_time
+      to: "on"
+    action:
+      - service: script.turn_on
+        entity_id: script.mode_bed_time_triggered
 
   ## Automation for running the coming home script
   ## Called when the  front door sensor is triggered
-  # - alias: "Mode coming home triggered"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: 
-  #         - binary_sensor.door_front_door
-  #       to: "on"
-  #   condition:
-  #     condition: and
-  #     conditions:
-  #       - condition: state
-  #         entity_id: input_boolean.light_livingroom
-  #         state: "off"
-  #       - condition: or
-  #         conditions:
-  #           - condition: state
-  #             entity_id: input_select.presence_ralph_bisschops
-  #             state: "Just Arrived"
-  #           - condition: state
-  #             entity_id: input_select.presence_anneke_bisschops
-  #             state: "Just Arrived"
-  #           - condition: state
-  #             entity_id: input_select.presence_kimberly_bisschops
-  #             state: "Just Arrived"
-  #   action:
-  #     - service: script.turn_on
-  #       entity_id: script.mode_coming_home_triggered
+  - alias: "Mode coming home triggered"
+    initial_state: "off"
+    trigger:
+      - platform: state
+        entity_id: 
+          - binary_sensor.door_front_door
+        to: "on"
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.light_livingroom
+          state: "off"
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: input_select.presence_ralph_bisschops
+              state: "Just Arrived"
+            - condition: state
+              entity_id: input_select.presence_anneke_bisschops
+              state: "Just Arrived"
+            - condition: state
+              entity_id: input_select.presence_kimberly_bisschops
+              state: "Just Arrived"
+    action:
+      - service: script.turn_on
+        entity_id: script.mode_coming_home_triggered
 
   ## Automation for running the Ralph is coming home script
   ## Called when the  front door sensor is triggered
   - alias: "Mode Ralph is coming home triggered"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       - platform: state
         entity_id: 
@@ -194,71 +224,46 @@ automation:
   ## Automation for runnning the leaving script
   ## Called by Alexa via HA Bridge
   ## Moved automations to Node-RED for test
-  # - alias: "Mode leaving triggerred"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #     - binary_sensor.habridge_leaving
-  #     to: "on"
-  #   action:
-  #     - service: script.turn_on
-  #       entity_id: script.mode_leaving_triggered
+  - alias: "Mode leaving triggerred"
+    initial_state: "off"
+    trigger:
+      platform: state
+      entity_id: 
+      - binary_sensor.habridge_leaving
+      to: "on"
+    action:
+      - service: script.turn_on
+        entity_id: script.mode_leaving_triggered
 
   ## Automation for runnning the extended away script
   ## Called from binary sensor Extended Away
   ## Note: Potentially replace binary_sensor.presence_everybody_extended_away with a group
-  # - alias: "Mode extended away triggered"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #     - binary_sensor.presence_everybody_extended_away
-  #     to: "on"
-  #   action:
-  #     - service: script.turn_on
-  #       entity_id: script.mode_extended_away_triggered
-
-  ## Automation for running the sunset script
-  ## Triggered based on sunset minus offset 
-  # - alias: "Mode sunset triggered"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: sun
-  #     event: sunset
-  #     offset: "-01:00:00"
-  #   action:
-  #     - service: script.turn_on
-  #       entity_id: script.sun_sunset
-
-  ## Automation to run when the garbage bins need to go out for collection
-  ## Tiggered by sensors based on Google calendar entries
-  - alias: "Notification garbage bin outside"
-    initial_state: "on"
+  - alias: "Mode extended away triggered"
+    initial_state: "off"
     trigger:
       platform: state
       entity_id: 
-      - binary_sensor.garbage_gft
-      - binary_sensor.garbage_pmd
-      - binary_sensor.garbage_gft_pmd
+      - binary_sensor.presence_everybody_extended_away
       to: "on"
     action:
-      - service_template: >
-          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
-            script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "Vandaag moet de {{ trigger.to_state.attributes.friendly_name }} bak buiten worden gezet"
-          value2: ""
-          value3: ""
+      - service: script.turn_on
+        entity_id: script.mode_extended_away_triggered
+
+  ## Automation for running the sunset script
+  ## Triggered based on sunset minus offset 
+  - alias: "Mode sunset triggered"
+    initial_state: "off"
+    trigger:
+      platform: sun
+      event: sunset
+      offset: "-01:00:00"
+    action:
+      - service: script.turn_on
+        entity_id: script.sun_sunset
 
   ## Automations running at 08:00 in the morning fro checking nightly alerts
   - alias: "Alerts - check nightly alerts"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       platform: time
       at: "08:00:00"
@@ -275,6 +280,9 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## Scripts moved to Node_RED
+##-----------------------------------------------------------------------------------------------
   ## Script running when we go to bed, sets the house in sleep mode
   # mode_bed_time_triggered:
   #   alias: Mode bedtime gestart
@@ -345,6 +353,7 @@ script:
       #   data_template:
       #     entity_id: timer.light_hallway
       #     duration: "00:{{ states('input_text.media_hallway_light_long_timer')|int}}:00"
+
   ## Script when someone comes home
   # mode_coming_home_triggered:
   #   alias: Mode thuiskomen gestart

@@ -195,20 +195,6 @@ sensor:
 #  Groups
 ###############################################################################
 
-# group:
-  # ## Door/window sensors
-  # door_window_sensors:
-  #   name: Deur/raam sensoren
-  #   entities:
-  #     - binary_sensor.door_refrigerator
-  # motion_sensors:
-  #   name: Bewegingssensoren
-  #   entities:
-  #     - binary_sensor.motion_office
-  # office_room_motion_sensors:
-  #   name: Bewegingssensoren kantoor
-  #   entities:
-  #     - binary_sensor.motion_office
 
 ###############################################################################
 #  Automations

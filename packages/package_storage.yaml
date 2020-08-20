@@ -14,7 +14,7 @@ homeassistant:
     sensor.vibration_mailbox_all:
       friendly_name: Brievenbus (compleet)
     sensor.vibration_mailbox_battery:
-      friendly_name: 
+      friendly_name: Brievenbus (batterij)
     sensor.vibration_mailbox_linkquality:
       friendly_name: Brievenbus (link quality)
 
@@ -38,6 +38,10 @@ input_boolean:
   light_porch_button:
     name: Buitenlamp
     icon: mdi:lightbulb
+  ## Delayed storage door
+  door_storage_door_delayed:
+    name: Berging deur vetraagd
+    icon: mdi:door
 
 ##-----------------------------------------------------------------------------------------------
 ## Updated and changed entities - input_select
@@ -114,6 +118,7 @@ sensor:
 ###############################################################################
 automation:
   ## Test min and max settings on long porch light timer input 
+  ## Moved automations to Node-RED
   ## Replaced with input_number (slider)
   # - alias: "Light - Validate porch light long timer"
   #   initial_state: "on"
@@ -134,7 +139,8 @@ automation:
   #           {% endif %}
 
   ## Test min and max settings on short porch light timer input 
-    ## Replaced with input_number (slider)
+  ## Moved automations to Node-RED
+  ## Replaced with input_number (slider)
   # - alias: "Light - Validate porch light short timer"
   #   initial_state: "on"
   #   trigger:
@@ -154,7 +160,7 @@ automation:
   #           {% endif %}
 
   ## Switch on porch light when someone arrives home
-  ## Moved automations to Node-RED for test
+  ## Moved automations to Node-RED
   # - alias: "Light porch on at home coming"
   #   initial_state: "on"
   #   trigger:
@@ -182,7 +188,7 @@ automation:
   #         duration: "00:{{ states('input_text.light_porch_long_timer')|int }}:00"
 
   ## Switch off porchlight based on timer
-  ## Moved automations to Node-RED for test
+  ## Moved automations to Node-RED
   # - alias: "Light porch xx minutes after trigger off"
   #   initial_state: "on"
   #   trigger:
@@ -212,26 +218,57 @@ automation:
   #       entity_id: group.light_porch
 
   ## Actions to perform on mailbox motion
-  - alias: "Vibration - Mail received"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id: sensor.vibration_mailbox
-      to: "vibration"
-    action:
-      - service_template: >
-          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
-            script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "Er is post!"
-          value2: " "
-          value3: " "
-          prio: -2
+  ## Moved automations to Node-RED
+  # - alias: "Vibration - Mail received"
+  #   initial_state: "off"
+  #   trigger:
+  #     platform: state
+  #     entity_id: sensor.vibration_mailbox
+  #     to: "vibration"
+  #   action:
+  #     - service_template: >
+  #         {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
+  #           script.notify_telegram_ralph_and_anneke
+  #         {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
+  #           script.notify_telegram_ralph
+  #         {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
+  #           script.notify_telegram_anneke
+  #         {% endif %}
+  #       data_template:
+  #         value1: "Er is post!"
+  #         value2: " "
+  #         value3: " "
+  #         prio: -2
+
+  ## automationss for setting the slave storage door contact
+  # Example remove after update
+  # - alias: "Bergingdeur vetraagd dicht"
+  #   description: "When storage door closes, delayed contact."
+  #   trigger:
+  #     - platform: state
+  #       entity_id:
+  #         - binary_sensor.door_storage_door
+  #   action:
+  #     - choose:
+  #         - conditions:
+  #             - condition: state
+  #               entity_id: binary_sensor.door_storage_door
+  #               state: "on"
+  #           sequence:
+  #             - service: homeassistant.turn_on
+  #               entity_id: input_boolean.door_storage_door_delayed
+  #         - conditions:
+  #             - condition: state
+  #               entity_id: binary_sensor.button2
+  #               state: "off"
+  #           sequence:
+  #             - delay: 
+  #                 seconds: 10
+  #             - service: homeassistant.turn_off
+  #               entity_id: input_boolean.door_storage_door_delayed
+  #       default:
+  #         - service: homeassistant.turn_off
+  #           entity_id: input_boolean.door_storage_door_delayed
 
 ###############################################################################
 ##  Templates

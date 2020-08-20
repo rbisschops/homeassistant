@@ -14,73 +14,128 @@ cards:
       template: custom_markdown_card
       variables:
         - title: Alarm schakelaar
-    - type: entities
+    - type: glance
       show_state: false
-      show_name: false
+      show_name: true
       show_header_toggle: false
       entities:
       - entity: input_boolean.alarm_generic_alarm
         icon: mdi:alarm-light
+  # - type: vertical-stack
+  #   cards:
+  #     - type: custom:decluttering-card
+  #       template: custom_markdown_card
+  #       variables:
+  #         - title: Aanwezigheid
+  #     - type: glance
+  #       show_state: false
+  #       show_name: false
+  #       show_header_toggle: false
+  #       entities:
+  #         - entity: binary_sensor.presence_people_home
+
   - type: vertical-stack
     cards:
       - type: custom:decluttering-card
         template: custom_markdown_card
         variables:
           - title: Aanwezigheid
-      - type: entities
-        show_state: false
-        show_name: false
-        show_header_toggle: false
-        entities:
-          - entity: binary_sensor.presence_people_home
       - type: custom:decluttering-card
         template: custom_markdown_card_small
         variables:
-          - title: WiFi
-      - type: horizontal-stack
-        cards:
-          - type: picture-entity
-            entity: device_tracker.wifi_anneke_s7
-            image: /local/anneke_off.png
-            show_name: false
-            state_image:
-              'home': /local/anneke_on.png
-          - type: picture-entity
-            entity: device_tracker.wifi_kimberly_iphone8
-            image: /local/kimberly_off.png
-            show_name: false
-            state_image:
-              'home': /local/kimberly_on.png
-          - type: picture-entity
-            entity: device_tracker.wifi_ralph_iphone7
-            image: /local/ralph_off.png
-            show_name: false
-            state_image:
-              'home': /local/ralph_on.png
+          - title: Iemand thuis
+      - type: glance
+        show_state: false
+        show_name: true
+        show_header_toggle: false
+        entities:
+          - entity: binary_sensor.presence_people_home
+            icon: mdi:account-multiple
+      - type: custom:decluttering-card
+        template: custom_markdown_card_small
+        variables:
+          - title: Wi-Fi
+      - type: glance
+        show_state: true
+        show_name: true
+        show_header_toggle: false
+        entities:
+          - entity: device_tracker.wifi_anneke_iphone_se
+            icon: mdi:account
+            name: Anneke
+          - entity: device_tracker.wifi_kimberly_iphone8
+            icon: mdi:account
+            name: Kimberly
+          - entity: device_tracker.wifi_ralph_iphone7
+            icon: mdi:account
+            name: Ralph
       - type: custom:decluttering-card
         template: custom_markdown_card_small
         variables:
           - title: Locatie
-      - type: horizontal-stack
-        cards:
-          - type: picture-entity
-            entity: device_tracker.anneke_s7
-            image: /local/anneke_off.png
-            show_name: false
-            state_image:
-              'home': /local/anneke_on.png
-          - type: picture-entity
-            entity: device_tracker.kimberly_iphone8
-            image: /local/kimberly_off.png
-            show_name: false
-            state_image:
-              'home': /local/kimberly_on.png
-          - type: picture-entity
-            entity: device_tracker.ralph_iphone7
-            image: /local/ralph_off.png
-            show_name: false
-            state_image:
-              'home': /local/ralph_on.png
+      - type: glance
+        show_state: true
+        show_name: true
+        show_header_toggle: false
+        entities:
+          - entity: device_tracker.anneke_iphone_se
+            icon: mdi:account
+            name: Anneke
+          - entity: device_tracker.kimberly_iphone8
+            icon: mdi:account
+            name: Kimberly
+          - entity: device_tracker.ralph_iphone7
+            icon: mdi:account
+            name: Ralph
+
+      # - type: custom:decluttering-card
+      #   template: custom_markdown_card_small
+      #   variables:
+      #     - title: WiFi
+      # - type: horizontal-stack
+      #   cards:
+      #     - type: picture-entity
+      #       entity: device_tracker.wifi_anneke_iphone_se
+      #       image: /local/anneke_off.png
+      #       show_name: false
+      #       state_image:
+      #         'home': /local/anneke_on.png
+      #     - type: picture-entity
+      #       entity: device_tracker.wifi_kimberly_iphone8
+      #       image: /local/kimberly_off.png
+      #       show_name: false
+      #       state_image:
+      #         'home': /local/kimberly_on.png
+      #     - type: picture-entity
+      #       entity: device_tracker.wifi_ralph_iphone7
+      #       image: /local/ralph_off.png
+      #       show_name: false
+      #       state_image:
+      #         'home': /local/ralph_on.png
+      # - type: custom:decluttering-card
+      #   template: custom_markdown_card_small
+      #   variables:
+      #     - title: Locatie
+      # - type: horizontal-stack
+      #   cards:
+      #     - type: picture-entity
+      #       entity: device_tracker.anneke_iphone_se
+      #       image: /local/anneke_off.png
+      #       show_name: false
+      #       state_image:
+      #         'home': /local/anneke_on.png
+      #     - type: picture-entity
+      #       entity: device_tracker.kimberly_iphone8
+      #       image: /local/kimberly_off.png
+      #       show_name: false
+      #       state_image:
+      #         'home': /local/kimberly_on.png
+      #     - type: picture-entity
+      #       entity: device_tracker.ralph_iphone7
+      #       image: /local/ralph_off.png
+      #       show_name: false
+      #       state_image:
+      #         'home': /local/ralph_on.png
 
   - type: vertical-stack
     cards:
@@ -91,7 +146,7 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
-        - title: Verlichting woonkamer
+        - title: Verlichting Hue
     - type: entities
       show_state: false
       show_name: false
@@ -114,25 +169,18 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
-        - title: Verlichting keuken
-    - type: entities
-      show_state: false
-      show_name: false
+        - title: Verlichting woonkamer
+    - type: glance
       show_header_toggle: false
+      show_state: false
+      show_name: true
       entities:
-        - entity: input_boolean.light_high_cabinets_button
+        - entity: input_boolean.light_livingroom
+          name: Woonkamer
+        - entity: input_boolean.light_high_cabinets
           name: Hoge kasten
-        - entity: input_boolean.light_bar_button
+        - entity: input_boolean.light_bar
           name: Bar
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Kerst verlichting
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
         - entity: input_boolean.switch_christmas_tree_button
           name: Kerstboom
   - type: vertical-stack
@@ -145,13 +193,13 @@ cards:
       template: custom_markdown_card_small
       variables:
         - title: Verlichting tuin
-    - type: entities
-      show_state: false
-      show_name: false
+    - type: glance
       show_header_toggle: false
+      show_state: false
+      show_name: true
       entities:
-        - entity: input_boolean.light_garden_button
-          naam: Tuin
+        - entity: input_boolean.light_garden
+          name: Tuin
     # - type: custom:decluttering-card
     #   template: custom_markdown_card_small
     #   variables:
@@ -166,18 +214,18 @@ cards:
       template: custom_markdown_card_small
       variables:
         - title: Zonnescherm
-    - type: entities
-      show_state: false
-      show_name: false
+    - type: glance
       show_header_toggle: false
-      entities:
-        - entity: input_boolean.domoticz_blinds_sunscreen
-          name: Zonnescherm
-          icon: "mdi:white-balance-sunny"
-        - entity: input_boolean.blinds_sunscreen_manual 
-          name: Zonnescherm handbediening
-          icon: "mdi:white-balance-sunny"
+      show_state: false
+      show_name: true
 
+      entities:
+        - entity: input_boolean.blinds_sunscreen
+          name: Zonnescherm
+          icon: mdi:blinds
+        - entity: input_boolean.blinds_sunscreen_manual 
+          name: Handbediening
+          icon: mdi:blinds
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -188,15 +236,32 @@ cards:
       template: custom_markdown_card_small
       variables:
         - title: Verlichting
-    - type: entities
-      show_state: false
-      show_name: false
+    - type: glance
       show_header_toggle: false
+      show_state: false
+      show_name: true
       entities:
-        - entity: input_boolean.light_porch_button
+        - entity: input_boolean.light_porch
           name: Buitenlamp
-        - entity: input_boolean.light_hallway_button
+        - entity: input_boolean.light_hallway
           name: Halletje
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Deuren
+    - type: glance
+      show_header_toggle: false
+      show_state: false
+      show_name: true
+      entities:
+        - entity: binary_sensor.door_front_door
+          name: Voordeur
+          icon: mdi:door-closed
+        - entity: binary_sensor.door_storage_door
+          name: Bergingdeur
+          icon: mdi:door-closed
+        - entity: sensor.vibration_mailbox
+          name: Brievenbus
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -207,16 +272,7 @@ cards:
       show_header_toggle: false
       entities:
         - input_select.climate_restroom_heating_mode
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Diversen
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - sensor.vibration_mailbox
+
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -226,33 +282,24 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
-        - title: Harmony Hub
-    - type: entities
-      show_state: false
-      show_name: false
+        - title: Bediening
+    - type: glance
       show_header_toggle: false
+      show_state: false
+      show_name: true
       entities:
         - entity: remote.bisschops
           icon: mdi:remote
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: A/V apparatuur aan/uit
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
         - entity: switch.switch_media_center
           icon: mdi:power
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
         - title: Harmony activiteiten
-    - type: entities
-      show_state: false
-      show_name: false
+    - type: glance
       show_header_toggle: false
+      show_state: false
+      show_name: true
       entities:
         - entity: switch.television
           icon: mdi:checkbox-blank-circle
@@ -285,7 +332,7 @@ cards:
         - entity: input_select.media_harmony_livingroom_old_state
         - entity: input_select.media_humax_new_state
         - entity: input_select.media_humax_old_state
-        - entity: timer.media_media_center_delay
+        # - entity: timer.media_media_center_delay
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card

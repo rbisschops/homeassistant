@@ -1,8 +1,41 @@
 # Changelog
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
+## [1.4.0] 
+### 2020-08-20
+- Migrated humidity notifications to Node-RED.
+- Migrated netwrok alerts to Node-RED.
+- Migrated battery status alerts to Node-RED.
+- All notification are now in Node-RED incl. mechanism to hold notifications when we are away or sleeping.
+### 2020-08-17
+- Updated: Changed buienradar interval to 5 minutes.
+- Updated: Changed names for garbage calendar, conflicts with names for garbage bins in Node-RED.
+- Added: State of cartridges for the HP printer in Lovelace-UI. 
+- Removed: Server states for the Domoticz (master) server from the Lovelace-UI.
+- Updated: Started updates on Hue lamps logic in Node_RED.
+### 2020-08-16
+- Created backups of all Node_RED flows ans node JavaScript (Part 2).
+- Added: New iPhone for family member including notifications and person settings.
+### 2020-08-15
+- Created backups of all Node_RED flows ans node JavaScript (Part 1).
+### 2020-08-13
+- Updated: Some lovelace updates for the home dashboard.
+- Updated: Notifications to allow for priority during silent hours and away from home times 
+### 2020-08-12:
+- Updated: Notification silence during night time (based on bed time scene) to Node-RED was not working well.
+### 2020-08-11:
+- Added: Small node-RED flow for slave storage door input_boolean (10 sec. delayed off)
+- Added: Test automation with new choose function for test in HA for slave storage door input_boolean.
+- Added: Slave input_boolean.door_storage_door_delayed for delayed off (used for mailbox sensor).
+- Added: Added silence during night time (based on bed time scene) to Node-RED.
+### 2020-08-10:
+- Added: Node-RED queue for notifications so notifications are stored when someone is not home.
+### 2020-08-09:
+- Added: Notification in Node-RED, disabled HA notification automations and scripts.
 
 ## [1.3.0] - 2020-07-29
+- Changed: Moved RfxTrx integration from Domoticz to HA including update of all actuators and sensors
+- Added: Glances integration for monitoring server HW 
 - Bugfix: Wrong payload send to livingroom lights state input_select
 - Migrated media center control to Node-RED.
 - Updated: Node-RED flows for lighting.

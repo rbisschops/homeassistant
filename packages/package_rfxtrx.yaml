@@ -13,33 +13,84 @@
 ###############################################################################
 
 ## RFXtrx device
-# rfxtrx:
-#   automatic_add: false
-#   device: /dev/ttyUSB0
-#   devices:
-#     ## Christmas tree (CoCo)
-#     0B1100XXX088794F07010F60:
-#       signal_repetitions: 3
-#     ## Porch light
-#     0B1100XXX088794F01010F60:
-#       signal_repetitions: 3
-#     ## Hallway lights
-#     0B1100XXX088794F02010F60:
-#       signal_repetitions: 3
-#     ## High cabinets
-#     0B1100XXX088794F04010F60:
-#       signal_repetitions: 3
-#     ## Bar lights dimmer
-#     0B1100XXX088794F08010F60:
-#       signal_repetitions: 1
-#     ## Garden lights
-#     0B1100XXX088794F09010F60:
-#       signal_repetitions: 3
-#     ## Water ornament
-#     0B1100XXX088794F0A010F60:
-#       signal_repetitions: 3
-#     ## Sunscreen (cover)
-#     0B1100XXX088794F0B010F60:
+rfxtrx:
+  automatic_add: false
+  device: /dev/ttyUSB0
+  devices:
+    ## Christmas tree (CoCo)
+    0B1100000088794F07010F70:
+      signal_repetitions: 3
+    ## Porch light (CoCo)
+    0B1100000088794F01010F70:
+      signal_repetitions: 3
+    ## Hallway lights (CoCo)
+    0B1100000088794F02010F70:
+      signal_repetitions: 3
+    ## High cabinets (CoCo)
+    0B1100000088794F04010F70:
+      signal_repetitions: 3
+    ## Bar lights dimmer (CoCo)
+    0B1100000088794F08020F70:
+      signal_repetitions: 1
+    ## Garden lights (CoCo)
+    0B1100000088794F09010F70:
+      signal_repetitions: 3
+    ## Water ornament (CoCo)
+    0B1100000088794F0A010F70:
+      signal_repetitions: 3
+    ## Sunscreen (CoCo)
+    0B1100000088794F0B010F70:
+      signal_repetitions: 1
+    ## Test switch (CoCo)
+    0B110000007F4DEF01010F70: 
+      signal_repetitions: 3
+    ## High cabinets inside lights (CoCo)
+    0B1100000088794F03010F70:
+      signal_repetitions: 3
+
+    ## Afstandbediening woonkamer, Kanaal 1
+    0B1100000088880601010F70:
+    ## Afstandbediening woonkamer, Kanaal 2
+    0B1100000088880602010F70:
+    ## Afstandbediening woonkamer, Kanaal 3
+    0B1100000088880603010F70:
+    ## Afstandbediening woonkamer, Kanaal 4
+    0B1100000088880604010F70:
+    ## Afstandbediening woonkamer, Kanaal 5
+    0B1100000088880605010F70:
+    ## Afstandbediening woonkamer, Kanaal 6
+    0B1100000088880606010F70:
+    ## Afstandbediening woonkamer, Kanaal 7
+    0B1100000088880607010F70:
+    ## Afstandbediening woonkamer, Kanaal 8
+    0B1100000088880608010F70:
+    ## Afstandbediening woonkamer, Kanaal 9
+    0B1100000088880609010F70:
+    ## Afstandbediening woonkamer, Kanaal 10
+    0B110000008888060A010F70:
+    ## Afstandbediening woonkamer, Kanaal 11
+    0B110000008888060B010F70:
+    ## Afstandbediening woonkamer, Kanaal 12
+    0B110000008888060C010F70:
+    ## Afstandbediening woonkamer, Kanaal 13
+    0B110000008888060D010F70:
+    ## Afstandbediening woonkamer, Kanaal 14
+    0B110000008888060E010F70:
+    ## Afstandbediening woonkamer, Kanaal 15
+    0B110000008888060F010F70:
+    ## Afstandbediening woonkamer, Kanaal 16
+    0B1100000088880610010F70:
+
+    ## Deurcontact hoge kasten, kast 1
+    0B110001004B934609010F70:
+      device_class: door
+    0B110001004B93460A010F70:
+      device_class: door
+    ## Deurcontact hoge kasten, kast 2
+    0B110000007046F209010F70:
+      device_class: door
+    0B110000007046F20A010F70:
+      device_class: door
 
 ###############################################################################
 ##  Groups

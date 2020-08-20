@@ -7,7 +7,7 @@
 ##  Homeassistant settings
 ###############################################################################
 homeassistant:
-  customize:
+  # customize:
     ## Timers
     # timer.light_hallway:
     #   friendly_name: Halletje

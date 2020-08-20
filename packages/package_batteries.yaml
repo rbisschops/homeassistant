@@ -165,7 +165,7 @@ sensor:
 automation:
   ## automation to run when a environmental sensors battery is running low
   - alias: "Notification battery level low"
-    initial_state: "on" 
+    initial_state: "off" 
     trigger:
       platform: numeric_state
       entity_id:

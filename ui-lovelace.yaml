@@ -173,13 +173,13 @@ button_card_templates:
       icon:
         - color: rgb(84, 84, 84)
       name:
-        - font-size: 1.2em
+        - font-size: 0.9em
         - font-weight: normal
   ## Style for RAG indicators
   stats_rag_icon:
     styles:
       card:
-        - height: 60px
+        - height: 70px
         - padding: 2%
       name:
         - font-size: 0.9em
@@ -192,7 +192,7 @@ button_card_templates:
         - height: 75px
         - padding: 2%
       name:
-        - font-size: 1.2em
+        - font-size: 0.9em
         - font-weight: normal
         - text-align: left
 
@@ -568,8 +568,58 @@ decluttering_templates:
             icon:
               - color: rgb(56, 150, 56)
 
-  ## RAG (Red-Amber-Green) buttons with RH value
+  ## RAG (Red-Amber-Green) buttons with RH value and temperature value
   stats_rag_icon_humidity:
+    card:
+      type: custom:button-card
+      entity: 'sensor.environment_[[sensor]]_humidity'
+      icon: >
+        [[[
+          if (parseFloat(entity.state) < 40) return 'mdi:alpha-l-circle';
+          if (parseFloat(entity.state) < 45 && parseFloat(entity.state) >= 40) return 'mdi:alpha-l-circle';
+          if (parseFloat(entity.state) >= 45 && parseFloat(entity.state) <= 55) return 'mdi:alpha-n-circle';
+          if (parseFloat(entity.state) > 55 && parseFloat(entity.state) <= 60) return 'mdi:alpha-h-circle';
+          if (parseFloat(entity.state) > 60) return 'mdi:alpha-h-circle';
+          else return 'mdi:alert-circle';
+        ]]]
+      template: stats_rag_icon
+      name: '[[name]]'
+      tap_action:
+        action: more-info
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+             [[[
+              if (parseFloat(entity.state) < 40) return 'rgb(216, 0, 0)';
+              if (parseFloat(entity.state) < 45 && parseFloat(entity.state) >= 40) return 'rgb(244, 180, 0)';
+              if (parseFloat(entity.state) >= 45 && parseFloat(entity.state) <= 55) return 'rgb(56, 150, 56)';
+              if (parseFloat(entity.state) > 55 && parseFloat(entity.state) <= 60) return 'rgb(244, 180, 0)';
+              if (parseFloat(entity.state) > 60) return 'rgb(216, 0, 0)';
+              else return 'rgb(224, 224, 224)';
+             ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+      custom_fields:
+        temp: >
+          [[[
+            if (entity.state == "unknown") return '<ha-icon icon="mdi:water-percent" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">--</span>';
+            else return `<ha-icon icon="mdi:water-percent" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">${entity.state}%</span></br><ha-icon icon="mdi:home-thermometer" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">${states["sensor.environment_[[sensor]]_temperature"].state}&#8451;</span>`;
+          ]]]
+
+
+
+  ## RAG (Red-Amber-Green) buttons with RH value only
+  stats_rag_icon_humidity_only:
     card:
       type: custom:button-card
       entity: 'sensor.environment_[[sensor]]_humidity'
@@ -617,6 +667,42 @@ decluttering_templates:
           ]]]
 
   ## Interactive light buttons with status indicator
+
+  stats_blinds_button_large:
+    card:
+      type: custom:button-card
+      entity: 'input_boolean.[[entity]]_button'
+      icon: 'mdi:[[icon]]'
+      template:  stats_button
+      name: '[[name]]'
+      tap_action:
+        action: toggle
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+              [[[
+                if (states["input_boolean.[[entity]]"].state == "on") return 'rgb(244, 180, 0)';
+                else return 'rgb(84, 84, 84)';
+              ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+            - align-items: end
+      custom_fields:
+        temp: >
+          [[[
+            return `<span style="font-size: 0.9em;">${states["input_select.[[entity]]"].state}</span></br><span style="font-size: 0.9em;">${states["input_select.[[entity]]_reason"].state}</span>`
+          ]]]
+
   stats_light_button_large:
     card:
       type: custom:button-card
@@ -717,6 +803,7 @@ decluttering_templates:
           [[[
             return `<span style="font-size: 0.9em;">${states["input_select.[[entity]]"].state}</span></br><span style="font-size: 0.9em;">${states["input_select.[[entity]]_scene"].state}</span>`
           ]]]
+
   stats_climate_button_large:
     card:
       type: custom:button-card

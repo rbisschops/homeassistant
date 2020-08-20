@@ -59,78 +59,6 @@ cards:
           entities:
           - entity: binary_sensor.garbage_bin_gft
           - entity: binary_sensor.garbage_bin_pmd
-    # - type: custom:decluttering-card
-    #   template: custom_markdown_card_small
-    #   variables:
-    #     - title: Beneden verdieping
-    # - type: horizontal-stack
-    #   cards:
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: livingroom
-    #         - name: Woonkamer
-    #         - icon: water-percent
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: toilet
-    #         - name: Toilet
-    #         - icon: water-percent
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: storage
-    #         - name: Berging
-    #         - icon: water-percent
-    # - type: custom:decluttering-card
-    #   template: custom_markdown_card_small
-    #   variables:
-    #     - title: Eerste verdieping
-    # - type: horizontal-stack
-    #   cards:
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: bedroom
-    #         - name: Slaapkamer
-    #         - icon: water-percent
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: bathroom
-    #         - name: Badkamer
-    #         - icon: water-percent
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: office
-    #         - name: Kantoor
-    #         - icon: water-percent
-    # - type: custom:decluttering-card
-    #   template: custom_markdown_card_small
-    #   variables:
-    #     - title: Tweede verdieping
-    # - type: horizontal-stack
-    #   cards:
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: kim
-    #         - name: Kamer Kim
-    #         - icon: water-percent
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: hallway_floor2
-    #         - name: Overloop
-    #         - icon: water-percent
-    #     - type: custom:decluttering-card
-    #       template: stats_rag_icon_humidity
-    #       variables:
-    #         - sensor: heating_room
-    #         - name: Ketelkast
-    #         - icon: alert-circle
 
   ## Control cards
   - type: vertical-stack
@@ -142,7 +70,7 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
-        - title: Verlichting
+        - title: Woonkamer
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
@@ -183,6 +111,26 @@ cards:
             - entity: light_porch
             - name: Buitenlamp
             - icon: lightbulb
+    - type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
+          template: stats_blinds_button_large
+          variables: 
+            - entity: blinds_sunscreen
+            - name: Zonnescherm
+            - icon: blinds
+        - type: custom:decluttering-card
+          template: stats_media_button_large
+          variables: 
+            - entity: switch_media_center 
+            - name: Media center
+            - icon: television
+        - type: custom:decluttering-card
+          template: stats_climate_button_large
+          variables: 
+            - entity: climate_restroom_heating_mode
+            - name: Toilet
+            - icon: radiator
     - type: entities
       show_state: false
       show_name: false
@@ -232,28 +180,6 @@ cards:
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
-          template: sunscreen_in_button_large
-          variables: 
-            - entity: input_boolean.domoticz_blinds_sunscreen
-            - service: script.blinds_open_sunscreen
-            - name: Open
-            - icon: arrow-up-bold-circle
-        - type: custom:decluttering-card
-          template: sunscreen_pause_button_large
-          variables: 
-            - entity: input_boolean.blinds_sunscreen_pause 
-            - name: Pauze 
-            - icon: pause-circle
-        - type: custom:decluttering-card
-          template: sunscreen_out_button_large
-          variables: 
-            - entity: input_boolean.domoticz_blinds_sunscreen
-            - service: script.blinds_close_sunscreen
-            - name: Dicht
-            - icon: arrow-down-bold-circle
-    - type: horizontal-stack
-      cards:
-        - type: custom:decluttering-card
           template: sunscreen_manual_button_large
           variables: 
             - entity: input_boolean.blinds_sunscreen_manual 
@@ -264,54 +190,13 @@ cards:
         - type: custom:button-card
           color_type: blank-card
 
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Diversen
-    - type: horizontal-stack
-      cards:
-        # - type: custom:decluttering-card
-        #   template: light_button_large
-        #   variables: 
-        #     - entity: switch.switch_media 
-        #     - name: Media center 
-        #     - icon: television
-        # - type: custom:decluttering-card
-        #   template: stats_media_button_large
-        #   variables: 
-        #     - entity: switch_media 
-        #     - name: Media center 
-        #     - icon: television
-        - type: custom:decluttering-card
-          template: stats_media_button_large
-          variables: 
-            - entity: switch_media_center 
-            - name: Media center
-            - icon: television
-        - type: custom:decluttering-card
-          template: stats_climate_button_large
-          variables: 
-            - entity: climate_restroom_heating_mode
-            - name: Toilet
-            - icon: radiator
-        - type: custom:button-card
-          color_type: blank-card
-        # - type: custom:button-card
-        #   color_type: blank-card
-        # - type: custom:decluttering-card
-        #   template: stats_light_button_hue
-        #   variables: 
-        #     - entity: light_livingroom
-        #     - name: Woonkamer
-        #     - icon: lightbulb
-
   ## Humidity cards
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
-        - title: Luchtvochtigheid
+        - title: Condities
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -384,7 +269,6 @@ cards:
             - sensor: heating_room
             - name: Ketelkast
             - icon: alert-circle
-
 
   ## Weather card
   - type: vertical-stack

@@ -36,6 +36,9 @@ input_boolean:
   switch_water_ornament:
     name: Waterbollen
     icon: mdi:fountain
+  blinds_sunscreen:
+    name: Zonnescherm
+    icon: mdi:blinds 
 
   ## Manual mode switches for things
   light_garden_button:
@@ -44,7 +47,9 @@ input_boolean:
   switch_water_ornament_button:
     name: Waterbollen
     icon: mdi:fountain
-
+  blinds_sunscreen_button:
+    name: Zonnescherm
+    icon: mdi:blinds 
 ##-----------------------------------------------------------------------------------------------
 ## Updated and changed entities - input_select
 ##-----------------------------------------------------------------------------------------------
@@ -64,6 +69,24 @@ input_select:
       - "off"
       - "auto"
       - "hand"
+  blinds_sunscreen:
+    options:
+      - "on"
+      - "off"
+      - "auto"
+      - "hand"
+
+  ## Selector for the reason for the blinds state.
+  blinds_sunscreen_reason:
+    name: Nieuwe hue scene
+    icon: mdi:lightbulb
+    options:
+      - Regen
+      - Bewolkt
+      - Stand zon
+      - Overbrugt
+      - Tijd
+      - "-"
 
 ###############################################################################
 ##  Groups
@@ -90,10 +113,12 @@ group:
 ##  Automations
 ###############################################################################
 automation:
+##-----------------------------------------------------------------------------------------------
+## Automations moved to Node_RED
+##-----------------------------------------------------------------------------------------------
   ## Switch garden lights on and off
-  ## Moved automations to Node-RED for test
   # - alias: "Light garden toggle"
-  #   initial_state: "on"
+  #   initial_state: "off"
   #   trigger:
   #     platform: state
   #     entity_id: 
@@ -120,10 +145,10 @@ automation:
       # - service_template: >-
       #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
       #   entity_id: group.light_garden
+
   ## Switch fountain lights on and off
-  ## Moved automations to Node-RED for test
   # - alias: "Switch water ornament toggle"
-  #   initial_state: "on"
+  #   initial_state: "off"
   #   trigger:
   #     platform: state
   #     entity_id: 
@@ -146,9 +171,8 @@ automation:
   #       entity_id: group.switch_water_ornament
 
   ## Switch on gardenlights at sunset but only if someone is home
-  ## Moved automations to Node-RED for test
   # - alias: "Light garden on at sunset"
-  #   initial_state: 'on'
+  #   initial_state: 'off'
   #   trigger:
   #     - platform: sun
   #       event: sunset
@@ -173,9 +197,8 @@ automation:
   #       entity_id: input_boolean.light_garden
 
   ## Switch on gardenlights before sunrise but only if someone is home
-  ## Moved automations to Node-RED for test
   # - alias: "Light garden on before sunrise"
-  #   initial_state: "on"
+  #   initial_state: "off
   #   trigger:
   #     - platform: time
   #       at: "06:30:00"
@@ -200,9 +223,8 @@ automation:
   #       entity_id: input_boolean.light_garden
 
   ## Switch off gardenlights at sunrise but only if someone is home
-  ## Moved automations to Node-RED for test
   # - alias: "Light garden off at sunrise"
-  #   initial_state: "on"
+  #   initial_state: "off"
   #   trigger:
   #     - platform: sun
   #       event: sunrise
@@ -217,7 +239,6 @@ automation:
   #       entity_id: input_boolean.light_garden
 
   ## Switch gardenlights at home coming but only when dark and before 23:00
-  ## Moved automations to Node-RED for test
   # - alias: "Light garden on at home coming"
   #   initial_state: "on"
   #   trigger:
@@ -251,20 +272,19 @@ automation:
 
   ## Start and stop sunscreen based on toggle pause/start from frontend 
   - alias: "Blinds - Pause sunscreen"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       - platform: state
         entity_id: 
           - input_boolean.blinds_sunscreen_pause
     action:
-      - service: script.domoticz_domoticz_output_sun_screen
-        data_template:
-          new_state: "{{ states('input_boolean.domoticz_blinds_sunscreen') }}"
-          # new_state: '{{ states.input_boolean.domoticz_blinds_sunscreen.state }}'
+      - service_template: >-
+          {{ 'homeassistant.turn_on' if is_state("switch.rfx_sunscreen", "on") else 'homeassistant.turn_off' }}
+        entity_id: switch.rfx_sunscreen
 
   ## Open sunscreen based on position of the sun (elevation)
   - alias: "Blinds - Sunscreen out based on elevation" 
-    initial_state: "on"
+    initial_state: "off"
     trigger:
       - platform: numeric_state
         entity_id: sun.sun
@@ -276,17 +296,11 @@ automation:
         - condition: state
           entity_id: input_boolean.blinds_sunscreen_manual
           state: "off"
-        #################################################################  
-        # The next condition is commented and replaced with a new version
-        # - condition: template
-        #   value_template: '{{ states.sensor.br_precipitation_forecast_total.state |float == 0.0 }}'
-        # The next condition requires testing before the automation is used again
-        #################################################################
         - condition: template
           value_template: >
             {{ 'true' if states('sensor.br_precipitation_forecast_total')|float == 0.0 else 'false' }}
         - condition: state
-          entity_id: input_boolean.domoticz_blinds_sunscreen
+          entity_id: switch.rfx_sunscreen
           state: "off"
     action:
       - service: script.blinds_open_sunscreen
@@ -300,16 +314,8 @@ automation:
 
   ## Open sunscreen when percipitation returns to 0.0
   - alias: "Blinds - Sunscreen out based on rain precipation"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
-      #################################################################  
-      # The next trigger is commented and replaced with a new version
-      # - platform: numeric_state
-      #   entity_id: sensor.rotterdam_precipitation_forecast_total
-      #   value_template: "{{ states.sensor.br_precipitation_forecast_total.state |float }}"
-      #   below: 0.01
-      # The next condition requires testing before the automation is used again
-      #################################################################
       - platform: numeric_state
         entity_id: sensor.br_precipitation_forecast_total
         value_template: "{{ (states('sensor.br_precipitation_forecast_total')|float) }}"
@@ -320,14 +326,6 @@ automation:
         - condition: state
           entity_id: input_boolean.blinds_sunscreen_manual
           state: "off"
-        #################################################################  
-        # The next condition is commented and replaced with a new version
-        # - condition: template
-        #   value_template: '{{ states.sun.sun.attributes.elevation | float >= 16.0 }}'
-        # - condition: template
-        #   value_template: '{{ states.sun.sun.attributes.azimuth |int <= 200 }}'
-        # The next condition requires testing before the automation is used again
-        #################################################################
         - condition: template
           value_template: >
             {{ 'true' if state_attr('sun.sun','elevation')|float >= 16.0 else 'false' }}
@@ -335,7 +333,7 @@ automation:
           value_template: >
             {{ 'true' if state_attr('sun.sun','azimuth')|int >= 200 else 'false' }}
         - condition: state
-          entity_id: input_boolean.domoticz_blinds_sunscreen
+          entity_id: switch.rfx_sunscreen
           state: 'off'
     action: 
       - service: script.blinds_open_sunscreen
@@ -350,16 +348,8 @@ automation:
   ## Close sunscreen when rain is expected (percipitation > 0.0 or when its 19:30 or when azimuth is over 200.0
   ## Azimuth is trigger commented for now
   - alias: "Blinds - Sunscreen in"
-    initial_state: "on"
+    initial_state: "off"
     trigger:
-      #################################################################  
-      # The next trigger is commented and replaced with a new version
-      # - platform: numeric_state
-      #   entity_id: sensor.rotterdam_precipitation_forecast_total
-      #   value_template: "{{ state.state |float }}"
-      #   above: 0.0
-      # The next condition requires testing before the automation is used again
-      #################################################################
       - platform: numeric_state
         entity_id: sensor.br_precipitation_forecast_total
         value_template: "{{ (states('sensor.br_precipitation_forecast_total')|float) }}"
@@ -374,7 +364,7 @@ automation:
       condition: and
       conditions:
         - condition: state
-          entity_id: input_boolean.domoticz_blinds_sunscreen
+          entity_id: switch.rfx_sunscreen
           state: "on"
         - condition: state
           entity_id: input_boolean.blinds_sunscreen_manual
@@ -398,20 +388,33 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## Scripts moved to Node_RED
+##-----------------------------------------------------------------------------------------------
+
   blinds_open_sunscreen:
     alias: "Zonnescherm uit"
     sequence:
       - service: homeassistant.turn_on
-        entity_id: input_boolean.domoticz_blinds_sunscreen
+        # entity_id: input_boolean.domoticz_blinds_sunscreen
+        entity_id: switch.rfx_sunscreen
       - service: homeassistant.turn_on
         entity_id: input_boolean.blinds_sunscreen_test
   blinds_close_sunscreen:
     alias: "Zonnescherm in"
     sequence:
       - service: homeassistant.turn_off
-        entity_id: input_boolean.domoticz_blinds_sunscreen
+        # entity_id: input_boolean.domoticz_blinds_sunscreen
+        entity_id: switch.rfx_sunscreen
       - service: homeassistant.turn_off
         entity_id: input_boolean.blinds_sunscreen_test
+
+  # pause_sun_screen:
+  #   alias: Puazeer zonnescherm
+  #   sequence:
+  #   - service_template: >-
+  #       {{ 'homeassistant.turn_on' if is_state("switch.rfx_sunscreen", "on") else 'homeassistant.turn_off' }}
+  #     entity_id: switch.rfx_sunscreen
 
   # pause_sunscreen:
   #   alias: "Pauzeer zonnescherm op huidige positie"

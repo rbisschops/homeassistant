@@ -48,22 +48,22 @@ cards:
     #     - entity: timer.light_hallway
     #     - entity: timer.light_porch
 
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card
-      template: custom_markdown_card
-      variables:
-        - title: Tuin
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Virtuele schakelaars tuin
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - entity: input_boolean.blinds_sunscreen_test
+  # - type: vertical-stack
+  #   cards:
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card
+  #     variables:
+  #       - title: Tuin
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card_small
+  #     variables:
+  #       - title: Virtuele schakelaars tuin
+  #   - type: entities
+  #     show_state: false
+  #     show_name: false
+  #     show_header_toggle: false
+  #     entities:
+  #       - entity: input_boolean.blinds_sunscreen_test
 
   - type: vertical-stack
     cards:
@@ -276,5 +276,33 @@ cards:
   #         color_type: blank-card
   #       - type: custom:button-card
   #         color_type: blank-card
+
+# ## Control cards
+#   - type: vertical-stack
+#     cards:
+#     - type: custom:decluttering-card
+#       template: custom_markdown_card
+#       variables:
+#         - title: Bedienen
+#     - type: custom:decluttering-card
+#       template: custom_markdown_card_small
+#       variables:
+#         - title: Verlichting
+#     - type: horizontal-stack
+#       cards:
+#         - type: custom:decluttering-card
+#           template: stats_blinds_button_large
+#           variables: 
+#             - entity: blinds_sunscreen
+#             - name: Zonnescherm
+#             - icon: blinds
+#         - type: custom:decluttering-card
+#           template: stats_rag_icon_humidity
+#           variables:
+#             - sensor: livingroom
+#             - name: Woonkamer
+#             - icon: water-percent
+#         - type: custom:button-card
+#           color_type: blank-card
 
 ##########################################################################################
