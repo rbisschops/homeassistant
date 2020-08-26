@@ -6,8 +6,10 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-
 homeassistant:
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
   customize:
     ## Server sensors
     sensor.server_domoticz_cpu_temp:
@@ -26,10 +28,14 @@ homeassistant:
       friendly_name: Homerserver HDD
     sensor.server_homeserver_hdd_boot:
       friendly_name: Homerserver HDD boot
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
 
 ##-----------------------------------------------------------------------------------------------
-## No longer in use, moved to integration Glances on HA
+## Customizations - Obsolete
 ##-----------------------------------------------------------------------------------------------
+    ## Moved to integration Glances on HA
     sensor.server_homeserver_cpu_temp:
       friendly_name: Homerserver CPU temperatuur
     sensor.server_homeserver_cpu_usage:
@@ -43,7 +49,40 @@ homeassistant:
 ##  Entities
 ###############################################################################
 sensor:
-  ## Domoitcz server hardware monitoring
+##-----------------------------------------------------------------------------------------------
+## sensors - Active
+##-----------------------------------------------------------------------------------------------
+  ## Homeserver server hardware monitoring
+  - platform: "mqtt"
+    name: server_homeserver_hdd_boot
+    state_topic: "home/server/homeserver/hdd_boot"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/hdd_boot"
+    unit_of_measurement: "%"
+  - platform: "mqtt"
+    name: server_homeserver_hdd
+    state_topic: "home/server/homeserver/hdd"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/hdd"
+    unit_of_measurement: "%"
+##-----------------------------------------------------------------------------------------------
+## sensors - Check
+##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      server_homeserver_cpu_temp:
+        value_template: >-
+          {% set cpu_temp = states.sensor.glances_core_0_temp.state|int + 
+            states.sensor.glances_core_1_temp.state|int +
+            states.sensor.glances_core_2_temp.state|int +
+            states.sensor.glances_core_3_temp.state|int %}
+          {% set cpu_temp = cpu_temp/4|int %}
+          {{ cpu_temp }}
+        unit_of_measurement: "°C"
+##-----------------------------------------------------------------------------------------------
+## sensors - Obsolete
+##-----------------------------------------------------------------------------------------------
+  ## Domoticz server hardware monitoring
   - platform: "mqtt"
     name: server_domoticz_memory_usage
     state_topic: "home/server/domoticz/mem_usage"
@@ -81,49 +120,12 @@ sensor:
     value_template: "{{ value_json.usage|float }}"
     json_attributes_topic: "home/server/domoticz/process_usage"
     unit_of_measurement: "MB"
-
-  ## Homeserver server hardware monitoring
-  - platform: "mqtt"
-    name: server_homeserver_hdd_boot
-    state_topic: "home/server/homeserver/hdd_boot"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/homeserver/hdd_boot"
-    unit_of_measurement: "%"
-  - platform: "mqtt"
-    name: server_homeserver_hdd
-    state_topic: "home/server/homeserver/hdd"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/homeserver/hdd"
-    unit_of_measurement: "%"
-
-  - platform: template
-    sensors:
-      server_homeserver_cpu_temp:
-        value_template: >-
-          {% set cpu_temp = states.sensor.glances_core_0_temp.state|int + 
-            states.sensor.glances_core_1_temp.state|int +
-            states.sensor.glances_core_2_temp.state|int +
-            states.sensor.glances_core_3_temp.state|int %}
-          {% set cpu_temp = cpu_temp/4|int %}
-          {{ cpu_temp }}
-        unit_of_measurement: "°C"
-##-----------------------------------------------------------------------------------------------
-## No longer in use, moved to integration Glances on HA
-##-----------------------------------------------------------------------------------------------
   - platform: "mqtt"
     name: server_homeserver_memory_usage
     state_topic: "home/server/homeserver/mem_usage"
     value_template: "{{ value_json.usage|float }}"
     json_attributes_topic: "home/server/homeserver/mem_usage"
     unit_of_measurement: "%"
-  ## Temp sensor not available on Homeserver 2 for now
-  # - platform: "mqtt"
-  #   name: server_homeserver_cpu_temp
-  #   state_topic: "home/server/homeserver/cpu_temp"
-  #   value_template: "{{ value_json.usage|float }}"
-  #   json_attributes_topic: "home/server/homeserver/cpu_temp"
-  #   unit_of_measurement: "°C"
-  #   device_class: "temperature"
   - platform: "mqtt"
     name: server_homeserver_cpu_usage
     state_topic: "home/server/homeserver/cpu_usage"
@@ -141,21 +143,17 @@ sensor:
 ##  Groups
 ###############################################################################
 
-
 ###############################################################################
 ##  Automations
 ###############################################################################
-
 
 ###############################################################################
 ##  Templates
 ###############################################################################
 
-
 ###############################################################################
 ##  Scripts
 ###############################################################################
-
 
 ###############################################################################
 ##  Timers

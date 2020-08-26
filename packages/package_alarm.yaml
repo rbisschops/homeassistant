@@ -7,27 +7,107 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-
 homeassistant:
   customize:
-    ## Binary sensors
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
+    ## Refridgerator door sensors
     binary_sensor.door_refrigerator:
       friendly_name: Koelkast deur
-    # binary_sensor.freezer_door:
-    #   friendly name: Vriezer deur  
-    binary_sensor.motion_office:
-      friendly_name: Bewegingssensor kantoor
-    ## Link quality sensors
     sensor.door_refrigerator_linkquality:
       friendly_name: Koelkastdeur (link quality)
+    ## Office motion sensors
+    binary_sensor.motion_office:
+      friendly_name: Bewegingssensor kantoor
     sensor.motion_office_linkquality:
       friendly_name: Bewegingssensor kantoor (link quality)
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Future use
+##-----------------------------------------------------------------------------------------------
+    # binary_sensor.door_freezer:
+    #   friendly name: Vriezer deur
+    # sensor.door_freezer_linkquality:
+    #   friendly_name: Vriezer deur (link quality)
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Entities
 ###############################################################################
+binary_sensor:
+##-----------------------------------------------------------------------------------------------
+## binary_sensor - Active
+##-----------------------------------------------------------------------------------------------
+  ## Refridgerator door (Xiaomi)
+  - platform: mqtt
+    name: door_refrigerator
+    state_topic: "zigbee2mqtt/aqara_refrigerator_door"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_on: false
+    payload_off: true
+    value_template: "{{ value_json.contact }}"
+    device_class: "door"
+  ## Office motion sensor (Xiaomi)
+  - platform: mqtt
+    name: motion_office
+    state_topic: "zigbee2mqtt/mijia_office_motion"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_on: true
+    payload_off: false
+    value_template: "{{ value_json.occupancy }}"
+    device_class: "motion"
+  ## Binary sensor based on the state of input_boolean.alarm_generic_alarm. Used for lovelace tab Home 
+  - platform: template
+    sensors:
+      alarm_generic_alarm:
+        friendly_name: Algemeen alarm
+        value_template: >-
+          {{ is_state('input_boolean.alarm_generic_alarm', 'on') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/alarm48_' ~ states('input_boolean.alarm_generic_alarm') ~ '.png'}}
+  ## Any door open sensor (monitors all outside doors)
+  - platform: template
+    sensors:
+      door_all_doors:
+        friendly_name: Alle deuren
+        value_template: >-
+          {{ is_state('binary_sensor.door_front_door', 'on')
+            or is_state('binary_sensor.door_storage_door', 'on')
+            or is_state('input_boolean.dummy_garden_door', 'on') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/door48_' ~ states('binary_sensor.door_all_doors') ~ '.png'}}
+  ## Any window open sensor
+  - platform: template
+    sensors:
+      door_all_windows:
+        friendly_name: Alle ramen
+        value_template: >-
+          {{ is_state('input_boolean.dummy_groundfloor_front_window', 'on')
+            or is_state('input_boolean.dummy_office_window', 'on')
+            or is_state('input_boolean.dummy_side_room_window', 'on')
+            or is_state('input_boolean.bedroom_window_l', 'on')
+            or is_state('input_boolean.bedroom_window_r', 'on') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/window48_' ~ states('binary_sensor.door_all_windows') ~ '.png'}}
+##-----------------------------------------------------------------------------------------------
+## binary_sensor - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## binary_sensor - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 input_boolean:
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Active
+##-----------------------------------------------------------------------------------------------
   ## Generic alarm input switch
   alarm_generic_alarm:
     name: Algemeen alarm
@@ -99,63 +179,18 @@ input_boolean:
   dummy_garbage_bin_plastic:
     name: PMD bak (dummy)
     icon: mdi:delete-outline
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Check
+##-----------------------------------------------------------------------------------------------
 
-binary_sensor:
-  ## Door/window sensors (Xiaomi)
-  - platform: mqtt
-    name: door_refrigerator
-    state_topic: "zigbee2mqtt/aqara_refrigerator_door"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    payload_on: false
-    payload_off: true
-    value_template: "{{ value_json.contact }}"
-    device_class: "door"
-
-  ## Motion sensors (Xiaomi)
-  - platform: mqtt
-    name: motion_office
-    state_topic: "zigbee2mqtt/mijia_office_motion"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    payload_on: true
-    payload_off: false
-    value_template: "{{ value_json.occupancy }}"
-    device_class: "motion"
-
-  ## Binary sensor based on the state of input_boolean.alarm_generic_alarm. Used for lovelace tab Home 
-  - platform: template
-    sensors:
-      alarm_generic_alarm:
-        friendly_name: Algemeen alarm
-        value_template: >-
-          {{ is_state('input_boolean.alarm_generic_alarm', 'on') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/alarm48_' ~ states('input_boolean.alarm_generic_alarm') ~ '.png'}}
-  ## Door open sensor (only outside doors are monitored)
-  - platform: template
-    sensors:
-      door_all_doors:
-        friendly_name: Alle deuren
-        value_template: >-
-          {{ is_state('binary_sensor.door_front_door', 'on')
-            or is_state('binary_sensor.door_storage_door', 'on')
-            or is_state('input_boolean.dummy_garden_door', 'on') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/door48_' ~ states('binary_sensor.door_all_doors') ~ '.png'}}
-  ## Window open sensor
-  - platform: template
-    sensors:
-      door_all_windows:
-        friendly_name: Alle ramen
-        value_template: >-
-          {{ is_state('input_boolean.dummy_groundfloor_front_window', 'on')
-            or is_state('input_boolean.dummy_office_window', 'on')
-            or is_state('input_boolean.dummy_side_room_window', 'on')
-            or is_state('input_boolean.bedroom_window_l', 'on')
-            or is_state('input_boolean.bedroom_window_r', 'on') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/window48_' ~ states('binary_sensor.door_all_windows') ~ '.png'}}
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 sensor:
+##-----------------------------------------------------------------------------------------------
+## sensors - Active
+##-----------------------------------------------------------------------------------------------
   ## Refridgerator door link quality status monitoring sensor
   - platform: "mqtt"
     name: door_refrigerator_linkquality
@@ -171,7 +206,9 @@ sensor:
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
-
+##-----------------------------------------------------------------------------------------------
+## sensors - Check
+##-----------------------------------------------------------------------------------------------
   ## Sensor alarm status sensor - last update
   - platform: "mqtt"
     name: alert_sensors_update
@@ -190,17 +227,21 @@ sensor:
     state_topic: "home/alert/water_meter_update"
     value_template: "{{ value_json.device }}"
     json_attributes_topic: "home/alert/water_meter_update"
+##-----------------------------------------------------------------------------------------------
+## sensors - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Groups
 ###############################################################################
 
-
 ###############################################################################
 #  Automations
 ###############################################################################
-
 automation:
+##-----------------------------------------------------------------------------------------------
+## automations - Active
+##-----------------------------------------------------------------------------------------------
   ## Test if refigerator door or freezer door is open for more then xx minutes
   - alias: "Alarm refrigerator door open"
     initial_state: "on"
@@ -242,16 +283,33 @@ automation:
           value3: " om {{ now().hour }}:{{ now().minute }} gereset"
           who: "ralph"
           prio: -2
+##-----------------------------------------------------------------------------------------------
+## automations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## automations - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Templates
 ###############################################################################
 
-
 ###############################################################################
 #  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## scripts - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## scripts - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## scripts - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## script for checking if alerts were generated during night time or absence of people
   ## resets the mqtt topic to passive after processing
   alert_check_active_alerts:

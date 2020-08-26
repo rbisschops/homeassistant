@@ -6,35 +6,32 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-  
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Entities
 ###############################################################################
-input_boolean:
-  ## Holiday mode toggle switch, used for setting when on holiday 
-  ## Several automations depend on this
-  mode_holiday:
-    name: Vakantie mode aan
-    icon: mdi:toggle-switch
-
-  ## Christmas mode toggle switch, used for setting when on ehem the holiday season is there 
-  ## Several automations depend on this
-  mode_christmas:
-    name: Kerst periode mode
-    icon: mdi:toggle-switch
-
 binary_sensor:
+##-----------------------------------------------------------------------------------------------
+## binary_sensors - Active
+##-----------------------------------------------------------------------------------------------
   ## Definition of workdays with the workday sensor
-  ## Used in several automations
   - platform: workday
     country: NL
     workdays: [mon, tue, wed, thu, fri, sat]
     excludes: [sun]
-
-  ## Definition of the GFT (Bio) garbage
+  ## Definition of GFT (Bio) garbage
   ## Depends on google calendar for afval_kalender
-  ## Used for sending "put the bin out" notifications
   - platform: template
     sensors:
       garbage_calendar_gft:
@@ -54,7 +51,6 @@ binary_sensor:
 
   ## Definition of the PMD (Plastic and metal) garbage
   ## Depends on google calendar for afval_kalender
-  ## Used for sending "put the bin out" notifications
   - platform: template
     sensors:
       garbage_calendar_pmd:
@@ -71,10 +67,8 @@ binary_sensor:
           {% endif %}
         entity_picture_template: >-
           {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
-
   ## Definition of the PMD and GFT (Plastic and metal and bio) garbage
   ## Depends on google calendar for afval_kalender
-  ## Used for sending "put both bins out" notifications
   - platform: template
     sensors:
       garbage_calendar_gft_pmd:
@@ -89,7 +83,6 @@ binary_sensor:
           {% else %}
             false
           {% endif %}
-
   ## Definition of the GFT (Bio) garbage bin
   ## Depends on binary sensors GTT and GFT+PMD
   ## Used for visual indication in the UI
@@ -121,21 +114,53 @@ binary_sensor:
           {% endif %}
         entity_picture_template: >-
           {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
+##-----------------------------------------------------------------------------------------------
+## binary_sensors - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## binary_sensors - Obsolete
+##-----------------------------------------------------------------------------------------------
+
+input_boolean:
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Active
+##-----------------------------------------------------------------------------------------------
+  ## Holiday mode toggle switch, used for setting when on holiday 
+  mode_holiday:
+    name: Vakantie mode aan
+    icon: mdi:toggle-switch
+  ## Christmas mode toggle switch, used for setting the holiday season mode on 
+  mode_christmas:
+    name: Kerst periode mode
+    icon: mdi:toggle-switch
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+##input_boolean - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
 ###############################################################################
 
-
 ###############################################################################
 ##  Automations
 ###############################################################################
 automation:
+##-----------------------------------------------------------------------------------------------
+## automations - Active
+##-----------------------------------------------------------------------------------------------
 
 ##-----------------------------------------------------------------------------------------------
-## Automations moved to Node_RED
+## automations - Check
 ##-----------------------------------------------------------------------------------------------
 
+##-----------------------------------------------------------------------------------------------
+## automations - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## Automation to run when the garbage bins need to go out for collection
   ## Tiggered by sensors based on Google calendar entries
   - alias: "Notification garbage bin outside"
@@ -275,11 +300,22 @@ automation:
 ##  Templates
 ###############################################################################
 
-
 ###############################################################################
 ##  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## scripts - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## scripts - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## scripts - Obsolete
+##-----------------------------------------------------------------------------------------------
+
 ##-----------------------------------------------------------------------------------------------
 ## Scripts moved to Node_RED
 ##-----------------------------------------------------------------------------------------------
@@ -493,4 +529,3 @@ script:
 ###############################################################################
 ##  Timers
 ###############################################################################
-

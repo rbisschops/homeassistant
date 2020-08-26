@@ -8,6 +8,17 @@
 ###############################################################################
 homeassistant:
   # customize:
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Obsolete
+##-----------------------------------------------------------------------------------------------
     ## Customizations for advanced presence states
     # Sensors currently not used. review for future use ore remove
     # sensor.presence_state_ralph:
@@ -17,7 +28,9 @@ homeassistant:
     # sensor.presence_state_kimberly:
     #   entity_picture: /local/custom_icons/kimberly48_on.png
 
-## Settings for owntracks
+##-----------------------------------------------------------------------------------------------
+## Owntracks - Active
+##-----------------------------------------------------------------------------------------------
 owntracks:
   max_gps_accuracy: 200
 
@@ -25,6 +38,56 @@ owntracks:
 ##  Entities
 ###############################################################################
 binary_sensor:
+##-----------------------------------------------------------------------------------------------
+## binary_sensor - Active
+##-----------------------------------------------------------------------------------------------
+  ## Everybody is extended away sensor
+  - platform: template
+    sensors:
+      presence_everybody_extended_away:
+        friendly_name: Niemand thuis (lang)
+        value_template: >-
+          {{ is_state('input_select.presence_ralph_bisschops','Extended Away')
+            and is_state('input_select.presence_anneke_bisschops','Extended Away')
+            and is_state('input_select.presence_kimberly_bisschops','Extended Away') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/people48_' ~ states('binary_sensor.presence_people_home') ~ '.png' }}
+  ## Anneke home sensor
+  - platform: template
+    sensors:
+      presence_anneke_home:
+        friendly_name: Anneke thuis
+        value_template: >-
+          {{ is_state('input_select.presence_anneke_bisschops','Home')
+            or is_state('input_select.presence_anneke_bisschops','Just Arrived')
+            or is_state('input_select.presence_anneke_bisschops','Just Left') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/anneke48_' ~ states('binary_sensor.presence_anneke_home') ~ '.png' }}
+  ## kimberly home sensor
+  - platform: template
+    sensors:
+      presence_kimberly_home:
+        friendly_name: Kimberly thuis
+        value_template: >-
+          {{ is_state('input_select.presence_kimberly_bisschops','Home')
+            or is_state('input_select.presence_kimberly_bisschops','Just Arrived')
+            or is_state('input_select.presence_kimberly_bisschops','Just Left') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/kimberly48_' ~ states('binary_sensor.presence_kimberly_home') ~ '.png' }}
+  ## Ralph home sensor
+  - platform: template
+    sensors:
+      presence_ralph_home:
+        friendly_name: Ralph thuis
+        value_template: >-
+          {{ is_state('input_select.presence_ralph_bisschops','Home')
+            or is_state('input_select.presence_ralph_bisschops','Just Arrived')
+            or is_state('input_select.presence_ralph_bisschops','Just Left') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/ralph48_' ~ states('binary_sensor.presence_ralph_home') ~ '.png' }}
+##-----------------------------------------------------------------------------------------------
+## binary_sensor - Check
+##-----------------------------------------------------------------------------------------------
   ## Anyone home sensor
   - platform: template
     sensors:
@@ -42,7 +105,6 @@ binary_sensor:
             or is_state('input_select.presence_kimberly_bisschops','Just Left') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/people48_' ~ states('binary_sensor.presence_people_home') ~ '.png' }}
-
   ## Everybody is away sensor
   - platform: template
     sensors:
@@ -54,85 +116,14 @@ binary_sensor:
             and is_state('input_select.presence_kimberly_bisschops','Away') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/people48_' ~ states('binary_sensor.presence_people_home') ~ '.png' }}
+##-----------------------------------------------------------------------------------------------
+## binary_sensor - Obsolete
+##-----------------------------------------------------------------------------------------------
 
-  ## Everybody is extended away sensor
-  - platform: template
-    sensors:
-      presence_everybody_extended_away:
-        friendly_name: Niemand thuis (lang)
-        value_template: >-
-          {{ is_state('input_select.presence_ralph_bisschops','Extended Away')
-            and is_state('input_select.presence_anneke_bisschops','Extended Away')
-            and is_state('input_select.presence_kimberly_bisschops','Extended Away') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/people48_' ~ states('binary_sensor.presence_people_home') ~ '.png' }}
-
-  ## Anneke home sensor
-  - platform: template
-    sensors:
-      presence_anneke_home:
-        friendly_name: Anneke thuis
-        value_template: >-
-          {{ is_state('input_select.presence_anneke_bisschops','Home')
-            or is_state('input_select.presence_anneke_bisschops','Just Arrived')
-            or is_state('input_select.presence_anneke_bisschops','Just Left') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/anneke48_' ~ states('binary_sensor.presence_anneke_home') ~ '.png' }}
-
-  ## kimberly home sensor
-  - platform: template
-    sensors:
-      presence_kimberly_home:
-        friendly_name: Kimberly thuis
-        value_template: >-
-          {{ is_state('input_select.presence_kimberly_bisschops','Home')
-            or is_state('input_select.presence_kimberly_bisschops','Just Arrived')
-            or is_state('input_select.presence_kimberly_bisschops','Just Left') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/kimberly48_' ~ states('binary_sensor.presence_kimberly_home') ~ '.png' }}
-
-  ## Ralph home sensor
-  - platform: template
-    sensors:
-      presence_ralph_home:
-        friendly_name: Ralph thuis
-        value_template: >-
-          {{ is_state('input_select.presence_ralph_bisschops','Home')
-            or is_state('input_select.presence_ralph_bisschops','Just Arrived')
-            or is_state('input_select.presence_ralph_bisschops','Just Left') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/ralph48_' ~ states('binary_sensor.presence_ralph_home') ~ '.png' }}
-
-## Added input select for advanced presence states (V1.3.0)
 input_select:
-  ## Ralph advanced home sensor
-  presence_state_ralph:
-    name: Ralph
-    options:
-      - Home
-      - Just Arrived
-      - Just Left
-      - Away
-      - Extended Away
-  ## Anneke advanced home sensor
-  presence_state_anneke:
-    name: Anneke
-    options:
-      - Home
-      - Just Arrived
-      - Just Left
-      - Away
-      - Extended Away
-  ## Kimberly advanced home sensor
-  presence_state_kimberly:
-    name: Kimberly
-    options:
-      - Home
-      - Just Arrived
-      - Just Left
-      - Away
-      - Extended Away
-
+##-----------------------------------------------------------------------------------------------
+## input_select - Active
+##-----------------------------------------------------------------------------------------------
   ## Ralph advanced home sensor (added for Node_RED)
   presence_ralph_bisschops:
     name: Ralph
@@ -160,9 +151,53 @@ input_select:
       - Just Left
       - Away
       - Extended Away
+##-----------------------------------------------------------------------------------------------
+## input_select - Check
+##-----------------------------------------------------------------------------------------------
+  ## Ralph advanced home sensor
+  presence_state_ralph:
+    name: Ralph
+    options:
+      - Home
+      - Just Arrived
+      - Just Left
+      - Away
+      - Extended Away
+  ## Anneke advanced home sensor
+  presence_state_anneke:
+    name: Anneke
+    options:
+      - Home
+      - Just Arrived
+      - Just Left
+      - Away
+      - Extended Away
+  ## Kimberly advanced home sensor
+  presence_state_kimberly:
+    name: Kimberly
+    options:
+      - Home
+      - Just Arrived
+      - Just Left
+      - Away
+      - Extended Away
+##-----------------------------------------------------------------------------------------------
+## input_select - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 # Sensors currently not used. review for future use ore remove
 # sensor:
+##-----------------------------------------------------------------------------------------------
+## sensors - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## sensors - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## sensors - Obsolete
+##-----------------------------------------------------------------------------------------------
 #   - platform: template
 #     sensors:
 #       presence_state_ralph:
@@ -197,18 +232,21 @@ group:
       - device_tracker.wifi_kimberly_iphone8
       - device_tracker.kimberly_iphone8
 
-  # people_status:
-  # Currently not working need update or remove
-  #   name: People Status
-  #   entities:
-  #     - sensor.presence_state_ralph
-  #     - sensor.presence_state_anneke
-  #     - sensor.presence_state_kimberly
-
 ###############################################################################
 ##  Automations
 ###############################################################################
 automation:
+##-----------------------------------------------------------------------------------------------
+## automations - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## automations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## automations - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## Mark a person as just arrived home
   ## Moved automations to Node-RED for test
   # - alias: Presence mark person as just arrived
@@ -394,15 +432,6 @@ automation:
   #           {% endif %}
   #         option: Extended Away
 
-
-##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## No longer in use with Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
   ## Test if everybody is away and perform actions
   - alias: "Presence everybody is away"
     initial_state: "off"
@@ -441,11 +470,9 @@ automation:
 ##  Templates
 ###############################################################################
 
-
 ###############################################################################
 ##  Scripts
 ###############################################################################
-
 
 ###############################################################################
 ##  Timers

@@ -7,11 +7,33 @@
 ##  Homeassistant settings
 ###############################################################################
 homeassistant:
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Entities
 ###############################################################################
 input_boolean:
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+##input_boolean - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## Light switches
   ## Moved automations to Node-RED for test
   # domoticz_light_garden:
@@ -36,8 +58,8 @@ input_boolean:
   # domoticz_switch_water_ornament:
   #   name: Waterbollen tuin (via Domoticz)
   ## Blinds
-  domoticz_blinds_sunscreen:
-    name: Zonnescherm (via Domoticz)
+  # domoticz_blinds_sunscreen:
+  #   name: Zonnescherm (via Domoticz)
 
 ###############################################################################
 ##  Groups
@@ -49,219 +71,12 @@ input_boolean:
 #  Automations
 ###############################################################################
 automation:
-  ## Publish a switch to Domoticz
-  ## Obsolete since V0.8.0, remove after a while
-  # - alias: Domoticz publish switch
-  #   initial_state: "on"  
-  #   trigger:     
-  #     platform: state
-  #     entity_id:
-        # - input_boolean.domo_entertainment
-        # - input_boolean.domoticz_light_garden
-        # - input_boolean.domoticz_light_porch
-        # - input_boolean.domoticz_light_hallway
-        # - input_boolean.light_high_cabinets
-        # - input_boolean.domoticz_switch_christmas_tree
-        # - input_boolean.domoticz_light_bar
-        # - input_boolean.domoticz_switch_water_ornament
-        # - input_boolean.domoticz_blinds_sunscreen
-    # condition:
-    # action:
-    #   - service: script.domoticz_domoticz_output_switch
-    #     data_template:
-    #       device: '{{ trigger.to_state.attributes.friendly_name }}'
-    #       new_state: >-
-    #         {{ trigger.to_state.state }}
-  
-  ## Publish christmas tree light switch to Domoticz
-  ## Moved automations to Node-RED for test
-  # - alias: "
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.domoticz_switch_christmas_tree
-  #   condition:
-  #   action:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "domoticz/in"
-  #         payload_template: >-
-  #           {{ {
-  #            "command": "switchlight",
-  #            "idx": 26,
-  #            "switchcmd": trigger.to_state.state|capitalize
-  #           }|tojson }}
-  ## Publish garden light switch to Domoticz
-  ## Moved automations to Node-RED for test
-  # - alias: "Domoticz publish - Light garden"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.domoticz_light_garden
-  #   condition:
-  #   action:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "domoticz/in"
-  #         payload_template: >-
-  #           {{ {
-  #            "command": "switchlight",
-  #            "idx": 28,
-  #            "switchcmd": trigger.to_state.state|capitalize
-  #           }|tojson }}
-  ## Publish porch light switch to Domoticz
-    ## Moved automations to Node-RED for test
-  # - alias: "Domoticz publish - Light porch"
-  #   initial_state: "on"
-  #   trigger:     
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.domoticz_light_porch
-  #   condition:
-  #   action:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "domoticz/in"
-  #         payload_template: >-
-  #           {{ {
-  #            "command": "switchlight",
-  #            "idx": 20,
-  #            "switchcmd": trigger.to_state.state|capitalize
-  #           }|tojson }}
-  ## Publish hallway light switch to Domoticz
-  ## Moved automations to Node-RED for test
-  # - alias: "Domoticz publish - Light hallway"
-  #   initial_state: "on"
-  #   trigger:     
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.domoticz_light_hallway
-  #   condition:
-  #   action:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "domoticz/in"
-  #         payload_template: >-
-  #           {{ {
-  #            "command": "switchlight",
-  #            "idx": 21,
-  #            "switchcmd": trigger.to_state.state|capitalize
-  #           }|tojson }}
-  ## Publish kitchen cabinets light switch to Domoticz
-  ## Moved automations to Node-RED for test
-  # - alias: "Domoticz publish - Light high cabinets"
-  #   initial_state: "on"
-  #   trigger:     
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.light_high_cabinets
-  #   condition:
-  #   action:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "domoticz/in"
-  #         payload_template: >-
-  #           {{ {
-  #            "command": "switchlight",
-  #            "idx": 23,
-  #            "switchcmd": trigger.to_state.state|capitalize
-  #           }|tojson }}
-  ## Publish bar light switch to Domoticz
-  ## Moved automations to Node-RED for test
-  # - alias: "Domoticz publish - Light bar"
-  #   initial_state: "on"
-  #   trigger:     
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.domoticz_light_bar
-  #   condition:
-  #   action:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "domoticz/in"
-  #         payload_template: >-
-  #           {{ {
-  #            "command": "switchlight",
-  #            "idx": 27,
-  #            "switchcmd": trigger.to_state.state|capitalize
-  #           }|tojson }}
-  ## Publish water ornament switch to Domoticz
-  ## Moved automations to Node-RED for test
-  # - alias: "Domoticz publish - Switch water ornament"
-  #   initial_state: "on"
-  #   trigger:     
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.domoticz_switch_water_ornament
-  #   condition:
-  #   action:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "domoticz/in"
-  #         payload_template: >-
-  #           {{ {
-  #            "command": "switchlight",
-  #            "idx": 29,
-  #            "switchcmd": trigger.to_state.state|capitalize
-  #           }|tojson }}
-  ## Publish sunscreen switch to Domoticz
-  - alias: "Domoticz publish - Blinds Sunscreen"
-    initial_state: "off"
-    trigger:     
-      platform: state
-      entity_id:
-        - input_boolean.domoticz_blinds_sunscreen
-    condition:
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "domoticz/in"
-          payload_template: >-
-            {{ {
-             "command": "switchlight",
-             "idx": 30,
-             "switchcmd": trigger.to_state.state|capitalize
-            }|tojson }}
-  ## Convert Domoticz Zigbee switch (type Light/Switch) to Hass 
-  - alias: "Domoticz subscribe - Read domoticz Zigbee switch"
-    initial_state: "off"
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: template
-      value_template: 
-        "{{ trigger.payload_json.dtype == 'Light/Switch' }}"
-    action:
-      - service: script.domoticz_domoticz_input
-        data_template:
-          device: "{{ trigger.payload_json.idx }}"
-          state: >-
-            {{ trigger.payload_json.svalue1 }}
-
-  ## Convert Domoticz CoCo switch (type Lighting 2) to Hass 
-  - alias: "Domoticz subscribe - Read domoticz CoCo switch"
-    initial_state: "off"
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: template
-      value_template: 
-        "{{ trigger.payload_json.dtype == 'Lighting 2' }}"
-    action:
-      - service: script.domoticz_domoticz_input
-        data_template:
-          device: "{{ trigger.payload_json.idx }}"
-          state: >-
-            {{ trigger.payload_json.nvalue }}
-
-  ## Convert Domoticz Energy meters to Hass
-  ## Elektra meter will sent svalue1, svalue2, svalue5
-  - alias: "Domoticz publish - Utilities electricity values"
-    initial_state: "off"
+##-----------------------------------------------------------------------------------------------
+## automations - Active
+##-----------------------------------------------------------------------------------------------
+  ## Homeserver process usage, will sent svalue1
+  - alias: "Domoticz publish - Homeserver process usage"
+    initial_state: "on" 
     trigger:
       - platform: mqtt
         topic: "domoticz/out"
@@ -269,54 +84,22 @@ automation:
       condition: and
       conditions:
       - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'P1 Smart Meter' }}"
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
       - condition: template
-        value_template: "{{ trigger.payload_json.name == 'Elektra' }}"
+        value_template: "{{ trigger.payload_json.name == 'Process Usage (Homeserver)' }}"
     action: 
-      # - service: script.domoticz_electricity
-      #   data_template:
-      #     device: "{{ trigger.payload_json.name }}"
-      #     low: "{{ trigger.payload_json.svalue1 }}" 
-      #     high: "{{ trigger.payload_json.svalue2 }}"
-      #     current: "{{ trigger.payload_json.svalue5 }}"
       - service: mqtt.publish
         data_template:
-          topic: "home/meter/electricity"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": trigger.payload_json.name,
-              "usage_high": trigger.payload_json.svalue2,
-              "usage_low": trigger.payload_json.svalue1,
-              "current_usage": trigger.payload_json.svalue5
-            }|tojson }}
-  ## Gas meter will sent svalue1
-  - alias: "Domoticz publish - Utilities Gas values"
-    initial_state: "off"
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: and
-      conditions:
-      - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'P1 Smart Meter' }}"
-      - condition: template
-        value_template: "{{ trigger.payload_json.name == 'Gas' }}"
-    action: 
-      # - service: script.domoticz_gas
-      #   data_template:
-      #     device: "{{ trigger.payload_json.name }}"
-      #     usage: "{{ trigger.payload_json.svalue1 }}"
-      - service: mqtt.publish
-        data_template:
-          topic: "home/meter/gas"
+          topic: "home/server/homeserver/process_usage"
           retain: true
           payload_template: >-
             {{ {
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
+##-----------------------------------------------------------------------------------------------
+## automations - Check
+##-----------------------------------------------------------------------------------------------
   ## Water meter will sent svalue1
   - alias: "Domoticz publish - Utilities Water values"
     initial_state: "on" 
@@ -413,7 +196,297 @@ automation:
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
-  
+  ## Convert Domoticz Energy meters to Hass
+  ## Elektra meter will sent svalue1, svalue2, svalue5
+  - alias: "Domoticz publish - Utilities electricity values"
+    initial_state: "off"
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'P1 Smart Meter' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Elektra' }}"
+    action: 
+      # - service: script.domoticz_electricity
+      #   data_template:
+      #     device: "{{ trigger.payload_json.name }}"
+      #     low: "{{ trigger.payload_json.svalue1 }}" 
+      #     high: "{{ trigger.payload_json.svalue2 }}"
+      #     current: "{{ trigger.payload_json.svalue5 }}"
+      - service: mqtt.publish
+        data_template:
+          topic: "home/meter/electricity"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage_high": trigger.payload_json.svalue2,
+              "usage_low": trigger.payload_json.svalue1,
+              "current_usage": trigger.payload_json.svalue5
+            }|tojson }}
+  ## Gas meter will sent svalue1
+  - alias: "Domoticz publish - Utilities Gas values"
+    initial_state: "off"
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'P1 Smart Meter' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'Gas' }}"
+    action: 
+      # - service: script.domoticz_gas
+      #   data_template:
+      #     device: "{{ trigger.payload_json.name }}"
+      #     usage: "{{ trigger.payload_json.svalue1 }}"
+      - service: mqtt.publish
+        data_template:
+          topic: "home/meter/gas"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Homeserver server HDD-boot partition, will sent svalue1
+  - alias: "Domoticz publish - Homeserver HDD-boot partition usage"
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'HDD /boot (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/hdd_boot"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+  ## Homeserver server HDD partition, will sent svalue1
+  - alias: "Domoticz publish - Homeserver HDD partition usage"
+    initial_state: "on" 
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+      - condition: template
+        value_template: "{{ trigger.payload_json.name == 'HDD / (Homeserver)' }}"
+    action: 
+      - service: mqtt.publish
+        data_template:
+          topic: "home/server/homeserver/hdd"
+          retain: true
+          payload_template: >-
+            {{ {
+              "device": trigger.payload_json.name,
+              "usage": trigger.payload_json.svalue1
+            }|tojson }}
+##-----------------------------------------------------------------------------------------------
+## automations - Obsolete
+##-----------------------------------------------------------------------------------------------
+  ## Publish christmas tree light switch to Domoticz
+  ## Moved automations to Node-RED for test
+  # - alias: "
+  #   initial_state: "off"
+  #   trigger:
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_switch_christmas_tree
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 26,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
+  ## Publish garden light switch to Domoticz
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light garden"
+  #   initial_state: "off"
+  #   trigger:
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_light_garden
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 28,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
+  ## Publish porch light switch to Domoticz
+    ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light porch"
+  #   initial_state: "off"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_light_porch
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 20,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
+  ## Publish hallway light switch to Domoticz
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light hallway"
+  #   initial_state: "off"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_light_hallway
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 21,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
+  ## Publish kitchen cabinets light switch to Domoticz
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light high cabinets"
+  #   initial_state: "off"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.light_high_cabinets
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 23,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
+  ## Publish bar light switch to Domoticz
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Light bar"
+  #   initial_state: "off"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_light_bar
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 27,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
+  ## Publish water ornament switch to Domoticz
+  ## Moved automations to Node-RED for test
+  # - alias: "Domoticz publish - Switch water ornament"
+  #   initial_state: "off"
+  #   trigger:     
+  #     platform: state
+  #     entity_id:
+  #       - input_boolean.domoticz_switch_water_ornament
+  #   condition:
+  #   action:
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "domoticz/in"
+  #         payload_template: >-
+  #           {{ {
+  #            "command": "switchlight",
+  #            "idx": 29,
+  #            "switchcmd": trigger.to_state.state|capitalize
+  #           }|tojson }}
+  ## Publish sunscreen switch to Domoticz
+  - alias: "Domoticz publish - Blinds Sunscreen"
+    initial_state: "off"
+    trigger:     
+      platform: state
+      entity_id:
+        - input_boolean.domoticz_blinds_sunscreen
+    condition:
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "domoticz/in"
+          payload_template: >-
+            {{ {
+             "command": "switchlight",
+             "idx": 30,
+             "switchcmd": trigger.to_state.state|capitalize
+            }|tojson }}
+  ## Convert Domoticz Zigbee switch (type Light/Switch) to Hass 
+  - alias: "Domoticz subscribe - Read domoticz Zigbee switch"
+    initial_state: "off"
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: template
+      value_template: 
+        "{{ trigger.payload_json.dtype == 'Light/Switch' }}"
+    action:
+      - service: script.domoticz_domoticz_input
+        data_template:
+          device: "{{ trigger.payload_json.idx }}"
+          state: >-
+            {{ trigger.payload_json.svalue1 }}
+  ## Convert Domoticz CoCo switch (type Lighting 2) to Hass 
+  - alias: "Domoticz subscribe - Read domoticz CoCo switch"
+    initial_state: "off"
+    trigger:
+      - platform: mqtt
+        topic: "domoticz/out"
+    condition:
+      condition: template
+      value_template: 
+        "{{ trigger.payload_json.dtype == 'Lighting 2' }}"
+    action:
+      - service: script.domoticz_domoticz_input
+        data_template:
+          device: "{{ trigger.payload_json.idx }}"
+          state: >-
+            {{ trigger.payload_json.nvalue }}
   ## Domoticz server temperature, will sent svalue1
   - alias: "Domoticz publish Domoticz server CPU temperature"
     initial_state: "off"
@@ -483,59 +556,9 @@ automation:
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
-
-
-  ## Homeserver server HDD-boot partition, will sent svalue1
-  - alias: "Domoticz publish - Homeserver HDD-boot partition usage"
-    initial_state: "on" 
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: and
-      conditions:
-      - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
-      - condition: template
-        value_template: "{{ trigger.payload_json.name == 'HDD /boot (Homeserver)' }}"
-    action: 
-      - service: mqtt.publish
-        data_template:
-          topic: "home/server/homeserver/hdd_boot"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": trigger.payload_json.name,
-              "usage": trigger.payload_json.svalue1
-            }|tojson }}
-  ## Homeserver server HDD partition, will sent svalue1
-  - alias: "Domoticz publish - Homeserver HDD partition usage"
-    initial_state: "on" 
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: and
-      conditions:
-      - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
-      - condition: template
-        value_template: "{{ trigger.payload_json.name == 'HDD / (Homeserver)' }}"
-    action: 
-      - service: mqtt.publish
-        data_template:
-          topic: "home/server/homeserver/hdd"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": trigger.payload_json.name,
-              "usage": trigger.payload_json.svalue1
-            }|tojson }}
-
 ##-----------------------------------------------------------------------------------------------
 ## No longer in use, moved to integration Glances on HA
 ##-----------------------------------------------------------------------------------------------
-
   ## Homeserver server memory usage, will sent svalue1
   - alias: "Domoticz publish - Homeserver memory usage"
     initial_state: "off" 
@@ -605,29 +628,6 @@ automation:
               "device": trigger.payload_json.name,
               "usage": trigger.payload_json.svalue1
             }|tojson }}
-  ## Homeserver process usage, will sent svalue1
-  - alias: "Domoticz publish - Homeserver process usage"
-    initial_state: "on" 
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: and
-      conditions:
-      - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
-      - condition: template
-        value_template: "{{ trigger.payload_json.name == 'Process Usage (Homeserver)' }}"
-    action: 
-      - service: mqtt.publish
-        data_template:
-          topic: "home/server/homeserver/process_usage"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": trigger.payload_json.name,
-              "usage": trigger.payload_json.svalue1
-            }|tojson }}
 
 ###############################################################################
 ##  Templates
@@ -638,6 +638,34 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## scripts - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## scripts - Check
+##-----------------------------------------------------------------------------------------------
+  ## Convert Domoticz switch to Hass 
+  domoticz_domoticz_input:
+    alias: Ontvang Domoticz input (via MQTT)
+    sequence:
+      - service: mqtt.publish
+        data_template:
+          topic: "home/switch/100/switch"
+          payload_template: >-
+            {% set payload = "n/a" %}
+            {% if state == "0" %}
+            {% set payload = 'off' %}  
+            {% elif state == "1" %}
+            {% set payload = 'on' %} 
+            {% endif %}
+            {{ {
+             "command": payload,
+             "source": device
+            }|tojson }}
+##-----------------------------------------------------------------------------------------------
+## scripts - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## Sent sunscreen to Domoticz
   ## Used for controlling the sunscreen based on buttons
   domoticz_domoticz_output_sun_screen:
@@ -665,7 +693,6 @@ script:
   ############################################################################# 
 
   ## Convert Hass switch to Domoticz
-
   domoticz_domoticz_output_switch:
     alias: Set domoticz switch via MQTT
     sequence:
@@ -698,69 +725,6 @@ script:
              "idx": id,
              "switchcmd": new_state
             }|tojson }}
-
-  ## Convert Domoticz switch to Hass 
-  domoticz_domoticz_input:
-    alias: Ontvang Domoticz input (via MQTT)
-    sequence:
-      - service: mqtt.publish
-        data_template:
-          topic: "home/switch/100/switch"
-          payload_template: >-
-            {% set payload = "n/a" %}
-            {% if state == "0" %}
-            {% set payload = 'off' %}  
-            {% elif state == "1" %}
-            {% set payload = 'on' %} 
-            {% endif %}
-            {{ {
-             "command": payload,
-             "source": device
-            }|tojson }}
-
-  # ## Read electiricity values from Domoticz
-  # domoticz_electricity:
-  #   alias: Receive domoticz elektra readings via MQTT
-  #   sequence:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "home/meter/electricity"
-  #         retain: true
-  #         payload_template: >-
-  #           {{ {
-  #             "device": device,
-  #             "usage_high": high,
-  #             "usage_low": low,
-  #             "current_usage": current
-  #           }|tojson }}
-  # ## Read gas values from Domoticz
-  # domoticz_gas:
-  #   alias: Receive domoticz gas readings via MQTT
-  #   sequence:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "home/meter/gas"
-  #         retain: true
-  #         payload_template: >-
-  #           {{ {
-  #             "device": device,
-  #             "usage": usage
-  #           }|tojson }}
-  
-  ## Removed V0.9.1
-  # ## Read water values from Domoticz
-  # domoticz_water:
-  #   alias: Receive domoticz water readings via MQTT
-  #   sequence:
-  #     - service: mqtt.publish
-  #       data_template:
-  #         topic: "home/meter/water"
-  #         retain: true
-  #         payload_template: >-
-  #           {{ {
-  #             "device": device,
-  #             "usage": usage
-  #           }|tojson }}
 
 ###############################################################################
 ##  Timers

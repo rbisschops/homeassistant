@@ -11,15 +11,13 @@
 ###############################################################################
 homeassistant:
   customize:
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
     ## Harmony Hub remote
     remote.bisschops:
       friendly_name: Harmony Hub
       entity_picture: /local/harmony_icon.jpg
-
-    ## ZigBeee2MQTT Switches
-    switch.switch_media:
-      friendly_name: Entertainment
-
     ## Media devices from Harmony
     switch.poweroff:
       friendly_name: PowerOff
@@ -51,7 +49,15 @@ homeassistant:
       friendly_name: Pathe thuis
     switch.amazon:
       friendly_name: Amazon Prime  
-
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
+    ## ZigBeee2MQTT Switches (traedfri)
+    switch.switch_media:
+      friendly_name: Entertainment
+##-----------------------------------------------------------------------------------------------
+## Customizations - Obsolete
+##-----------------------------------------------------------------------------------------------
     ## Media center timers  
     timer.media_media_center_delay:
       friendly_name: Inschakelvertraging media center
@@ -60,13 +66,17 @@ homeassistant:
     timer.media_media_tv_radio_wait:
       friendly_name: Wachttijd tv-radio omschakeling
 
-## Remotes
+##-----------------------------------------------------------------------------------------------
+## Remotes - Active
+##-----------------------------------------------------------------------------------------------
 remote:
   - platform: harmony
     name: bisschops
     host: !secret ip_harmony_hub
 
-## Media players
+##-----------------------------------------------------------------------------------------------
+## Media players - Active
+##-----------------------------------------------------------------------------------------------
 ##  LG television
 webostv:
   host: !secret ip_lgtelevision
@@ -90,154 +100,15 @@ webostv:
 ###############################################################################
 ##  Entities
 ###############################################################################
-input_select: 
-##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
-  ## Current Harmony activity, used for automations and scripts
-  media_harmony_livingroom_new_state:
-    name: Activiteiten Harmony 
-    options:
-      - Televisie
-      - Smart-TV
-      - Netflix
-      - Spotify
-      - Uitzending gemist
-      - Disney+
-      - Amazon Prime
-      - Pathe thuis
-      - Mediaplayer
-      - Apple-TV
-      - Radio
-      - Muziek
-      - DVD
-      - Teletekst
-      - PowerOff
-    icon: mdi:remote
-
-  ## Previous Harmony activity, used for aurtomations and scripts
-  ## MIGHT BE OBSOLTE, HOWEVER STILL FILLED FROM NODE_RED
-  media_harmony_livingroom_old_state:
-    name: Oude status
-    options:
-      - Televisie
-      - Smart-TV
-      - Netflix
-      - Spotify
-      - Uitzending gemist
-      - Disney+
-      - Amazon Prime
-      - Pathe thuis
-      - Mediaplayer
-      - Apple-TV
-      - Radio
-      - Muziek
-      - DVD
-      - Teletekst
-      - PowerOff 
-    icon: mdi:remote
-
-  ## Activity state for the Harmony Hub (used for follow-up actions per activity
-  media_harmony_livingroom_state:
-    name: Harmony status
-    options: 
-      - Turned off
-      - Starting
-      - Started
-      - Turning off
-      - Started cashed
-
-
-  ## Previous state of the Humax, used for swapping the TV/Radio mode
-  media_humax_old_state:
-    name: Humax oude status
-    options:
-      - Televisie
-      - Radio
-
-##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
-  ## Obsolete, remove after check
-  ## CHECK IF REALLY NO LONGER USED
-  media_humax_new_state:
-    name: Humax nieuwe status
-    options:
-      - Televisie
-      - Radio
-
-input_number:
-##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
-  media_volume_setpoint:
-    name: Denon Volume
-    initial: 45
-    min: 1
-    max: 75
-    step: 1
-
-##-----------------------------------------------------------------------------------------------
-## Updated and changed entities - input_number
-##-----------------------------------------------------------------------------------------------
-  media_media_center_delay:
-    name: Media start vertraging (sec)
-    initial: 30
-    min: 0
-    max: 60
-    step: 1
-  media_media_wait_delay:
-    name: Media wacht vertraging (sec)
-    initial: 10
-    min: 1
-    max: 60    
-
-input_text:
-##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-  media_media_delay_timer:
-    name: Media start vertraging (sec)
-    initial: 30
-    min: 1
-    max: 60
-  media_media_wait_timer:
-    name: Media wacht vertraging (sec)
-    initial: 10
-    min: 1
-    max: 60
-  media_tv_radio_mode_timer:
-    name: TV-radio wacht vertraging (sec)
-    initial: 25
-    min: 1
-    max: 60
-
 input_boolean:
 ##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
+## input_boolean - Active
 ##-----------------------------------------------------------------------------------------------
   ## Switch used for setting the recorder mode on   
   ## used for disabling the media center switch-off when a recording is programmed
   media_recording_mode:
     name: Recorder mode aan
     icon: mdi:video
-  ## Enable buttons
-  ## used for disabling the start of the media mode when lovelace buttons are changing from harmony
-  ## on will enable the hub to switch, off will disable the hub from switching 
-  media_enable_ui_buttons:
-    name: UI buttons ingeschakeld
-    initial: on
   ## Harmony mode selector inputs,
   ## used for manual selection from lovelace interface
   media_poweroff:
@@ -270,20 +141,171 @@ input_boolean:
     name: Pathe thuis
   media_amazon:
     name: Amazon Prime
-
 ##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
+## input_boolean - Check
 ##-----------------------------------------------------------------------------------------------
-  ## Test buttons me3dia mode
+  ## Enable buttons
+  ## used for disabling the start of the media mode when lovelace buttons are changing from harmony
+  ## on will enable the hub to switch, off will disable the hub from switching 
+  media_enable_ui_buttons:
+    name: UI buttons ingeschakeld
+    initial: on
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Obsolete
+##-----------------------------------------------------------------------------------------------
+  ## Test buttons media mode
   ## used for testing commands to Harmony Hub
   ## remove after completion of media package
   media_test_hub_command:
     name: Test Harmony Hub commando
     initial: off 
 
-sensor:
+input_select: 
 ##-----------------------------------------------------------------------------------------------
 ## Used in Node-RED configuration
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## input_select - Active
+##-----------------------------------------------------------------------------------------------
+  ## Current Harmony activity, used for automations and scripts
+  media_harmony_livingroom_new_state:
+    name: Activiteiten Harmony 
+    options:
+      - Televisie
+      - Smart-TV
+      - Netflix
+      - Spotify
+      - Uitzending gemist
+      - Disney+
+      - Amazon Prime
+      - Pathe thuis
+      - Mediaplayer
+      - Apple-TV
+      - Radio
+      - Muziek
+      - DVD
+      - Teletekst
+      - PowerOff
+    icon: mdi:remote
+##-----------------------------------------------------------------------------------------------
+## input_select - Check
+##-----------------------------------------------------------------------------------------------
+  ## Previous Harmony activity, used for aurtomations and scripts
+  ## MIGHT BE OBSOLTE, HOWEVER STILL FILLED FROM NODE_RED
+  media_harmony_livingroom_old_state:
+    name: Oude status
+    options:
+      - Televisie
+      - Smart-TV
+      - Netflix
+      - Spotify
+      - Uitzending gemist
+      - Disney+
+      - Amazon Prime
+      - Pathe thuis
+      - Mediaplayer
+      - Apple-TV
+      - Radio
+      - Muziek
+      - DVD
+      - Teletekst
+      - PowerOff 
+    icon: mdi:remote
+  ## Activity state for the Harmony Hub (used for follow-up actions per activity
+  media_harmony_livingroom_state:
+    name: Harmony status
+    options: 
+      - Turned off
+      - Starting
+      - Started
+      - Turning off
+      - Started cashed
+  ## Previous state of the Humax, used for swapping the TV/Radio mode
+  media_humax_old_state:
+    name: Humax oude status
+    options:
+      - Televisie
+      - Radio
+##-----------------------------------------------------------------------------------------------
+## input_select - Obsolete
+##-----------------------------------------------------------------------------------------------
+  ## Obsolete, remove after check
+  ## CHECK IF REALLY NO LONGER USED
+  media_humax_new_state:
+    name: Humax nieuwe status
+    options:
+      - Televisie
+      - Radio
+
+input_number:
+##-----------------------------------------------------------------------------------------------
+## input_number - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## input_number - Check
+##-----------------------------------------------------------------------------------------------
+  media_media_center_delay:
+    name: Media start vertraging (sec)
+    initial: 30
+    min: 0
+    max: 60
+    step: 1
+  media_media_wait_delay:
+    name: Media wacht vertraging (sec)
+    initial: 10
+    min: 1
+    max: 60
+##-----------------------------------------------------------------------------------------------
+## input_number - Obsolete
+##-----------------------------------------------------------------------------------------------
+  media_volume_setpoint:
+    name: Denon Volume
+    initial: 45
+    min: 1
+    max: 75
+    step: 1
+
+input_text:
+##-----------------------------------------------------------------------------------------------
+## input_text - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## input_text - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## input_text - Obsolete
+##-----------------------------------------------------------------------------------------------
+  media_media_delay_timer:
+    name: Media start vertraging (sec)
+    initial: 30
+    min: 1
+    max: 60
+  media_media_wait_timer:
+    name: Media wacht vertraging (sec)
+    initial: 10
+    min: 1
+    max: 60
+  media_tv_radio_mode_timer:
+    name: TV-radio wacht vertraging (sec)
+    initial: 25
+    min: 1
+    max: 60
+
+sensor:
+##-----------------------------------------------------------------------------------------------
+## sensors - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## sensors - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## sensors - Obsolete
 ##-----------------------------------------------------------------------------------------------
   ## Media center operations, sensor (Tradfri via Zigbee2MQTT)
   - platform: "mqtt"
@@ -292,6 +314,7 @@ sensor:
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
+  ## Volume settings fro Denon AVR
   - platform: template
     sensors:
       denon_volume:
@@ -302,13 +325,9 @@ sensor:
         friendly_name: Receiver Volume Level
         icon_template: mdi:volume-medium
 
-##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
 switch:
 ##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
+## switches - Active
 ##-----------------------------------------------------------------------------------------------
   ## Template switches synchronizing with the Harmony Hub. Operates reciproke
   ## switches are updated from the Harmony hub and set the Harmony hub from Hass
@@ -494,9 +513,12 @@ switch:
           data:
             entity_id: remote.bisschops
             activity: ""
+##-----------------------------------------------------------------------------------------------
+## switches - Check
+##-----------------------------------------------------------------------------------------------
 
 ##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
+## switches - Obsolete
 ##-----------------------------------------------------------------------------------------------
   ## Media center operations, switch (Tradfri via Zigbee2MQTT)
   ## used for powering up all media devices
@@ -519,7 +541,7 @@ switch:
 ###############################################################################
 automation:
 ##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
+## automations - Active
 ##-----------------------------------------------------------------------------------------------
   ## Automation for Harmony mode selector from HA Bridge,
   ## used for selection from HA Bridge (Alexa commands)
@@ -574,9 +596,12 @@ automation:
         data_template:
           name: "{{ trigger.to_state.object_id }}"
           type: "harmony"
+##-----------------------------------------------------------------------------------------------
+## automations - Check
+##-----------------------------------------------------------------------------------------------
 
 ##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
+## automations - Obsolete
 ##-----------------------------------------------------------------------------------------------
   ## Test min and max settings on media start timer
   - alias: "Media - validate media start timer"
@@ -729,7 +754,6 @@ automation:
   ##-------------------------------------------------------
   ## Test automations >> Move or remove ASAP after testing 
   ##-------------------------------------------------------
-
   ## Test automation for testing Harmony hub commands
   ## remove after completion of media package
   - alias: "Media - Test actions Harmony Hub"
@@ -757,13 +781,16 @@ automation:
 ###############################################################################
 script:
 ##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
+## scripts - Active
 ##-----------------------------------------------------------------------------------------------
 
 ##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
+## scripts - Check
 ##-----------------------------------------------------------------------------------------------
 
+##-----------------------------------------------------------------------------------------------
+## scripts - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## Script for updating the state of the input buttons in Lovelace
   ## Triggered from automation "Media acties lovelace buttons"
   media_media_settings_mode_generic:
@@ -1165,15 +1192,18 @@ script:
 ###############################################################################
 ##  Timers
 ###############################################################################
-
-##-----------------------------------------------------------------------------------------------
-## Used in Node-RED configuration
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## No longer in used with Node-RED configuration
-##-----------------------------------------------------------------------------------------------
 timer:
+##-----------------------------------------------------------------------------------------------
+## timers - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## timers - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## timers - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## timer for delaying the media center mains power on switch whewn off
   media_media_center_delay:
   ## timer for waiting in between two actions

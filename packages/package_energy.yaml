@@ -6,9 +6,15 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-
 homeassistant:
   customize:
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
     ## Utilities sensors
     sensor.utilities_electricity:
       friendly_name: Elektriciteits meters
@@ -40,19 +46,37 @@ homeassistant:
       friendly_name: Referentie (E, G, W)
     sensor.utilities_total_cost_day:
       friendly_name: Totale kosten per dag (E, G, W)
+##-----------------------------------------------------------------------------------------------
+## Customizations - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Entities
 ###############################################################################
-
 input_number:
+##-----------------------------------------------------------------------------------------------
+## input_number - Active
+##-----------------------------------------------------------------------------------------------
   utility_water_tariff:
     name: Tarief water (EUR/m3)
     initial: 0.927
     min: 0
     max: 2
+##-----------------------------------------------------------------------------------------------
+## input_number - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## input_number - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 sensor:
+##-----------------------------------------------------------------------------------------------
+## sensors - Active
+##-----------------------------------------------------------------------------------------------
+  ## DSMR reader integration
+  - platform: dsmr_reader
+  ## DSMR converted readings
   - platform: template
     sensors:
       dsmr_reading_electricity_currently_delivered_watt:
@@ -64,10 +88,6 @@ sensor:
       utilities_total_cost_day:
         value_template: "{{ (states('sensor.dsmr_day_consumption_total_cost')|float + states('sensor.utilities_day_consumption_water_costs')|float)|round(2) }}"
         unit_of_measurement: "€"
-
-  ## DSMR reader integration
-  - platform: dsmr_reader
-
   ## Utilities sensor water
   - platform: "mqtt"
     name: utilities_water
@@ -76,9 +96,15 @@ sensor:
     force_update: true
     value_template: "{{ value_json.device }}"
     json_attributes_topic: "home/meter/water"
+##-----------------------------------------------------------------------------------------------
+## sensors - Check
+##-----------------------------------------------------------------------------------------------
 
+##-----------------------------------------------------------------------------------------------
+## sensors - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## Utilities sensors
-  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
+  ## E + G is obsolete as this is replaced with DSMR Reader
   - platform: "mqtt"
     name: utilities_electricity
     state_topic: "home/meter/electricity"
@@ -98,7 +124,7 @@ sensor:
   - platform: template
     sensors:
   ## Utilities sensors
-  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
+  ## E + G is obsolete as this is replaced with DSMR Reader
       utilities_electricity_current_usage:
         value_template: "{% set value = state_attr('sensor.utilities_electricity','current_usage') %} {{ value }}"
         unit_of_measurement: "W"
@@ -140,8 +166,20 @@ sensor:
           {{ value }}
         unit_of_measurement: "L"
 
-## Camera used for displaying electricity usage graphs
 camera:
+##-----------------------------------------------------------------------------------------------
+## cameras - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## cameras - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## cameras - Obsolete
+##-----------------------------------------------------------------------------------------------
+## Camera used for displaying electricity usage graphs
+
   # - platform: local_file
   #   name: grafana_electricity
   #   file_path: downloads/electricity.png 
@@ -155,12 +193,36 @@ camera:
 ##  Groups
 ###############################################################################
 
-group:
-
 ###############################################################################
 ##  Automations
 ###############################################################################
 automation:
+##-----------------------------------------------------------------------------------------------
+## automations - Active
+##-----------------------------------------------------------------------------------------------
+  ## automation to run when water meter is not seen for a set time
+  ## expire_after parameter for the MQTT sensor is triggering this (changes to "unknown")
+  - alias: "Water meter no longer updating"
+    initial_state: "on"
+    trigger:
+      platform: state
+      entity_id:
+        - sensor.utilities_water
+      to: "unknown"
+      for: 
+        hours: 1
+    action:
+      - service_template: >-
+          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_ralph_bisschops', 'Home') %}
+            script.water_alert_notification
+          {% else %}
+            script.water_alert_store
+          {% endif %} 
+        data_template:
+          sensor: "{{ trigger.to_state.attributes.friendly_name }}"
+##-----------------------------------------------------------------------------------------------
+## automations - Check
+##-----------------------------------------------------------------------------------------------
   ## Automation for storing the nightly values (00:00) for reference. Reference is used for daily usage graphs 
   ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
   - alias: "Utilities - update utilities reference values"
@@ -184,29 +246,9 @@ automation:
               "g_usage": g_usage,
               "w_usage": w_usage
             }|tojson }}
-
-
-  ## automation to run when water meter is not seen for a set time
-  ## expire_after parameter for the MQTT sensor is triggering this (changes to "unknown")
-  - alias: "Water meter no longer updating"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id:
-        - sensor.utilities_water
-      to: "unknown"
-      for: 
-        hours: 1
-    action:
-      - service_template: >-
-          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.water_alert_notification
-          {% else %}
-            script.water_alert_store
-          {% endif %} 
-        data_template:
-          sensor: "{{ trigger.to_state.attributes.friendly_name }}"
-
+##-----------------------------------------------------------------------------------------------
+## automations - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Templates
@@ -217,6 +259,9 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## scripts - Active
+##-----------------------------------------------------------------------------------------------
   ## script for sending alerts when water meter is not updating for a set time
   water_alert_notification:
     alias: Water meter update niet meer notify
@@ -228,6 +273,13 @@ script:
           value3: " is niet meer geupdate."
           who: "ralph"
           prio: -2
+##-----------------------------------------------------------------------------------------------
+## scripts - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## scripts - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## script for storing the alert when Ralph is not home or during night time
   water_alert_store:
     alias:  Water meter update niet meer bewaar

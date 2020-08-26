@@ -6,8 +6,21 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
 
-## Telegram bot settings
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Obsolete
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Telegram bot - Active
+##-----------------------------------------------------------------------------------------------
 telegram_bot:
   - platform: polling
     api_key: !secret telegram_api_key
@@ -15,7 +28,9 @@ telegram_bot:
       - !secret ralph_telegram_chat_id
       - !secret anneke_telegram_chat_id
 
-## Notifier services
+##-----------------------------------------------------------------------------------------------
+## Notification services - Active
+##-----------------------------------------------------------------------------------------------
 notify:
   - name: prowl_ralph
     platform: prowl
@@ -29,9 +44,6 @@ notify:
   - name: pushsafer
     platform: pushsafer
     private_key: !secret pushsafer_api_key
-  # - name: pushbullet
-  #   platform: pushbullet
-  #   api_key: !secret pushbullet_api_key
   - name: telegram_ralph
     platform: telegram
     chat_id: !secret ralph_telegram_chat_id
@@ -39,29 +51,55 @@ notify:
     platform: telegram
     chat_id: !secret anneke_telegram_chat_id
 
+##-----------------------------------------------------------------------------------------------
+## Notification services - Obsoletew
+##-----------------------------------------------------------------------------------------------
   - name: telegram_test
     platform: telegram
     chat_id: !secret ralph_telegram_chat_id
+  # - name: pushbullet
+  #   platform: pushbullet
+  #   api_key: !secret pushbullet_api_key
 
 ###############################################################################
 ##  Entities
 ###############################################################################
 input_boolean: 
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Active
+##-----------------------------------------------------------------------------------------------
+  ## Setting for activating all notifications
   notifications_notifications_allowed:
     name: Tekst notificaties toestaan
     icon: mdi:toggle-switch
     initial: on
+##-----------------------------------------------------------------------------------------------
+## input_boolean - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+##input_boolean - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ## Groups
 ###############################################################################
 
-
 ###############################################################################
 ##  Automations
 ###############################################################################
 automation:
+##-----------------------------------------------------------------------------------------------
+## automations - Active
+##-----------------------------------------------------------------------------------------------
 
+##-----------------------------------------------------------------------------------------------
+## automations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## automations - Obsolete
+##-----------------------------------------------------------------------------------------------
   ##-------------------------------------------------------
   ## Test automations >> Move or remove ASAP after testing 
   ##-------------------------------------------------------
@@ -87,6 +125,83 @@ automation:
 ##  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## scripts - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## scripts - Check
+##-----------------------------------------------------------------------------------------------
+## Telegram:
+## Script to send notifications to Pushbullet. Syntax:
+##   service:  script.notify_pushbullet
+##   data_template:
+##     value1: "Startup: Home Assistant is Up and Running!"
+##     value2: ""
+##     value3: "{{ trigger.to_state.state }}"
+##     priority: number
+##
+## Dependancies:
+##   input_boolean.notifications_notifications_allowed
+  notify_telegram_test:
+    alias: Telegram notifications Ralph 
+    sequence:
+      - service: notify.telegram_test
+        data_template:
+          title: "Test"
+          message: "Hi Ralph!"
+          data:
+            inline_keyboard:
+              - 'Verwijder:/remove, OK:/ok'
+
+  notify_telegram_ralph:
+    alias: Telegram notifications Ralph
+    sequence:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_boolean.notifications_notifications_allowed
+            state: "on"
+      - service: notify.telegram_ralph
+        data_template:
+          title: "{{ title }}"
+          message: "Hi Ralph. {{ value1 }}{{ value2 }}{{ value3 }}"
+
+  notify_telegram_anneke:
+    alias: Telegram notifications Anneke
+    sequence:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_boolean.notifications_notifications_allowed
+            state: "on"
+      - service: notify.telegram_anneke
+        data_template:
+          title: "{{ title }}"
+          message: "Hi Anneke. {{ value1 }}{{ value2 }}{{ value3 }}"
+
+  notify_telegram_ralph_and_anneke:
+    alias: Telegram notifications ralph en Anneke
+    sequence:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: input_boolean.notifications_notifications_allowed
+            state: "on"
+      - service: notify.telegram_anneke
+        data_template:
+          title: "{{ title }}"
+          message: "Hi Anneke. {{ value1 }}{{ value2 }}{{ value3 }}"
+      - delay: 
+          milliseconds: 100
+      - service: notify.telegram_ralph
+        data_template:
+          title: "{{ title }}"
+          message: "Hi Ralph. {{ value1 }}{{ value2 }}{{ value3 }}"
+##-----------------------------------------------------------------------------------------------
+## scripts - Obsolete
+##-----------------------------------------------------------------------------------------------
+
 ## Prowl:
 ## Script to send notifications to Prowl. Syntax:
 ## action:
@@ -160,73 +275,6 @@ script:
   #         title: "{{ title }}"
   #         message: "{{ value1 }} {{ value2 }} {{ value3 }}"
 
-## Telegram:
-## Script to send notifications to Pushbullet. Syntax:
-##   service:  script.notify_pushbullet
-##   data_template:
-##     value1: "Startup: Home Assistant is Up and Running!"
-##     value2: ""
-##     value3: "{{ trigger.to_state.state }}"
-##     priority: number
-##
-## Dependancies:
-##   input_boolean.notifications_notifications_allowed
-  notify_telegram_test:
-    alias: Telegram notifications Ralph 
-    sequence:
-      - service: notify.telegram_test
-        data_template:
-          title: "Test"
-          message: "Hi Ralph!"
-          data:
-            inline_keyboard:
-              - 'Verwijder:/remove, OK:/ok'
-
-  notify_telegram_ralph:
-    alias: Telegram notifications Ralph
-    sequence:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_boolean.notifications_notifications_allowed
-            state: "on"
-      - service: notify.telegram_ralph
-        data_template:
-          title: "{{ title }}"
-          message: "Hi Ralph. {{ value1 }}{{ value2 }}{{ value3 }}"
-
-  notify_telegram_anneke:
-    alias: Telegram notifications Anneke
-    sequence:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_boolean.notifications_notifications_allowed
-            state: "on"
-      - service: notify.telegram_anneke
-        data_template:
-          title: "{{ title }}"
-          message: "Hi Anneke. {{ value1 }}{{ value2 }}{{ value3 }}"
-
-  notify_telegram_ralph_and_anneke:
-    alias: Telegram notifications ralph en Anneke
-    sequence:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: input_boolean.notifications_notifications_allowed
-            state: "on"
-      - service: notify.telegram_anneke
-        data_template:
-          title: "{{ title }}"
-          message: "Hi Anneke. {{ value1 }}{{ value2 }}{{ value3 }}"
-      - delay: 
-          milliseconds: 100
-      - service: notify.telegram_ralph
-        data_template:
-          title: "{{ title }}"
-          message: "Hi Ralph. {{ value1 }}{{ value2 }}{{ value3 }}"
 ###############################################################################
 ##  Timers
 ###############################################################################
-

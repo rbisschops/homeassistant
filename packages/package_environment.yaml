@@ -6,9 +6,11 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-
 homeassistant:
   customize:
+##-----------------------------------------------------------------------------------------------
+## Customizations - Active
+##-----------------------------------------------------------------------------------------------
     ## outdoor environment
     sun.sun:
       friendly_name: Dag/Nacht
@@ -94,12 +96,22 @@ homeassistant:
       friendly_name:  Overloop 2e verdieping (link quality)
     sensor.light_level_office_linkquality:
       friendly_name:  Licht level kantoor (link quality)
+##-----------------------------------------------------------------------------------------------
+## Customizations - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## Customizations - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Entities
 ###############################################################################
 
 input_select:
+##-----------------------------------------------------------------------------------------------
+## input_select - Active
+##-----------------------------------------------------------------------------------------------
   environment_livingroom_humidity_state:
     name: Luchtvochtigheid Woonkamer status
     options: 
@@ -116,8 +128,18 @@ input_select:
       - Normaal
       - Hoog
       - Te hoog
+##-----------------------------------------------------------------------------------------------
+## input_select - Check
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## input_select - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 sensor:
+##-----------------------------------------------------------------------------------------------
+## sensors - Active
+##-----------------------------------------------------------------------------------------------
   ## Season sensor (astronomical)
   - platform: season
     type: astronomical
@@ -132,30 +154,6 @@ sensor:
         # value_template: '{% set timestamp = as_timestamp(state_attr("sun.sun","next_rising")) | timestamp_custom("%H:%M") %} {{ timestamp.lstrip("0") }}'
         value_template: "{% set timestamp = as_timestamp(state_attr('sun.sun','next_rising')) | timestamp_custom('%H:%M') %} {{ timestamp }}"
         unit_of_measurement: "AM"
-  ## Sensors for monitoring last updated interval
-  - platform: template
-    sensors:
-      environment_bathroom_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_bathroom_temperature.last_updated))/60)|int }}"
-      environment_bedroom_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_bedroom_temperature.last_updated))/60)|int }}"
-      environment_hallway_floor2_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_hallway_floor2_temperature.last_updated))/60)|int }}"
-      environment_heating_room_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_heating_room_temperature.last_updated))/60)|int }}"
-      environment_kim_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_kim_temperature.last_updated))/60)|int }}"
-      environment_livingroom_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_livingroom_temperature.last_updated))/60)|int }}"
-      environment_office_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_office_temperature.last_updated))/60)|int }}"
-      environment_storage_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_storage_temperature.last_updated))/60)|int }}"
-      environment_toilet_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_toilet_temperature.last_updated))/60)|int }}"
-      light_level_office_level_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.light_level_office_level.last_updated))/60)|int }}"
-
   ## Inhouse environment sensors - temperature
   - platform: "mqtt"
     name: environment_office_temperature
@@ -501,16 +499,51 @@ sensor:
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
+##-----------------------------------------------------------------------------------------------
+## sensors - Check
+##-----------------------------------------------------------------------------------------------
+  ## Sensors for monitoring last updated interval
+  - platform: template
+    sensors:
+      environment_bathroom_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_bathroom_temperature.last_updated))/60)|int }}"
+      environment_bedroom_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_bedroom_temperature.last_updated))/60)|int }}"
+      environment_hallway_floor2_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_hallway_floor2_temperature.last_updated))/60)|int }}"
+      environment_heating_room_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_heating_room_temperature.last_updated))/60)|int }}"
+      environment_kim_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_kim_temperature.last_updated))/60)|int }}"
+      environment_livingroom_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_livingroom_temperature.last_updated))/60)|int }}"
+      environment_office_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_office_temperature.last_updated))/60)|int }}"
+      environment_storage_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_storage_temperature.last_updated))/60)|int }}"
+      environment_toilet_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_toilet_temperature.last_updated))/60)|int }}"
+      light_level_office_level_last_updated:
+        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.light_level_office_level.last_updated))/60)|int }}"
+##-----------------------------------------------------------------------------------------------
+## sensors - Obsolete
+##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
 ###############################################################################
 
-
 ###############################################################################
 ##  Automations
 ###############################################################################
 automation:
+##-----------------------------------------------------------------------------------------------
+## automations - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## automations - Check
+##-----------------------------------------------------------------------------------------------
   ## automation to run when a environmental sensor is not seen for a set time
   ## expire_after parameter for the MQTT sensor is triggering this (changes to "unknown")
   - alias: "Environment Sensor no longer updating"
@@ -541,9 +574,8 @@ automation:
         data_template:
           sensor: "{{ trigger.to_state.attributes.friendly_name }}"
 ##-----------------------------------------------------------------------------------------------
-## Automations moved to Node_RED
+## automations - Obsolete
 ##-----------------------------------------------------------------------------------------------
-
   ## automation to run when livingroom humidity is too low
   - alias: "Environment Livingroom humidity too low"
     initial_state: "off"
@@ -693,11 +725,17 @@ automation:
 ##  Templates
 ###############################################################################
 
-
 ###############################################################################
 ##  Scripts
 ###############################################################################
 script:
+##-----------------------------------------------------------------------------------------------
+## scripts - Active
+##-----------------------------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------------------------
+## scripts - Check
+##-----------------------------------------------------------------------------------------------
   ## script for sending alerts when a environmetal sensors is not updating for a set time
   environment_alert_notification:
     alias: Omgevings sensor update niet meer notify
@@ -709,6 +747,9 @@ script:
           value3: " is niet meer geupdate."
           who: "ralph"
           prio: -2
+##-----------------------------------------------------------------------------------------------
+## scripts - Obsolete
+##-----------------------------------------------------------------------------------------------
   ## script for storing the alert when Ralph is not home or during night time
   environment_alert_store:
     alias: Omgevings sensor update niet meer bewaar
