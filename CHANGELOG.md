@@ -1,6 +1,35 @@
 # Changelog
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
+## [1.6.0]
+### 2020-12-29
+- Updated: Complete overhaul of picture-elements cards incl. the creation of new buttons and icons.
+- Updated: Revision of a number of flows in Node-RED related to: precense, scenes, light behaviour.
+- Removed: Commented automations ans scripts from HA (these are all in Node-RED now).
+- Added: custom card for labels in picture-elements cards ([text-element card](https://github.com/custom-cards/text-element)).
+- Added: Lidl/Silvercrest ZigBee powerplugs for high cabinets and christmas tree.
+- Updated: A number of small changes in Node-RED flows.
+- Updated: started clean-up of Lovelace custom cards configurations
+### 2020-11-16
+- Updated: HA  0.114.1 sequential to version 0.117.6
+## 2020-11-04
+- Added: Node-RED flows for lightcontrol based on Xiaomi light sensors icncluding supporting input_booleans in HA. 
+### 2020-08-21
+- Updated: HA to version 0.114.1
+
+## [1.5.0]
+### 2020-09-25
+- Added windows on the 2nd floor to the UI. [Issue #013](https://github.com/rbisschops/homeassistant/issues/13)
+- Added experimental wake-up light function in Node-RED. [Issue #042](https://github.com/rbisschops/homeassistant/issues/42)
+### 2020-09-24
+- Added new garbage bin (paper) for testing earlier notification (day before). [Issue #041](https://github.com/rbisschops/homeassistant/issues/41)
+- Added BLE temp/humidity sensors based on BLE Xiaomi Mijia devices
+- Added BLE tracker based on ESPHome/ESP32. [Issue #043](https://github.com/rbisschops/homeassistant/issues/43)
+### 2020-09-20
+- Disabled all YAML automations and scripts that moved to Node-RED over the last weeks. Rebooted HA with "clean" config.
+- Disabled all YAML based entities that are no longer in use.
+- Migrated last automations and scripts to Node-RED over the past weeks.
+
 ## [1.4.0] 
 ### 2020-08-20
 - Migrated humidity notifications to Node-RED.
@@ -41,7 +70,7 @@ As of 2020-03-25 All notable changes to my Homeassistant configuration will be d
 - Updated: Node-RED flows for lighting.
 - Removed: Hue from config files (yaml). Is now integration.
 - Updated: theme files to remove paper as class.
-- Updated HA to version 0.113.2
+- Updated: HA to version 0.113.2
 
 ## [1.2.0] - 2020-07-04
 - Updated custome header configuration
