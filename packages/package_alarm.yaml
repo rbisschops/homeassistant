@@ -9,43 +9,45 @@
 ###############################################################################
 homeassistant:
   customize:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
     ## Refridgerator door sensors
+    ## Source: Xiaomi Aqara ZigBee
     binary_sensor.door_refrigerator:
       friendly_name: Koelkast deur
     sensor.door_refrigerator_linkquality:
       friendly_name: Koelkastdeur (link quality)
     ## Office motion sensors
+    ## Source: Xiaomi Aqara ZigBee
     binary_sensor.motion_office:
       friendly_name: Bewegingssensor kantoor
     sensor.motion_office_linkquality:
       friendly_name: Bewegingssensor kantoor (link quality)
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Future use
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Future use
+    ##-----------------------------------------------------------------------------------------------
+    # ## Freezer door sensors
     # binary_sensor.door_freezer:
     #   friendly name: Vriezer deur
     # sensor.door_freezer_linkquality:
     #   friendly_name: Vriezer deur (link quality)
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Entities
 ###############################################################################
 binary_sensor:
-##-----------------------------------------------------------------------------------------------
-## binary_sensor - Active
-##-----------------------------------------------------------------------------------------------
-  ## Refridgerator door (Xiaomi)
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Refridgerator door 
+  ## Source: Xiaomi Aqara ZigBee
   - platform: mqtt
     name: door_refrigerator
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
@@ -54,7 +56,8 @@ binary_sensor:
     payload_off: true
     value_template: "{{ value_json.contact }}"
     device_class: "door"
-  ## Office motion sensor (Xiaomi)
+  ## Office motion sensor 
+  ## Source: Xiaomi Aqara ZigBee
   - platform: mqtt
     name: motion_office
     state_topic: "zigbee2mqtt/mijia_office_motion"
@@ -63,7 +66,8 @@ binary_sensor:
     payload_off: false
     value_template: "{{ value_json.occupancy }}"
     device_class: "motion"
-  ## Binary sensor based on the state of input_boolean.alarm_generic_alarm. Used for lovelace tab Home 
+  ## Alarm state, used for lovelace tab Home
+  ## Source: template
   - platform: template
     sensors:
       alarm_generic_alarm:
@@ -72,7 +76,8 @@ binary_sensor:
           {{ is_state('input_boolean.alarm_generic_alarm', 'on') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/alarm48_' ~ states('input_boolean.alarm_generic_alarm') ~ '.png'}}
-  ## Any door open sensor (monitors all outside doors)
+  ## Group door open sensors (monitors all outside doors)
+  ## Source: template
   - platform: template
     sensors:
       door_all_doors:
@@ -83,7 +88,8 @@ binary_sensor:
             or is_state('input_boolean.dummy_garden_door', 'on') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/door48_' ~ states('binary_sensor.door_all_doors') ~ '.png'}}
-  ## Any window open sensor
+  ## Group window open sensors (monitors all windows)
+  ## Source: template
   - platform: template
     sensors:
       door_all_windows:
@@ -96,140 +102,190 @@ binary_sensor:
             or is_state('input_boolean.bedroom_window_r', 'on') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/window48_' ~ states('binary_sensor.door_all_windows') ~ '.png'}}
-##-----------------------------------------------------------------------------------------------
-## binary_sensor - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## binary_sensor - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 input_boolean:
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Active
-##-----------------------------------------------------------------------------------------------
-  ## Generic alarm input switch
-  alarm_generic_alarm:
-    name: Algemeen alarm
-  ## Dummy inputs for doors and windows, will be replaced with sensors in the future
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Dummy inputs for doors and windows, will be replaced with real sensors in the future
   ## Groundfloor
+  ## Groudfloor window, frontside of the house 
+  ## Source: Dummy switch
   dummy_groundfloor_front_window:
     name: Voorraam benedenverdieping (dummy)
     icon: mdi:window-closed-variant
+  ## Door garden, location livingroom  
+  ## Source: Dummy switch
   dummy_garden_door:
     name: Tuindeur (dummy)
     icon: mdi:door-closed
+  ## Door hallway, location livingroom-hallway
+  ## Source: Dummy switch
   dummy_groundfloor_hallway_door:
     name: Tussendeur woonkamer (dummy)
     icon: mdi:door-closed
+  ## Door storage, location hallway-storage
+  ## Source: Dummy switch
   dummy_hallway_storage_door:
     name: Tussendeur berging (dummy)
     icon: mdi:door-closed
+  ## Door metering cabinet, location hallway
+  ## Source: Dummy switch
   dummy_metering_cabinet_door:
     name: Meterkast deur (dummy)
     icon: mdi:door-closed
+  ## Door rest room, location hallway
+  ## Source: Dummy switch
   dummy_rest_room_door:
     name: Toiletdeur (dummy)
     icon: mdi:door-closed
+  ## Door freezer, location storage
+  ## Source: Dummy switch
   dummy_freezer_door:
     name: Vriezerdeur (dummy)
     icon: mdi:door-closed
   ## First floor
+  ## Door bathroom, location 1st floor hallway-bathroom
+  ## Source: Dummy switch
   dummy_bath_room_door:
     name: Badkamer deur (dummy)
     icon: mdi:door-closed
+  ## Door master bed room, location 1st floor hallway-master bedroom
+  ## Source: Dummy switch
   dummy_bed_room_door:
     name: Slaapkamer deur (dummy)
     icon: mdi:door-closed
+  ## Window left, locartion master bedroom 
+  ## Source: Dummy switch
   dummy_bed_room_window_left:
     name: Slaapkamer raam links (dummy)
     icon: mdi:window-closed-variant
+  ## Window right, location master bedroom
+  ## Source: Dummy switch
   dummy_bed_room_window_right:
     name: Slaapkamer raam rechts (dummy)
     icon: mdi:window-closed-variant
+  ## Door hallway, location 1st floor hallway
+  ## Source: Dummy switch
   dummy_first_floor_hallway_door:
     name: Tussendeur 1e verdieping (dummy)
     icon: mdi:door-closed
+  ## Door office, location 1st floor hallway-office
+  ## Source: Dummy switch
   dummy_office_door:
     name: Kantoor deur (dummy)
     icon: mdi:door-closed
+  ## Window office, location office
+  ## Source: Dummy switch
   dummy_office_window:
     name: Kantoor raam (dummy)
     icon: mdi:window-closed-variant
+  ## Window side room, location side room
+  ## Source: Dummy switch
   dummy_side_room_window:
     name: Kastenkamer raam (dummy)
     icon: mdi:window-closed-variant
   ## Second floor
+  ## Door heating room, location 2nd floor hallway-heating room
+  ## Source: Dummy switch
   dummy_heating_room_door:
     name: Ketelkast deur (dummy)
     icon: mdi:door-closed
+  ## Door bedroom, location 2nd floor hallway-bedroom
+  ## Source: Dummy switch
   dummy_kims_room_door:
     name: Kamer Kim (dummy)
     icon: mdi:door-closed
+  ## Window left 2nd floor bedroom, location 2nd floor bedroom
+  ## Source: Dummy switch
   dummy_kims_room_window_left:
     name: Kamer Kim raam links (dummy)
     icon: mdi:window-closed-variant
+  ## Window right 2nd floor bedroom, location 2nd floor bedroom
+  ## Source: Dummy switch
   dummy_kims_room_window_right:
     name: Kamer Kim raam rechts (dummy)
     icon: mdi:window-closed-variant
-  ## Special pupose test switches
+  ## Window hallway 2nd floor, location 2nd floor hallway
+  ## Source: Dummy switch
+  dummy_hallway_window:
+    name: Overloop raam (dummy)
+    icon: mdi:window-closed-variant
+  ## Dummy inputs for garbage bins, will be replaced with real sensors in the future
+  ## Bio bin, test switch
+  ## Source: Dummy switch
   dummy_garbage_bin_bio:
     name: GFT bak (dummy)
     icon: mdi:delete-outline
+  ## Plastic bin, test switch
+  ## Source: Dummy switch
   dummy_garbage_bin_plastic:
     name: PMD bak (dummy)
     icon: mdi:delete-outline
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ## Generic alarm input switch
+  ## Source: Dummy
+  alarm_generic_alarm:
+    name: Algemeen alarm
+  alarm_reset_alarm:
+    name: Reset alarn
+    icon: mdi:autorenew
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 sensor:
-##-----------------------------------------------------------------------------------------------
-## sensors - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Refridgerator door link quality status monitoring sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: door_refrigerator_linkquality
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
-
   ## Motion sensor office link quality status monitoring sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: motion_office_linkquality
     state_topic: "zigbee2mqtt/mijia_office_motion"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
-##-----------------------------------------------------------------------------------------------
-## sensors - Check
-##-----------------------------------------------------------------------------------------------
-  ## Sensor alarm status sensor - last update
-  - platform: "mqtt"
-    name: alert_sensors_update
-    state_topic: "home/alert/sensor_update"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/alert/sensor_update"
-  ## Sensor alarm status sensor - battery
-  - platform: "mqtt"
-    name: alert_sensors_battery
-    state_topic: "home/alert/sensor_battery"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/alert/sensor_battery"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Future use
+  ##-----------------------------------------------------------------------------------------------
+  # ## Freezer door link quality status monitoring sensor
+  # - platform: "mqtt"
+  #   name: door_freezer_linkquality
+  #   state_topic: "zigbee2mqtt/aqara_freezer_door"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   unit_of_measurement: "-"
+  #   value_template: "{{ value_json.linkquality }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+
   ## Sensor alarm status Water meter
+  ## Source: MQTT
   - platform: "mqtt"
     name: alert_water_meter
     state_topic: "home/alert/water_meter_update"
     value_template: "{{ value_json.device }}"
     json_attributes_topic: "home/alert/water_meter_update"
-##-----------------------------------------------------------------------------------------------
-## sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Groups
@@ -238,58 +294,6 @@ sensor:
 ###############################################################################
 #  Automations
 ###############################################################################
-automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-  ## Test if refigerator door or freezer door is open for more then xx minutes
-  - alias: "Alarm refrigerator door open"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id:
-          - binary_sensor.door_refrigerator
-        to: "on"
-        for: "00:10:00"
-#      - platform: state
-#        entity_id:
-#          - binary_sensor.freezer_door
-#        to: "on"
-#        for: '00:10:00'
-    action:
-      - service: script.notify_prowl
-        data_template:
-          value1: "Alarm: "
-          value2: "{{ trigger.to_state.attributes.friendly_name }}"
-          value3: " meer dan 10 minuten geopend"
-          who: "ralph"
-          prio: 2
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.alarm_generic_alarm
-
-  ## Test if alarm is gereset and perform actions
-  - alias: "Notification alarm state reset"
-    initial_state: "on"
-    trigger:
-      - platform: state
-        entity_id:
-          - input_boolean.alarm_generic_alarm
-        to: "off"
-    action:
-      - service: script.notify_prowl
-        data_template:
-          value1: "Alarm op: "
-          value2: "{{ now().day }}-{{ now().month }}-{{ now().year }}"
-          value3: " om {{ now().hour }}:{{ now().minute }} gereset"
-          who: "ralph"
-          prio: -2
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Templates
@@ -298,99 +302,6 @@ automation:
 ###############################################################################
 #  Scripts
 ###############################################################################
-script:
-##-----------------------------------------------------------------------------------------------
-## scripts - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## script for checking if alerts were generated during night time or absence of people
-  ## resets the mqtt topic to passive after processing
-  alert_check_active_alerts:
-    alias: check actieve sensor alarmen
-    sequence:
-      - service: script.notify_prowl
-        data_template:
-          value1: >-
-            {% if (state_attr('sensor.alert_sensors_update','status') == "active") %}
-              {{state_attr('sensor.alert_sensors_update','time') }}: Sensor {{ state_attr('sensor.alert_sensors_update','sensor') }} is niet meer geupdate.
-            {% else %}
-              Er zijn geen actieve sensor update alarmen.
-            {% endif %}
-          value2: ""
-          value3: ""
-          who: "ralph"
-          prio: -2
-      - service: mqtt.publish
-        data_template:
-          topic: "home/alert/sensor_update"
-          retain: true
-          payload_template: >-
-            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
-            {{ {
-              "time": timestamp,
-              "sensor": "none",
-              "topic": "last update",
-              "status" : "passive"
-            }|tojson }}
-      - delay: 
-          milliseconds: 500
-      - service: script.notify_prowl
-        data_template:
-          value1: >-
-            {% if (state_attr('sensor.alert_sensors_battery','status') == "active") %}
-              {{state_attr('sensor.alert_sensors_battery','time') }}: {{ state_attr('sensor.alert_sensors_battery','sensor') }} niveau is laag.
-            {% else %}
-              Er zijn geen actieve sensor batterij alarmen.
-            {% endif %}
-          value2: ""
-          value3: ""
-          who: "ralph"
-          prio: -2
-      - service: mqtt.publish
-        data_template:
-          topic: "home/alert/sensor_battery"
-          retain: true
-          payload_template: >-
-            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
-            {{ {
-              "time": timestamp,
-              "sensor": "none",
-              "topic": "battery",
-              "status" : "passive"
-            }|tojson }}
-      - delay: 
-          milliseconds: 500
-      - service: script.notify_prowl
-        data_template:
-          value1: >-
-            {% if (state_attr('sensor.alert_water_meter','status') == "active") %}
-              {{state_attr('sensor.alert_water_meter','time') }}: Sensor {{ state_attr('sensor.alert_water_meter','sensor') }} is niet meer geupdate.
-            {% else %}
-              Er zijn geen actieve water meter alarmen.
-            {% endif %}
-          value2: ""
-          value3: ""
-          who: "ralph"
-          prio: -2
-      - service: mqtt.publish
-        data_template:
-          topic: "home/alert/water_meter_update"
-          retain: true
-          payload_template: >-
-            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
-            {{ {
-              "time": timestamp,
-              "sensor": "Water meter",
-              "topic": "last update",
-              "status" : "passive"
-            }|tojson }}
 
 ###############################################################################
 #  Timers

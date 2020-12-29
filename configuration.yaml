@@ -79,6 +79,7 @@ logger:
   logs:
     homeassistant.components.mysensors: warning
     mysensors: warning
+    # homeassistant.components.script: debug
 
 ## Lovelace UI
 lovelace:
@@ -89,12 +90,15 @@ lovelace:
     type: module
   - url: /local/custom_cards/button-card.js?v=3.3.6
     type: module
-  - url: /local/custom_cards/custom-header.js?v=1.6.7
+  - url: /local/custom_cards/custom-header.js?v=1.6.7 # Update to V1.8.3
     type: module
   - url: /local/custom_cards/decluttering-card.js?v=0.6.3
     type: module
-  - url: /local/custom_cards/card-mod.js?v=14
+  - url: /local/custom_cards/card-mod.js?v=14 # Update to V2.0??
     type: module
+  - url: /local/custom_cards/text-element.js?v=0.0.2
+    type: js
+
 
 ## Enables a map showing the location of tracked devices
 map:

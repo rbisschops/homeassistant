@@ -7,74 +7,59 @@
 ##  Homeassistant settings
 ###############################################################################
 homeassistant:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Entities
 ###############################################################################
 input_boolean:
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Active
-##-----------------------------------------------------------------------------------------------
-  ## Manual mode switches for things
-  light_garden_button:
-    name: Tuin verlichting
-    icon: mdi:lightbulb
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Button water ornament
+  ## Source: template switch
   switch_water_ornament_button:
     name: Waterbollen
     icon: mdi:fountain
+  ## Button sunscreen
+  ## Source: template switch
   blinds_sunscreen_button:
     name: Zonnescherm
     icon: mdi:blinds 
-  ## Status monitoring, only change state based in input from Node-RED
+  ## Status monitoring garden lights
+  ## Source: template switch
   light_garden:
     name: Tuin verlichting
     icon: mdi:lightbulb
+  ## Status monitoring water ornament
+  ## Source: template switch
   switch_water_ornament:
     name: Waterbollen
     icon: mdi:fountain
+  ## Status monitoring sunscreen
+  ## Source: template switch
   blinds_sunscreen:
     name: Zonnescherm
-    icon: mdi:blinds 
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Check
-##-----------------------------------------------------------------------------------------------
-  ## Pause state toggle for sunscreen lovelace
-  blinds_sunscreen_pause:
-    name: Pauze zonnescherm
-  ## Test switch for sunscreen. Removed when all automations work ok
-  blinds_sunscreen_test:
-    name: Test zonnescherm
     icon: mdi:blinds
-  ## Manual mode switch for the sunscreen 
+  ## Manual mode switch for the sunscreen
+  ## Source: template switch
   blinds_sunscreen_manual:
-    name: Zonnescherm handmatig  
-##-----------------------------------------------------------------------------------------------
-##input_boolean - Obsolete
-##-----------------------------------------------------------------------------------------------
+    name: Zonnescherm handmatig
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  # light_garden_button:
+  #   name: Tuin verlichting
+  #   icon: mdi:lightbulb
 
 input_select:
-##-----------------------------------------------------------------------------------------------
-## input_select - Active
-##-----------------------------------------------------------------------------------------------
-  ## State indicators for things
-  light_garden:
-    name: Tuin verlichting
-    options:
-      - "on"
-      - "off"
-      - "auto"
-      - "hand"
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## State indicator water ornament
+  ## Source: template input select 
   switch_water_ornament:
     name: Waterbollen
     options:
@@ -82,13 +67,16 @@ input_select:
       - "off"
       - "auto"
       - "hand"
+  ## State indicator sunscreen
+  ## Source: template input select 
   blinds_sunscreen:
     options:
       - "on"
       - "off"
       - "auto"
       - "hand"
-  ## Selector for the reason for the blinds state.
+  ## Reason indicator sunscreen
+  ## Source: template input select 
   blinds_sunscreen_reason:
     name: Nieuwe hue scene
     icon: mdi:lightbulb
@@ -99,365 +87,38 @@ input_select:
       - Overbrugt
       - Tijd
       - "-"
-##-----------------------------------------------------------------------------------------------
-## input_select - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_select - Obsolete
-##-----------------------------------------------------------------------------------------------
-
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ## State indicator garden lights
+  ## Source: template input select 
+  light_garden:
+    name: Tuin verlichting
+    options:
+      - "on"
+      - "off"
+      - "auto"
+      - "hand"
 
 ###############################################################################
 ##  Groups
 ###############################################################################
-group:
-  # garden_lights:
-  #   name: Tuinverlichting
-  #   entities:
-  #     - input_boolean.light_garden
-  #     - automation.tuinverlichting_bij_zonsondergang
-  #     - automation.tuinverlichting_bij_thuiskomst
-  # light_garden:
-  #   name: Tuin verlichting
-  #   entities:
-  #     - switch.habridge_gardenlight
-  #     - input_boolean.light_garden
-  # switch_water_ornament:
-  #   name: Waterbollen
-  #   entities:
-  #     - switch.habridge_waterornament
-  #     - input_boolean.switch_water_ornament
 
 ###############################################################################
 ##  Automations
 ###############################################################################
-automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Switch garden lights on and off
-  # - alias: "Light garden toggle"
-  #   initial_state: "off"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #       - switch.habridge_gardenlight
-  #       - input_boolean.light_garden
-  #   action:
-  #     - service_template: >-
-  #         {% if is_state(trigger.entity_id, 'on') %}
-  #           homeassistant.turn_on
-  #         {% elif is_state(trigger.entity_id, 'off') %}
-  #           homeassistant.turn_off
-  #         {% endif %}
-  #       entity_id: input_boolean.domoticz_light_garden
-  #     - service_template: >-
-  #         {% if is_state(trigger.entity_id, 'on') %}
-  #           homeassistant.turn_on
-  #         {% elif is_state(trigger.entity_id, 'off') %}
-  #           homeassistant.turn_off
-  #         {% endif %}
-  #       entity_id: group.light_garden
-      # - service_template: >-
-      #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
-      #   entity_id: input_boolean.domoticz_light_garden
-      # - service_template: >-
-      #     {{ 'homeassistant.turn_on' if is_state('trigger.entity_id','on') else 'homeassistant.turn_off' }} 
-      #   entity_id: group.light_garden
-
-  ## Switch fountain lights on and off
-  # - alias: "Switch water ornament toggle"
-  #   initial_state: "off"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #       - switch.habridge_waterornament
-  #       - input_boolean.switch_water_ornament
-  #   action:
-  #     - service_template: >-
-  #         {% if is_state(trigger.entity_id, 'on') %}
-  #           homeassistant.turn_on
-  #         {% elif is_state(trigger.entity_id, 'off') %}
-  #           homeassistant.turn_off
-  #         {% endif %}
-  #       entity_id: input_boolean.domoticz_switch_water_ornament
-  #     - service_template: >-
-  #         {% if is_state(trigger.entity_id, 'on') %}
-  #           homeassistant.turn_on
-  #         {% elif is_state(trigger.entity_id, 'off') %}
-  #           homeassistant.turn_off
-  #         {% endif %}
-  #       entity_id: group.switch_water_ornament
-
-  ## Switch on gardenlights at sunset but only if someone is home
-  # - alias: "Light garden on at sunset"
-  #   initial_state: 'off'
-  #   trigger:
-  #     - platform: sun
-  #       event: sunset
-  #       offset: '00:15:00'
-  #     - platform: sun
-  #       event: sunset
-  #       offset: '00:16:00'
-  #     - platform: sun
-  #       event: sunset
-  #       offset: '00:17:00'
-  #   condition:
-  #     condition: and
-  #     conditions: 
-  #       - condition: state
-  #         entity_id: binary_sensor.presence_everybody_away
-  #         state: "off"
-  #       - condition: state
-  #         entity_id: input_boolean.mode_holiday
-  #         state: "off"
-  #   action:
-  #     - service: homeassistant.turn_on
-  #       entity_id: input_boolean.light_garden
-
-  ## Switch on gardenlights before sunrise but only if someone is home
-  # - alias: "Light garden on before sunrise"
-  #   initial_state: "off
-  #   trigger:
-  #     - platform: time
-  #       at: "06:30:00"
-  #     - platform: time
-  #       at: "06:31:00"
-  #     - platform: time
-  #       at: "06:32:00"
-  #   condition:
-  #     condition: and
-  #     conditions: 
-  #       - condition: state
-  #         entity_id: binary_sensor.presence_everybody_away
-  #         state: "off"
-  #       - condition: state
-  #         entity_id: input_boolean.mode_holiday
-  #         state: "off"
-  #       - condition: state
-  #         entity_id: sun.sun
-  #         state: "below_horizon"
-  #   action:
-  #     - service: homeassistant.turn_on
-  #       entity_id: input_boolean.light_garden
-
-  ## Switch off gardenlights at sunrise but only if someone is home
-  # - alias: "Light garden off at sunrise"
-  #   initial_state: "off"
-  #   trigger:
-  #     - platform: sun
-  #       event: sunrise
-  #       offset: "-00:15:00"
-  #     - platform: sun
-  #       event: sunrise
-  #     - platform: sun
-  #       event: sunrise
-  #       offset: "00:05:00"
-  #   action:
-  #     - service: homeassistant.turn_off
-  #       entity_id: input_boolean.light_garden
-
-  ## Switch gardenlights at home coming but only when dark and before 23:00
-  # - alias: "Light garden on at home coming"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: 
-  #         ## Added in V1.3.3
-  #         - binary_sensor.door_front_door
-  #       to: "on"
-  #   condition:  
-  #     condition: and
-  #     conditions:
-  #       - condition: sun
-  #         after: sunset
-  #       - condition: time
-  #         before: "23:00:00"
-  #       ## Added in V1.3.3
-  #       - condition: or
-  #         conditions:
-  #           - condition: state
-  #             entity_id: input_select.presence_ralph_bisschops
-  #             state: "Just Arrived"
-  #           - condition: state
-  #             entity_id: input_select.presence_anneke_bisschops
-  #             state: "Just Arrived"
-  #           - condition: state
-  #             entity_id: input_select.presence_kimberly_bisschops
-  #             state: "Just Arrived"
-  #   action:
-  #     - service: homeassistant.turn_on
-  #       entity_id: input_boolean.light_garden
-
-  ## Start and stop sunscreen based on toggle pause/start from frontend 
-  - alias: "Blinds - Pause sunscreen"
-    initial_state: "off"
-    trigger:
-      - platform: state
-        entity_id: 
-          - input_boolean.blinds_sunscreen_pause
-    action:
-      - service_template: >-
-          {{ 'homeassistant.turn_on' if is_state("switch.rfx_sunscreen", "on") else 'homeassistant.turn_off' }}
-        entity_id: switch.rfx_sunscreen
-
-  ## Open sunscreen based on position of the sun (elevation)
-  - alias: "Blinds - Sunscreen out based on elevation" 
-    initial_state: "off"
-    trigger:
-      - platform: numeric_state
-        entity_id: sun.sun
-        value_template: "{{ state.attributes.elevation |int }}"
-        above: 16
-    condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.blinds_sunscreen_manual
-          state: "off"
-        - condition: template
-          value_template: >
-            {{ 'true' if states('sensor.br_precipitation_forecast_total')|float == 0.0 else 'false' }}
-        - condition: state
-          entity_id: switch.rfx_sunscreen
-          state: "off"
-    action:
-      - service: script.blinds_open_sunscreen
-      - service: script.notify_prowl
-        data_template:
-          value1: "Zonnescherm: "
-          value2: "zonnescherm gaat open op basis van elevatie zon"
-          value3: " "
-          who: "ralph"
-          prio: -2   
-
-  ## Open sunscreen when percipitation returns to 0.0
-  - alias: "Blinds - Sunscreen out based on rain precipation"
-    initial_state: "off"
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.br_precipitation_forecast_total
-        value_template: "{{ (states('sensor.br_precipitation_forecast_total')|float) }}"
-        below: 0.01
-    condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.blinds_sunscreen_manual
-          state: "off"
-        - condition: template
-          value_template: >
-            {{ 'true' if state_attr('sun.sun','elevation')|float >= 16.0 else 'false' }}
-        - condition: template
-          value_template: >
-            {{ 'true' if state_attr('sun.sun','azimuth')|int >= 200 else 'false' }}
-        - condition: state
-          entity_id: switch.rfx_sunscreen
-          state: 'off'
-    action: 
-      - service: script.blinds_open_sunscreen
-      - service: script.notify_prowl
-        data_template:
-          value1: "Zonnescherm: "
-          value2: "zonnescherm gaat open, geen regen verwacht"
-          value3: " "
-          who: "ralph"
-          prio: -2
-
-  ## Close sunscreen when rain is expected (percipitation > 0.0 or when its 19:30 or when azimuth is over 200.0
-  ## Azimuth is trigger commented for now
-  - alias: "Blinds - Sunscreen in"
-    initial_state: "off"
-    trigger:
-      - platform: numeric_state
-        entity_id: sensor.br_precipitation_forecast_total
-        value_template: "{{ (states('sensor.br_precipitation_forecast_total')|float) }}"
-        above: 0.0
-      # - platform: numeric_state
-      #   entity_id: sun.sun
-      #   value_template: "{{ state.attributes.azimuth |int }}"
-      #   above: 200
-      - platform: time
-        at: "19:30:00"
-    condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: switch.rfx_sunscreen
-          state: "on"
-        - condition: state
-          entity_id: input_boolean.blinds_sunscreen_manual
-          state: "off"
-    action:
-      - service: script.blinds_close_sunscreen
-      - service: script.notify_prowl
-        data_template:
-          value1: "Zonnescherm: "
-          value2: "Zonnescherm gaat dicht "
-          value3: "het is tijd of regen verwacht"
-          who: "ralph"
-          prio: -2
 
 ###############################################################################
 ##  Templates
 ###############################################################################
 
-
 ###############################################################################
 ##  Scripts
 ###############################################################################
-script:
-##-----------------------------------------------------------------------------------------------
-## scripts - Active
-##-----------------------------------------------------------------------------------------------
 
-##-----------------------------------------------------------------------------------------------
-## scripts - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Obsolete
-##-----------------------------------------------------------------------------------------------
-  blinds_open_sunscreen:
-    alias: "Zonnescherm uit"
-    sequence:
-      - service: homeassistant.turn_on
-        # entity_id: input_boolean.domoticz_blinds_sunscreen
-        entity_id: switch.rfx_sunscreen
-      - service: homeassistant.turn_on
-        entity_id: input_boolean.blinds_sunscreen_test
-  blinds_close_sunscreen:
-    alias: "Zonnescherm in"
-    sequence:
-      - service: homeassistant.turn_off
-        # entity_id: input_boolean.domoticz_blinds_sunscreen
-        entity_id: switch.rfx_sunscreen
-      - service: homeassistant.turn_off
-        entity_id: input_boolean.blinds_sunscreen_test
-
-  # pause_sun_screen:
-  #   alias: Puazeer zonnescherm
-  #   sequence:
-  #   - service_template: >-
-  #       {{ 'homeassistant.turn_on' if is_state("switch.rfx_sunscreen", "on") else 'homeassistant.turn_off' }}
-  #     entity_id: switch.rfx_sunscreen
-
-  # pause_sunscreen:
-  #   alias: "Pauzeer zonnescherm op huidige positie"
-  #   sequence:
-  #     - service: script.domoticz_domoticz_output_sun_screen
-  #       data_template:
-  #         # new_state: '{{ states.input_boolean.domoticz_blinds_sunscreen.state }}'
-  #         new_state: '{{ states("input_boolean.domoticz_blinds_sunscreen") }}'
 ###############################################################################
 ##  Timers
 ###############################################################################

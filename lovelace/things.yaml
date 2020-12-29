@@ -51,6 +51,10 @@ cards:
         entities:
           - entity: binary_sensor.presence_people_home
             icon: mdi:account-multiple
+          - entity: binary_sensor.presence_everybody_away
+            icon: mdi:account-multiple            
+          - entity: binary_sensor.presence_everybody_extended_away
+            icon: mdi:account-multiple
       - type: custom:decluttering-card
         template: custom_markdown_card_small
         variables:
@@ -143,19 +147,19 @@ cards:
       template: custom_markdown_card
       variables:
         - title: Woonkamer
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Verlichting Hue
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - light.woonkamer
-        - input_select.light_hue_scenes
-        - input_select.light_hue_groups
-        - script.light_hue_manual_set_scene
+    # - type: custom:decluttering-card
+    #   template: custom_markdown_card_small
+    #   variables:
+    #     - title: Verlichting Hue
+    # - type: entities
+    #   show_state: false
+    #   show_name: false
+    #   show_header_toggle: false
+    #   entities:
+    #     - light.woonkamer
+    #     - input_select.light_hue_scenes
+    #     - input_select.light_hue_groups
+    #     - script.light_hue_manual_set_scene
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -380,6 +384,8 @@ cards:
           name: Omgevingscondities kamer kim
         - entity: sensor.environment_storage_battery
           name: Omgevingscondities berging
+        - entity: sensor.light_level_garden_battery
+          name: Lichtsensor tuin
   # - type: vertical-stack
   #   cards:
   #   - type: entities

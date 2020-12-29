@@ -7,21 +7,21 @@ title: Automations
 icon: "mdi:file-code-outline"
 background: "#e3e3e3"
 cards:
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Alarm automatiseringen
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-      - entity: automation.alarm_refrigerator_door_open
-        name: Koelkast alarm
-      - entity: automation.notification_alarm_state_reset
-        name: Alarm gereset
+  # - type: vertical-stack
+  #   cards:
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card_small
+  #     variables:
+  #       - title: Alarm automatiseringen
+  #   - type: entities
+  #     show_state: false
+  #     show_name: false
+  #     show_header_toggle: false
+  #     entities:
+  #     - entity: automation.alarm_refrigerator_door_open
+  #       name: Koelkast alarm
+  #     - entity: automation.notification_alarm_state_reset
+  #       name: Alarm gereset
   # - type: vertical-stack
   #   cards:
     # - type: custom:decluttering-card
@@ -104,45 +104,45 @@ cards:
       #   name: Publiceer tuinverlichting naar Domoticz
       # - entity: automation.domoticz_publish_switch_water_ornament
       #   name: Publiceer waterbollen naar Domoticz
-      - entity: automation.domoticz_publish_blinds_sunscreen
-        name: Publiceer zonnescherm naar Domoticz
-      - entity: automation.domoticz_subscribe_read_domoticz_zigbee_switch
-        name: Lees zigbee schakelaar
-      - entity: automation.domoticz_subscribe_read_domoticz_coco_switch
-        name: Lees klik-aan-klik-uit schakelaar
-      - entity: automation.domoticz_publish_utilities_electiricity_values
-        name: Lees waarden elektriciteit
-      - entity: automation.domoticz_publish_utilities_gas_values
-        name: Lees waarden gas
+      # - entity: automation.domoticz_publish_blinds_sunscreen
+      #   name: Publiceer zonnescherm naar Domoticz
+      # - entity: automation.domoticz_subscribe_read_domoticz_zigbee_switch
+      #   name: Lees zigbee schakelaar
+      # - entity: automation.domoticz_subscribe_read_domoticz_coco_switch
+      #   name: Lees klik-aan-klik-uit schakelaar
+      # - entity: automation.domoticz_publish_utilities_electiricity_values
+      #   name: Lees waarden elektriciteit
+      # - entity: automation.domoticz_publish_utilities_gas_values
+      #   name: Lees waarden gas
       - entity: automation.domoticz_publish_utilities_water_values
         name: Lees waarden water
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Berging automatiseringen
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-      - entity: automation.vibration_mail_received
-        name: Melding post ontvangen
-  - type: vertical-stack
-    cards:
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title:Media center automatiseringen
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-      - entity: automation.media_actions_triggered_from_ui
-        name: Media van UI
-      - entity: automation.media_actions_triggered_from_ha_bridge
-        name: Media van HA-bridge
-      - entity: automation.media_actions_triggered_from_harmony_hub
-        name: Media van Harmony Hub
+  # - type: vertical-stack
+  #   cards:
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card_small
+  #     variables:
+  #       - title: Berging automatiseringen
+  #   - type: entities
+  #     show_state: false
+  #     show_name: false
+  #     show_header_toggle: false
+  #     entities:
+  #     - entity: automation.vibration_mail_received
+  #       name: Melding post ontvangen
+  # - type: vertical-stack
+  #   cards:
+  #   - type: custom:decluttering-card
+  #     template: custom_markdown_card_small
+  #     variables:
+  #       - title:Media center automatiseringen
+  #   - type: entities
+  #     show_state: false
+  #     show_name: false
+  #     show_header_toggle: false
+  #     entities:
+  #     - entity: automation.media_actions_triggered_from_ui
+  #       name: Media van UI
+  #     - entity: automation.media_actions_triggered_from_ha_bridge
+  #       name: Media van HA-bridge
+  #     - entity: automation.media_actions_triggered_from_harmony_hub
+  #       name: Media van Harmony Hub

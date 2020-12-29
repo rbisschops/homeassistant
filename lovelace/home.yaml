@@ -33,32 +33,33 @@ cards:
       template: custom_markdown_card
       variables:
         - title: Huis status
-    - type: horizontal-stack
+    # - type: horizontal-stack
+    #   cards:
+    - type: vertical-stack
       cards:
-      - type: vertical-stack
-        cards:
-        - type: custom:decluttering-card
-          template: custom_markdown_card_small
-          variables:
-            - title: Alarmen
-        - type: glance
-          show_state: false
-          entities:
-          - entity: binary_sensor.alarm_generic_alarm
-          - entity: binary_sensor.door_all_doors
-          - entity: binary_sensor.door_all_windows
-      - type: vertical-stack
-        cards:
-        - type: custom:decluttering-card
-          template: custom_markdown_card_small
-          variables:
-            - title: Vuilnisbakken
-        - type: glance
-          show_state: false
-          show_name: true
-          entities:
-          - entity: binary_sensor.garbage_bin_gft
-          - entity: binary_sensor.garbage_bin_pmd
+      - type: custom:decluttering-card
+        template: custom_markdown_card_small
+        variables:
+          - title: Alarmen
+      - type: glance
+        show_state: false
+        entities:
+        - entity: binary_sensor.alarm_generic_alarm
+        - entity: binary_sensor.door_all_doors
+        - entity: binary_sensor.door_all_windows
+    - type: vertical-stack
+      cards:
+      - type: custom:decluttering-card
+        template: custom_markdown_card_small
+        variables:
+          - title: Vuilnisbakken
+      - type: glance
+        show_state: false
+        show_name: true
+        entities:
+        - entity: binary_sensor.garbage_bin_gft
+        - entity: binary_sensor.garbage_bin_pmd
+        - entity: binary_sensor.garbage_bin_paper
 
   ## Control cards
   - type: vertical-stack
@@ -74,21 +75,23 @@ cards:
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
-          template: stats_light_button_hue
+          template: hue_light_button # updated with clean-up of ui-lovelace
           variables: 
             - entity: light_livingroom
             - name: Woonkamer
             - icon: lightbulb
         - type: custom:decluttering-card
-          template: stats_light_button_large
+          template: switch_button_large # updated with clean-up of ui-lovelace
           variables: 
-            - entity: light_high_cabinets
+            - entity: high_cabinets
+            - type: light
             - name: Hoge kasten
             - icon: lightbulb
         - type: custom:decluttering-card
-          template: stats_light_button_large
+          template: coco_button_large # updated with clean-up of ui-lovelace
           variables: 
-            - entity: light_garden
+            - entity: garden
+            - type: light
             - name: Tuin
             - icon: lightbulb
     - type: horizontal-stack
@@ -100,15 +103,17 @@ cards:
             - name: Bar
             - icon: lightbulb
         - type: custom:decluttering-card
-          template: stats_light_button_large
+          template: generic_light_button_large # updated with clean-up of ui-lovelace
           variables: 
             - entity: light_hallway
+            - type: light
             - name: Halletje
             - icon: lightbulb
         - type: custom:decluttering-card
-          template: stats_light_button_large
+          template: generic_light_button_large # updated with clean-up of ui-lovelace
           variables: 
             - entity: light_porch
+            - type: light
             - name: Buitenlamp
             - icon: lightbulb
     - type: horizontal-stack
@@ -122,7 +127,7 @@ cards:
         - type: custom:decluttering-card
           template: stats_media_button_large
           variables: 
-            - entity: switch_media_center 
+            - entity: switch_media_center
             - name: Media center
             - icon: television
         - type: custom:decluttering-card
@@ -164,13 +169,21 @@ cards:
         type: horizontal-stack
         cards:
           - type: custom:decluttering-card
-            template: stats_light_button_large
+            template: switch_button_large # updated with clean-up of ui-lovelace
             variables: 
-              - entity: switch_christmas_tree
+              - entity: christmas_tree
+              - type: switch
               - name: Kerstboom
               - icon: pine-tree
-          - type: custom:button-card
-            color_type: blank-card
+          - type: custom:decluttering-card
+            template: coco_button_large # updated with clean-up of ui-lovelace
+            variables: 
+              - entity: small_christmas_tree
+              - type: switch
+              - name: Kleine kerstboom
+              - icon: pine-tree
+          # - type: custom:button-card
+          #   color_type: blank-card
           - type: custom:button-card
             color_type: blank-card
     - type: custom:decluttering-card
@@ -207,18 +220,21 @@ cards:
           template: stats_rag_icon_humidity
           variables:
             - sensor: livingroom
+            - leader: cleargrass
             - name: Woonkamer
             - icon: water-percent
         - type: custom:decluttering-card
           template: stats_rag_icon_humidity
           variables:
             - sensor: toilet
+            - leader: environment
             - name: Toilet
             - icon: water-percent
         - type: custom:decluttering-card
           template: stats_rag_icon_humidity
           variables:
             - sensor: storage
+            - leader: environment
             - name: Berging
             - icon: water-percent
     - type: custom:decluttering-card
@@ -231,18 +247,21 @@ cards:
           template: stats_rag_icon_humidity
           variables:
             - sensor: bedroom
+            - leader: environment
             - name: Slaapkamer
             - icon: water-percent
         - type: custom:decluttering-card
           template: stats_rag_icon_humidity
           variables:
             - sensor: bathroom
+            - leader: environment
             - name: Badkamer
             - icon: water-percent
         - type: custom:decluttering-card
           template: stats_rag_icon_humidity
           variables:
             - sensor: office
+            - leader: environment
             - name: Kantoor
             - icon: water-percent
     - type: custom:decluttering-card
@@ -255,20 +274,71 @@ cards:
           template: stats_rag_icon_humidity
           variables:
             - sensor: kim
+            - leader: environment
             - name: Kamer Kim
             - icon: water-percent
         - type: custom:decluttering-card
           template: stats_rag_icon_humidity
           variables:
             - sensor: hallway_floor2
+            - leader: environment
             - name: Overloop
             - icon: water-percent
         - type: custom:decluttering-card
           template: stats_rag_icon_humidity
           variables:
             - sensor: heating_room
+            - leader: environment
             - name: Ketelkast
             - icon: alert-circle
+
+  ## Weather card
+
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Wekkers
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Werkdagen
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.wakeup_mb_weekday_enabled
+          name: Wekker aan
+        - entity: input_datetime.wakeup_time_mb_weekday
+          name: Wektijd
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Zaterdag
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.wakeup_mb_saturday_enabled
+          name: Wekker aan
+        - entity: input_datetime.wakeup_time_mb_saturday
+          name: Wektijd
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Zondag
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.wakeup_mb_sunday_enabled
+          name: Wekker aan
+        - entity: input_datetime.wakeup_time_mb_sunday
+          name: Wektijd
 
   ## Weather card
   - type: vertical-stack

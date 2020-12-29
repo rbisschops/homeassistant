@@ -8,165 +8,105 @@
 ###############################################################################
 homeassistant:
   customize:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
     ## Utilities sensors
-    sensor.utilities_electricity:
-      friendly_name: Elektriciteits meters
-    sensor.utilities_gas:
-      friendly_name: Gas meter
-    sensor.utilitises_water:
+    sensor.utilities_water:
       friendly_name: Water meter
     sensor.dsmr_reading_electricity_currently_delivered_watt:
       friendly_name: Huidig verbruik
-
     ## Utilities usage sensors
-    sensor.utilities_electricity_usage:
-      friendly_name: Elektriciteitsverbruik
-    sensor.utilities_electricity_current_usage:
-      friendly_name: Elektriciteitsverbruik huidig
-    sensor.utilities_electricity_high_usage:
-      friendly_name: Elektriciteitsverbruik hoog tarief
-    sensor.utilities_electricity_low_usage:
-      friendly_name: Elektriciteitsverbruik laag tarief
-    sensor.utilities_gas_usage:
-      friendly_name: Gas verbruik
     sensor.utilities_day_consumption_water_costs:
       friendly_name: Kosten dagvebruik water
     sensor.utilities_water_usage:
       friendly_name: Water verbruik
-
     ## Reference values
     sensor.utilities_reference:
       friendly_name: Referentie (E, G, W)
     sensor.utilities_total_cost_day:
       friendly_name: Totale kosten per dag (E, G, W)
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Entities
 ###############################################################################
 input_number:
-##-----------------------------------------------------------------------------------------------
-## input_number - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Active
+  ##-----------------------------------------------------------------------------------------------
   utility_water_tariff:
     name: Tarief water (EUR/m3)
     initial: 0.927
     min: 0
     max: 2
-##-----------------------------------------------------------------------------------------------
-## input_number - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_number - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 sensor:
-##-----------------------------------------------------------------------------------------------
-## sensors - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
   ## DSMR reader integration
   - platform: dsmr_reader
-  ## DSMR converted readings
-  - platform: template
-    sensors:
-      dsmr_reading_electricity_currently_delivered_watt:
-        value_template: "{{ states('sensor.dsmr_reading_electricity_currently_delivered')|float * 1000 }}"
-        unit_of_measurement: "W"
-      utilities_day_consumption_water_costs:
-        value_template: "{{(states('sensor.utilities_water_usage')|float /1000 * states('input_number.utility_water_tariff')|float)|round(2) }}"
-        unit_of_measurement: "€"
-      utilities_total_cost_day:
-        value_template: "{{ (states('sensor.dsmr_day_consumption_total_cost')|float + states('sensor.utilities_day_consumption_water_costs')|float)|round(2) }}"
-        unit_of_measurement: "€"
   ## Utilities sensor water
   - platform: "mqtt"
     name: utilities_water
     state_topic: "home/meter/water"
-    expire_after: 43200
+    expire_after: 3600             # 1 hours
     force_update: true
-    value_template: "{{ value_json.device }}"
+    value_template: "{{ value_json.usage }}"
     json_attributes_topic: "home/meter/water"
-##-----------------------------------------------------------------------------------------------
-## sensors - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Utilities sensors
-  ## E + G is obsolete as this is replaced with DSMR Reader
-  - platform: "mqtt"
-    name: utilities_electricity
-    state_topic: "home/meter/electricity"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/meter/electricity"
-  - platform: "mqtt"
-    name: utilities_gas
-    state_topic: "home/meter/gas"
-    value_template: "{{ value_json.device }}"
-    json_attributes_topic: "home/meter/gas"
+  ## Utilities water meter reference value (stored at 00:00 previous day)
+  ## Source MQTT topic home/meter/reference
   - platform: "mqtt"
     name: utilities_reference
     state_topic: "home/meter/reference"
-    value_template: "{{ value_json.device }}"
+    value_template: "{{ value_json.time }}"
     json_attributes_topic: "home/meter/reference"
-
+  ## Utilities converted readings
   - platform: template
     sensors:
-  ## Utilities sensors
-  ## E + G is obsolete as this is replaced with DSMR Reader
-      utilities_electricity_current_usage:
-        value_template: "{% set value = state_attr('sensor.utilities_electricity','current_usage') %} {{ value }}"
+      ## Current electricity usage
+      ## Source: DSMR-Reader
+      dsmr_reading_electricity_currently_delivered_watt:
+        value_template: "{{ states('sensor.dsmr_reading_electricity_currently_delivered')|float * 1000 }}"
         unit_of_measurement: "W"
-      utilities_electricity_low_usage:
-        value_template: >-
-          {% set previous = state_attr('sensor.utilities_reference','e_usage_low')|float %}
-          {% set value = state_attr('sensor.utilities_electricity','usage_low')|float %}
-          {% set value = ((value-previous)/1000)|round(3, 'common') %}
-          {{ value }}
-        unit_of_measurement: "kWh"
-      utilities_electricity_high_usage:
-        value_template: >-
-          {% set previous = state_attr('sensor.utilities_reference','e_usage_high')|float %}
-          {% set value = state_attr('sensor.utilities_electricity','usage_high')|float %}
-          {% set value = ((value-previous)/1000)|round(3, 'common') %}
-          {{ value }}
-        unit_of_measurement: "kWh"
-      utilities_electricity_usage: 
-        value_template: >-
-          {% set previous1 = state_attr('sensor.utilities_reference','e_usage_high')|float %}
-          {% set value1 = state_attr('sensor.utilities_electricity','usage_high')|float %}
-          {% set previous2 = state_attr('sensor.utilities_reference','e_usage_low')|float %}
-          {% set value2 = state_attr('sensor.utilities_electricity','usage_low')|float %}
-          {% set value = (((value1-previous1)+(value2-previous2))/1000)|round(3, 'common') %}
-          {{ value }}
-        unit_of_measurement: "kWh"
-      utilities_gas_usage:
-        value_template: >-
-          {% set previous = state_attr('sensor.utilities_reference','g_usage')|float %}
-          {% set value = state_attr('sensor.utilities_gas','usage')|float %}
-          {% set value = ((value-previous)/1000)|round(3, 'common') %}
-          {{ value }}
-        unit_of_measurement: "m3"
+      ## Water usage current day (as of 00:00)
+      ## Source: sensor.utilities water & sensor.utilities_reference
       utilities_water_usage:
         value_template: >-
-          {% set previous = state_attr('sensor.utilities_reference','w_usage')|float %}
-          {% set value = state_attr('sensor.utilities_water','usage')|float %}
-          {% set value = (value-previous)|round %}
+          {% set previous = state_attr('sensor.utilities_reference','water') %}
+          {% set value = (states('sensor.utilities_water')|float-previous['day']|float)|round %}
           {{ value }}
         unit_of_measurement: "L"
+      ## Water costs current day (as of 00:00)
+      ## Source: sensor.utilities_water_usage & input_number.utility_water_tariff
+      utilities_day_consumption_water_costs:
+        value_template: "{{(states('sensor.utilities_water_usage')|float /1000 * states('input_number.utility_water_tariff')|float)|round(2) }}"
+        unit_of_measurement: "€"
+      ## Utilities costs current day (E+G+W)
+      ## Source: sensor.dsmr_day_consumption_total_cost & sensor.utilities_day_consumption_water_costs
+      utilities_total_cost_day:
+        value_template: "{{ (states('sensor.dsmr_day_consumption_total_cost')|float + states('sensor.utilities_day_consumption_water_costs')|float)|round(2) }}"
+        unit_of_measurement: "€"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
-camera:
+# camera:
 ##-----------------------------------------------------------------------------------------------
 ## cameras - Active
 ##-----------------------------------------------------------------------------------------------
@@ -196,106 +136,14 @@ camera:
 ###############################################################################
 ##  Automations
 ###############################################################################
-automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-  ## automation to run when water meter is not seen for a set time
-  ## expire_after parameter for the MQTT sensor is triggering this (changes to "unknown")
-  - alias: "Water meter no longer updating"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id:
-        - sensor.utilities_water
-      to: "unknown"
-      for: 
-        hours: 1
-    action:
-      - service_template: >-
-          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.water_alert_notification
-          {% else %}
-            script.water_alert_store
-          {% endif %} 
-        data_template:
-          sensor: "{{ trigger.to_state.attributes.friendly_name }}"
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-  ## Automation for storing the nightly values (00:00) for reference. Reference is used for daily usage graphs 
-  ## E + G is obsolete as this is replaced with DSMR Reader as of V1.7.0
-  - alias: "Utilities - update utilities reference values"
-    initial_state: "on" 
-    trigger:
-      platform: time
-      at: "00:00:00"
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "home/meter/reference"
-          retain: true
-          payload_template: >-
-            {% set e_usage_low = state_attr('sensor.utilities_electricity','usage_low')|float %}
-            {% set e_usage_high = state_attr('sensor.utilities_electricity','usage_high')|float %}
-            {% set g_usage = state_attr('sensor.utilities_gas','usage')|float %}
-            {% set w_usage = state_attr('sensor.utilities_water','usage')|float %}
-            {{ {
-              "e_usage_low": e_usage_low,
-              "e_usage_high": e_usage_high,
-              "g_usage": g_usage,
-              "w_usage": w_usage
-            }|tojson }}
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Templates
 ###############################################################################
 
-
 ###############################################################################
 ##  Scripts
 ###############################################################################
-script:
-##-----------------------------------------------------------------------------------------------
-## scripts - Active
-##-----------------------------------------------------------------------------------------------
-  ## script for sending alerts when water meter is not updating for a set time
-  water_alert_notification:
-    alias: Water meter update niet meer notify
-    sequence:
-      - service: script.notify_prowl
-        data_template:
-          value1: "{% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %} {{ timestamp }}: Water meter"
-          value2: "{{ sensor }}"
-          value3: " is niet meer geupdate."
-          who: "ralph"
-          prio: -2
-##-----------------------------------------------------------------------------------------------
-## scripts - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## script for storing the alert when Ralph is not home or during night time
-  water_alert_store:
-    alias:  Water meter update niet meer bewaar
-    sequence:
-      - service: mqtt.publish
-        data_template:
-          topic: "home/alert/water_meter_update"
-          retain: true
-          payload_template: >-
-            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
-            {{ {
-              "time": timestamp,
-              "sensor": sensor,
-              "topic": "last update",
-              "status" : "active"
-            }|tojson }}
 
 ###############################################################################
 ##  Timers

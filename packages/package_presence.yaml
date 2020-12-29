@@ -8,25 +8,15 @@
 ###############################################################################
 homeassistant:
   # customize:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
-    ## Customizations for advanced presence states
-    # Sensors currently not used. review for future use ore remove
-    # sensor.presence_state_ralph:
-    #   entity_picture: /local/custom_icons/ralph48_on.png
-    # sensor.presence_state_anneke:
-    #   entity_picture: /local/custom_icons/anneke48_on.png
-    # sensor.presence_state_kimberly:
-    #   entity_picture: /local/custom_icons/kimberly48_on.png
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
 
 ##-----------------------------------------------------------------------------------------------
 ## Owntracks - Active
@@ -38,20 +28,9 @@ owntracks:
 ##  Entities
 ###############################################################################
 binary_sensor:
-##-----------------------------------------------------------------------------------------------
-## binary_sensor - Active
-##-----------------------------------------------------------------------------------------------
-  ## Everybody is extended away sensor
-  - platform: template
-    sensors:
-      presence_everybody_extended_away:
-        friendly_name: Niemand thuis (lang)
-        value_template: >-
-          {{ is_state('input_select.presence_ralph_bisschops','Extended Away')
-            and is_state('input_select.presence_anneke_bisschops','Extended Away')
-            and is_state('input_select.presence_kimberly_bisschops','Extended Away') }}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/people48_' ~ states('binary_sensor.presence_people_home') ~ '.png' }}
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Anneke home sensor
   - platform: template
     sensors:
@@ -85,9 +64,6 @@ binary_sensor:
             or is_state('input_select.presence_ralph_bisschops','Just Left') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/ralph48_' ~ states('binary_sensor.presence_ralph_home') ~ '.png' }}
-##-----------------------------------------------------------------------------------------------
-## binary_sensor - Check
-##-----------------------------------------------------------------------------------------------
   ## Anyone home sensor
   - platform: template
     sensors:
@@ -111,19 +87,35 @@ binary_sensor:
       presence_everybody_away:
         friendly_name: Niemand thuis (kort)
         value_template: >-
-          {{ is_state('input_select.presence_ralph_bisschops','Away')
-            and is_state('input_select.presence_anneke_bisschops','Away')
-            and is_state('input_select.presence_kimberly_bisschops','Away') }}
+          {% set ralph = true if is_state('input_select.presence_ralph_bisschops','Extended Away') or is_state('input_select.presence_ralph_bisschops','Away') else false %}
+          {% set anneke = true if is_state('input_select.presence_anneke_bisschops','Extended Away') or is_state('input_select.presence_anneke_bisschops','Away') else false %}
+          {% set kimberly = true if is_state('input_select.presence_kimberly_bisschops','Extended Away') or is_state('input_select.presence_kimberly_bisschops','Away') else false %}
+          {{ 'on' if ralph == true and anneke == true and kimberly == true else 'off' }}
         entity_picture_template: >-
           {{ '/local/custom_icons/people48_' ~ states('binary_sensor.presence_people_home') ~ '.png' }}
-##-----------------------------------------------------------------------------------------------
-## binary_sensor - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ## Everybody is extended away sensor
+  - platform: template
+    sensors:
+      presence_everybody_extended_away:
+        friendly_name: Niemand thuis (lang)
+        value_template: >-
+          {{ is_state('input_select.presence_ralph_bisschops','Extended Away')
+            and is_state('input_select.presence_anneke_bisschops','Extended Away')
+            and is_state('input_select.presence_kimberly_bisschops','Extended Away') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/people48_' ~ states('binary_sensor.presence_people_home') ~ '.png' }}
+
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 input_select:
-##-----------------------------------------------------------------------------------------------
-## input_select - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Ralph advanced home sensor (added for Node_RED)
   presence_ralph_bisschops:
     name: Ralph
@@ -151,320 +143,20 @@ input_select:
       - Just Left
       - Away
       - Extended Away
-##-----------------------------------------------------------------------------------------------
-## input_select - Check
-##-----------------------------------------------------------------------------------------------
-  ## Ralph advanced home sensor
-  presence_state_ralph:
-    name: Ralph
-    options:
-      - Home
-      - Just Arrived
-      - Just Left
-      - Away
-      - Extended Away
-  ## Anneke advanced home sensor
-  presence_state_anneke:
-    name: Anneke
-    options:
-      - Home
-      - Just Arrived
-      - Just Left
-      - Away
-      - Extended Away
-  ## Kimberly advanced home sensor
-  presence_state_kimberly:
-    name: Kimberly
-    options:
-      - Home
-      - Just Arrived
-      - Just Left
-      - Away
-      - Extended Away
-##-----------------------------------------------------------------------------------------------
-## input_select - Obsolete
-##-----------------------------------------------------------------------------------------------
-
-# Sensors currently not used. review for future use ore remove
-# sensor:
-##-----------------------------------------------------------------------------------------------
-## sensors - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## sensors - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
-#   - platform: template
-#     sensors:
-#       presence_state_ralph:
-#         value_template: "{{ states('input_select.presence_ralph_bisschops') }}"
-#         friendly_name: "Aanwezigheid Ralph"
-#       presence_state_anneke:
-#         value_template: "{{ states('input_select.presence_anneke_bisschops') }}"
-#         friendly_name: "Aanwezigheid Anneke"
-#       presence_state_kimberly:
-#         value_template: "{{ states('input_select.presence_kimberly_bisschops') }}"
-#         friendly_name: "Aanwezigheid Kimberly"
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
 ###############################################################################
-group:
-  presence_ralph:
-    name: Aanwezigheid Ralph
-    entities:
-      - device_tracker.wifi_ralph_iphone7
-      - device_tracker.ralph_iphone7
-  presence_anneke:
-    name: Aanwezigheid Anneke
-    entities:
-#      - device_tracker.wifi_anneke_s7
-      - device_tracker.wifi_anneke_iphone_se
-#      - device_tracker.anneke_s7 
-      - device_tracker.anneke_ipone_se
-  presence_kimberly:
-    name: Aanwezigheid Kimberly
-    entities:
-      - device_tracker.wifi_kimberly_iphone8
-      - device_tracker.kimberly_iphone8
 
 ###############################################################################
 ##  Automations
 ###############################################################################
-automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Mark a person as just arrived home
-  ## Moved automations to Node-RED for test
-  # - alias: Presence mark person as just arrived
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: group.presence_ralph
-  #       from: "not_home"
-  #       to: "home"
-  #     - platform: state
-  #       entity_id: group.presence_anneke
-  #       from: "not_home"
-  #       to: "home"
-  #     - platform: state
-  #       entity_id: group.presence_kimberly
-  #       from: "not_home"
-  #       to: "home"
-  #   action:
-  #     - service: input_select.select_option
-  #       data_template:
-  #         entity_id: >
-  #           {% if trigger.entity_id == 'group.presence_ralph' %}
-  #             input_select.presence_state_ralph
-  #           {% elif trigger.entity_id == 'group.presence_anneke' %}
-  #             input_select.presence_state_anneke
-  #           {% else %}
-  #             input_select.presence_state_kimberly
-  #           {% endif %}
-  #         option: >
-  #           {% if trigger.entity_id == 'group.presence_ralph' %}
-  #             {{ 'Home' if is_state('input_select.presence_state_ralph','Just Left') else 'Just Arrived' }}
-  #           {% elif trigger.entity_id == 'group.presence_anneke' %}
-  #             {{ 'Home' if is_state('input_select.presence_state_anneke','Just Left') else 'Just Arrived' }}
-  #           {% else %}
-  #             {{ 'Home' if is_state('input_select.presence_state_kimberly','Just Left') else 'Just Arrived' }}
-  #           {% endif %}
-
-  ## Mark a person as just home
-  ## Moved automations to Node-RED for test
-  # - alias: Presence mark person as home
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: input_select.presence_state_ralph
-  #       to: "Just Arrived"
-  #       for:
-  #         minutes: 5
-  #     - platform: state
-  #       entity_id: input_select.presence_state_anneke
-  #       to: "Just Arrived"
-  #       for:
-  #         minutes: 5
-  #         seconds: 10
-  #     - platform: state
-  #       entity_id: input_select.presence_state_kimberly
-  #       to: "Just Arrived"
-  #       for:
-  #         minutes: 5
-  #         seconds: 15
-  #     - platform: state
-  #       entity_id: input_select.presence_state_ralph
-  #       from: "Just Left"
-  #       to: "Just Arrived"
-  #     - platform: state
-  #       entity_id: input_select.presence_state_anneke
-  #       from: "Just Left"
-  #       to: "Just Arrived"
-  #     - platform: state
-  #       entity_id: input_select.presence_state_kimberly
-  #       from: "Just Left"
-  #       to: "Just Arrived"
-  #   action:
-  #     - service: input_select.select_option
-  #       data_template:
-  #         entity_id: >
-  #           {% if trigger.entity_id == 'input_select.presence_state_ralph' %}
-  #             input_select.presence_state_ralph
-  #           {% elif trigger.entity_id == 'input_select.presence_state_anneke' %}
-  #             input_select.presence_state_anneke
-  #           {% else %}
-  #             input_select.presence_state_kimberly
-  #           {% endif %}
-  #         option: Home
-
-  ## Mark a person as just left home
-  ## Moved automations to Node-RED for test
-  # - alias: Presence mark person as just left
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: group.presence_ralph
-  #       from: "home"
-  #       to: "not_home"
-  #     - platform: state
-  #       entity_id: group.presence_anneke
-  #       from: "home"
-  #       to: "not_home"
-  #     - platform: state
-  #       entity_id: group.presence_kimberly
-  #       from: "home"
-  #       to: "not_home"
-  #   action:
-  #     - service: input_select.select_option
-  #       data_template:
-  #         entity_id: >
-  #           {% if trigger.entity_id == 'group.presence_ralph' %}
-  #             input_select.presence_state_ralph
-  #           {% elif trigger.entity_id == 'group.presence_anneke' %}
-  #             input_select.presence_state_anneke
-  #           {% else %}
-  #             input_select.presence_state_kimberly
-  #           {% endif %}
-  #         option: Just Left
-
-  ## Mark a person as away
-  ## Moved automations to Node-RED for test
-  # - alias: Presence mark person as away
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: input_select.presence_state_ralph
-  #       to: "Just Left"
-  #       for:
-  #         minutes: 5
-  #     - platform: state
-  #       entity_id: input_select.presence_state_anneke
-  #       to: "Just Left"
-  #       for:
-  #         minutes: 5
-  #         seconds: 15
-  #     - platform: state
-  #       entity_id: input_select.presence_state_kimberly
-  #       to: "Just Left"
-  #       for:
-  #         minutes: 5
-  #         seconds: 30
-  #   action:
-  #     - service: input_select.select_option
-  #       data_template:
-  #         entity_id: >
-  #           {% if trigger.entity_id == 'input_select.presence_state_ralph' %}
-  #             input_select.presence_state_ralph
-  #           {% elif trigger.entity_id == 'input_select.presence_state_anneke' %}
-  #             input_select.presence_state_anneke
-  #           {% else %}
-  #             input_select.presence_state_kimberly
-  #           {% endif %}
-  #         option: Away
-
-  ## Mark a person as extended away (over 24 hours from home)
-  ## Moved automations to Node-RED for test
-  # - alias: Presence mark person as extended away
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: input_select.presence_state_ralph
-  #       to: "Away"
-  #       for:
-  #         hours: 23
-  #         minutes: 59
-  #     - platform: state
-  #       entity_id: input_select.presence_state_anneke
-  #       to: "Away"
-  #       for:
-  #         hours: 24
-  #         minutes: 0
-  #     - platform: state
-  #       entity_id: input_select.presence_state_kimberly
-  #       to: "Away"
-  #       for:
-  #         hours: 24
-  #         minutes: 1
-  #   action:
-  #     - service: input_select.select_option
-  #       data_template:
-  #         entity_id: >
-  #           {% if trigger.entity_id == 'input_select.presence_state_ralph' %}
-  #             input_select.presence_state_ralph
-  #           {% elif trigger.entity_id == 'input_select.presence_state_anneke' %}
-  #             input_select.presence_state_anneke
-  #           {% else %}
-  #             input_select.presence_state_kimberly
-  #           {% endif %}
-  #         option: Extended Away
-
-  ## Test if everybody is away and perform actions
-  - alias: "Presence everybody is away"
-    initial_state: "off"
-    trigger:
-      platform: state
-      entity_id: binary_sensor.presence_everybody_away
-      to: "off"
-    action:
-      # - service: script.turn_on
-      #   entity_id: script.mode_leaving_triggered
-      - service: script.notify_prowl
-        data_template:
-          value1: "Afwezigheidsmelding: "
-          value2: ""
-          value3: "Iedereen is weg"
-          who: "ralph"
-          prio: -2
-
-  ## Test if anybody comes home and perform actions
-  - alias: "Presence somebody comes home"
-    initial_state: "off"
-    trigger:
-      platform: state
-      entity_id: input_select.presence_ralph_bisschops, input_select.presence_anneke_bisschops, input_select.presence_kimberly_bisschops
-      to: "Home"
-    action:
-      - service: script.notify_prowl
-        data_template:
-          value1: "Aanwezigheidsmelding: "
-          value2: "{{ trigger.to_state.attributes.friendly_name }}"
-          value3: " is thuis"
-          who: "ralph"
-          prio: -2
 
 ###############################################################################
 ##  Templates

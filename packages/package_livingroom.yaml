@@ -8,96 +8,157 @@
 ###############################################################################
 homeassistant:
   customize:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-    ## ZigBeee2MQTT Switches
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
+    ## ZigBeee2MQTT Switch high cabinets
+    ## Source SilverCrest,Lidl HG06337 ZigBee
     switch.switch_high_cabinets:
-      friendly_name: Verlichting hoge kasten (Tradfri)
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
-    ## Scripts
-    # script.light_livingroom_on:
-    #   icon: mdi:lightbulb
-    # script.light_livingroom_off:
-    #   icon: mdi:lightbulb
-    ## Timers
-    # timer.switch_christmastree_off:
-    #   friendly_name: Kerstboom uitschakelvertraging
-    # timer.switch_christmastree_on:
-    #   friendly_name: Kerstboom inschakelvertraging
-    # timer.light_high_cabinets_off:
-    #   friendly_name: Hoge kasten uitschakelvertraging
-    # timer.light_high_cabinets_on:
-    #   friendly_name: Hoge kasten inschakelvertraging 
+      friendly_name: High cabinets (SilverCrest)
+    sensor.switch_high_cabinets_linkquality:
+      friendly_name: High cabinets (link quality)
 
-##-----------------------------------------------------------------------------------------------
-## Other homeassistant functions: should this move to configuration.yaml
-##-----------------------------------------------------------------------------------------------
-# logger:
-#   default: info
-#   logs:
-#     homeassistant.components.script: debug
+    ## ZigBeee2MQTT Switch christmas tree
+    ## Source SilverCrest,Lidl HG06337 ZigBee
+    switch.switch_christmas_tree:
+      friendly_name: High cabinets (SilverCrest)
+    sensor.switch_christmas_tree_linkquality:
+      friendly_name: High cabinets (link quality)
 
 ###############################################################################
 ##  Entities
 ###############################################################################
+binary_sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      light_livingroom_all:
+        friendly_name: Alle verlichting woonkamer
+        value_template: >-
+          {{ is_state('input_boolean.light_high_cabinets','on')
+            and is_state('input_boolean.light_livingroom_button','on') }}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/lightbulb48_' ~ states('binary_sensor.light_livingroom_all') ~ '.png' }}
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+
 input_boolean:
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Active
-##-----------------------------------------------------------------------------------------------
-  ## Manual mode switches for things
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Button livingroom Hue lights
+  ## Source: template
   light_livingroom_button:
     name: Verlichting woonkamer
     icon: mdi:lightbulb
-  light_high_cabinets_button:
-    name: Button hoge kasten
-    icon: mdi:lightbulb
-  switch_christmas_tree_button:
-    name: Kerstboom
-    icon: mdi:pine-tree
+  ## Button livingroom bar lights
+  ## Source: template
   light_bar_button:
     name: Verlichting bar
     icon: mdi:lightbulb
-  ## Status monitoring, only change state based in input from Node-RED
+  ## Status monitoring livingroom Hue lights
+  ## Source: template
   light_livingroom:
     name: Verlichting woonkamer
     icon: mdi:lightbulb
+  ## Button livingroom high cabinets
+  ## Source: template
   light_high_cabinets:
     name: Verlichting hoge kasten (KaKu)
     icon: mdi:lightbulb
+  ## Button livingroom christmas tree
+  ## Source: template
   switch_christmas_tree:
     name: Kerstboom
     icon: mdi:pine-tree
+  ## Button livingroom small christmas tree
+  ## Source: template
+  switch_small_christmas_tree:
+    name: Kleine kerstboom
+    icon: mdi:pine-tree
+  ## Status monitoring livingroom bar lights
+  ## Source: template
   light_bar:
     name: Verlichting bar
     icon: mdi:lightbulb
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Check
-##-----------------------------------------------------------------------------------------------
 
-##-----------------------------------------------------------------------------------------------
-##input_boolean - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Status of lighting in the livingroom used to see if lighitng is on 
-  ## several automations depend on this
-  # light_livingroom_state:
-  #   name: Status woonkamer lampen
+  ## Button all livingroom lights
+  ## Source: template
+  light_livingroom_all:
+    name: Alle verlichting woonkamer
+    icon: mdi:lightbulb
 
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  # ## Button livingroom high cabinets
+  # ## Source: template
+  # light_high_cabinets_button:
+  #   name: Button hoge kasten
+  #   icon: mdi:lightbulb
+  # ## Button livingroom christmas tree
+  # ## Source: template
+  # switch_christmas_tree_button:
+  #   name: Kerstboom
+  #   icon: mdi:pine-tree
 
-##-----------------------------------------------------------------------------------------------
-## Updated and changed entities - input_select
-##-----------------------------------------------------------------------------------------------
 input_select:
-##-----------------------------------------------------------------------------------------------
-## input_select - Active
-##-----------------------------------------------------------------------------------------------
-  ## State indicators for things
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Mode selector for the lights in the livingroom.
+  ## Used for the modes the light can be set to from media center
+  light_livingroom_mode:
+    name: Verlichtsmode Woonkamer
+    options:
+      - Normaal
+      - Video
+    initial: Normaal
+    icon: mdi:lightbulb
+  ## Selector for the scenes for the Hue lighting
+  light_livingroom_scene:
+    name: Nieuwe hue scene
+    icon: mdi:lightbulb
+    options:
+      - Normaal
+      - Ontspannen
+      - Lezen
+      - Concentreren
+      - Schoonmaken
+      - Gedimd
+      - Energie
+      - Helder
+      - Nachtlampje
+      - Video
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ## State indicator livingroom hue lights
+  ## Source: template 
   light_livingroom:
     name: Verlichting woonkamer
     options:
@@ -105,6 +166,8 @@ input_select:
       - "off"
       - "auto"
       - "hand"
+  ## State indicator livingroom high cabinets
+  ## Source: template
   light_high_cabinets:
     name: Hoge kasten Status
     options:
@@ -112,6 +175,8 @@ input_select:
       - "off"
       - "auto"
       - "hand"
+  ## State indicator livingroom christmas tree
+  ## Source: template
   switch_christmas_tree:
     name: Kerstboom
     options:
@@ -119,20 +184,22 @@ input_select:
       - "off"
       - "auto"
       - "hand"
-##-----------------------------------------------------------------------------------------------
-## input_select - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_select - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ## State indicator livingroom small christmas tree
+  ## Source: template
+  switch_small_christmas_tree:
+    name: Kleine kerstboom
+    options:
+      - "on"
+      - "off"
+      - "auto"
+      - "hand"
 
 input_number:
-##-----------------------------------------------------------------------------------------------
-## input_number - Active
-##-----------------------------------------------------------------------------------------------
-  ## Timers
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Livingroom lights short timer (configurable from UI)
+  ## Source: template
   light_livingroom_short_timer:
     name: Woonkamer
     initial: 0
@@ -140,6 +207,7 @@ input_number:
     max: 10
     step: 1
   ## High cabinets short timer (configurable from UI)
+  ## Source: template
   light_high_cabinets_short_timer:
     name: Verlichting bar
     initial: 1
@@ -147,82 +215,133 @@ input_number:
     max: 10
     step: 1
   ## Christmas tree short timer (configurable from UI)
-    ## not used, no timer
+  ## Source: template
+  ## not used, no timer
   light_christmas_tree_short_timer:
     name: Kerstboom
     initial: 0
     min: 0
     max: 10
     step: 1
-  ## Dimmers
-  ## Barlight slider for dimming
+  ## Livingroom slider for Hue lights dimming
+  ## Source: template
   light_livingroom_dimmer:
     name: Verlichting woonkamer
     initial: 100
     min: 0
     max: 100
     step: 1
+  ## Livingroom slider for bar lights dimming
+  ## Source: template
   light_bar_dimmer:
     name: Verlichting bar
     initial: 100
     min: 0
     max: 100
     step: 1 
-##-----------------------------------------------------------------------------------------------
-## input_number - Check
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
-##-----------------------------------------------------------------------------------------------
-## input_number - Obsolete
-##-----------------------------------------------------------------------------------------------
+light:
+  ##-----------------------------------------------------------------------------------------------
+  ## light - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## light groups for setting the Hue lights. Present itself as light.xxx 
+  - platform: group
+    name: Woonkamer Hue
+    entities:  
+      - light.lage_kast_links
+      - light.lage_kast_rechts
+      - light.staande_lamp_links
+      - light.staande_lamp_rechts
+  - platform: group
+    name: light low cabinets
+    entities:
+      - light.lage_kast_links
+      - light.lage_kast_rechts
+  - platform: group
+    name: light standing lights
+    entities:
+      - light.staande_lamp_links
+      - light.staande_lamp_rechts
+  ##-----------------------------------------------------------------------------------------------
+  ## light - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## light - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Link quality high cabinets
+    ## Source SilverCrest,Lidl HG06337 ZigBee
+  - platform: "mqtt"
+    name: switch_high_cabinets_linkquality
+    state_topic: "zigbee2mqtt/high_cabinets"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    icon: "mdi:signal"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
 
+  ## Link quality christmas tree
+    ## Source SilverCrest,Lidl HG06337 ZigBee
+  - platform: "mqtt"
+    name: switch_christmas_tree_linkquality
+    state_topic: "zigbee2mqtt/high_cabinets"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    icon: "mdi:signal"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
 
-
-##-----------------------------------------------------------------------------------------------
-## Currently not used entities - switch
-##-----------------------------------------------------------------------------------------------
 switch:
-##-----------------------------------------------------------------------------------------------
-## switches - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## switches - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## switches - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Switch for high cabinets (Tradfri via Zigbee2MQTT)
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch high cabinets
+  ## Source SilverCrest,Lidl HG06337 ZigBee
   - platform: "mqtt"
     name: switch_high_cabinets
-    state_topic: "zigbee2mqtt/tradfri_high_cabinets_switch"
+    state_topic: "zigbee2mqtt/high_cabinets"
     availability_topic: "zigbee2mqtt/bridge/state"
     payload_off: "OFF"
     payload_on: "ON"
     value_template: "{{ value_json.state }}"
-    command_topic: "zigbee2mqtt/tradfri_high_cabinets_switch/set"
+    command_topic: "zigbee2mqtt/high_cabinets/set"
 
-sensor:
-##-----------------------------------------------------------------------------------------------
-## sensors - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## sensors - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Switch for high cabinets, sensor (Tradfri via Zigbee2MQTT)
+  ## Switch christmas tree
+  ## Source SilverCrest,Lidl HG06337 ZigBee
   - platform: "mqtt"
-    name: switch_high_cabinets
-    state_topic: "zigbee2mqtt/tradfri_high_cabinets_switch"
+    name: switch_christmas_tree
+    state_topic: "zigbee2mqtt/christmas_tree"
     availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state }}"
+    command_topic: "zigbee2mqtt/christmas_tree/set"
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Test
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
@@ -231,233 +350,11 @@ sensor:
 ###############################################################################
 ##  Automations
 ###############################################################################
-# automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## ---------------------------------------------------------
-  ## Automations using Amazon Alexa through HA-bridge commands
-  ## ---------------------------------------------------------
-  ## Switch on livingroom lights from HA-Bridge
-  # - alias: "Light livingroom on (HA Bridge)"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id:
-  #       - binary_sensor.habridge_livingroom_lights_on
-  #     to: 'on'
-  #   action:
-  #     - service: homeassistant.turn_on
-  #       entity_id: input_boolean.light_livingroom
-  ## Switch off livingroom lights from HA-Bridge
-  # - alias: "Light livingroom off (HA Bridge)"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id:
-  #       - binary_sensor.habridge_livingroom_lights_off
-  #     to: 'on'
-  #   action:
-  #     - service: homeassistant.turn_off
-  #       entity_id: input_boolean.light_livingroom
-
-  ## Switch Christmas tree on and off
-  ## Moved automations to Node-RED for test
-  # - alias: "Switch christmas tree toggle"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #       - switch.habridge_christmastree
-  #       - input_boolean.switch_christmas_tree
-  #   action:
-  #     - service_template: >-
-  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-  #       entity_id: input_boolean.domoticz_switch_christmas_tree
-  #     - service_template: >-
-  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-  #       entity_id: group.switch_christmastree
-  ## Switch Bar lights on and off
-  ## Moved automations to Node-RED for test
-  # - alias: "Light bar toggle"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #       - switch.habridge_barlight
-  #       - input_boolean.light_bar
-  #   action:
-  #     - service_template: >-
-  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-  #       entity_id: input_boolean.domoticz_light_bar
-  #     - service_template: >-
-  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-  #       entity_id: group.light_bar
-  ## Switch lights high cabinets on and off
-  # - alias: "Light high cabinets toggle"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #       - switch.habridge_highcabinets
-  #       - input_boolean.light_high_cabinets
-  #   action:
-  #     - service_template: >-
-  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-  #       entity_id: input_boolean.domoticz_light_high_cabinets
-  #     - service_template: >-
-  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-  #       entity_id: group.light_high_cabinets
-
-  ## Switch livingroom lights on and off
-  # - alias: "Light livingroom toggle"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id:
-  #       - input_boolean.light_livingroom
-  #   action:
-  #     - service_template: >-
-  #         {{ 'script.light_livingroom_on' if is_state('input_boolean.light_livingroom','on') else 'script.light_livingroom_off' }}
-
-  ## Switch on kitchen cabinets light based on timer
-  # - alias: "Light high cabinets xx minutes after trigger on"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: event
-  #     event_type: timer.finished
-  #     event_data:
-  #       entity_id: timer.light_high_cabinets_on
-  #   condition:
-  #   action:
-  #   - service: homeassistant.turn_on
-  #     entity_id: 
-  #       - input_boolean.light_high_cabinets
-        # - switch.switch_high_cabinets
-
-  ## Switch off kitchen cabinets light based on timer
-  # - alias: "Light high cabinets xx minutes after trigger off"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: event
-  #     event_type: timer.finished
-  #     event_data:
-  #       entity_id: timer.light_high_cabinets_off
-  #   condition:
-  #   action:
-  #   - service: homeassistant.turn_off
-  #     entity_id: 
-  #       - input_boolean.light_high_cabinets
-        # - switch.switch_high_cabinets
-
-  ## Switch on christmas tree based on timer
-  ## Moved automations to Node-RED for test
-  # - alias: "Switch christmas tree xx minutes after trigger on"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: event
-  #     event_type: timer.finished
-  #     event_data:
-  #       entity_id: timer.switch_christmastree_on
-  #   condition:
-  #   action:
-  #   - service: homeassistant.turn_on
-  #     entity_id: 
-  #       - input_boolean.switch_christmas_tree
 
 ###############################################################################
 ##  Scripts
 ###############################################################################
-# script:
-##-----------------------------------------------------------------------------------------------
-## scripts - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Obsolete
-##-----------------------------------------------------------------------------------------------
-  # light_livingroom_on:
-    # alias: Woonkamer licht aan script
-    # sequence:
-      ## check if lights are currently off
-      # - condition: state
-      #   entity_id: input_boolean.light_livingroom_state
-      #   state: "off"
-      # - service: homeassistant.turn_on
-      #   entity_id:
-      #     - input_boolean.light_livingroom_state
-      # - service: homeassistant.turn_on
-      #   entity_id: 
-      #     - input_boolean.light_high_cabinets
-      # - service: script.light_hue_mode_change
-      ## check if it is christmas time
-      # - condition: state
-      #   entity_id: input_boolean.mode_christmas
-      #   state: "on"
-      # ## Switch on the chritmas tree lights
-      # - service: homeassistant.turn_on
-      #   entity_id: 
-      #     - input_boolean.switch_christmas_tree
-
-  # light_livingroom_off:
-    # alias: Woonkamer licht uit script
-    # sequence:
-      ## check if lights are currently on
-      # - condition: state
-        # entity_id: input_boolean.light_livingroom_state
-        # state: "on"
-      # - service: homeassistant.turn_off
-      #   entity_id:
-      #     - input_boolean.light_livingroom_state
-      # - service: timer.start
-      #   data_template:
-      #     entity_id: timer.light_high_cabinets_off
-      #     duration: "00:01:00"
-      # - service: homeassistant.turn_off
-      #   entity_id: 
-      #     - light.woonkamer
-      ## check if it is christmas time
-      # - condition: state
-      #   entity_id: input_boolean.mode_christmas
-      #   state: "on"
-      # - service: homeassistant.turn_off
-      #   entity_id:
-      #     - input_boolean.switch_christmas_tree
 
 ###############################################################################
 ##  Timers
 ###############################################################################
-# timer:
-##-----------------------------------------------------------------------------------------------
-## timers - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## timers - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## timers - Obsolete
-##-----------------------------------------------------------------------------------------------
-# ## Timers high cabinets in the kitchen
-#   ## Switch on
-#   light_high_cabinets_on:
-#   ## Switch off
-#   light_high_cabinets_off:
-# ## Timers controlling the christmas tree
-#   ## Switch on
-#   switch_christmastree_on:
-#   ## Switch off
-#   switch_christmastree_off:

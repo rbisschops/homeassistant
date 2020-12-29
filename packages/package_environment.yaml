@@ -8,110 +8,137 @@
 ###############################################################################
 homeassistant:
   customize:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
     ## outdoor environment
     sun.sun:
       friendly_name: Dag/Nacht
-    ## Temperature sensors
+    ## Office environment sensor
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_office_temperature:
       friendly_name: Temperatuur Kantoor
-    sensor.environment_livingroom_temperature:
-      friendly_name: Temperatuur Woonkamer
-    sensor.environment_bathroom_temperature:
-      friendly_name: Temperatuur Badkamer
-    sensor.environment_bedroom_temperature:
-      friendly_name: Temperatuur Slaapkamer
-    sensor.environment_kim_temperature:
-      friendly_name: Temperatuur kamer Kim
-    sensor.environment_toilet_temperature:
-      friendly_name: Temperatuur Toilet
-    sensor.environment_storage_temperature:
-      friendly_name: Temperatuur Berging
-    sensor.environment_heating_room_temperature:
-      friendly_name: Temperatuur Ketel ruimte
-    sensor.environment_hallway_floor2_temperature:
-      friendly_name: Temperatuur Overloop 2e verdieping
-    ## Humidity sensors
     sensor.environment_office_humidity:
       friendly_name: Rel. Vochtigheid Kantoor
-    sensor.environment_livingroom_humidity:
-      friendly_name: Rel. Vochtigheid Woonkamer
-    sensor.environment_bathroom_humidity:
-      friendly_name: Rel. Vochtigheid Badkamer
-    sensor.environment_bedroom_humidity:
-      friendly_name: Rel. Vochtigheid Slaapkamer
-    sensor.environment_kim_humidity:
-      friendly_name: Rel. Vochtigheid kamer Kim
-    sensor.environment_toilet_humidity:
-      friendly_name: Rel. Vochtigheid Toilet
-    sensor.environment_storage_humidity:
-      friendly_name: Rel. Vochtigheid Berging
-    sensor.environment_heating_room_humidity:
-      friendly_name: Rel. Vochtigheid Ketel ruimte 
-    sensor.environment_hallway_floor2_humidity:
-      friendly_name: Rel. Vochtigheid Overloop 2e verdieping 
-    sensor.environment_test_humidity:
-      friendly_name: Rel. Vochtigheid Test
-    ## Pressure sensors
     sensor.environment_office_pressure:
       friendly_name: Luchtdruk Kantoor
-    sensor.environment_livingroom_pressure:
-      friendly_name: Luchtdruk Woonkamer 
-    sensor.environment_bathroom_pressure:
-      friendly_name: Luchtdruk Badkamer
-    sensor.environment_bedroom_pressure:
-      friendly_name: Luchtdruk Slaapkamer
-    sensor.environment_kim_pressure:
-      friendly_name: Luchtdruk kamer Kim
-    sensor.environment_toilet_pressure:
-      friendly_name: Luchtdruk Toilet
-    sensor.environment_storage_pressure:
-      friendly_name: Luchtdruk Berging  
-    sensor.environment_heating_room_pressure:
-      friendly_name: Luchtdruk Ketel ruimte
-    sensor.environment_hallway_floor2_pressure:
-      friendly_name: Luchtdruk Overloop 2e verdieping
-    sensor.light_level_office_level:
-      friendly_name: Licht level kantoor
-    ## Link quality sensors
     sensor.environment_office_linkquality:
       friendly_name:  Kantoor (link quality)  
-    sensor.environment_livingroom_linkquality:
-      friendly_name:  Woonkamer (link quality) 
+    ## Bathroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_bathroom_temperature:
+      friendly_name: Temperatuur Badkamer
+    sensor.environment_bathroom_humidity:
+      friendly_name: Rel. Vochtigheid Badkamer
+    sensor.environment_bathroom_pressure:
+      friendly_name: Luchtdruk Badkamer
     sensor.environment_bathroom_linkquality:
       friendly_name:  Badkamer (link quality)
+    ## Master bedroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_bedroom_temperature:
+      friendly_name: Temperatuur Slaapkamer
+    sensor.environment_bedroom_humidity:
+      friendly_name: Rel. Vochtigheid Slaapkamer
+    sensor.environment_bedroom_pressure:
+      friendly_name: Luchtdruk Slaapkamer
     sensor.environment_bedroom_linkquality:
       friendly_name:  Slaapkamer (link quality)
+    ## 2nd floor bedroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_kim_temperature:
+      friendly_name: Temperatuur kamer Kim
+    sensor.environment_kim_humidity:
+      friendly_name: Rel. Vochtigheid kamer Kim
+    sensor.environment_kim_pressure:
+      friendly_name: Luchtdruk kamer Kim
     sensor.environment_kim_linkquality:
       friendly_name:  kamer Kim (link quality)
+    ## Livingroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_livingroom_temperature:
+      friendly_name: Temperatuur Woonkamer
+    sensor.environment_livingroom_humidity:
+      friendly_name: Rel. Vochtigheid Woonkamer
+    sensor.environment_livingroom_pressure:
+      friendly_name: Luchtdruk Woonkamer 
+    sensor.environment_livingroom_linkquality:
+      friendly_name:  Woonkamer (link quality) 
+    ## Restroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_toilet_temperature:
+      friendly_name: Temperatuur Toilet
+    sensor.environment_toilet_humidity:
+      friendly_name: Rel. Vochtigheid Toilet
+    sensor.environment_toilet_pressure:
+      friendly_name: Luchtdruk Toilet
     sensor.environment_toilet_linkquality:
       friendly_name:  Toilet (link quality)
+    ## Storage environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_storage_temperature:
+      friendly_name: Temperatuur Berging
+    sensor.environment_storage_humidity:
+      friendly_name: Rel. Vochtigheid Berging
+    sensor.environment_storage_pressure:
+      friendly_name: Luchtdruk Berging  
     sensor.environment_storage_linkquality:
       friendly_name:  Berging (link quality)  
+    ## Heatingroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_heating_room_temperature:
+      friendly_name: Temperatuur Ketel ruimte
+    sensor.environment_heating_room_humidity:
+      friendly_name: Rel. Vochtigheid Ketel ruimte 
+    sensor.environment_heating_room_pressure:
+      friendly_name: Luchtdruk Ketel ruimte
     sensor.environment_heating_room_linkquality:
       friendly_name:  Ketel ruimte (link quality)
+    ## 2nd floor hallway environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_hallway_floor2_temperature:
+      friendly_name: Temperatuur Overloop 2e verdieping
+    sensor.environment_hallway_floor2_humidity:
+      friendly_name: Rel. Vochtigheid Overloop 2e verdieping 
+    sensor.environment_hallway_floor2_pressure:
+      friendly_name: Luchtdruk Overloop 2e verdieping
     sensor.environment_hallway_floor2_linkquality:
       friendly_name:  Overloop 2e verdieping (link quality)
+    ## Office light level sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.light_level_office_level:
+      friendly_name: Licht level kantoor
     sensor.light_level_office_linkquality:
       friendly_name:  Licht level kantoor (link quality)
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
+    ## Office light level sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.light_level_garden_level:
+      friendly_name: Licht level tuin
+    sensor.light_level_garden_linkquality:
+      friendly_name:  Licht level tuin (link quality)
+    ## Test environment sensor
+    ## Source: Dummy 
+    sensor.environment_test_temperature:
+      friendly_name: Temperatuur Test
+    sensor.environment_test_humidity:
+      friendly_name: Rel. Vochtigheid Test
+    sensor.environment_test_pressure:
+      friendly_name: Test (link quality)
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Entities
 ###############################################################################
 
 input_select:
-##-----------------------------------------------------------------------------------------------
-## input_select - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Active
+  ##-----------------------------------------------------------------------------------------------
   environment_livingroom_humidity_state:
     name: Luchtvochtigheid Woonkamer status
     options: 
@@ -128,33 +155,38 @@ input_select:
       - Normaal
       - Hoog
       - Te hoog
-##-----------------------------------------------------------------------------------------------
-## input_select - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_select - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 sensor:
 ##-----------------------------------------------------------------------------------------------
 ## sensors - Active
 ##-----------------------------------------------------------------------------------------------
   ## Season sensor (astronomical)
+  ## Source: Home assistant
   - platform: season
     type: astronomical
 
-  ## SUNRISE/SUNSET SENSORS
   - platform: template
     sensors:
+      ## Sunset
+      ## Source: template sensor
       time_sunset:
         value_template: "{% set timestamp = as_timestamp(state_attr('sun.sun','next_setting')) | timestamp_custom('%H:%M') %} {{ timestamp }}"
         unit_of_measurement: "PM"
+      ## Sunrise
+      ## Source: template sensor
       time_sunrise:
-        # value_template: '{% set timestamp = as_timestamp(state_attr("sun.sun","next_rising")) | timestamp_custom("%H:%M") %} {{ timestamp.lstrip("0") }}'
         value_template: "{% set timestamp = as_timestamp(state_attr('sun.sun','next_rising')) | timestamp_custom('%H:%M') %} {{ timestamp }}"
         unit_of_measurement: "AM"
-  ## Inhouse environment sensors - temperature
+
+  ## Inhouse environment sensors
+  ## Office environment sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_office_temperature
     state_topic: "zigbee2mqtt/aqara_office_env"
@@ -165,88 +197,6 @@ sensor:
     device_class: "temperature"
     value_template: "{{ value_json.temperature }}"
   - platform: "mqtt"
-    name: environment_bathroom_temperature
-    state_topic: "zigbee2mqtt/aqara_bathroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_bedroom_temperature
-    state_topic: "zigbee2mqtt/aqara_bedroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_kim_temperature
-    state_topic: "zigbee2mqtt/aqara_kim_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_livingroom_temperature
-    state_topic: "zigbee2mqtt/aqara_livingroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_toilet_temperature
-    state_topic: "zigbee2mqtt/aqara_toilet_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_storage_temperature
-    state_topic: "zigbee2mqtt/aqara_storage_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_heating_room_temperature
-    state_topic: "zigbee2mqtt/aqara_heating_room_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_hallway_floor2_temperature
-    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_test_temperature
-    state_topic: "test/test_sensor_env"
-    expire_after: 900
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-
-  ## Inhouse environment sensors - humidity
-  - platform: "mqtt"
     name: environment_office_humidity
     state_topic: "zigbee2mqtt/aqara_office_env"
     availability_topic: "zigbee2mqtt/bridge/state"
@@ -255,88 +205,6 @@ sensor:
     unit_of_measurement: "%"
     device_class: "humidity"
     value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_bathroom_humidity
-    state_topic: "zigbee2mqtt/aqara_bathroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_bedroom_humidity
-    state_topic: "zigbee2mqtt/aqara_bedroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_kim_humidity
-    state_topic: "zigbee2mqtt/aqara_kim_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_livingroom_humidity
-    state_topic: "zigbee2mqtt/aqara_livingroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_toilet_humidity
-    state_topic: "zigbee2mqtt/aqara_toilet_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_storage_humidity
-    state_topic: "zigbee2mqtt/aqara_storage_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_heating_room_humidity
-    state_topic: "zigbee2mqtt/aqara_heating_room_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_hallway_floor2_humidity
-    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    expire_after: 21600
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_test_humidity
-    state_topic: "test/test_sensor_env"
-    expire_after: 900
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-
-  ## Inhouse environment sensors - pressure
   - platform: "mqtt"
     name: environment_office_pressure
     state_topic: "zigbee2mqtt/aqara_office_env"
@@ -347,6 +215,34 @@ sensor:
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
   - platform: "mqtt"
+    name: environment_office_linkquality
+    state_topic: "zigbee2mqtt/aqara_office_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  ## Bathroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_bathroom_temperature
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_bathroom_humidity
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
     name: environment_bathroom_pressure
     state_topic: "zigbee2mqtt/aqara_bathroom_env"
     availability_topic: "zigbee2mqtt/bridge/state"
@@ -355,6 +251,34 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_bathroom_linkquality
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  ## Master bedroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_bedroom_temperature
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_bedroom_humidity
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
   - platform: "mqtt"
     name: environment_bedroom_pressure
     state_topic: "zigbee2mqtt/aqara_bedroom_env"
@@ -365,6 +289,35 @@ sensor:
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
   - platform: "mqtt"
+    name: environment_bedroom_linkquality
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+
+  ## 2nd floor bedroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_kim_temperature
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_kim_humidity
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
     name: environment_kim_pressure
     state_topic: "zigbee2mqtt/aqara_kim_env"
     availability_topic: "zigbee2mqtt/bridge/state"
@@ -373,6 +326,35 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_kim_linkquality
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+
+  ## Livingroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_livingroom_temperature
+    state_topic: "zigbee2mqtt/aqara_livingroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_livingroom_humidity
+    state_topic: "zigbee2mqtt/aqara_livingroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
   - platform: "mqtt"
     name: environment_livingroom_pressure
     state_topic: "zigbee2mqtt/aqara_livingroom_env"
@@ -383,6 +365,35 @@ sensor:
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
   - platform: "mqtt"
+    name: environment_livingroom_linkquality
+    state_topic: "zigbee2mqtt/aqara_livingroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+
+  ## Restroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_toilet_temperature
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_toilet_humidity
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
     name: environment_toilet_pressure
     state_topic: "zigbee2mqtt/aqara_toilet_env"
     availability_topic: "zigbee2mqtt/bridge/state"
@@ -391,6 +402,35 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_toilet_linkquality
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+
+  ## Storage environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_storage_temperature
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_storage_humidity
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
   - platform: "mqtt"
     name: environment_storage_pressure
     state_topic: "zigbee2mqtt/aqara_storage_env"
@@ -401,6 +441,35 @@ sensor:
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
   - platform: "mqtt"
+    name: environment_storage_linkquality
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+
+  ## Heatingroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_heating_room_temperature
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_heating_room_humidity
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
     name: environment_heating_room_pressure
     state_topic: "zigbee2mqtt/aqara_heating_room_env"
     availability_topic: "zigbee2mqtt/bridge/state"
@@ -409,6 +478,33 @@ sensor:
     unit_of_measurement: "hPa"
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_heating_room_linkquality
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+
+  ## 2nd floor hallway environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_hallway_floor2_temperature
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_hallway_floor2_humidity
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
   - platform: "mqtt"
     name: environment_hallway_floor2_pressure
     state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
@@ -419,6 +515,31 @@ sensor:
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
   - platform: "mqtt"
+    name: environment_hallway_floor2_linkquality
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+
+  ## Test environment sensor
+  ## Source: Dummy 
+  - platform: "mqtt"
+    name: environment_test_temperature
+    state_topic: "test/test_sensor_env"
+    expire_after: 900
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_test_humidity
+    state_topic: "test/test_sensor_env"
+    expire_after: 900
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
     name: environment_test_pressure
     state_topic: "test/test_sensor_env"
     expire_after: 900
@@ -427,107 +548,62 @@ sensor:
     device_class: "pressure"
     value_template: "{{ value_json.pressure }}"
 
-  ## Inhouse environment sensors - light level
+  ## Office light level sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: light_level_office_level
     state_topic: "zigbee2mqtt/light_sensor"
     availability_topic: "zigbee2mqtt/bridge/state"
     expire_after: 21600
-    # force_update: true
-    unit_of_measurement: "lx"
+    unit_of_measurement: "-"
     device_class: "illuminance"
     value_template: "{{ value_json.illuminance }}"
-
-  ## Inhouse environment sensors - link quality
   - platform: "mqtt"
-    name: environment_office_linkquality
-    state_topic: "zigbee2mqtt/aqara_office_env"
+    name: light_level_office_level_lux
+    state_topic: "zigbee2mqtt/light_sensor"
     availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
-  - platform: "mqtt"
-    name: environment_bathroom_linkquality
-    state_topic: "zigbee2mqtt/aqara_bathroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
-  - platform: "mqtt"
-    name: environment_bedroom_linkquality
-    state_topic: "zigbee2mqtt/aqara_bedroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
-  - platform: "mqtt"
-    name: environment_kim_linkquality
-    state_topic: "zigbee2mqtt/aqara_kim_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
-  - platform: "mqtt"
-    name: environment_livingroom_linkquality
-    state_topic: "zigbee2mqtt/aqara_livingroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
-  - platform: "mqtt"
-    name: environment_toilet_linkquality
-    state_topic: "zigbee2mqtt/aqara_toilet_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
-  - platform: "mqtt"
-    name: environment_storage_linkquality
-    state_topic: "zigbee2mqtt/aqara_storage_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
-  - platform: "mqtt"
-    name: environment_heating_room_linkquality
-    state_topic: "zigbee2mqtt/aqara_heating_room_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
-  - platform: "mqtt"
-    name: environment_hallway_floor2_linkquality
-    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
-    value_template: "{{ value_json.linkquality }}"
+    expire_after: 21600
+    unit_of_measurement: "lx"
+    device_class: "illuminance"
+    value_template: "{{ value_json.illuminance_lux }}"
   - platform: "mqtt"
     name: light_level_office_linkquality
     state_topic: "zigbee2mqtt/light_sensor"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
-##-----------------------------------------------------------------------------------------------
-## sensors - Check
-##-----------------------------------------------------------------------------------------------
-  ## Sensors for monitoring last updated interval
-  - platform: template
-    sensors:
-      environment_bathroom_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_bathroom_temperature.last_updated))/60)|int }}"
-      environment_bedroom_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_bedroom_temperature.last_updated))/60)|int }}"
-      environment_hallway_floor2_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_hallway_floor2_temperature.last_updated))/60)|int }}"
-      environment_heating_room_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_heating_room_temperature.last_updated))/60)|int }}"
-      environment_kim_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_kim_temperature.last_updated))/60)|int }}"
-      environment_livingroom_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_livingroom_temperature.last_updated))/60)|int }}"
-      environment_office_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_office_temperature.last_updated))/60)|int }}"
-      environment_storage_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_storage_temperature.last_updated))/60)|int }}"
-      environment_toilet_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.environment_toilet_temperature.last_updated))/60)|int }}"
-      light_level_office_level_last_updated:
-        value_template: "{{ ((as_timestamp(now())-as_timestamp(states.sensor.light_level_office_level.last_updated))/60)|int }}"
-##-----------------------------------------------------------------------------------------------
-## sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
+
+  ## Garden light level sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: light_level_garden_level
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "-"
+    device_class: "illuminance"
+    value_template: "{{ value_json.illuminance }}"
+  - platform: "mqtt"
+    name: light_level_garden_level_lux
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "lx"
+    device_class: "illuminance"
+    value_template: "{{ value_json.illuminance_lux }}"
+  - platform: "mqtt"
+    name: light_level_garden_linkquality
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
@@ -536,190 +612,6 @@ sensor:
 ###############################################################################
 ##  Automations
 ###############################################################################
-automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-  ## automation to run when a environmental sensor is not seen for a set time
-  ## expire_after parameter for the MQTT sensor is triggering this (changes to "unknown")
-  - alias: "Environment Sensor no longer updating"
-    initial_state: "on"
-    trigger:
-      platform: state
-      entity_id:
-        - sensor.environment_office_temperature
-        - sensor.environment_livingroom_temperature
-        - sensor.environment_bathroom_temperature
-        - sensor.environment_bedroom_temperature
-        - sensor.environment_kim_temperature
-        - sensor.environment_toilet_temperature
-        - sensor.environment_storage_temperature
-        - sensor.environment_heating_room_temperature
-        - sensor.environment_hallway_floor2_temperature
-        - sensor.environment_test_humidity
-      to: "unknown"
-      for: 
-        seconds: 30
-    action:
-      - service_template: >-
-          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.environment_alert_notification
-          {% else %}
-            script.environment_alert_store
-          {% endif %} 
-        data_template:
-          sensor: "{{ trigger.to_state.attributes.friendly_name }}"
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## automation to run when livingroom humidity is too low
-  - alias: "Environment Livingroom humidity too low"
-    initial_state: "off"
-    trigger:
-      platform: numeric_state
-      entity_id: sensor.environment_livingroom_humidity
-      below: 40
-    condition:
-      condition: and
-      conditions:
-        - condition: time
-          before: "22:30:00"
-          after: "08:00:00"
-        - condition: state
-          entity_id: binary_sensor.presence_everybody_away
-          state: "off"
-        - condition: state
-          entity_id: input_select.environment_livingroom_humidity_state
-          state: "Normaal"
-    action:
-      - service_template: >
-          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "De luchtvochtigheid in de woonkamer is momenteel te laag ("
-          value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
-          value3: "%)"
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.environment_livingroom_humidity_state
-          option: Te laag
-  ## automation to run when livingroom humidity is back to a normal from a low level
-  - alias: "Environment Livingroom humidity reset low to normal"
-    initial_state: "off" 
-    trigger:
-      platform: numeric_state
-      entity_id: sensor.environment_livingroom_humidity
-      above: 45
-    condition:
-      condition: and
-      conditions:
-        - condition: time
-          before: "22:30:00"
-          after: "08:00:00"
-        - condition: state
-          entity_id: binary_sensor.presence_everybody_away
-          state: "off"
-        - condition: state
-          entity_id: input_select.environment_livingroom_humidity_state
-          state: "Te laag"
-    action:
-      - service_template: >
-          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
-            script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "De luchtvochtigheid in de woonkamer is weer op peil ("
-          value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
-          value3: "%)."
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.environment_livingroom_humidity_state
-          option: Normaal
-  ## automation to run when livingroom humidity is too high
-  - alias: "Environment Livingroom humidity too high"
-    initial_state: "off" 
-    trigger:
-      platform: numeric_state
-      entity_id: sensor.environment_livingroom_humidity
-      above: 60
-    condition:
-      condition: and
-      conditions:
-        - condition: time
-          before: "22:30:00"
-          after: "08:00:00"  
-        - condition: state
-          entity_id: binary_sensor.presence_everybody_away
-          state: "off"
-        - condition: state
-          entity_id: input_select.environment_livingroom_humidity_state
-          state: "Normaal"
-    action:
-      - service_template: >
-          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
-            script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "De luchtvochtigheid in de woonkamer is momenteel te hoog ("
-          value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
-          value3: "%)."
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.environment_livingroom_humidity_state
-          option: Te hoog
-  ## automation to run when livingroom humidity is back to a normal from a high level
-  - alias: "Environment Livingroom humidity reset high to normal"
-    initial_state: "off"
-    trigger:
-      platform: numeric_state
-      entity_id: sensor.environment_livingroom_humidity
-      below: 55
-    condition:
-      condition: and
-      conditions:
-        - condition: time
-          before: "22:30:00"
-          after: "08:00:00"
-        - condition: state
-          entity_id: binary_sensor.presence_everybody_away
-          state: "off"
-        - condition: state
-          entity_id: input_select.environment_livingroom_humidity_state
-          state: "Te hoog"
-    action:
-      - service_template: >
-          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
-            script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "De luchtvochtigheid in de woonkamer is weer normaal ("
-          value2: "{{ states('sensor.environment_livingroom_humidity')|round(2) }}"
-          value3: "%)."
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.environment_livingroom_humidity_state
-          option: Normaal
 
 ###############################################################################
 ##  Templates
@@ -728,45 +620,6 @@ automation:
 ###############################################################################
 ##  Scripts
 ###############################################################################
-script:
-##-----------------------------------------------------------------------------------------------
-## scripts - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Check
-##-----------------------------------------------------------------------------------------------
-  ## script for sending alerts when a environmetal sensors is not updating for a set time
-  environment_alert_notification:
-    alias: Omgevings sensor update niet meer notify
-    sequence:
-      - service: script.notify_prowl
-        data_template:
-          value1: "{% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %} {{ timestamp }}: Sensor "
-          value2: "{{ sensor|replace('Rel. Vochtigheid ','')|replace('Temperatuur ','') }}"
-          value3: " is niet meer geupdate."
-          who: "ralph"
-          prio: -2
-##-----------------------------------------------------------------------------------------------
-## scripts - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## script for storing the alert when Ralph is not home or during night time
-  environment_alert_store:
-    alias: Omgevings sensor update niet meer bewaar
-    sequence:
-      - service: mqtt.publish
-        data_template:
-          topic: "home/alert/sensor_update"
-          retain: true
-          payload_template: >-
-            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
-            {% set sensor = sensor|replace('Rel. Vochtigheid ','')|replace('Temperatuur ','') %}
-            {{ {
-              "time": timestamp,
-              "sensor": sensor,
-              "topic": "last update",
-              "status" : "active"
-            }|tojson }}
 
 ###############################################################################
 ##  Timers

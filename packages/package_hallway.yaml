@@ -8,50 +8,52 @@
 ###############################################################################
 homeassistant:
   # customize:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
-    ## Timers
-    # timer.light_hallway:
-    #   friendly_name: Halletje
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Entities
 ###############################################################################
 input_boolean:
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Active
-##-----------------------------------------------------------------------------------------------
-  ## Manual mode switches for things
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Button hallway lights
+  ## Source: template
   light_hallway_button:
     name: Verlichting halletje
     icon: mdi:lightbulb
-  ## Status monitoring, only change state based in input from Node-RED
+  ## Status monitoring hallway lights
+  ## Source: template
   light_hallway:
     name: Verlichting halletje
     icon: mdi:lightbulb
-
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-##input_boolean - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 input_select:
-##-----------------------------------------------------------------------------------------------
-## input_select - Active
-##-----------------------------------------------------------------------------------------------
-  ## State indicators for things
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Active
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ## State indicator hallway lights
+  ## Source: template 
   light_hallway:
     name: Verlichting halletje
     options:
@@ -59,43 +61,33 @@ input_select:
       - "off"
       - "auto"
       - "hand"
-##-----------------------------------------------------------------------------------------------
-## input_select - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_select - Obsolete
-##-----------------------------------------------------------------------------------------------
 
 input_number:
-##-----------------------------------------------------------------------------------------------
-## input_number - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_number - Check
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Long timer hallway lights (used in Node_RED)
+  ## Source: template
   light_hallway_long_timer:
-    name: Buitenlamp timer lang (min)
+    name: Halletje timer lang (min)
     initial: 5
     min: 1
     max: 30
     step: 1 
+  ## Short timer hallway lights (used in Node_RED) 
+  ## Source: template
   light_hallway_short_timer:
-    name: Buitenlamp timer kort (min)
+    name: Halletje timer kort (min)
     initial: 2
     min: 1
     max: 30
     step: 1
-  light_hallway_off_delay:
-    name: Buitenlamp uit vertraging (sec)
-    initial: 0
-    min: 0
-    max: 10
-    step: 0.5
-##-----------------------------------------------------------------------------------------------
-## input_number - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_number - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
@@ -104,113 +96,6 @@ input_number:
 ###############################################################################
 ##  Automations
 ###############################################################################
-# automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Test min and max settings on long hallwaylight timer input 
-  ## Moved automations to Node-RED for test
-  # - alias: "Light - Validate hallway light long timer"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: input_text.light_hallway_long_timer
-  #   action:
-  #     - service: input_text.set_value
-  #       data_template:
-  #         entity_id: input_text.light_hallway_long_timer
-  #         value: >
-  #           {% if (states('input_text.light_hallway_long_timer')|int) > 60 %}
-  #             60
-  #           {% elif (states('input_text.light_hallway_long_timer')|int) < 1 %}
-  #             1
-  #           {% else %}
-  #             {{ states('input_text.light_hallway_long_timer')|int }}
-  #           {% endif %}
-
-  ## Test min and max settings on short hallwaylight timer input 
-  ## Moved automations to Node-RED for test
-  # - alias: "Light - Validate hallway light short timer"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: input_text.light_hallway_short_timer
-  #   action:
-  #     - service: input_text.set_value
-  #       data_template:
-  #         entity_id: input_text.light_hallway_short_timer
-  #         value: >
-  #           {% if (states('input_text.light_hallway_short_timer')|int) > 60 %}
-  #             60
-  #           {% elif (states('input_text.light_hallway_short_timer')|int) < 1 %}
-  #             1
-  #           {% else %}
-  #             {{ states('input_text.light_hallway_short_timer')|int }}
-  #           {% endif %}
-
-  ## Switch on hallway light when someone arrives home
-  ## Moved automations to Node-RED for test
-  # - alias: "Light hallway on at home coming"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: 
-  #         - binary_sensor.door_front_door
-  #       to: "on"
-  #   condition:
-  #     condition: and
-  #     conditions:
-  #       - condition: state
-  #         entity_id: input_boolean.light_porch
-  #         state: "on"
-  #       - condition: sun
-  #         after: sunset
-  #         after_offset: "00:15:00"
-  #   action:
-  #     - service: homeassistant.turn_on
-  #       entity_id: input_boolean.light_hallway
-  #     - service: timer.start
-  #       data_template:
-  #         entity_id: timer.light_hallway
-  #         duration: "00:{{ states('input_text.light_hallway_short_timer')|int}}:00"
-  ## Switch off hallway light based on timer
-  ## Moved automations to Node-RED for test
-  # - alias: "Light hallway xx minutes after trigger off"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: event
-  #     event_type: timer.finished
-  #     event_data:
-  #       entity_id: timer.light_hallway
-  #   condition:
-  #   action:
-  #   - service: homeassistant.turn_off
-  #     entity_id: input_boolean.light_hallway
-  
-  ## Switch hallway light on and off
-  ## Moved automations to Node-RED for test
-  # - alias: "Light hallway toggle"
-  #   initial_state: "on"
-  #   trigger:
-  #     platform: state
-  #     entity_id: 
-  #       - switch.habridge_hallwaylight
-  #       - input_boolean.light_hallway
-  #   action:
-  #     - service_template: >-
-  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-  #       entity_id: input_boolean.domoticz_light_hallway
-  #     - service_template: >-
-  #         {{ 'homeassistant.turn_on' if is_state(trigger.entity_id, 'on') else 'homeassistant.turn_off' }}
-  #       entity_id: group.light_hallway
 
 ###############################################################################
 ##  Templates
@@ -235,17 +120,3 @@ input_number:
 ###############################################################################
 ##  Timers
 ###############################################################################
-# timer:
-##-----------------------------------------------------------------------------------------------
-## timers - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## timers - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## timers - Obsolete
-##-----------------------------------------------------------------------------------------------
-
-#   light_hallway:

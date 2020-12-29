@@ -6,36 +6,62 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
+homeassistant:
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## GFT (Bio) garbage calendar
+    ## Source: Google calendar
+    binary_sensor.garbage_calendar_gft:
+      friendly_name: GFT
+      icon: mdi:trash-can
+    binary_sensor.garbage_calendar_pmd:
+      friendly_name: PMD
+      icon: mdi:trash-can
+    binary_sensor.garbage_calendar_gft_pmd:
+      friendly_name: GFT en PMD
+      icon: mdi:trash-can
+    binary_sensor.garbage_calendar_paper:
+      friendly_name: Papier
+      icon: mdi:trash-can
+    ## ZigBeee2MQTT Switch Outlet 1
+    ## Source IKEA Tradfri E1603/E1702 ZigBee
+    switch.switch_outlet_1:
+      friendly_name: Outlet 1 (Tradfri)
+    sensor.switch_outlet_1_linkquality:
+      friendly_name:  Outlet 1 (link quality)
+    binary_sensor.switch_outlet_1_update:
+      friendly_name:  Outlet 1 (Update available)
+    ## ZigBeee2MQTT Switch Outlet 2
+    ## Source IKEA Tradfri E1603/E1702 ZigBee
+    switch.switch_outlet_2:
+      friendly_name: Outlet 2 (Tradfri)
+    sensor.switch_outlet_2_linkquality:
+      friendly_name:  Outlet 2 (link quality)
+    binary_sensor.switch_outlet_2_update:
+      friendly_name:  Outlet 2 (Update available)
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Entities
 ###############################################################################
 binary_sensor:
-##-----------------------------------------------------------------------------------------------
-## binary_sensors - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Definition of workdays with the workday sensor
   - platform: workday
     country: NL
     workdays: [mon, tue, wed, thu, fri, sat]
     excludes: [sun]
-  ## Definition of GFT (Bio) garbage
-  ## Depends on google calendar for afval_kalender
+  ## GFT (Bio) garbage calendar
+  ## Source: Google calendar
   - platform: template
     sensors:
       garbage_calendar_gft:
-        friendly_name: GFT
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'GFT' %}
@@ -46,15 +72,11 @@ binary_sensor:
           {% else %}
             false
           {% endif %}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
-
-  ## Definition of the PMD (Plastic and metal) garbage
-  ## Depends on google calendar for afval_kalender
+  ## PMD (Plastic and metal) garbage calendar
+  ## Source: Google calendar
   - platform: template
     sensors:
       garbage_calendar_pmd:
-        friendly_name: PMD
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'PMD' %}
@@ -65,14 +87,11 @@ binary_sensor:
           {% else %}
             false
           {% endif %}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
-  ## Definition of the PMD and GFT (Plastic and metal and bio) garbage
-  ## Depends on google calendar for afval_kalender
+  ## GFT & PMD garbage calendar
+  ## Source: Google calendar
   - platform: template
     sensors:
       garbage_calendar_gft_pmd:
-        friendly_name: 'GFT en PMD'
         value_template: >-
           {% if is_state('calendar.afval_kalender', 'on') %}
             {% if state_attr('calendar.afval_kalender', 'message') == 'GFT + PMD' %}
@@ -83,8 +102,24 @@ binary_sensor:
           {% else %}
             false
           {% endif %}
-  ## Definition of the GFT (Bio) garbage bin
-  ## Depends on binary sensors GTT and GFT+PMD
+  ## Paper garbage calendar - For test, no actual bin present!!
+  ## Source: Google calendar
+  - platform: template
+    sensors:
+      garbage_calendar_paper:
+        value_template: >-
+          {% if is_state('calendar.afval_kalender', 'on') %}
+            {% if state_attr('calendar.afval_kalender', 'message') == 'Papier' %}
+              true
+            {% else %}
+              false
+            {% endif %}
+          {% else %}
+            false
+          {% endif %}
+
+  ## GFT garbage bin
+  ## Source: Template
   ## Used for visual indication in the UI
   - platform: template
     sensors:
@@ -98,9 +133,8 @@ binary_sensor:
           {% endif %}
         entity_picture_template: >-
           {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
-
-  ## Definition of thePMD (Platic and metal) garbage bin
-  ## Depends on binary sensors PMD and GFT+PMD
+  ## PMD garbage bin
+  ## Source: Template
   ## Used for visual indication in the UI
   - platform: template
     sensors:
@@ -114,18 +148,96 @@ binary_sensor:
           {% endif %}
         entity_picture_template: >-
           {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
-##-----------------------------------------------------------------------------------------------
-## binary_sensors - Check
-##-----------------------------------------------------------------------------------------------
+  ## Paper garbage bin - For test, no actual bin present!!
+  ## Source: Template
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_paper:
+        friendly_name: 'Papier bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_calendar_papier', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_paper.state ~ '.png' }}
 
-##-----------------------------------------------------------------------------------------------
-## binary_sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ## GFT garbage bin - new binary sensor, used for home away state
+  ## Source: Template
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_presence_gft:
+        friendly_name: 'GFT bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_calendar_gft', 'on') or is_state('binary_sensor.garbage_calendar_gft_pmd', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
+  ## PMD garbage bin - new binary sensor, used for home away state
+  ## Source: Template
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_presence_pmd:
+        friendly_name: 'PMD bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_calendar_pmd', 'on') or is_state('binary_sensor.garbage_calendar_gft_pmd', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
+  ## Paper garbage bin - new binary sensor, used for home away state - For test, no actual bin present!!
+  ## Source: Template
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_presence_paper:
+        friendly_name: 'Papier bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_calendar_papier', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_paper.state ~ '.png' }}
+
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  - platform: "mqtt"
+    name: switch_outlet_1_update
+    state_topic: "zigbee2mqtt/outlet_1"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_on: true
+    payload_off: false
+    value_template: "{{ value_json.update_available}}"
+  - platform: "mqtt"
+    name: switch_outlet_2_update
+    state_topic: "zigbee2mqtt/outlet_2"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_on: true
+    payload_off: false
+    value_template: "{{ value_json.update_available}}"
 
 input_boolean:
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Holiday mode toggle switch, used for setting when on holiday 
   mode_holiday:
     name: Vakantie mode aan
@@ -134,13 +246,208 @@ input_boolean:
   mode_christmas:
     name: Kerst periode mode
     icon: mdi:toggle-switch
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Check
-##-----------------------------------------------------------------------------------------------
+  ## Lightlevel mode toggle switch, used for setting indoor lightlevels based on light sensor(s)
+  ## on = dark, off = day light
+  mode_dark_indoor:
+    name: Licht level binnen
+    icon: mdi:theme-light-dark
+  ## Light lele mode toggle switch, used for setting outdoor light levels based on light sensor(s)
+  ## on = dark, off = day light
+  mode_dark_outdoor:
+    name: Licht level buiten
+    icon: mdi:theme-light-dark
 
-##-----------------------------------------------------------------------------------------------
-##input_boolean - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ## GFT garbage bin - used for state
+  ## Source: n/a
+  garbage_bin_gft:
+    name: GFT bak
+    icon: mdi:trash-can
+  ## PMD garbage bin - used for state
+  ## Source: n/a
+  garbage_bin_pmd:
+    name: PMD bak
+    icon: mdi:trash-can
+  ## Paper garbage bin - used for state - For test, no actual bin present!!
+  ## Source: n/a
+  garbage_bin_paper:
+    name: Papier bak
+    icon: mdi:trash-can
+  ## GFT garbage bin - used home/away state, replace wit binary_sensor
+  ## Source: dummy, for test only
+  garbage_bin_presence_gft:
+    name: GFT bak
+    icon: mdi:trash-can
+  ## PMD garbage bin - used home/away state, replace wit binary_sensor
+  ## Source: dummy, for test only
+  garbage_bin_presence_pmd:
+    name: PMD bak
+    icon: mdi:trash-can
+  ## Paper garbage bin - used home/away state, replace wit binary_sensor - For test, no actual bin present!!
+  ## Source: dummy, for test only
+  garbage_bin_presence_paper:
+    name: Papier bak
+    icon: mdi:trash-can
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Test
+  ##-----------------------------------------------------------------------------------------------
+  ## Test wake-up light for master bedroom
+  wakeup_mb_enabled:
+    name: "Wake-up lights"
+    initial: on
+    icon: mdi:theme-light-dark
+  wakeup_mb_weekday_enabled:
+    name: "Wake-up op werkdagen"
+    initial: on
+    icon: mdi:calendar-blank
+  wakeup_mb_saturday_enabled:
+    name: "Wake-up op zaterdag"
+    initial: off
+    icon: mdi:calendar-blank
+  wakeup_mb_sunday_enabled:
+    name: "Wake-up op zondag"
+    initial: off
+    icon: mdi:calendar-blank
+
+  ## Test scenario switches
+  scene_bed_time:
+    name: "Bed tijd"
+    initial: off
+    icon: mdi:sleep
+  scene_leaving:
+    name: "Vertrekken"
+    initial: off
+    icon: mdi:home-export-outline
+  scene_wakeup:
+    name: "Wakker worden"
+    initial: off
+    icon: mdi:home-outline
+
+input_datetime:
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Test
+  ##-----------------------------------------------------------------------------------------------
+  ## Test wake-up light for master bedroom
+  wakeup_time_mb_weekday:
+    name: "Start licht weekdag"
+    has_time: true
+    has_date: false
+    initial: "07:00"
+  wakeup_time_mb_saturday:
+    name: "Start licht zaterdag"
+    has_time: true
+    has_date: false
+    initial: "06:45"
+  wakeup_time_mb_sunday:
+    name: "Start licht zondag"
+    has_time: true
+    has_date: false
+    initial: "08:00"
+
+input_select:
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Test
+  ##-----------------------------------------------------------------------------------------------
+  ## GFT garbage bin - used for indicative state (UI mainly)
+  ## Source: n/a
+  garbage_bin_gft:
+    name: GFT bak
+    options:
+      - "idle"
+      - "active"
+      - "alert"
+  ## PMD garbage bin - used for indicative state (UI mainly)
+  ## Source: n/a
+  garbage_bin_pmd:
+    name: PMD bak
+    options:
+      - "idle"
+      - "active"
+      - "alert"
+  ## Paper garbage bin - used for indicative state (UI mainly)
+  ## Source: n/a
+  garbage_bin_paper:
+    name: Papier bak
+    options:
+      - "idle"
+      - "active"
+      - "alert"
+  ## Current house state - used for house state indicator (UI mainly)
+  mode_house_state:
+    name: "Huis status"
+    options:
+      - "Weg"
+      - "Wakker"
+      - "Slaapt"
+      - "Lang weg"
+      - "Vakantie"
+
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Link quality outlet 1 (Tradfri via Zigbee2MQTT)
+  - platform: "mqtt"
+    name: switch_outlet_1_linkquality
+    state_topic: "zigbee2mqtt/tradfri_outlet_1"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    icon: "mdi:signal"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+  ## Link quality outlet 2 (Tradfri via Zigbee2MQTT)
+  - platform: "mqtt"
+    name: switch_outlet_2_linkquality
+    state_topic: "zigbee2mqtt/tradfri_outlet_2"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    icon: "mdi:signal"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+
+switch:
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch outlet 1 (Tradfri via Zigbee2MQTT)
+  - platform: "mqtt"
+    name: switch_outlet_1
+    state_topic: "zigbee2mqtt/tradfri_outlet_1"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state }}"
+    command_topic: "zigbee2mqtt/tradfri_outlet_1/set"
+  ## Switch outlet 2 (Tradfri via Zigbee2MQTT)
+  - platform: "mqtt"
+    name: switch_outlet_2
+    state_topic: "zigbee2mqtt/tradfri_outlet_2"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state }}"
+    command_topic: "zigbee2mqtt/tradfri_outlet_2/set"
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Test
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
@@ -149,152 +456,6 @@ input_boolean:
 ###############################################################################
 ##  Automations
 ###############################################################################
-automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Automation to run when the garbage bins need to go out for collection
-  ## Tiggered by sensors based on Google calendar entries
-  - alias: "Notification garbage bin outside"
-    initial_state: "off"
-    trigger:
-      platform: state
-      entity_id: 
-      - binary_sensor.garbage_calendar_gft
-      - binary_sensor.garbage_calendar_pmd
-      - binary_sensor.garbage_calendar_gft_pmd
-      to: "on"
-    action:
-      - service_template: >
-          {% if (is_state('input_select.presence_ralph_bisschops', 'Home')) and (is_state('input_select.presence_anneke_bisschops', 'Home'))  %}
-            script.notify_telegram_ralph_and_anneke
-          {% elif is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.notify_telegram_ralph
-          {% elif is_state('input_select.presence_anneke_bisschops', 'Home') %}
-            script.notify_telegram_anneke
-          {% endif %}
-        data_template:
-          value1: "Vandaag moet de {{ trigger.to_state.attributes.friendly_name }} bak buiten worden gezet"
-          value2: ""
-          value3: ""
-
-  ## Automation for runnning the bed time script 
-  ## Called by Alexa via HA Bridge
-  - alias: "Mode bed time triggered"
-    initial_state: "off"
-    trigger:
-      platform: state
-      entity_id: 
-      - binary_sensor.habridge_bed_time
-      to: "on"
-    action:
-      - service: script.turn_on
-        entity_id: script.mode_bed_time_triggered
-
-  ## Automation for running the coming home script
-  ## Called when the  front door sensor is triggered
-  - alias: "Mode coming home triggered"
-    initial_state: "off"
-    trigger:
-      - platform: state
-        entity_id: 
-          - binary_sensor.door_front_door
-        to: "on"
-    condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.light_livingroom
-          state: "off"
-        - condition: or
-          conditions:
-            - condition: state
-              entity_id: input_select.presence_ralph_bisschops
-              state: "Just Arrived"
-            - condition: state
-              entity_id: input_select.presence_anneke_bisschops
-              state: "Just Arrived"
-            - condition: state
-              entity_id: input_select.presence_kimberly_bisschops
-              state: "Just Arrived"
-    action:
-      - service: script.turn_on
-        entity_id: script.mode_coming_home_triggered
-
-  ## Automation for running the Ralph is coming home script
-  ## Called when the  front door sensor is triggered
-  - alias: "Mode Ralph is coming home triggered"
-    initial_state: "off"
-    trigger:
-      - platform: state
-        entity_id: 
-          - binary_sensor.door_front_door
-        to: "on"
-    condition:
-      - condition: state
-        entity_id: input_select.presence_ralph_bisschops
-        state: "Just Arrived"
-    action:
-      - service: script.turn_on
-        entity_id: script.alert_check_active_alerts
-
-  ## Automation for runnning the leaving script
-  ## Called by Alexa via HA Bridge
-  ## Moved automations to Node-RED for test
-  - alias: "Mode leaving triggerred"
-    initial_state: "off"
-    trigger:
-      platform: state
-      entity_id: 
-      - binary_sensor.habridge_leaving
-      to: "on"
-    action:
-      - service: script.turn_on
-        entity_id: script.mode_leaving_triggered
-
-  ## Automation for runnning the extended away script
-  ## Called from binary sensor Extended Away
-  ## Note: Potentially replace binary_sensor.presence_everybody_extended_away with a group
-  - alias: "Mode extended away triggered"
-    initial_state: "off"
-    trigger:
-      platform: state
-      entity_id: 
-      - binary_sensor.presence_everybody_extended_away
-      to: "on"
-    action:
-      - service: script.turn_on
-        entity_id: script.mode_extended_away_triggered
-
-  ## Automation for running the sunset script
-  ## Triggered based on sunset minus offset 
-  - alias: "Mode sunset triggered"
-    initial_state: "off"
-    trigger:
-      platform: sun
-      event: sunset
-      offset: "-01:00:00"
-    action:
-      - service: script.turn_on
-        entity_id: script.sun_sunset
-
-  ## Automations running at 08:00 in the morning fro checking nightly alerts
-  - alias: "Alerts - check nightly alerts"
-    initial_state: "off" 
-    trigger:
-      platform: time
-      at: "08:00:00"
-    action:
-      - service: script.turn_on
-        entity_id: script.alert_check_active_alerts
 
 ###############################################################################
 ##  Templates
@@ -303,228 +464,6 @@ automation:
 ###############################################################################
 ##  Scripts
 ###############################################################################
-script:
-##-----------------------------------------------------------------------------------------------
-## scripts - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Obsolete
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Scripts moved to Node_RED
-##-----------------------------------------------------------------------------------------------
-  ## Script running when we go to bed, sets the house in sleep mode
-  # mode_bed_time_triggered:
-  #   alias: Mode bedtime gestart
-  #   sequence:
-      ## Switch off the outdoor lighting
-      # - service: homeassistant.turn_off
-      #   entity_id: input_boolean.light_garden
-      ## Switch off the christmastree
-      # - service: homeassistant.turn_off
-      #   entity_id: input_boolean.switch_christmas_tree
-        ## Switch off the living room lights
-      # - service: homeassistant.turn_off
-      #   entity_id: input_boolean.light_livingroom
-      ## Change the climate settings for the toilet heating
-      # - service: input_select.select_option
-      #   data:
-      #     entity_id: input_select.climate_restroom_heating_mode
-      #     option: "Spaarstand"
-      # - condition: state
-      #   entity_id: input_boolean.media_recording_mode
-      #   state: "off"
-      # - service: homeassistant.turn_off
-      #   entity_id: switch.switch_media_center
-
-  ## Script when leaving home, also called when everybody is away (from package_presence)
-  # mode_leaving_triggered:
-  #   alias: Mode vertrekken gestart
-  #   sequence:
-      ## Switch off the outdoor lighting
-      ## Moved automations to Node-RED for test
-      # - service: homeassistant.turn_off
-      #   entity_id: input_boolean.light_garden
-      ## Switch off the living room lights
-      ## Moved automations to Node-RED for test
-      # - service: homeassistant.turn_off
-      #   entity_id: input_boolean.light_livingroom
-      ## Change the climate settings for the toilet heating
-      ## Moved automations to Node-RED for test
-      # - service: input_select.select_option
-      #   data_template:
-      #     entity_id: input_select.climate_restroom_heating_mode
-      #     option: >
-      #       {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Spaarstand' }}
-      ## Moved automations to Node-RED for test
-      # - service_template: >
-      #     {% if is_state('input_boolean.media_recording_mode', 'on') %}
-      #       homeassistant.turn_on
-      #     {% elif is_state('input_boolean.media_recording_mode', 'off') %}
-      #       homeassistant.turn_off
-      #     {% endif %}
-      #   entity_id: switch.switch_media_center
-      ## Turn on lighting, but only when dark
-      # - condition: state
-      #   entity_id: sun.sun
-      #   state: "below_horizon"
-      ## Switch on the outdoor lighting
-      ## Moved automations to Node-RED for test
-      # - service: homeassistant.turn_on
-      #   entity_id: input_boolean.light_porch
-      # - service: timer.start
-      #   data_template:
-      #     entity_id: timer.light_porch
-      #     duration: "00:{{ states('input_text.light_porch_short_timer')|int}}:00"
-      ## Moved automations to Node-RED for test
-      # - service: homeassistant.turn_on
-      #   entity_id: input_boolean.light_hallway
-      # - service: timer.start
-      #   data_template:
-      #     entity_id: timer.light_hallway
-      #     duration: "00:{{ states('input_text.media_hallway_light_long_timer')|int}}:00"
-
-  ## Script when someone comes home
-  # mode_coming_home_triggered:
-  #   alias: Mode thuiskomen gestart
-  #   sequence:
-      ## Change the climate settings for the toilet heating  
-      # - service: input_select.select_option
-      #   data_template:
-      #     entity_id: input_select.climate_restroom_heating_mode
-      #     option: >
-      #       {{ 'Uitgeschakeld' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'Verwarmen' }}
-      ## Turn on lighting, but only when dark
-      # - condition: state
-      #   entity_id: sun.sun
-      #   state: "below_horizon"
-      ## Switch on the outdoor lighting
-      # - service: homeassistant.turn_on
-      #   entity_id: input_boolean.light_garden
-      # - service: homeassistant.turn_on
-      #   entity_id:
-      #     - input_boolean.light_livingroom_state
-      ## Switch on the living room lights
-      # - service: homeassistant.turn_on
-      # #   entity_id: input_boolean.light_livingroom
-      # - service: script.light_hue_set_scene_automatic
-      #   data_template:
-      #     brightness_value: >
-      #       {{ '100,150' }}
-      #     profile_value: >
-      #       {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
-      #     transition: 2
-      ## Turn on the high cabinets lights
-      # - service: homeassistant.turn_on
-      #   entity_id: 
-      #     - input_boolean.light_high_cabinets
-          # - switch.switch_high_cabinets
-      ## Switch on the living room lights switch
-      # - service: homeassistant.turn_on
-      #   entity_id: input_boolean.light_livingroom
-      ## check if it is christmas time
-      # - condition: state
-      #   entity_id: input_boolean.mode_christmas
-      #   state: "on"
-      ## Switch on the chritmas tree lights
-      # - service: homeassistant.turn_on
-      #   entity_id: 
-      #     - input_boolean.switch_christmas_tree
-
-  ## Script everybody extended away
-  # mode_extended_away_triggered:
-  #   alias: Mode iedereen langere tijd weg gestart
-  #   sequence:
-  #     - service: input_select.select_option
-  #       data:
-  #         entity_id: input_select.climate_restroom_heating_mode
-  #         option: "Uitgeschakeld"
-  #     - service: homeassistant.turn_on
-  #       entity_id: input_boolean.mode_holiday
-
-  ## Script running at sunset
-  # sun_sunset:
-  #   alias: Zonsondergang bereikt
-  #   sequence:
-  #     - condition: state
-  #       entity_id: binary_sensor.presence_people_home
-  #       state: "on"
-  #     - condition: state
-  #       entity_id: input_boolean.mode_holiday
-  #       state: "off"
-  #     - condition: state
-  #       entity_id: input_boolean.light_livingroom_state
-  #       state: "off"
-  #     ## Switch on the living room lights switch
-      # - service: homeassistant.turn_on
-      #   entity_id: input_boolean.light_livingroom_state
-      # ## start hue lampen met de juiste mode
-      # - service: script.light_hue_set_scene_transition
-      #   data_template:
-      #     brightness_start_value: >
-      #       {{ '1,1' }}
-      #     brightness_stop_value: >
-      #       {{ '90,100' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
-      #     profile_start_value: >
-      #       {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
-      #     profile_stop_value: >
-      #       {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'normal' }}
-      #     transition: 1800
-      # - service: script.hue_sunset_mode
-      ## start timer for kitchen cabinets, will switch on after xx hour
-      # - service: timer.start
-      #   data_template:
-      #     entity_id: timer.light_high_cabinets_on
-      #     duration: "00:30:00"
-      ## Switch on the living room lights switch
-      # - service: homeassistant.turn_on
-      #   entity_id: input_boolean.light_livingroom
-      # ## check if it is christmas time
-      # - condition: state
-      #   entity_id: input_boolean.mode_christmas
-      #   state: "on"
-      ## start timer for christmas tree, will switch on after xx hour
-      ## Moved automations to Node-RED for test
-      # - service: timer.start
-      #   data_template:
-      #     entity_id: timer.switch_christmastree_on
-      #     duration: "00:30:00"
-
-  ##----------------------------------------------
-  ## Test scripts >> Remove ASAP after testing 
-  ##----------------------------------------------
-
-  # light_hue_test:
-  #   alias: hue test
-  #   sequence:
-  #     ## start hue lampen met de juiste mode
-  #     - service: script.light_hue_set_scene_transition
-  #       data_template:
-  #         brightness_start_value: >
-  #           {{ '1,1' }}
-  #         brightness_stop_value: >
-  #           {{ '100,150' }}
-  #         profile_start_value: concentrate
-  #         profile_stop_value: relax
-  #         transition: 5
-
-  # light_hue_test_auto:
-  #   alias: hue test
-  #   sequence:
-  #     ## start hue lampen met de juiste mode
-  #     - service: script.light_hue_set_scene_automatic
-  #       data_template:
-  #         brightness_value: >
-  #           {{ '50,50' if is_state('input_select.light_livingroom_mode','Video') else '100,150' }}
-  #         profile_value: >
-  #           {{ 'christmas' if is_state('input_boolean.mode_christmas','on') else 'concentrate' }}
-  #         transition: 5
 
 ###############################################################################
 ##  Timers

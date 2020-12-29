@@ -8,59 +8,88 @@
 ###############################################################################
 homeassistant:
   customize:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
-    ## Environmental sensors
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## Office environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_office_battery:
       friendly_name:  Batterij multisensor kantoor
+    ## Livingroom environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_livingroom_battery:
       friendly_name:  Batterij multisensor woonkamer
+    ## Bathroom environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_bathroom_battery:
       friendly_name:  Batterij multisensor badkamer
+    ## Master bedroom environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_bedroom_battery:
       friendly_name:  Batterij multisensor slaapkamer
+    ## 2nd fllor bedroom environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_kim_battery:
       friendly_name:  Batterij multisensor kamer Kim
+    ## Restroom environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_toilet_battery:
       friendly_name:  Batterij multisensor toilet
+    ## Storage environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_storage_battery:
       friendly_name:  Batterij multisensor berging
+    ## Heatingroom environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_heating_room_battery:
       friendly_name: Batterij multisensor ketel ruimte
+    ## 2nd floor hallway environment sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.environment_hallway_floor2_battery:
       friendly_name: Batterij multisensor overloop 2e verdieping
-    ## Light sensors
+    ## Office light level sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.light_level_office_battery:
       friendly_name: Batterij licht sensor kantoor
-    ## Door sensors
+    ## Grden light level sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.light_level_garden_battery:
+      friendly_name: Batterij licht sensor tuin
+    ## Refridgerator door sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.door_refrigerator_battery:
       friendly_name: Batterij koelkastdeur
-    ## Motion sensors  
+    ## Office motion sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.motion_office_battery:
       friendly_name: Batterij bewegingssensor kantoor
-  ## Vibrations sensors
+    ## Mailbox vibration sensor - battery state
+    ## Source: Xiaomi Aqara ZigBee
     sensor.vibration_mailbox_battery:
       friendly_name: Batterij brievenbus sensor
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
 
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
-    ## Test sensors (dummies)
+    ## Test environment sensor
+    ## Source: Dummy
     sensor.environment_test_battery:
       friendly_name: Batterij test sensor
+
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 #  Entities
 ###############################################################################
 sensor:
-##-----------------------------------------------------------------------------------------------
-## sensors - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Inhouse environment sensors
+    ## Office environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_office_battery
     state_topic: "zigbee2mqtt/aqara_office_env"
@@ -68,6 +97,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+    ## Bathroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_bathroom_battery
     state_topic: "zigbee2mqtt/aqara_bathroom_env"
@@ -75,6 +106,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+    ## Master bedroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_bedroom_battery
     state_topic: "zigbee2mqtt/aqara_bedroom_env"
@@ -82,6 +115,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+    ## 2nd floor bedroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_kim_battery
     state_topic: "zigbee2mqtt/aqara_kim_env"
@@ -89,6 +124,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+    ## Livingroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_livingroom_battery
     state_topic: "zigbee2mqtt/aqara_livingroom_env"
@@ -96,6 +133,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+    ## Restroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_toilet_battery
     state_topic: "zigbee2mqtt/aqara_toilet_env"
@@ -103,6 +142,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+    ## Storage environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_storage_battery
     state_topic: "zigbee2mqtt/aqara_storage_env"
@@ -110,6 +151,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+    ## Heating room environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_heating_room_battery
     state_topic: "zigbee2mqtt/aqara_heating_room_env"
@@ -117,6 +160,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+    ## 2nd floor hallway environment sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_hallway_floor2_battery
     state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
@@ -124,7 +169,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-  ## Light sensors
+    ## Office light level sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name:  light_level_office_battery
     state_topic: "zigbee2mqtt/light_sensor"
@@ -132,7 +178,17 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-  ## Refridgerator door
+    ## Tuin light level sensor
+    ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name:  light_level_garden_battery
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+    ## Refridgerator door sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: door_refrigerator_battery
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
@@ -140,7 +196,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-  ## Motion sensors
+    ## Office motion sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: motion_office_battery
     state_topic: "zigbee2mqtt/mijia_office_motion"
@@ -148,7 +205,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-  ## Vibrations sensors
+    ## Mailbox vibration sensor
+    ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: vibration_mailbox_battery
     state_topic: "zigbee2mqtt/aqara_mailbox"
@@ -156,17 +214,9 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-  ## Test sensors (dummies)
-  - platform: "mqtt"
-    name: environment_test_battery
-    state_topic: "test/test_sensor_env"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
 ##-----------------------------------------------------------------------------------------------
 ## sensors - Check
 ##-----------------------------------------------------------------------------------------------
-
 ##-----------------------------------------------------------------------------------------------
 ## sensors - Obsolete
 ##-----------------------------------------------------------------------------------------------
@@ -178,55 +228,6 @@ sensor:
 ###############################################################################
 ##  Automations
 ###############################################################################
-automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## automation to run when a environmental sensors battery is running low
-  - alias: "Notification battery level low"
-    initial_state: "off" 
-    trigger:
-      platform: numeric_state
-      entity_id:
-      - sensor.environment_office_battery
-      - sensor.environment_livingroom_battery
-      - sensor.environment_bathroom_battery
-      - sensor.environment_bedroom_battery
-      - sensor.environment_kim_battery
-      - sensor.environment_toilet_battery
-      - sensor.environment_storage_battery
-      - sensor.environment_heating_room_battery
-      - sensor.environment_hallway_floor2_battery
-      - sensor.light_level_office_battery
-      - sensor.door_refrigerator_battery
-      - sensor.motion_office_battery
-      - sensor.vibration_mailbox_battery
-      - sensor.environment_test_battery
-      below: 25
-    action:
-      # - service: script.notify_prowl
-      #   data_template:
-      #     value1: "Hi Ralph, "
-      #     value2: "{{ trigger.to_state.attributes.friendly_name }} "
-      #     value3: "is laag. Tijd om te vervangen"
-      #     who: "ralph"
-      #     prio: -2
-      - service_template: >-
-          {% if now().hour > 8 and now().hour <23 and is_state('input_select.presence_ralph_bisschops', 'Home') %}
-            script.battery_alert_notification
-          {% else %}
-            script.battery_alert_store
-          {% endif %} 
-        data_template:
-          sensor: "{{ trigger.to_state.attributes.friendly_name }}"
 
 ###############################################################################
 ##  Templates
@@ -235,45 +236,6 @@ automation:
 ###############################################################################
 ##  Scripts
 ###############################################################################
-script:
-##-----------------------------------------------------------------------------------------------
-## scripts - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## script for sending alerts when a environmetal sensors is not updating for a set time
-  battery_alert_notification:
-    alias: Omgevings sensor battery low notify
-    sequence:
-      - service: script.notify_prowl
-        data_template:
-          value1: "{% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %} {{ timestamp }}: "
-          value2: "{{ sensor }} "
-          value3: "is laag."
-          who: "ralph"
-          prio: -2
-  ## script for storing the alert when Ralph is not home or during night time
-  battery_alert_store:
-    alias: Omgevings sensor update niet meer bewaar
-    sequence:
-      - service: mqtt.publish
-        data_template:
-          topic: "home/alert/sensor_battery"
-          retain: true
-          payload_template: >-
-            {% set timestamp = as_timestamp(now()) | timestamp_custom('%H:%M') %}
-            {{ {
-              "time": timestamp,
-              "sensor": sensor,
-              "topic": "battery",
-              "status" : "active"
-            }|tojson }}
 
 ###############################################################################
 ##  Timers

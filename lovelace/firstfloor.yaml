@@ -11,15 +11,43 @@ title: 1e verdieping
 panel: true
 cards:
   - type: picture-elements
-    image: /local/floorplans/first_floor.png
+    image: /local/floorplans/first-floor-new.png
     elements:
-      ## Doors and windows overlays
+      ##-----------------------------------------------------------------------------------------------
+      ## Overlays usedon the floor plan - need to be on top in the code, otherwise
+      ## the other controlable elements are not accessible anymore in the fontend!!
+      ##-----------------------------------------------------------------------------------------------
+      ## Lights overlays
       - type: image
-        entity: input_boolean.dummy_bath_room_door
+        entity: switch.switch_outlet_1
         tap_action:
           action: none
         state_image:
-          'on': /local/floorplans/overlays/bath_room_door.png        
+          'on': /local/floorplans/lights/03-first-floor/bed-room-high-cabinets.png
+        style:
+          top: 0%
+          left: 0%
+          position: absolute
+          transform: translate(0%, 0%)
+      ## Doors and windows overlays
+      ## Bed room
+      - type: image
+        entity: input_boolean.dummy_bed_room_window_right
+        tap_action:
+          action: none
+        state_image:
+          'on': /local/floorplans/overlays/03-first-floor/bed-room-window-right.png
+        style:
+          top: 0%
+          left: 0%
+          position: absolute
+          transform: translate(0%, 0%)
+      - type: image
+        entity: input_boolean.dummy_bed_room_window_left
+        tap_action:
+          action: none
+        state_image:
+          'on': /local/floorplans/overlays/03-first-floor/bed-room-window-left.png
         style:
           top: 0%
           left: 0%
@@ -30,18 +58,31 @@ cards:
         tap_action:
           action: none
         state_image:
-          'on': /local/floorplans/overlays/bed_room_door.png        
+          'on': /local/floorplans/overlays/03-first-floor/bed-room-door.png
         style:
           top: 0%
           left: 0%
           position: absolute
           transform: translate(0%, 0%)
+      ## Side room
       - type: image
-        entity: input_boolean.dummy_first_floor_hallway_door
+        entity: input_boolean.dummy_side_room_window
         tap_action:
           action: none
         state_image:
-          'on': /local/floorplans/overlays/hallway_door.png        
+          'on': /local/floorplans/overlays/03-first-floor/side-room-window.png
+        style:
+          top: 0%
+          left: 0%
+          position: absolute
+          transform: translate(0%, 0%)  
+      ## Office
+      - type: image
+        entity: input_boolean.dummy_office_window
+        tap_action:
+          action: none
+        state_image:
+          'on': /local/floorplans/overlays/03-first-floor/office-window.png
         style:
           top: 0%
           left: 0%
@@ -52,107 +93,289 @@ cards:
         tap_action:
           action: none
         state_image:
-          'on': /local/floorplans/overlays/office_door.png        
+          'on': /local/floorplans/overlays/03-first-floor/office-door.png
         style:
           top: 0%
           left: 0%
           position: absolute
           transform: translate(0%, 0%)
+      ## Hallway
       - type: image
-        entity: input_boolean.dummy_office_window
+        entity: input_boolean.dummy_first_floor_hallway_door
         tap_action:
           action: none
         state_image:
-          'on': /local/floorplans/overlays/office_window.png        
+          'on': /local/floorplans/overlays/03-first-floor/hallway-door.png
         style:
           top: 0%
           left: 0%
           position: absolute
           transform: translate(0%, 0%)
+      ## Bathroom
       - type: image
-        entity: input_boolean.dummy_side_room_window
+        entity: input_boolean.dummy_bath_room_door
         tap_action:
           action: none
         state_image:
-          'on': /local/floorplans/overlays/side_room_window.png        
+          'on': /local/floorplans/overlays/03-first-floor/bath-room-door.png
         style:
           top: 0%
           left: 0%
           position: absolute
-          transform: translate(0%, 0%)  
+          transform: translate(0%, 0%)
+
+      ##-----------------------------------------------------------------------------------------------
+      ## Environmental elements used on the floor plan
+      ##-----------------------------------------------------------------------------------------------
+      ## Indoor temperature and humidity sensors
+      - type: state-label
+        entity: sensor.environment_bathroom_temperature
+        prefix: 'T: '
+        style:
+          top: 40%
+          left: 62%
+          position: absolute
+          font-size: 1.0vw
+          color: '#000000'
+          font-weight: 'bold'
+          transform: translate(0,0)
+      - type: state-label
+        entity: sensor.environment_bathroom_humidity
+        prefix: 'RH: '
+        style:
+          top: 42.5%
+          left: 62%
+          position: absolute
+          font-size: 1.0vw
+          color: '#000000'
+          font-weight: 'bold'
+          transform: translate(0,0)
+      - type: state-label
+        entity: sensor.environment_office_temperature
+        prefix: 'T: '
+        style:
+          top: 40%
+          left: 82%
+          position: absolute
+          font-size: 1.0vw
+          color: '#000000'
+          font-weight: 'bold'
+          transform: translate(0,0)
+      - type: state-label
+        entity: sensor.environment_office_humidity
+        prefix: 'RH: '
+        style:
+          top: 42.5%
+          left: 82%
+          position: absolute
+          font-size: 1.0vw
+          color: '#000000'
+          font-weight: 'bold'
+          transform: translate(0,0)
+      - type: state-label
+        entity: sensor.environment_bedroom_temperature
+        prefix: 'T: '
+        style:
+          top: 20%
+          left: 43%
+          position: absolute
+          font-size: 1.0vw
+          color: '#000000'
+          font-weight: 'bold'
+          transform: translate(0,0)
+      - type: state-label
+        entity: sensor.environment_bedroom_humidity
+        prefix: 'RH: '
+        style:
+          top: 22.5%
+          left: 43%
+          position: absolute
+          font-size: 1.0vw
+          color: '#000000'
+          font-weight: 'bold'
+          transform: translate(0,0)
       ## Outdoor temperature (buienradar)
       - type: state-label
         entity: sensor.br_temperature
         prefix: 'Buiten temperatuur: '
         style:
           top: 83%
-          left: 25%
-          font-size: 100%
+          left: 2.5%
+          font-size: 1.0vw
           font-weight: 'bold'
+          transform: translate(0,0)
       - type: state-label
         entity: sensor.br_humidity
         prefix: 'Relatieve luchtvochtigheid: '
         style:
-          top: 89%
-          left: 25%
-          font-size: 100%
-          font-weight: 'bold' 
-      ## Indoor temerature and humdity sensors
-      - type: state-label
-        entity: sensor.environment_bathroom_temperature
-        style:
-          top: 54%
-          left: 32.5%
-          position: absolute
-          font-size: 12px
-          color: '#000000'
-          font-weight: 'bold' 
-      - type: state-label
-        entity: sensor.environment_bathroom_humidity
-        style:
-          top: 58%
-          left: 32.5%
-          position: absolute
-          font-size: 12px
-          color: '#000000'
+          top: 85.5%
+          left: 2.5%
+          font-size: 1.0vw
           font-weight: 'bold'
-      - type: state-label
-        entity: sensor.environment_office_temperature
-        style:
-          top: 54%
-          left: 52%
-          position: absolute
-          font-size: 12px
-          color: '#000000'
-          font-weight: 'bold' 
-      - type: state-label
-        entity: sensor.environment_office_humidity
-        style:
-          top: 58%
-          left: 52%
-          position: absolute
-          font-size: 12px
-          color: '#000000'
-          font-weight: 'bold'  
-      - type: state-label
-        entity: sensor.environment_bedroom_temperature
-        style:
-          top: 40%
-          left: 15.5%
-          position: absolute
-          font-size: 12px
-          color: '#000000'
-          font-weight: 'bold' 
-      - type: state-label
-        entity: sensor.environment_bedroom_humidity
-        style:
-          top: 44%
-          left: 15.5%
-          position: absolute
-          font-size: 12px
-          color: '#000000'
-          font-weight: 'bold'
+          transform: translate(0,0)
 
+      ##-----------------------------------------------------------------------------------------------
+      ## Controlable elements used on the floor plan - Lights
+      ##-----------------------------------------------------------------------------------------------
+      ## Livingroom Hue lights - low cabinet left
+      - type: image
+        entity: switch.switch_outlet_1
+        tap_action:
+          action: toggle
+        image: /local/custom_icons/lightbulb48_on.png
+        state_image:
+          'on': /local/custom_icons/lightbulb48_on.png
+          'off': /local/custom_icons/lightbulb48_off.png 
+        style:
+          top: 12%
+          left: 50.75%
+          position: absolute
+          width: 2.5%
+
+      ##-----------------------------------------------------------------------------------------------
+      ## Home and away states used on the floor plan - no control
+      ##-----------------------------------------------------------------------------------------------
+      ## Anneke thuis
+      - type: image
+        entity: input_select.presence_anneke_bisschops
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-anneke-home.png
+        state_image:
+          'Home': /local/custom_icons/card-anneke-home.png
+          'Just Arrived': /local/custom_icons/card-anneke-arriving.png
+          'Just Left': /local/custom_icons/card-anneke-leaving.png
+          'Away': /local/custom_icons/card-anneke-away.png
+          'Extended Away': /local/custom_icons/card-anneke-ext-away.png
+        style:
+          top: 10%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      - type: image
+        entity: device_tracker.anneke_iphone_se
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-presence-location-on.png
+        state_image:
+          'home': /local/custom_icons/card-presence-location-on.png
+          'not_home': /local/custom_icons/card-presence-location-off.png
+        style:
+          top: 10%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      - type: image
+        entity: device_tracker.wifi_anneke_iphone_se
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-presence-wifi-on.png
+        state_image:
+          'home': /local/custom_icons/card-presence-wifi-on.png
+          'not_home': /local/custom_icons/card-presence-wifi-off.png
+        style:
+          top: 10%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      ## Kimberly thuis
+      - type: image
+        entity: input_select.presence_kimberly_bisschops
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-kimberly-home.png
+        state_image:
+          'Home': /local/custom_icons/card-kimberly-home.png
+          'Just Arrived': /local/custom_icons/card-kimberly-arriving.png
+          'Just Left': /local/custom_icons/card-kimberly-leaving.png
+          'Away': /local/custom_icons/card-kimberly-away.png
+          'Extended Away': /local/custom_icons/card-kimberly-ext-away.png
+        style:
+          top: 23%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      - type: image
+        entity: device_tracker.kimberly_iphone8
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-presence-location-on.png
+        state_image:
+          'home': /local/custom_icons/card-presence-location-on.png
+          'not_home': /local/custom_icons/card-presence-location-off.png
+        style:
+          top: 23%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      - type: image
+        entity: device_tracker.wifi_kimberly_iphone8
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-presence-wifi-on.png
+        state_image:
+          'home': /local/custom_icons/card-presence-wifi-on.png
+          'not_home': /local/custom_icons/card-presence-wifi-off.png
+        style:
+          top: 23%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      ## Ralph thuis
+      - type: image
+        entity: input_select.presence_ralph_bisschops
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-kimberly-home.png
+        state_image:
+          'Home': /local/custom_icons/card-ralph-home.png
+          'Just Arrived': /local/custom_icons/card-ralph-arriving.png
+          'Just Left': /local/custom_icons/card-ralph-leaving.png
+          'Away': /local/custom_icons/card-ralph-away.png
+          'Extended Away': /local/custom_icons/card-ralph-ext-away.png
+        style:
+          top: 36%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      - type: image
+        entity: device_tracker.ralph_iphone7
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-presence-location-on.png
+        state_image:
+          'home': /local/custom_icons/card-presence-location-on.png
+          'not_home': /local/custom_icons/card-presence-location-off.png
+        style:
+          top: 36%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      - type: image
+        entity: device_tracker.wifi_ralph_iphone7
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-presence-wifi-on.png
+        state_image:
+          'home': /local/custom_icons/card-presence-wifi-on.png
+          'not_home': /local/custom_icons/card-presence-wifi-off.png
+        style:
+          top: 36%
+          left: 25%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      ##-----------------------------------------------------------------------------------------------
+      ## House states used on the floor plan - no control
+      ##-----------------------------------------------------------------------------------------------
       ## Smoke detectors
       - type: image
         entity: binary_sensor.smoke_sensor_hallway_101_smoke
@@ -163,20 +386,89 @@ cards:
           'on': /local/custom_icons/fire48_on.png
           'off': /local/custom_icons/fire48_off.png
         style:
-          top: 27%
-          left: 28.7%
+          top: 21%
+          left: 59.5%
           position: absolute
           width: 2.5%
-
       ## Motion sensors
-      - type: state-icon
+      - type: image
         entity: binary_sensor.motion_office
         title: Beweging kantoor
         tap_action:
           action: none
+        state_image:
+          'on': /local/custom_icons/motion48_on.png
+          'off': /local/custom_icons/motion48_off.png
         style:
-          top: 48%
-          left: 52%
-          --iron-icon-height: 35px
-          --iron-icon-width: 35px
-     
+          top: 42%
+          left: 94%
+          position: absolute
+          width: 2.5%
+      ##-----------------------------------------------------------------------------------------------
+      ## Controlable elements used on the floor plan - left panel control elements
+      ##-----------------------------------------------------------------------------------------------
+      ## Holiday mode control
+      - type: image
+        entity: input_boolean.mode_holiday
+        tap_action:
+          action: toggle
+        image: /local/custom_icons/holiday_144_off.png
+        state_image:
+          'on': /local/custom_icons/holiday_144_on.png
+          'off': /local/custom_icons/holiday_144_off.png
+        style:
+          top: 19%
+          left: 3%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 9% 
+      ## Recording mode control
+      - type: image
+        entity: input_boolean.media_recording_mode
+        tap_action:
+          action: toggle
+        image: /local/custom_icons/recorder_mode_144_off.png
+        state_image:
+          'on': /local/custom_icons/recorder_mode_144_on.png
+          'off': /local/custom_icons/recorder_mode_144_off.png
+        style:
+          top: 30%
+          left: 3%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 9%
+      ## Kerst mode control
+      - type: image
+        entity: input_boolean.mode_christmas
+        tap_action:
+          action: toggle
+        image: /local/custom_icons/christmas_144_off.png
+        state_image:
+          'on': /local/custom_icons/christmas_144_on.png
+          'off': /local/custom_icons/christmas_144_off.png
+        style:
+          top: 41%
+          left: 3%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 9%
+      ## Alarm reset control - conditional beased on alarm state
+      - type: conditional
+        conditions:
+          - entity: 'input_boolean.alarm_generic_alarm'
+            state: 'on'
+        elements:
+          - type: image
+            entity: input_boolean.alarm_reset_alarm
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/reset_144_off.png
+            state_image:
+              'on': /local/custom_icons/reset_144_off.png
+              'off': /local/custom_icons/reset_144_on.png 
+            style:
+              top: 52%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%

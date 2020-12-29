@@ -7,43 +7,24 @@
 ##  Homeassistant settings
 ###############################################################################
 homeassistant:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
   customize:
-    ## Server sensors
-    sensor.server_domoticz_cpu_temp:
-      friendly_name: Domoticz server CPU temperatuur
-    sensor.server_domoticz_cpu_usage:
-      friendly_name: Domoticz server CPU gebruik
-    sensor.server_domoticz_hdd:
-      friendly_name: Domoticz server HDD
-    sensor.server_domoticz_hdd_boot:
-      friendly_name: Domoticz server HDD boot
-    sensor.server_domoticz_memory_usage:
-      friendly_name: Domoticz server geheugen gebruik
-    sensor.server_domoticz_process_usage:
-      friendly_name: Domoticz server gebruik processen
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## Home server HDD
+    ## Source: Domoticz via MQTT
     sensor.server_homeserver_hdd:
       friendly_name: Homerserver HDD
+    ## Home server HDD boot
+    ## Source: Domoticz via MQTT
     sensor.server_homeserver_hdd_boot:
       friendly_name: Homerserver HDD boot
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
-    ## Moved to integration Glances on HA
-    sensor.server_homeserver_cpu_temp:
-      friendly_name: Homerserver CPU temperatuur
-    sensor.server_homeserver_cpu_usage:
-      friendly_name: Homerserver CPU gebruik
-    sensor.server_homeserver_process_usage:
-      friendly_name: Homerserver gebruik processen
-    sensor.server_homeserver_memory_usage:
-      friendly_name: Homerserver HDD geheugen gebruik
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Entities
@@ -52,22 +33,8 @@ sensor:
 ##-----------------------------------------------------------------------------------------------
 ## sensors - Active
 ##-----------------------------------------------------------------------------------------------
-  ## Homeserver server hardware monitoring
-  - platform: "mqtt"
-    name: server_homeserver_hdd_boot
-    state_topic: "home/server/homeserver/hdd_boot"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/homeserver/hdd_boot"
-    unit_of_measurement: "%"
-  - platform: "mqtt"
-    name: server_homeserver_hdd
-    state_topic: "home/server/homeserver/hdd"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/homeserver/hdd"
-    unit_of_measurement: "%"
-##-----------------------------------------------------------------------------------------------
-## sensors - Check
-##-----------------------------------------------------------------------------------------------
+  ## Home server CPU temperature
+  ## Source: template
   - platform: template
     sensors:
       server_homeserver_cpu_temp:
@@ -79,65 +46,28 @@ sensor:
           {% set cpu_temp = cpu_temp/4|int %}
           {{ cpu_temp }}
         unit_of_measurement: "°C"
+  ## Home server HDD boot
+  ## Source: Domoticz via MQTT
+  - platform: "mqtt"
+    name: server_homeserver_hdd_boot
+    state_topic: "home/server/homeserver/hdd_boot"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/hdd_boot"
+    unit_of_measurement: "%"
+  ## Home server HDD
+  ## Source: Domoticz via MQTT
+  - platform: "mqtt"
+    name: server_homeserver_hdd
+    state_topic: "home/server/homeserver/hdd"
+    value_template: "{{ value_json.usage|float }}"
+    json_attributes_topic: "home/server/homeserver/hdd"
+    unit_of_measurement: "%"
+##-----------------------------------------------------------------------------------------------
+## sensors - Check
+##-----------------------------------------------------------------------------------------------
 ##-----------------------------------------------------------------------------------------------
 ## sensors - Obsolete
 ##-----------------------------------------------------------------------------------------------
-  ## Domoticz server hardware monitoring
-  - platform: "mqtt"
-    name: server_domoticz_memory_usage
-    state_topic: "home/server/domoticz/mem_usage"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/domoticz/mem_usage"
-    unit_of_measurement: "%"
-  - platform: "mqtt"
-    name: server_domoticz_hdd_boot
-    state_topic: "home/server/domoticz/hdd_boot"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/domoticz/hdd_boot"
-    unit_of_measurement: "%"
-  - platform: "mqtt"
-    name: server_domoticz_hdd
-    state_topic: "home/server/domoticz/hdd"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/domoticz/hdd"
-    unit_of_measurement: "%"
-  - platform: "mqtt"
-    name: server_domoticz_cpu_temp
-    state_topic: "home/server/domoticz/cpu_temp"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/domoticz/cpu_temp"
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-  - platform: "mqtt"
-    name: server_domoticz_cpu_usage
-    state_topic: "home/server/domoticz/cpu_usage"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/domoticz/cpu_usage"
-    unit_of_measurement: "%"
-  - platform: "mqtt"
-    name: server_domoticz_process_usage
-    state_topic: "home/server/domoticz/process_usage"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/domoticz/process_usage"
-    unit_of_measurement: "MB"
-  - platform: "mqtt"
-    name: server_homeserver_memory_usage
-    state_topic: "home/server/homeserver/mem_usage"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/homeserver/mem_usage"
-    unit_of_measurement: "%"
-  - platform: "mqtt"
-    name: server_homeserver_cpu_usage
-    state_topic: "home/server/homeserver/cpu_usage"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/homeserver/cpu_usage"
-    unit_of_measurement: "%"
-  - platform: "mqtt"
-    name: server_homeserver_process_usage
-    state_topic: "home/server/homeserver/process_usage"
-    value_template: "{{ value_json.usage|float }}"
-    json_attributes_topic: "home/server/homeserver/process_usage"
-    unit_of_measurement: "MB"
 
 ###############################################################################
 ##  Groups
@@ -158,4 +88,3 @@ sensor:
 ###############################################################################
 ##  Timers
 ###############################################################################
-

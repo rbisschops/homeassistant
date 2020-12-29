@@ -21,6 +21,9 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
+      - entity: input_boolean.alarm_reset_alarm
+        name: Reset alarmen
+        icon: "mdi:autorenew"
       - entity: input_boolean.notifications_notifications_allowed
         name: Tekst notificaties
         icon: "mdi:bell"

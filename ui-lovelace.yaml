@@ -7,16 +7,6 @@
 ##  Custom compact header settings
 ##  https://github.com/maykar/compact-custom-header
 ###############################################################################
-# cch:
-#   header: hide
-#   menu: show
-#   options: show
-#   voice: show
-#   notifications: clock
-#   clock_format: '24'
-#   clock_date: true
-#   date_locale: nl-NL
-#   disable: false
 
 ###############################################################################
 ##  Custom header settings
@@ -33,6 +23,12 @@ custom_header:
 ##  https://github.com/custom-cards/button-card
 ###############################################################################
 button_card_templates:
+  ##-----------------------------------------------------------------------------------------------
+  ## Style templates - Active
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## Style templates - Check
+  ##-----------------------------------------------------------------------------------------------
   media_button_large:
     styles:
       card:
@@ -195,6 +191,12 @@ button_card_templates:
         - font-size: 0.9em
         - font-weight: normal
         - text-align: left
+  ##-----------------------------------------------------------------------------------------------
+  ## Style templates - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## Style templates - Test
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Settings for Declustering-card
@@ -202,6 +204,172 @@ button_card_templates:
 ###############################################################################
 
 decluttering_templates:
+  ##-----------------------------------------------------------------------------------------------
+  ## Declutering card templates - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Button for controlling Click-On-Click-Off device types (light, switch)
+  coco_button_large:
+    card:
+      type: custom:button-card
+      entity: 'input_boolean.[[type]]_[[entity]]'
+      icon: 'mdi:[[icon]]'
+      template: stats_button
+      name: '[[name]]'
+      tap_action:
+        action: toggle
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+              [[[
+                if (states["switch.rfx_[[entity]]"].state == "on") return 'rgb(244, 180, 0)';
+                else return 'rgb(84, 84, 84)';
+              ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+      custom_fields:
+        temp: >
+          [[[
+            return `<span style="font-size: 0.9em;"></span>`
+          ]]]
+  ## Button for controlling Hue device types (light), includes scene state
+  hue_light_button:
+    card:
+      type: custom:button-card
+      entity: 'input_boolean.[[entity]]_button'
+      icon: 'mdi:[[icon]]'
+      template: stats_button
+      name: '[[name]]'
+      tap_action:
+        action: toggle
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+              [[[
+                if (states["input_boolean.[[entity]]"].state == "on") return 'rgb(244, 180, 0)';
+                else return 'rgb(84, 84, 84)';
+              ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+            - align-items: end
+      custom_fields:
+        temp: >
+          [[[
+            return `<span style="font-size: 0.9em;">${states["input_select.[[entity]]_scene"].state}</span>`
+          ]]]
+  ## Button for controlling device types based on input_boolean (light)
+  generic_light_button_large:
+    card:
+      type: custom:button-card
+      entity: 'input_boolean.[[entity]]_button'
+      icon: 'mdi:[[icon]]'
+      template: stats_button
+      name: '[[name]]'
+      tap_action:
+        action: toggle
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+              [[[
+                if (states["input_boolean.[[entity]]"].state == "on") return 'rgb(244, 180, 0)';
+                else return 'rgb(84, 84, 84)';
+              ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+      custom_fields:
+        temp: >
+          [[[
+            return `<span style="font-size: 0.9em;"></span>`
+          ]]]
+  ## Button for controlling the auto.manual state of the sunscreen(s)
+  sunscreen_manual_button_large:
+    card:
+      type: custom:button-card
+      template: light_button_large
+      entity: '[[entity]]'
+      icon: '[[[ if (entity.state == "on") return "mdi:alpha-m-circle"; else return "mdi:alpha-a-circle" ]]]'
+      size: 30%
+      show_state: false
+      tap_action: 
+        action: toggle
+      name: '[[[ if (entity.state == "on") return "Manual"; else return "Auto" ]]]'
+      state:
+        - value: 'off'
+          styles:
+            card:
+              - color: rgb(84, 84, 84)
+        - value: 'on'
+          styles:
+            card:
+              - color: rgb(56, 150, 56)
+            icon:
+              - color: rgb(56, 150, 56)
+  ## Button for controlling switch device types (light, switch)
+  switch_button_large:
+    card:
+      type: custom:button-card
+      entity: 'input_boolean.[[type]]_[[entity]]'
+      icon: 'mdi:[[icon]]'
+      template: stats_button
+      name: '[[name]]'
+      tap_action:
+        action: toggle
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+              [[[
+                if (states["switch.switch_[[entity]]"].state == "on") return 'rgb(244, 180, 0)';
+                else return 'rgb(84, 84, 84)';
+              ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+      custom_fields:
+        temp: >
+          [[[
+            return `<span style="font-size: 0.9em;"></span>`
+          ]]]
+  ##-----------------------------------------------------------------------------------------------
+  ## Declutering card templates - Check
+  ##-----------------------------------------------------------------------------------------------
   custom_markdown_card:
     card:
       type: markdown
@@ -239,7 +407,7 @@ decluttering_templates:
   media_button_large:
     card:
       type: custom:button-card
-      template:  media_button_large
+      template: media_button_large
       entity: '[[entity]]'
       icon: 'mdi:[[icon]]'
       show_entity_picture: true
@@ -448,11 +616,10 @@ decluttering_templates:
               - color: rgb(56, 150, 56)
             icon:
               - color: rgb(56, 150, 56)
-
   light_button_large:
     card:
       type: custom:button-card
-      template:  light_button_large
+      template: light_button_large
       entity: '[[entity]]'
       icon: 'mdi:[[icon]]'
       size: 30%
@@ -471,11 +638,10 @@ decluttering_templates:
               - color: rgb(56, 150, 56)
             icon:
               - color: rgb(56, 150, 56)
-
   sunscreen_in_button_large:
     card:
       type: custom:button-card
-      template:  light_button_large
+      template: light_button_large
       entity: '[[entity]]'
       icon: 'mdi:[[icon]]'
       size: 30%
@@ -495,11 +661,10 @@ decluttering_templates:
               - color: rgb(56, 150, 56)
             icon:
               - color: rgb(56, 150, 56)
-
   sunscreen_out_button_large:
     card:
       type: custom:button-card
-      template:  light_button_large
+      template: light_button_large
       entity: '[[entity]]'
       icon: 'mdi:[[icon]]'
       size: 30%
@@ -519,11 +684,10 @@ decluttering_templates:
           styles:
             card:
               - color: rgb(84, 84, 84)
-
   sunscreen_pause_button_large:
     card:
       type: custom:button-card
-      template:  light_button_large
+      template: light_button_large
       entity: '[[entity]]'
       icon: '[[[ if (entity.state == "off") return "mdi:pause-circle"; else return "mdi:play-circle" ]]]'
       size: 30%
@@ -545,34 +709,11 @@ decluttering_templates:
             icon:
               - color: rgb(56, 150, 56)
 
-  sunscreen_manual_button_large:
-    card:
-      type: custom:button-card
-      template:  light_button_large
-      entity: '[[entity]]'
-      icon: '[[[ if (entity.state == "on") return "mdi:alpha-m-circle"; else return "mdi:alpha-a-circle" ]]]'
-      size: 30%
-      show_state: false
-      tap_action: 
-        action: toggle
-      name: '[[[ if (entity.state == "on") return "Manual"; else return "Auto" ]]]'
-      state:
-        - value: 'off'
-          styles:
-            card:
-              - color: rgb(84, 84, 84)
-        - value: 'on'
-          styles:
-            card:
-              - color: rgb(56, 150, 56)
-            icon:
-              - color: rgb(56, 150, 56)
-
   ## RAG (Red-Amber-Green) buttons with RH value and temperature value
   stats_rag_icon_humidity:
     card:
       type: custom:button-card
-      entity: 'sensor.environment_[[sensor]]_humidity'
+      entity: 'sensor.[[leader]]_[[sensor]]_humidity'
       icon: >
         [[[
           if (parseFloat(entity.state) < 40) return 'mdi:alpha-l-circle';
@@ -615,9 +756,6 @@ decluttering_templates:
             if (entity.state == "unknown") return '<ha-icon icon="mdi:water-percent" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">--</span>';
             else return `<ha-icon icon="mdi:water-percent" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">${entity.state}%</span></br><ha-icon icon="mdi:home-thermometer" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">${states["sensor.environment_[[sensor]]_temperature"].state}&#8451;</span>`;
           ]]]
-
-
-
   ## RAG (Red-Amber-Green) buttons with RH value only
   stats_rag_icon_humidity_only:
     card:
@@ -665,15 +803,13 @@ decluttering_templates:
             if (entity.state == "unknown") return '<ha-icon icon="mdi:water-percent" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">--</span>';
             else return `<ha-icon icon="mdi:water-percent" style="width: 12px; height: 1em;"></ha-icon><span style="font-size: 0.8em;">${entity.state}%</span>`;
           ]]]
-
   ## Interactive light buttons with status indicator
-
   stats_blinds_button_large:
     card:
       type: custom:button-card
       entity: 'input_boolean.[[entity]]_button'
       icon: 'mdi:[[icon]]'
-      template:  stats_button
+      template: stats_button
       name: '[[name]]'
       tap_action:
         action: toggle
@@ -702,13 +838,12 @@ decluttering_templates:
           [[[
             return `<span style="font-size: 0.9em;">${states["input_select.[[entity]]"].state}</span></br><span style="font-size: 0.9em;">${states["input_select.[[entity]]_reason"].state}</span>`
           ]]]
-
   stats_light_button_large:
     card:
       type: custom:button-card
       entity: 'input_boolean.[[entity]]_button'
       icon: 'mdi:[[icon]]'
-      template:  stats_button
+      template: stats_button
       name: '[[name]]'
       tap_action:
         action: toggle
@@ -736,12 +871,45 @@ decluttering_templates:
           [[[
             return `<span style="font-size: 0.9em;">${states["input_select.[[entity]]"].state}</span>`
           ]]]
+  stats_light_button_large_new:
+    card:
+      type: custom:button-card
+      entity: 'input_boolean.[[type]]_[[entity]]'
+      icon: 'mdi:[[icon]]'
+      template: stats_button
+      name: '[[name]]'
+      tap_action:
+        action: toggle
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+              [[[
+                if (states["switch.rfx_[[entity]]"].state == "on") return 'rgb(244, 180, 0)';
+                else return 'rgb(84, 84, 84)';
+              ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+      custom_fields:
+        temp: >
+          [[[
+            return `<span style="font-size: 0.9em;">${states["input_select.[[type]]_[[entity]]"].state}</span>`
+          ]]]
   stats_light_button_dimmer:
     card:
       type: custom:button-card
       entity: 'input_boolean.[[entity]]_button'
       icon: 'mdi:[[icon]]'
-      template:  stats_button
+      template: stats_button
       name: '[[name]]'
       tap_action:
         action: toggle
@@ -769,47 +937,12 @@ decluttering_templates:
           [[[
             return `<span style="font-size: 0.9em;">${states["input_number.[[entity]]_dimmer"].state}</span>`
           ]]]
-  stats_light_button_hue:
-    card:
-      type: custom:button-card
-      entity: 'input_boolean.[[entity]]_button'
-      icon: 'mdi:[[icon]]'
-      template:  stats_button
-      name: '[[name]]'
-      tap_action:
-        action: toggle
-      styles:
-        grid:
-          - grid-template-areas: '"i temp" "n n"'
-          - grid-template-columns: 1fr 1fr
-          - grid-template-rows: 1fr
-        img_cell:
-          - justify-content: start
-          - align-items: start
-          - margin: none
-        icon:
-          - color: >
-              [[[
-                if (states["input_boolean.[[entity]]"].state == "on") return 'rgb(244, 180, 0)';
-                else return 'rgb(84, 84, 84)';
-              ]]]
-        custom_fields:
-          temp:
-            - align-self: start
-            - justify-self: end
-            - align-items: end
-      custom_fields:
-        temp: >
-          [[[
-            return `<span style="font-size: 0.9em;">${states["input_select.[[entity]]"].state}</span></br><span style="font-size: 0.9em;">${states["input_select.[[entity]]_scene"].state}</span>`
-          ]]]
-
   stats_climate_button_large:
     card:
       type: custom:button-card
       entity: 'input_boolean.[[entity]]'
       icon: 'mdi:[[icon]]'
-      template:  stats_button
+      template: stats_button
       name: '[[name]]'
       tap_action:
         action: toggle
@@ -837,13 +970,12 @@ decluttering_templates:
           [[[
             return `<span style="font-size: 0.9em;">${states["input_select.[[entity]]"].state}</span>`
           ]]]
-
   stats_media_button_large:
     card:
       type: custom:button-card
       entity: 'switch.[[entity]]'
       icon: 'mdi:[[icon]]'
-      template:  stats_button
+      template: stats_button
       name: '[[name]]'
       tap_action:
         action: toggle
@@ -871,9 +1003,52 @@ decluttering_templates:
           [[[
             return `<span style="font-size: 0.9em;">${states["input_select.media_harmony_livingroom_new_state"].state}</span>`
           ]]]
-###############################################################################
-## Experimental code move or remove after testing
-###############################################################################
+  garbage_bin:
+    card:
+      type: custom:button-card
+      entity: 'input_boolean.[[entity]]'
+      icon: 'mdi:[[icon]]'
+      entity_picture: >
+        [[[
+          if (states["input_select.[[entity]]"].state == "Thuis") return '/local/icons/[[image]]_on.png';
+          else if (states["input_select.[[entity]]"].state == "Alarm") return '/local/icons/[[image]]_alert.png';
+          else return '/local/icons/bin_off.png'
+        ]]] 
+      show_entity_picture: true
+      template: stats_button
+      name: '[[name]]'
+      tap_action:
+        action: toggle
+      styles:
+        grid:
+          - grid-template-areas: '"i temp" "n n"'
+          - grid-template-columns: 1fr 1fr
+          - grid-template-rows: 1fr
+        img_cell:
+          - justify-content: start
+          - align-items: start
+          - margin: none
+        icon:
+          - color: >
+              [[[
+                if (states["input_boolean.[[entity]]"].state == "on") return 'rgb(4, 103, 255)';
+                else return 'rgb(84, 84, 84)';
+              ]]]
+        custom_fields:
+          temp:
+            - align-self: start
+            - justify-self: end
+      custom_fields:
+        temp: >
+          [[[
+            return `<span style="font-size: 0.9em;">${states["input_select.[[entity]]"].state}</span>`
+          ]]]
+  ##-----------------------------------------------------------------------------------------------
+  ## Declutering card templates - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## Declutering card templates - Test
+  ##-----------------------------------------------------------------------------------------------
   stats_rh_rag_icon_test:
     card:
       type: custom:button-card
@@ -897,10 +1072,9 @@ decluttering_templates:
              ]]]
 
 ###############################################################################
-##  Main Lovemace settings
+##  Main Lovelace settings
 ###############################################################################
 title: Bisschops Mansion
-# background: center / cover no-repeat url("/local/background2.jpg") fixed
 views:
   - !include lovelace/home.yaml
   - !include lovelace/mediaplayer.yaml
@@ -910,6 +1084,8 @@ views:
   - !include lovelace/things.yaml
   - !include lovelace/settings.yaml
   - !include lovelace/groundfloor.yaml
+  # - !include lovelace/groundfloor_old.yaml
+  - !include lovelace/storage.yaml 
   - !include lovelace/firstfloor.yaml
   - !include lovelace/secondfloor.yaml
   - !include lovelace/garden.yaml

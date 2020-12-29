@@ -6,44 +6,32 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Entities
 ###############################################################################
 input_boolean:
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_boolean - Check
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Electrical restroom heating controlled by Z-Wave Thermostat
   ## Used for manual on/off of the restroom heating
   climate_restroom_heating_mode:
     name: Toilet verwarming
     icon: mdi:radiator
-##-----------------------------------------------------------------------------------------------
-##input_boolean - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 input_select:
-##-----------------------------------------------------------------------------------------------
-## input_select - Active
-##-----------------------------------------------------------------------------------------------
-  ## Electrical restroom heating controlled by Z-Wave Thermostat
-  ## Used for manual control of the restroom heating
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## State indicator restroom heating
+  ## Source: template input select 
   climate_restroom_heating_mode:
     name: Verwarming toilet mode
     options:
@@ -51,13 +39,12 @@ input_select:
       - "Spaarstand"
       - "Uitgeschakeld"
     icon: mdi:thermometer
-##-----------------------------------------------------------------------------------------------
-## input_select - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## input_select - Obsolete
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Obsolete
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
@@ -66,106 +53,6 @@ input_select:
 ###############################################################################
 ##  Automations
 ###############################################################################
-# automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Switch restroom heating based on time for work days
-  # - alias: "Climate - Restroom heating scheduled on working days"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: time
-  #       at: "06:00:00"
-  #   condition:
-  #     condition: and
-  #     conditions:
-  #       - condition: state
-  #         entity_id: binary_sensor.workday_sensor
-  #         state: "on"
-  #       - condition: state
-  #         entity_id: binary_sensor.presence_everybody_away
-  #         state: "off"
-  #       - condition: state
-  #         entity_id: binary_sensor.presence_everybody_extended_away
-  #         state: "off"
-  #       - condition: state
-  #         entity_id: input_boolean.mode_holiday
-  #         state: "off"
-  #       - condition: template
-  #         value_template: >
-  #           {{ not is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') }}
-  #   action:
-      # Set the input selector to new state
-      # - service: input_select.select_option
-      #   data_template:
-      #     entity_id: input_select.climate_restroom_heating_mode
-      #     option: "Verwarmen"
-      # - service: script.notify_prowl
-      #   data_template:
-      #     value1: "Toilet verwarming geschakeld. "
-      #     value2: "Trigger = Werkdag "
-      #     value3: " "
-      #     who: "ralph"
-      #     prio: -2
-
-  ## Switch restroom heating based on time for non-working days
-  # - alias: "Climate - Restroom heating scheduled on non working days"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: time
-  #       at: "06:30:00"
-  #   condition:
-  #     condition: and
-  #     conditions:
-  #       - condition: state
-  #         entity_id: binary_sensor.workday_sensor
-  #         state: "off"
-  #       - condition: state
-  #         entity_id: binary_sensor.presence_everybody_away
-  #         state: "off"
-  #       - condition: state
-  #         entity_id: input_boolean.mode_holiday
-  #         state: "off"
-  #       - condition: template
-  #         value_template: >
-  #           {{ not is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') }}
-  #   action:
-      # Set the input selector to new state
-      # - service: input_select.select_option
-      #   data_template:
-      #     entity_id: input_select.climate_restroom_heating_mode
-      #     option: "Verwarmen"
-      # - service: script.notify_prowl
-      #   data_template:
-      #     value1: "Toilet verwarming geschakeld. "
-      #     value2: "Trigger = Niet-werkdag "
-      #     value3: "{{ states.input_select.climate_restroom_heating_mode.state }}"
-      #     who: "ralph"
-      #     prio: -2
-
-  ## Switch toilet heating based on input selector state
-  # - alias: "Climate - Restroom heating mode selection"
-  #   initial_state: "on"
-  #   trigger:
-  #     - platform: state
-  #       entity_id: 
-  #         - input_select.climate_restroom_heating_mode
-  #   action:
-  #     ##start the script for setting the heating mode
-  #     - service: script.climate_set_rest_room_heating_mode
-  #       data_template:
-  #         mode: >
-  #           {{ 'off' if is_state('input_select.climate_restroom_heating_mode','Uitgeschakeld') else 'heat' }}
-  #         preset: >
-  #           {{ 'Energy Heat' if is_state('input_select.climate_restroom_heating_mode','Spaarstand') else 'none' }}
 
 ###############################################################################
 ##  Templates
@@ -174,37 +61,6 @@ input_select:
 ###############################################################################
 ##  Scripts
 ###############################################################################
-# script:
-##-----------------------------------------------------------------------------------------------
-## scripts - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## scripts - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Updated simplified script for setting the heating mode
-  # climate_set_rest_room_heating_mode:
-  #   alias: Zend verwarmings mode naar toilet verwarming
-  #   sequence: 
-  #     - service: climate.set_hvac_mode
-  #       data_template:
-  #         entity_id: climate.rest_room_heating_mode
-  #         hvac_mode: "{{ mode }}"
-  #     - service: climate.set_preset_mode
-  #       data_template:
-  #         entity_id: climate.rest_room_heating_mode
-  #         preset_mode: "{{ preset }}"
-      # - service: script.notify_prowl
-      #   data_template:
-      #     value1: "Toilet verwarming "
-      #     value2: "nieuwe status: "
-      #     value3: "{{mode}} {{preset}}"
-      #     who: "ralph"
-      #     prio: -2
 
 ###############################################################################
 ##  Timers

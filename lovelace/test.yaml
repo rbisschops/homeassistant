@@ -13,18 +13,6 @@ cards:
       template: custom_markdown_card
       variables:
         - title: Algemeen
-  #   - type: custom:decluttering-card
-  #     template: custom_markdown_card_small
-  #     variables:
-  #       - title: Presence test
-  #   - type: entities
-  #     show_state: false
-  #     show_name: false
-  #     show_header_toggle: false
-  #     entities:
-  #       - input_select.presence_ralph_bisschops
-  #       - input_select.presence_anneke_bisschops
-  #       - input_select.presence_kimberly_bisschops
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -36,35 +24,28 @@ cards:
       entities:
         - entity: binary_sensor.door_front_door
         - entity: binary_sensor.door_storage_door
-    # - type: custom:decluttering-card
-    #   template: custom_markdown_card_small
-    #   variables:
-    #     - title: Timers
-    # - type: entities
-    #   show_state: false
-    #   show_name: false
-    #   show_header_toggle: false
-    #   entities:
-    #     - entity: timer.light_hallway
-    #     - entity: timer.light_porch
-
-  # - type: vertical-stack
-  #   cards:
-  #   - type: custom:decluttering-card
-  #     template: custom_markdown_card
-  #     variables:
-  #       - title: Tuin
-  #   - type: custom:decluttering-card
-  #     template: custom_markdown_card_small
-  #     variables:
-  #       - title: Virtuele schakelaars tuin
-  #   - type: entities
-  #     show_state: false
-  #     show_name: false
-  #     show_header_toggle: false
-  #     entities:
-  #       - entity: input_boolean.blinds_sunscreen_test
-
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Lichtsensoren
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: sensor.light_level_office_level
+        - entity: sensor.light_level_garden_level
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Licht/donker
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.mode_dark_indoor
+        - entity: input_boolean.mode_dark_outdoor
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -74,23 +55,12 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
-        - title: Tradfri test schakelaars
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - entity: switch.switch_high_cabinets
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
         - title: Verlichting bar
     - type: entities
       show_state: false
       show_name: false
       show_header_toggle: false
       entities:
-        # - entity: input_number.light_bar_dimmer
         - entity: input_boolean.light_bar
 
     - type: custom:decluttering-card
@@ -104,7 +74,16 @@ cards:
       entities:
         - entity: input_boolean.dummy_groundfloor_front_window
         - entity: input_boolean.dummy_garden_door
-
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Wake-up light (test)
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - input_boolean.wakeup_mb_enabled
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -124,18 +103,6 @@ cards:
         - entity: input_boolean.dummy_hallway_storage_door
         - entity: input_boolean.dummy_metering_cabinet_door
         - entity: input_boolean.dummy_rest_room_door
-    # - type: custom:decluttering-card
-    #   template: custom_markdown_card_small
-    #   variables:
-    #     - title: Timers berging
-    # - type: entities
-    #   show_state: false
-    #   show_name: false
-    #   show_header_toggle: false
-    #   entities:
-    #     - entity: input_number.light_porch_long_timer
-    #     - entity: input_number.light_porch_short_timer
-
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -148,6 +115,9 @@ cards:
         - entity: input_boolean.dummy_freezer_door
         - entity: input_boolean.dummy_garbage_bin_plastic
         - entity: input_boolean.dummy_garbage_bin_bio
+        - entity: input_boolean.garbage_bin_gft
+        - entity: input_boolean.garbage_bin_pmd
+        - entity: input_boolean.garbage_bin_paper
 
   - type: vertical-stack
     cards:
@@ -155,17 +125,6 @@ cards:
       template: custom_markdown_card
       variables:
         - title: 1e verdieping
-
-    - type: custom:decluttering-card
-      template: custom_markdown_card_small
-      variables:
-        - title: Lichtsensor kantoor
-    - type: entities
-      show_state: false
-      show_name: false
-      show_header_toggle: false
-      entities:
-        - entity: sensor.light_level_office_level
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -236,6 +195,7 @@ cards:
       show_header_toggle: false
       entities:
         - entity: input_boolean.dummy_heating_room_door
+        - entity: input_boolean.dummy_hallway_window
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -249,60 +209,58 @@ cards:
         - entity: input_boolean.dummy_kims_room_window_left
         - entity: input_boolean.dummy_kims_room_window_right
 
-
-###############################################################################
-## Experimental code move or remove after testing
-###############################################################################
-
-  ## Experimental RAG buttons for testing
-  # - type: vertical-stack
-  #   cards:
-  #   - type: custom:decluttering-card 
-  #     template: custom_markdown_card
-  #     variables:
-  #       - title: Luchtvochtigheid
-  #   - type: custom:decluttering-card
-  #     template: custom_markdown_card_small
-  #     variables:
-  #       - title: Test sensors
-  #   - type: horizontal-stack
-  #     cards:
-  #       - type: custom:decluttering-card
-  #         template: stats_rag_icon_humidity
-  #         variables:
-  #           - sensor: test
-  #           - name: Test sensor (MQTT)
-  #       - type: custom:button-card
-  #         color_type: blank-card
-  #       - type: custom:button-card
-  #         color_type: blank-card
-
-# ## Control cards
-#   - type: vertical-stack
-#     cards:
-#     - type: custom:decluttering-card
-#       template: custom_markdown_card
-#       variables:
-#         - title: Bedienen
-#     - type: custom:decluttering-card
-#       template: custom_markdown_card_small
-#       variables:
-#         - title: Verlichting
-#     - type: horizontal-stack
-#       cards:
-#         - type: custom:decluttering-card
-#           template: stats_blinds_button_large
-#           variables: 
-#             - entity: blinds_sunscreen
-#             - name: Zonnescherm
-#             - icon: blinds
-#         - type: custom:decluttering-card
-#           template: stats_rag_icon_humidity
-#           variables:
-#             - sensor: livingroom
-#             - name: Woonkamer
-#             - icon: water-percent
-#         - type: custom:button-card
-#           color_type: blank-card
-
-##########################################################################################
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card
+      variables:
+        - title: Condities
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Huis
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_select.mode_house_state
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Beneden verdieping
+    - type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
+          template: garbage_bin
+          variables: 
+            - entity: garbage_bin_gft
+            - name: GFT bak
+            - icon: trash-can
+            - image: gft
+        - type: custom:decluttering-card
+          template: garbage_bin
+          variables: 
+            - entity: garbage_bin_pmd
+            - name: PMD bak
+            - icon: trash-can
+            - image: pmd
+        - type: custom:decluttering-card
+          template: garbage_bin
+          variables: 
+            - entity: garbage_bin_paper
+            - name: Papier bak
+            - icon: trash-can
+            - image: paper
+    # - type: horizontal-stack
+    #   cards:
+    #     - type: custom:decluttering-card
+    #       template: stats_rag_icon_humidity
+    #       variables:
+    #         - sensor: livingroom
+    #         - name: Woonkamer
+    #         - icon: water-percent
+    #     - type: custom:button-card
+    #       color_type: blank-card
+    #     - type: custom:button-card
+    #       color_type: blank-card

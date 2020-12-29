@@ -8,9 +8,9 @@
 ###############################################################################
 homeassistant:
   customize:
-##-----------------------------------------------------------------------------------------------
-## Customizations - Active
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
     ## Internet statistics 
     sensor.network_uptime:
       friedly_name: Uptime
@@ -25,8 +25,6 @@ homeassistant:
       icon: "mdi:microphone"
     sensor.network_diskstation:
       icon: "mdi:nas"
-    sensor.network_domoticz_master:
-      icon: "mdi:desktop-tower"
     sensor.network_pihole:
       icon: "mdi:desktop-tower"
     sensor.network_mysensors_gateway:
@@ -43,8 +41,6 @@ homeassistant:
       icon: "mdi:printer"
     sensor.network_voip:
       icon: "mdi:phone-voip"
-    sensor.network_xiaomi_bridge:
-      icon: "mdi:router-wireless"
     ## Other network devices (only when tracked)
     sensor.network_apple_tv:
       icon: "mdi:apple"
@@ -72,13 +68,16 @@ homeassistant:
       icon: "mdi:desktop-tower"
     sensor.network_popcornhour:
       icon: "mdi:popcorn"
-##-----------------------------------------------------------------------------------------------
-## Customizations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## Customizations - Obsolete
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    sensor.network_domoticz_master:
+      icon: "mdi:desktop-tower"
+    sensor.network_xiaomi_bridge:
+      icon: "mdi:router-wireless"
 
 ##-----------------------------------------------------------------------------------------------
 ## Other Home Assistant settings - Active
@@ -95,220 +94,205 @@ speedtestdotnet:
 ##  Entities
 ###############################################################################
 sensor:
-##-----------------------------------------------------------------------------------------------
-## sensors - Active
-##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
   ## Uptime sensor (Home Assistant)
   - platform: uptime
   ## Network devices
   - platform: template
     sensors:
-    ## Crtical network devices
+      ## Crtical network devices
+      ## Network presence Amazon echo
+      ## Source: device tracker - Netgear
       network_amazon_echo:
         friendly_name: "Amazon echo dot (living room)"
-        entity_id:
-          - device_tracker.amazonacac5ec30
+        # entity_id:
+        #   - device_tracker.amazonacac5ec30
         value_template: "{{ 'on' if is_state('device_tracker.amazonacac5ec30','home') else 'off' }}"
+      ## Network presence NAS 
+      ## Source: device tracker - Netgear
       network_diskstation:
         friendly_name: "Diskstation II"
-        entity_id:
-          - device_tracker.diskstationii
+        # entity_id:
+        #   - device_tracker.diskstationii
         value_template: "{{ 'on' if is_state('device_tracker.diskstationii','home') else 'off' }}"
-      network_domoticz_master:
-        friendly_name: "Domoticz (master)"
-        entity_id:
-          - device_tracker.raspberrypi
-        value_template: "{{ 'on' if is_state('device_tracker.raspberrypi','home') else 'off' }}"
+      ## Network presence PiHole 
+      ## Source: device tracker - Netgear
       network_pihole:
         friendly_name: "PiHole"
-        entity_id:
-          - device_tracker.raspberrypi_2
+        # entity_id:
+        #   - device_tracker.raspberrypi_2
         value_template: "{{ 'on' if is_state('device_tracker.raspberrypi_2','home') else 'off' }}"
+      ## Network presence Mysensors Gateway
+      ## Source: device tracker - Netgear
       network_mysensors_gateway:
         friendly_name: "MySensors Gateway"
-        entity_id:
-          - device_tracker.raspberrypi_3
+        # entity_id:
+        #   - device_tracker.raspberrypi_3
         value_template: "{{ 'on' if is_state('device_tracker.raspberrypi_3', 'home') else 'off' }}"
+      ## Network presence HA Bridge
+      ## Source: device tracker - Netgear
       network_ha_bridge:
         friendly_name: "HA Bridge"  
-        entity_id:
-          - device_tracker.habridge
+        # entity_id:
+        #   - device_tracker.habridge
         value_template: "{{ 'on' if is_state('device_tracker.habridge', 'home') else 'off' }}"
+      ## Network presence Harmony Hub
+      ## Source: device tracker - Netgear
       network_harmony_hub:
         friendly_name: "Harmony Hub"
-        entity_id:
-          - device_tracker.harmonyhub
+        # entity_id:
+        #   - device_tracker.harmonyhub
         value_template: "{{ 'on' if is_state('device_tracker.harmonyhub', 'home') else 'off' }}"
+      ## Network presence DSMR Reader
+      ## Source: device tracker - Netgear
       network_dsmrreader_pi:
         friendly_name: "Home Assistant (RPi)"
-        entity_id:
-          - device_tracker.dsmrreader
+        # entity_id:
+        #   - device_tracker.dsmrreader
         value_template: "{{ 'on' if is_state('device_tracker.dsmrreader', 'home') else 'off' }}"
+      ## Network presence Hue Bridge
+      ## Source: device tracker - Netgear
       network_hue_bridge:
         friendly_name: "Philips Hue Bridge"
-        entity_id:
-          - device_tracker.philipshue
+        # entity_id:
+        #   - device_tracker.philipshue
         value_template: "{{ 'on' if is_state('device_tracker.philipshue', 'home') else 'off' }}"
+      ## Network presence Laserjet printer
+      ## Source: device tracker - Netgear
       network_printer:
         friendly_name: "HP Laser printer"
-        entity_id:
-          - device_tracker.npidcd88c          
+        # entity_id:
+        #   - device_tracker.npidcd88c
         value_template: "{{ 'on' if is_state('device_tracker.npidcd88c', 'home') else 'off' }}"    
+      ## Network presence VOIP Modem
+      ## Source: device tracker - Netgear
       network_voip:
         friendly_name: "VOIP modem"
-        entity_id:
-          - device_tracker.n510ippro
+        # entity_id:
+        #   - device_tracker.n510ippro
         value_template: "{{ 'on' if is_state('device_tracker.n510ippro', 'home') else 'off' }}"
-    ## Other network devices (only when tracked)
+      ## Other network devices (only when tracked)
+      ## Network presence Apple-TV
+      ## Source: device tracker - Netgear
       network_apple_tv:
         friendly_name: "Apple TV"
-        entity_id:
-          - device_tracker.appletv
+        # entity_id:
+        #   - device_tracker.appletv
         value_template: "{{ 'on' if is_state('device_tracker.appletv', 'home') else 'off' }}"  
+      ## Network presence Washing machine
+      ## Source: device tracker - Netgear
       network_bosch_dryer:
         friendly_name: "Bosch Wasdroger"
-        entity_id:
-          - device_tracker.boschwtyh8782nl68a40e22eaca
+        # entity_id:
+        #   - device_tracker.boschwtyh8782nl68a40e22eaca
         value_template: "{{ 'on' if is_state('device_tracker.boschwtyh8782nl68a40e22eaca', 'home') else 'off' }}"
+      ## Network presence Dryer
+      ## Source: device tracker - Netgear
       network_bosch_washing_machine:
         friendly_name: "Bosch Wasmachine"
-        entity_id:
-          - device_tracker.boschwawh2643nl68a40e251509
+        # entity_id:
+        #   - device_tracker.boschwawh2643nl68a40e251509
         value_template: "{{ 'on' if is_state('device_tracker.boschwawh2643nl68a40e251509', 'home') else 'off' }}"
+      ## Network presence AVR
+      ## Source: device tracker - Netgear
       network_denon:
         friendly_name: "Denon-AVR-X3600H"
-        entity_id:
-          - device_tracker.denon_avr_x3600h
+        # entity_id:
+        #   - device_tracker.denon_avr_x3600h
         value_template: "{{ 'on' if is_state('device_tracker.denon_avr_x3600h', 'home') else 'off' }}"  
+      ## Network presence Cable receiver
+      ## Source: device tracker - Netgear
       network_humax:
         friendly_name: "Humax i5050"
-        entity_id:
-          - device_tracker.0003789b9e56
+        # entity_id:
+        #   - device_tracker.0003789b9e56
         value_template: "{{ 'on' if is_state('device_tracker.0003789b9e56', 'home') else 'off' }}"  
+      ## Network presence iPad
+      ## Source: device tracker - Netgear
       network_ipad:
         friendly_name: "iPad"
-        entity_id:
-          - device_tracker.ipadvandiscript
+        # entity_id:
+        #   - device_tracker.ipadvandiscript
         value_template: "{{ 'on' if is_state('device_tracker.ipadvandiscript', 'home') else 'off' }}"  
+      ## Network presence laptop
+      ## Source: device tracker - Netgear
       network_laptop_kim_prive:
         friendly_name: "Laptop Kim (prive)" 
-        entity_id:
-          - device_tracker.windellu0981qd
+        # entity_id:
+        #   - device_tracker.windellu0981qd
         value_template: "{{ 'on' if is_state('device_tracker.windellu0981qd', 'home') else 'off' }}"  
+      ## Network presence laptop
+      ## Source: device tracker - Netgear
       network_laptop_kim_werk:
         friendly_name: "Laptop Kim (werk)" 
-        entity_id:
-          - device_tracker.nl_56fxvt2
+        # entity_id:
+        #   - device_tracker.nl_56fxvt2
         value_template: "{{ 'on' if is_state('device_tracker.nl_56fxvt2', 'home') else 'off' }}"  
+      ## Network presence laptop
+      ## Source: device tracker - Netgear
       network_laptop_ralph:
         friendly_name: "Laptop Ralph" 
-        entity_id:
-          - device_tracker.nl1wf6nh2
+        # entity_id:
+        #   - device_tracker.nl1wf6nh2
         value_template: "{{ 'on' if is_state('device_tracker.nl1wf6nh2', 'home') else 'off' }}"  
+      ## Network presence laptop
+      ## Source: device tracker - Netgear
       network_laptop_rediscript:
         friendly_name: "Laptop Rediscript"
-        entity_id:
-          - device_tracker.desktopqf9r6qv
+        # entity_id:
+        #   - device_tracker.desktopqf9r6qv
         value_template: "{{ 'on' if is_state('device_tracker.desktopqf9r6qv', 'home') else 'off' }}"     
+      ## Network presence television
+      ## Source: device tracker - Netgear
       network_lg_television:
         friendly_name: "LG Televisie"
-        entity_id:
-          - device_tracker.lgwebostv
+        # entity_id:
+        #   - device_tracker.lgwebostv
         value_template: "{{ 'on' if is_state('device_tracker.lgwebostv', 'home') else 'off' }}"  
+      ## Network presence PC
+      ## Source: device tracker - Netgear
       network_pc_ralph:
         friendly_name: "PC Ralph"
-        entity_id:
-          - device_tracker.corei7
+        # entity_id:
+        #   - device_tracker.corei7
         value_template: "{{ 'on' if is_state('device_tracker.corei7', 'home') else 'off' }}"  
+      ## Network presence media player
+      ## Source: device tracker - Netgear
       network_popcornhour:
         friendly_name: "Popcorn A300" 
-        entity_id:
-          - device_tracker.a300
+        # entity_id:
+        #   - device_tracker.a300
         value_template: "{{ 'on' if is_state('device_tracker.a300', 'home') else 'off' }}"  
-##-----------------------------------------------------------------------------------------------
-## sensors - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## sensors - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## sensors - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+      ## Network presence Domoticz Master
+      ## Source: device tracker - Netgear
+      network_domoticz_master:
+        friendly_name: "Domoticz (master)"
+        # entity_id:
+        #   - device_tracker.raspberrypi
+        value_template: "{{ 'on' if is_state('device_tracker.raspberrypi','home') else 'off' }}"
+      ## Network presence Xiaomi Bridge
+      ## Source: device tracker - Netgear
       network_xiaomi_bridge:
         friendly_name: "Xiaomi Bridge"
-        entity_id:
-          - device_tracker.lumigatewayv3_miio78461469
+        # entity_id:
+        #   - device_tracker.lumigatewayv3_miio78461469
         value_template: "{{ 'on' if is_state('device_tracker.lumigatewayv3_miio78461469', 'home') else 'off' }}"
 
 ###############################################################################
 ##  Groups
 ###############################################################################
 
-
 ###############################################################################
 ##  Automations
 ###############################################################################
-automation:
-##-----------------------------------------------------------------------------------------------
-## automations - Active
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Check
-##-----------------------------------------------------------------------------------------------
-
-##-----------------------------------------------------------------------------------------------
-## automations - Obsolete
-##-----------------------------------------------------------------------------------------------
-  ## Sent alert when a critical network device is offline
-  - alias: "Network - Notification network alert on"
-    initial_state: "off"
-    trigger:
-      platform: state
-      entity_id:
-        - sensor.network_diskstation
-        - sensor.network_voip
-        - sensor.network_domoticz_master
-        - sensor.network_pihole
-        - sensor.network_mysensors_gateway
-        - sensor.network_dsmrreader_pi
-        - sensor.network_harmony_hub
-        - sensor.network_hue_bridge
-        - sensor.network_printer
-      from: "on"
-      to: "off"
-    action:
-      - service: script.notify_prowl
-        data_template:
-          value1: "Netwerk alarm: "
-          value2: "{{ trigger.to_state.attributes.friendly_name }}"
-          value3: " is offline!"
-          who: "ralph"
-          prio: 2
-
-  ## Sent alert when a critical network device is online
-  - alias: "Network - Notification Network alert off"
-    initial_state: "off"
-    trigger:
-      platform: state
-      entity_id:
-        - sensor.network_diskstation
-        - sensor.network_voip
-        - sensor.network_domoticz_master
-        - sensor.network_pihole
-        - sensor.network_mysensors_gateway
-        - sensor.network_dsmrreader_pi
-        - sensor.network_harmony_hub
-        - sensor.network_hue_bridge
-        - sensor.network_printer
-      from: "off"
-      to: "on"
-    action:
-      - service: script.notify_prowl
-        data_template:
-          value1: "Netwerk notification: "
-          value2: "{{ trigger.to_state.attributes.friendly_name }}"
-          value3: " is back online!"
-          who: "ralph"
-          prio: -2
 
 ###############################################################################
 ##  Templates
