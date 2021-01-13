@@ -83,49 +83,27 @@ homeassistant:
 ###############################################################################
 #  Entities
 ###############################################################################
+binary_sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Active
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Test
+  ##-----------------------------------------------------------------------------------------------
+
 sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Inhouse environment sensors
-    ## Office environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name: environment_office_battery
-    state_topic: "zigbee2mqtt/aqara_office_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## Bathroom environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name: environment_bathroom_battery
-    state_topic: "zigbee2mqtt/aqara_bathroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## Master bedroom environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name: environment_bedroom_battery
-    state_topic: "zigbee2mqtt/aqara_bedroom_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## 2nd floor bedroom environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name: environment_kim_battery
-    state_topic: "zigbee2mqtt/aqara_kim_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## Livingroom environment sensor
-    ## Source: Xiaomi Aqara ZigBee
+  #### Livingroom
+  ## Livingroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: environment_livingroom_battery
     state_topic: "zigbee2mqtt/aqara_livingroom_env"
@@ -133,62 +111,8 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-    ## Restroom environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name: environment_toilet_battery
-    state_topic: "zigbee2mqtt/aqara_toilet_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## Storage environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name: environment_storage_battery
-    state_topic: "zigbee2mqtt/aqara_storage_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## Heating room environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name: environment_heating_room_battery
-    state_topic: "zigbee2mqtt/aqara_heating_room_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## 2nd floor hallway environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name: environment_hallway_floor2_battery
-    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## Office light level sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name:  light_level_office_battery
-    state_topic: "zigbee2mqtt/light_sensor"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## Tuin light level sensor
-    ## Source: Xiaomi Aqara ZigBee
-  - platform: "mqtt"
-    name:  light_level_garden_battery
-    state_topic: "zigbee2mqtt/light_sensor_garden"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "%"
-    device_class: "battery"
-    value_template: "{{ value_json.battery }}"
-    ## Refridgerator door sensor
-    ## Source: Xiaomi Aqara ZigBee
+  ## Refridgerator door sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: door_refrigerator_battery
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
@@ -196,17 +120,28 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-    ## Office motion sensor
-    ## Source: Xiaomi Aqara ZigBee
+  #### Restroom
+  ## Restroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
-    name: motion_office_battery
-    state_topic: "zigbee2mqtt/mijia_office_motion"
+    name: environment_toilet_battery
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-    ## Mailbox vibration sensor
-    ## Source: Xiaomi Aqara ZigBee
+  #### Storage
+  ## Storage environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_storage_battery
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Mailbox vibration sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
     name: vibration_mailbox_battery
     state_topic: "zigbee2mqtt/aqara_mailbox"
@@ -214,12 +149,274 @@ sensor:
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
-##-----------------------------------------------------------------------------------------------
-## sensors - Check
-##-----------------------------------------------------------------------------------------------
-##-----------------------------------------------------------------------------------------------
-## sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
+  #### 1st floor, general
+  #### 1st floor, office
+  ## Office environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_office_battery
+    state_topic: "zigbee2mqtt/aqara_office_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  #### Office light level sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name:  light_level_office_battery
+    state_topic: "zigbee2mqtt/light_sensor"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  #### Office motion sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: motion_office_battery
+    state_topic: "zigbee2mqtt/mijia_office_motion"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  #### 1st floor, bathroom
+  ## Bathroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_bathroom_battery
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  #### 1st floor, master bedroom
+  ## Master bedroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_bedroom_battery
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  #### 2nd floor, general
+  ## 2nd floor hallway environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_hallway_floor2_battery
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  #### 2nd floor, bedroom
+  ## 2nd floor bedroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_kim_battery
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  #### 2nd floor, heating room
+  ## Heating room environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_heating_room_battery
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  #### Garden, general
+  ## Garden light level sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name:  light_level_garden_battery
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Heatingroom environment sensor - battery alert
+      ## Source: sensor.environment_heating_room_battery
+      environment_heating_room_battery_alert:
+        friendly_name: Batterij multisensor ketel ruimte alarm
+        value_template: >-
+          {% if states('sensor.environment_heating_room_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_heating_room_battery')|float < 20 and states('sensor.environment_heating_room_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Office environment sensor - battery alert
+      ## Source: template
+      environment_office_battery_alert:
+        friendly_name: Batterij multisensor kantoor alarm
+        value_template: >-
+          {% if states('sensor.environment_office_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_office_battery')|float < 20 and states('sensor.environment_office_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Livingroom environment sensor - battery alert
+      ## Source: sensor.environment_livingroom_battery
+      environment_livingroom_battery_alert:
+        friendly_name:  Batterij multisensor woonkamer alarm
+        value_template: >-
+          {% if states('sensor.environment_livingroom_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_livingroom_battery')|float < 20 and states('sensor.environment_livingroom_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Bathroom environment sensor - battery alert
+      ## Source: sensor.environment_bathroom_battery
+      environment_bathroom_battery_alert:
+        friendly_name:  Batterij multisensor badkamer alarm
+        value_template: >-
+          {% if states('sensor.environment_bathroom_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_bathroom_battery')|float < 20 and states('sensor.environment_bathroom_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Master bedroom environment sensor - battery alert
+      ## Source: sensor.environment_bedroom_battery
+      environment_bedroom_battery_alert:
+        friendly_name:  Batterij multisensor slaapkamer alarm
+        value_template: >-
+          {% if states('sensor.environment_bedroom_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_bedroom_battery')|float < 20 and states('sensor.environment_bedroom_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## 2nd floor bedroom environment sensor - battery alert
+      ## Source: sensor.environment_kim_battery
+      environment_kim_battery_alert:
+        friendly_name:  Batterij multisensor kamer Kim alarm
+        value_template: >-
+          {% if states('sensor.environment_kim_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_kim_battery')|float < 20 and states('sensor.environment_kim_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Restroom environment sensor - battery alert
+      ## Source: sensor.environment_toilet_battery
+      environment_toilet_battery_alert:
+        friendly_name:  Batterij multisensor toilet alarm
+        value_template: >-
+          {% if states('sensor.environment_toilet_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_toilet_battery')|float < 20 and states('sensor.environment_toilet_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Storage environment sensor - battery alert
+      ## Source: sensor.environment_storage_battery
+      environment_storage_battery_alert:
+        friendly_name:  Batterij multisensor berging alarm
+        value_template: >-
+          {% if states('sensor.environment_storage_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_storage_battery')|float < 20 and states('sensor.environment_storage_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## 2nd floor hallway environment sensor - battery alert
+      ## Source: sensor.environment_hallway_floor2_battery
+      environment_hallway_floor2_battery_alert:
+        friendly_name: Batterij multisensor overloop 2e verdieping alarm
+        value_template: >-
+          {% if states('sensor.environment_hallway_floor2_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_hallway_floor2_battery')|float < 20 and states('sensor.environment_hallway_floor2_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Office light level sensor - battery alert
+      ## Source: sensor.light_level_office_battery
+      light_level_office_battery_alert:
+        friendly_name: Batterij licht sensor kantoor alarm
+        value_template: >-
+          {% if states('sensor.light_level_office_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.light_level_office_battery')|float < 20 and states('sensor.light_level_office_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Grden light level sensor - battery alert
+      ## Source: sensor.light_level_garden_battery
+      light_level_garden_battery_alert:
+        friendly_name: Batterij licht sensor tuin alarm
+        value_template: >-
+          {% if states('sensor.light_level_garden_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.light_level_garden_battery')|float < 20 and states('sensor.light_level_garden_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Refridgerator door sensor - battery alert
+      ## Source: sensor.door_refrigerator_battery
+      door_refrigerator_battery_alert:
+        friendly_name: Batterij koelkastdeur alarm
+        value_template: >-
+          {% if states('sensor.door_refrigerator_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.door_refrigerator_battery')|float < 20 and states('sensor.door_refrigerator_batteryy')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Office motion sensor - battery alert
+      ## Source: sensor.motion_office_battery
+      motion_office_battery_alert:
+        friendly_name: Batterij bewegingssensor kantoor alarm
+        value_template: >-
+          {% if states('sensor.motion_office_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.motion_office_battery')|float < 20 and states('sensor.motion_office_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Mailbox vibration sensor - battery alert
+      ## Source: sensor.vibration_mailbox_battery
+      vibration_mailbox_battery_alert:
+        friendly_name: Batterij brievenbus sensor alarm
+        value_template: >-
+          {% if states('sensor.vibration_mailbox_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.vibration_mailbox_battery')|float < 20 and states('sensor.vibration_mailbox_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
 
 ###############################################################################
 ##  Groups

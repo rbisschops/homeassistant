@@ -1,8 +1,16 @@
 # Changelog
 
 As of 2020-03-25 All notable changes to my Homeassistant configuration will be documented in this file.
+
 ## [1.6.0]
+### 2021-01-13
+- Added template sensors for monitoring, filtering and alerting on battery levels of wireless devices.
+- Added new Xiaomi Aqara LLKZMK11LM Dual Switch for the garden, decomissioned CoCo switch.
+- Added Xiaomi Mijia WXKG01LM wireless switch for light control for the second floor room.
+### 2021-01-03
+- Added new Lonsonho QS-Zigbee-D02-TRIAC-LN dimmer for second floor room, decommisioned CoCo dimmer.
 ### 2020-12-29
+- Updated: Minor changes to picture-elements cards.
 - Updated: Complete overhaul of picture-elements cards incl. the creation of new buttons and icons.
 - Updated: Revision of a number of flows in Node-RED related to: precense, scenes, light behaviour.
 - Removed: Commented automations ans scripts from HA (these are all in Node-RED now).

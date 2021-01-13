@@ -11,14 +11,25 @@ title: 2e verdieping
 panel: true
 cards:
   - type: picture-elements
-    image: /local/floorplans/second-floor-new.png
+    image: /local/floorplans/second-floor.png
     elements:
       ##-----------------------------------------------------------------------------------------------
       ## Overlays usedon the floor plan - need to be on top in the code, otherwise
       ## the other controlable elements are not accessible anymore in the fontend!!
       ##-----------------------------------------------------------------------------------------------
       ## Lights overlays
-
+      - type: image
+        title: null
+        entity: light.light_room_kim
+        tap_action:
+          action: none
+        state_image:
+          'on': /local/floorplans/lights/04-second-floor/second-floor-bed-room.png
+        style:
+          top: 0%
+          left: 0%
+          position: absolute
+          transform: translate(0%, 0%)
       ## Doors and windows overlays
       ## Heating room
       - type: image
@@ -80,15 +91,15 @@ cards:
           transform: translate(0%, 0%)
 
       ##-----------------------------------------------------------------------------------------------
-      ## Environmetal elements used on the floor plan
+      ## Environmental elements used on the floor plan
       ##-----------------------------------------------------------------------------------------------
       ## Indoor temperature and humidity sensors
       - type: state-label
         entity: sensor.environment_kim_temperature
         prefix: 'T: '
         style:
-          top: 38%
-          left: 60%
+          top: 45%
+          left: 61%
           position: absolute
           font-size: 1.0vw
           color: '#000000'
@@ -98,8 +109,8 @@ cards:
         entity: sensor.environment_kim_humidity
         prefix: 'RH: '
         style:
-          top: 40.5%
-          left: 60%
+          top: 47.5%
+          left: 61%
           position: absolute
           font-size: 1.0vw
           color: '#000000'
@@ -131,7 +142,7 @@ cards:
         entity: sensor.environment_hallway_floor2_temperature
         prefix: 'T: '
         style:
-          top: 22.5%
+          top: 21%
           left: 62%
           position: absolute
           font-size: 1.0vw
@@ -142,7 +153,7 @@ cards:
         entity: sensor.environment_hallway_floor2_humidity
         prefix: 'RH: '
         style:
-          top: 25%
+          top: 23.5%
           left: 62%
           position: absolute
           font-size: 1.0vw
@@ -150,33 +161,106 @@ cards:
           font-weight: 'bold'
           transform: translate(0,0)
       ## Outdoor temperature (buienradar)
+      - type: custom:text-element
+        text: "Condities buiten:"
+        style:
+          top: 80%
+          left: 19%
+          font-size: 1.0vw
+          font-weight: 'bold'
+          transform: translate(0,0)
       - type: state-label
         entity: sensor.br_temperature
-        prefix: 'Buiten temperatuur: '
+        prefix: 'T: '
         style:
           top: 83%
-          left: 2.5%
+          left: 19%
           font-size: 1.0vw
           font-weight: 'bold'
           transform: translate(0,0)
       - type: state-label
         entity: sensor.br_humidity
-        prefix: 'Relatieve luchtvochtigheid: '
+        prefix: 'RH: '
         style:
           top: 85.5%
-          left: 2.5%
+          left: 19%
           font-size: 1.0vw
           font-weight: 'bold'
           transform: translate(0,0)
       ##-----------------------------------------------------------------------------------------------
       ## Controlable elements used on the floor plan - Lights
       ##-----------------------------------------------------------------------------------------------
+      ## Bed room - ceiling lights
+      - type: image
+        entity: light.light_room_kim
+        tap_action:
+          action: toggle
+        double_tap_action:
+          action: more-info
+        image: /local/custom_icons/lightbulb48_on.png
+        state_image:
+          'on': /local/custom_icons/lightbulb48_on.png
+          'off': /local/custom_icons/lightbulb48_off.png 
+        style:
+          top: 37%
+          left: 63.5%
+          position: absolute
+          width: 2.5%
+      ##-----------------------------------------------------------------------------------------------
+      ## House states used on the floor plan - no control
+      ##-----------------------------------------------------------------------------------------------
+      ## House state
+      - type: image
+        title: null
+        entity: input_select.mode_house_state
+        tap_action:
+          action: none
+        image: /local/custom_icons/card-house-unknown-on.png
+        state_image:
+          'Weg': /local/custom_icons/card-house-away-on.png
+          'Slaapt': /local/custom_icons/card-house-sleep-on.png
+          'Wakker': /local/custom_icons/card-house-wake-on.png
+          'Vakantie': /local/custom_icons/card-house-vacation-on.png
+        style:
+          top: 10%
+          left: 18%
+          position: absolute
+          transform: translate(0%, -50%)
+          width: 8%
+      ## Appliances
+      - type: image
+        entity: sensor.network_bosch_washing_machine
+        title: Wasmachine
+        tap_action:
+          action: more-info
+        state_image:
+          'on': /local/custom_icons/washing_machine48_on.png
+          'off': /local/custom_icons/washing_machine48_off.png
+        style:
+          top: 27.75%
+          left: 51.95%
+          position: absolute
+          width: 2.5%
+      - type: image
+        entity: sensor.network_bosch_dryer
+        title: Wasdroger
+        tap_action:
+          action: more-info
+        state_image:
+          'on': /local/custom_icons/tumble_dryer48_on.png
+          'off': /local/custom_icons/tumble_dryer48_off.png
+        style:
+          top: 19.75%
+          left: 51.95%
+          position: absolute
+          width: 2.5%
 
       ##-----------------------------------------------------------------------------------------------
       ## Home and away states used on the floor plan - no control
       ##-----------------------------------------------------------------------------------------------
-      ## Anneke thuis
+      ## Anneke state
       - type: image
+        title: null
         entity: input_select.presence_anneke_bisschops
         tap_action:
           action: none
@@ -188,12 +272,13 @@ cards:
           'Away': /local/custom_icons/card-anneke-away.png
           'Extended Away': /local/custom_icons/card-anneke-ext-away.png
         style:
-          top: 10%
-          left: 25%
+          top: 23%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
       - type: image
+        title: null
         entity: device_tracker.anneke_iphone_se
         tap_action:
           action: none
@@ -202,12 +287,13 @@ cards:
           'home': /local/custom_icons/card-presence-location-on.png
           'not_home': /local/custom_icons/card-presence-location-off.png
         style:
-          top: 10%
-          left: 25%
+          top: 23%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
       - type: image
+        title: null
         entity: device_tracker.wifi_anneke_iphone_se
         tap_action:
           action: none
@@ -216,13 +302,14 @@ cards:
           'home': /local/custom_icons/card-presence-wifi-on.png
           'not_home': /local/custom_icons/card-presence-wifi-off.png
         style:
-          top: 10%
-          left: 25%
+          top: 23%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
-      ## Kimberly thuis
+      ## Kimberly state
       - type: image
+        title: null
         entity: input_select.presence_kimberly_bisschops
         tap_action:
           action: none
@@ -234,12 +321,13 @@ cards:
           'Away': /local/custom_icons/card-kimberly-away.png
           'Extended Away': /local/custom_icons/card-kimberly-ext-away.png
         style:
-          top: 23%
-          left: 25%
+          top: 36%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
       - type: image
+        title: null
         entity: device_tracker.kimberly_iphone8
         tap_action:
           action: none
@@ -248,12 +336,13 @@ cards:
           'home': /local/custom_icons/card-presence-location-on.png
           'not_home': /local/custom_icons/card-presence-location-off.png
         style:
-          top: 23%
-          left: 25%
+          top: 36%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
       - type: image
+        title: null
         entity: device_tracker.wifi_kimberly_iphone8
         tap_action:
           action: none
@@ -262,13 +351,14 @@ cards:
           'home': /local/custom_icons/card-presence-wifi-on.png
           'not_home': /local/custom_icons/card-presence-wifi-off.png
         style:
-          top: 23%
-          left: 25%
+          top: 36%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
-      ## Ralph thuis
+      ## Ralph state
       - type: image
+        title: null
         entity: input_select.presence_ralph_bisschops
         tap_action:
           action: none
@@ -280,12 +370,13 @@ cards:
           'Away': /local/custom_icons/card-ralph-away.png
           'Extended Away': /local/custom_icons/card-ralph-ext-away.png
         style:
-          top: 36%
-          left: 25%
+          top: 49%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
       - type: image
+        title: null
         entity: device_tracker.ralph_iphone7
         tap_action:
           action: none
@@ -294,12 +385,13 @@ cards:
           'home': /local/custom_icons/card-presence-location-on.png
           'not_home': /local/custom_icons/card-presence-location-off.png
         style:
-          top: 36%
-          left: 25%
+          top: 49%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
       - type: image
+        title: null
         entity: device_tracker.wifi_ralph_iphone7
         tap_action:
           action: none
@@ -308,64 +400,253 @@ cards:
           'home': /local/custom_icons/card-presence-wifi-on.png
           'not_home': /local/custom_icons/card-presence-wifi-off.png
         style:
-          top: 36%
-          left: 25%
+          top: 49%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
+
       ##-----------------------------------------------------------------------------------------------
-      ## House states used on the floor plan - no control
+      ## Alerts - no control
       ##-----------------------------------------------------------------------------------------------
+
+      ## Alarms - Battery
+      - type: image
+        entity: sensor.environment_heating_room_battery_alert
+        tap_action:
+          action: more-info
+        image: /local/custom_icons/battery_full48.png
+        state_image:
+          'normal': /local/custom_icons/battery_full48.png
+          'low': /local/custom_icons/battery_low48.png 
+          'critical': /local/custom_icons/battery_critical48.png
+        style:
+          top: 30%
+          left: 78%
+          position: absolute
+          transform: translate(0%, -50%)
+          width:  1.5%
 
       ##-----------------------------------------------------------------------------------------------
       ## Controlable elements used on the floor plan - left panel control elements
       ##-----------------------------------------------------------------------------------------------
-      ## Holiday mode control
-      - type: image
-        entity: input_boolean.mode_holiday
-        tap_action:
-          action: toggle
-        image: /local/custom_icons/holiday_144_off.png
-        state_image:
-          'on': /local/custom_icons/holiday_144_on.png
-          'off': /local/custom_icons/holiday_144_off.png
-        style:
-          top: 19%
-          left: 3%
-          position: absolute
-          transform: translate(0%, -50%)
-          width: 9% 
-      ## Recording mode control
-      - type: image
-        entity: input_boolean.media_recording_mode
-        tap_action:
-          action: toggle
-        image: /local/custom_icons/recorder_mode_144_off.png
-        state_image:
-          'on': /local/custom_icons/recorder_mode_144_on.png
-          'off': /local/custom_icons/recorder_mode_144_off.png
-        style:
-          top: 30%
-          left: 3%
-          position: absolute
-          transform: translate(0%, -50%)
-          width: 9%
-      ## Kerst mode control
-      - type: image
-        entity: input_boolean.mode_christmas
-        tap_action:
-          action: toggle
-        image: /local/custom_icons/christmas_144_off.png
-        state_image:
-          'on': /local/custom_icons/christmas_144_on.png
-          'off': /local/custom_icons/christmas_144_off.png
-        style:
-          top: 41%
-          left: 3%
-          position: absolute
-          transform: translate(0%, -50%)
-          width: 9%
-      ## Alarm reset control - conditional beased on alarm state
+      ## Conditional, visible when house is in "Wakker" mode
+      - type: conditional
+        conditions:
+          - entity: 'input_select.mode_house_state'
+            state: 'Wakker'
+        elements:
+          ## Bed time scene control
+          - type: image
+            entity: input_boolean.scene_bed_time
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/bed_time_144_off.png
+            state_image:
+              'on': /local/custom_icons/bed_time_144_on.png
+              'off': /local/custom_icons/bed_time_144_off.png
+            style:
+              top: 8%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+          ## Leaving scene control
+          - type: image
+            entity: input_boolean.scene_leaving
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/leaving_144_off.png
+            state_image:
+              'on': /local/custom_icons/leaving_144_on.png
+              'off': /local/custom_icons/leaving_144_off.png
+            style:
+              top: 19%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+          ## Kerst mode control
+          - type: image
+            entity: input_boolean.mode_christmas
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/christmas_144_off.png
+            state_image:
+              'on': /local/custom_icons/christmas_144_on.png
+              'off': /local/custom_icons/christmas_144_off.png
+            style:
+              top: 30%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+          ## Holiday mode control
+          - type: image
+            entity: input_boolean.mode_holiday
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/holiday_144_off.png
+            state_image:
+              'on': /local/custom_icons/holiday_144_on.png
+              'off': /local/custom_icons/holiday_144_off.png
+            style:
+              top: 41%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9% 
+          ## Recording mode control
+          - type: image
+            entity: input_boolean.media_recording_mode
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/recorder_mode_144_off.png
+            state_image:
+              'on': /local/custom_icons/recorder_mode_144_on.png
+              'off': /local/custom_icons/recorder_mode_144_off.png
+            style:
+              top: 52%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+
+       ## Conditional, visible when house is in "Slaapt" mode
+      - type: conditional
+        conditions:
+          - entity: 'input_select.mode_house_state'
+            state: 'Slaapt'
+        elements:
+          ## Wake-up scene control
+          - type: image
+            entity: input_boolean.scene_wakeup
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/wakeup_144_off.png
+            state_image:
+              'on': /local/custom_icons/wakeup_144_on.png
+              'off': /local/custom_icons/wakeup_144_off.png
+            style:
+              top: 8%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+          ## Kerst mode control
+          - type: image
+            entity: input_boolean.mode_christmas
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/christmas_144_off.png
+            state_image:
+              'on': /local/custom_icons/christmas_144_on.png
+              'off': /local/custom_icons/christmas_144_off.png
+            style:
+              top: 19%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+          ## Holiday mode control
+          - type: image
+            entity: input_boolean.mode_holiday
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/holiday_144_off.png
+            state_image:
+              'on': /local/custom_icons/holiday_144_on.png
+              'off': /local/custom_icons/holiday_144_off.png
+            style:
+              top: 30%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9% 
+          ## Recording mode control
+          - type: image
+            entity: input_boolean.media_recording_mode
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/recorder_mode_144_off.png
+            state_image:
+              'on': /local/custom_icons/recorder_mode_144_on.png
+              'off': /local/custom_icons/recorder_mode_144_off.png
+            style:
+              top: 41%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+
+      ## Conditional, visible when house is in "Weg" mode
+      - type: conditional
+        conditions:
+          - entity: 'input_select.mode_house_state'
+            state: 'Weg'
+        elements:
+          ## Wake up mode control
+          - type: image
+            entity: input_boolean.scene_wakeup
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/arriving_144_off.png
+            state_image:
+              'on': /local/custom_icons/arriving_144_on.png
+              'off': /local/custom_icons/arriving_144_off.png
+            style:
+              top: 8%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+           ## Kerst mode control
+          - type: image
+            entity: input_boolean.mode_christmas
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/christmas_144_off.png
+            state_image:
+              'on': /local/custom_icons/christmas_144_on.png
+              'off': /local/custom_icons/christmas_144_off.png
+            style:
+              top: 19%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+          ## Holiday mode control
+          - type: image
+            entity: input_boolean.mode_holiday
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/holiday_144_off.png
+            state_image:
+              'on': /local/custom_icons/holiday_144_on.png
+              'off': /local/custom_icons/holiday_144_off.png
+            style:
+              top: 30%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9% 
+          ## Recording mode control
+          - type: image
+            entity: input_boolean.media_recording_mode
+            tap_action:
+              action: toggle
+            image: /local/custom_icons/recorder_mode_144_off.png
+            state_image:
+              'on': /local/custom_icons/recorder_mode_144_on.png
+              'off': /local/custom_icons/recorder_mode_144_off.png
+            style:
+              top: 41%
+              left: 3%
+              position: absolute
+              transform: translate(0%, -50%)
+              width: 9%
+
+      ## Alarm reset control - conditional based on alarm state
       - type: conditional
         conditions:
           - entity: 'input_boolean.alarm_generic_alarm'
@@ -380,11 +661,8 @@ cards:
               'on': /local/custom_icons/reset_144_off.png
               'off': /local/custom_icons/reset_144_on.png 
             style:
-              top: 52%
+              top: 74%
               left: 3%
               position: absolute
               transform: translate(0%, -50%)
               width: 9%
-
-
-

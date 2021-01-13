@@ -7,10 +7,61 @@
 ##  Homeassistant settings
 ###############################################################################
 homeassistant:
-
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    binary_sensor.switch_garden_interlock:
+      friendly_name: Schakelaar tuin (interlock)
+    sensor.switch_garden_power:
+      friendly_name: Schakelaar tuin (verbruik)
+    sensor.switch_garden_energy:
+      friendly_name: Schakelaar tuin (energy)
+    sensor.switch_garden_temperature:
+      friendly_name: Schakelaar tuin (temperatuur)
+    sensor.switch_garden_voltage:
+      friendly_name: Schakelaar tuin (voltage)
+    sensor.switch_garden_linkquality:
+      friendly_name: Schakelaar tuin (link quality)
+    switch.switch_garden_lights:
+      friendly_name: Verlichting tuin
+    switch.switch_garden_spare:
+      friendly_name: Reserve tuin
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
 ###############################################################################
 ##  Entities
 ###############################################################################
+binary_sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch garden
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_garden_interlock
+    state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.interlock }}"
+    payload_on: true
+    payload_off: false
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Test
+  ##-----------------------------------------------------------------------------------------------
+
 input_boolean:
   ##-----------------------------------------------------------------------------------------------
   ## input_boolean - Active
@@ -27,7 +78,7 @@ input_boolean:
     icon: mdi:blinds 
   ## Status monitoring garden lights
   ## Source: template switch
-  light_garden:
+  light_garden_lights:
     name: Tuin verlichting
     icon: mdi:lightbulb
   ## Status monitoring water ornament
@@ -102,6 +153,100 @@ input_select:
       - "off"
       - "auto"
       - "hand"
+
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensor - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch garden
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_garden_power
+    state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "W"
+    value_template: "{{ value_json.power }}"
+    icon: "mdi:flash"
+  ## Switch garden
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_garden_energy
+    state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json.energy }}"
+    icon: "mdi:power-plug"
+  ## Switch garden
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_garden_temperature
+    state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "°C"
+    value_template: "{{ value_json.temperature }}"
+    device_class: "temperature"
+  ## Switch garden
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_garden_voltage
+    state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "V"
+    value_template: "{{ value_json.voltage }}"
+    icon: "mdi:alpha-v"
+  ## Switch garden
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_garden_linkquality
+    state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensor - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensor - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensor - Test
+  ##-----------------------------------------------------------------------------------------------
+
+switch:
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch garden lights
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_garden_lights
+    state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state_l1 }}"
+    command_topic: "zigbee2mqtt/aqara_switch_garden/l1/set"
+  ## Switch garden spare
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_garden_spare
+    state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state_l2 }}"
+    command_topic: "zigbee2mqtt/aqara_switch_garden/l2/set"
+  
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Test
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups

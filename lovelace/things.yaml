@@ -7,7 +7,6 @@ title: Entities
 icon: 'mdi:cogs'
 background: "#e3e3e3"
 cards:
-
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -21,19 +20,6 @@ cards:
       entities:
       - entity: input_boolean.alarm_generic_alarm
         icon: mdi:alarm-light
-  # - type: vertical-stack
-  #   cards:
-  #     - type: custom:decluttering-card
-  #       template: custom_markdown_card
-  #       variables:
-  #         - title: Aanwezigheid
-  #     - type: glance
-  #       show_state: false
-  #       show_name: false
-  #       show_header_toggle: false
-  #       entities:
-  #         - entity: binary_sensor.presence_people_home
-
   - type: vertical-stack
     cards:
       - type: custom:decluttering-card
@@ -91,75 +77,12 @@ cards:
           - entity: device_tracker.ralph_iphone7
             icon: mdi:account
             name: Ralph
-
-      # - type: custom:decluttering-card
-      #   template: custom_markdown_card_small
-      #   variables:
-      #     - title: WiFi
-      # - type: horizontal-stack
-      #   cards:
-      #     - type: picture-entity
-      #       entity: device_tracker.wifi_anneke_iphone_se
-      #       image: /local/anneke_off.png
-      #       show_name: false
-      #       state_image:
-      #         'home': /local/anneke_on.png
-      #     - type: picture-entity
-      #       entity: device_tracker.wifi_kimberly_iphone8
-      #       image: /local/kimberly_off.png
-      #       show_name: false
-      #       state_image:
-      #         'home': /local/kimberly_on.png
-      #     - type: picture-entity
-      #       entity: device_tracker.wifi_ralph_iphone7
-      #       image: /local/ralph_off.png
-      #       show_name: false
-      #       state_image:
-      #         'home': /local/ralph_on.png
-      # - type: custom:decluttering-card
-      #   template: custom_markdown_card_small
-      #   variables:
-      #     - title: Locatie
-      # - type: horizontal-stack
-      #   cards:
-      #     - type: picture-entity
-      #       entity: device_tracker.anneke_iphone_se
-      #       image: /local/anneke_off.png
-      #       show_name: false
-      #       state_image:
-      #         'home': /local/anneke_on.png
-      #     - type: picture-entity
-      #       entity: device_tracker.kimberly_iphone8
-      #       image: /local/kimberly_off.png
-      #       show_name: false
-      #       state_image:
-      #         'home': /local/kimberly_on.png
-      #     - type: picture-entity
-      #       entity: device_tracker.ralph_iphone7
-      #       image: /local/ralph_off.png
-      #       show_name: false
-      #       state_image:
-      #         'home': /local/ralph_on.png
-
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
       template: custom_markdown_card
       variables:
         - title: Woonkamer
-    # - type: custom:decluttering-card
-    #   template: custom_markdown_card_small
-    #   variables:
-    #     - title: Verlichting Hue
-    # - type: entities
-    #   show_state: false
-    #   show_name: false
-    #   show_header_toggle: false
-    #   entities:
-    #     - light.woonkamer
-    #     - input_select.light_hue_scenes
-    #     - input_select.light_hue_groups
-    #     - script.light_hue_manual_set_scene
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -204,16 +127,6 @@ cards:
       entities:
         - entity: input_boolean.light_garden
           name: Tuin
-    # - type: custom:decluttering-card
-    #   template: custom_markdown_card_small
-    #   variables:
-    #     - title: Waterbollen
-    # - type: entities
-    #   show_state: false
-    #   show_name: false
-    #   show_header_toggle: false
-    #   entities:
-    #     - entity: input_boolean.switch_water_ornament
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -276,7 +189,6 @@ cards:
       show_header_toggle: false
       entities:
         - input_select.climate_restroom_heating_mode
-
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -336,7 +248,6 @@ cards:
         - entity: input_select.media_harmony_livingroom_old_state
         - entity: input_select.media_humax_new_state
         - entity: input_select.media_humax_old_state
-        # - entity: timer.media_media_center_delay
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -352,40 +263,144 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: sensor.door_refrigerator_battery
-          name: Deursensor Koelkast
-        - entity: sensor.environment_toilet_battery
-          name: Omgevingscondities toilet
-        - entity: sensor.vibration_mailbox_battery
-          name: Sensor brievenbus
-        - entity: sensor.door_front_door_battery_level
+        ## Livingroom
+        - type: conditional
+          conditions:
+            - entity: 'sensor.door_refrigerator_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.door_refrigerator_battery
+            name: Deursensor Koelkast
+        # - entity: sensor.door_refrigerator_battery
+        #   name: Deursensor Koelkast
+        - type: conditional
+          conditions:
+            - entity: 'sensor.environment_livingroom_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_livingroom_battery
+            name: Omgevingscondities woonkamer
+        # - entity: sensor.environment_livingroom_battery
+        #   name: Omgevingscondities woonkamer
+        ## Storage
+        - entity: sensor.door_front_door_battery_level  # >> needs additional alert sensor for door
           name: Deursensor voordeur
-        - entity: sensor.door_storage_door_battery_level
+        - entity: sensor.door_storage_door_battery_level  # >> needs additional alert sensor for door
           name: Deursensor bergingdeur
-        - entity: sensor.environment_livingroom_battery
-          name: Omgevingscondities woonkamer
-        - entity: sensor.smoke_sensor_hallway_101_battery_level
+        - type: conditional
+          conditions:
+            - entity: 'sensor.environment_toilet_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_toilet_battery
+            name: Omgevingscondities toilet
+        # - entity: sensor.environment_toilet_battery
+        #   name: Omgevingscondities toilet
+        - type: conditional
+          conditions:
+            - entity: 'sensor.environment_storage_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_storage_battery
+            name: Omgevingscondities berging
+        # - entity: sensor.environment_storage_battery
+        #   name: Omgevingscondities berging
+        - type: conditional
+          conditions:
+            - entity: 'sensor.vibration_mailbox_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.vibration_mailbox_battery
+            name: Sensor brievenbus
+        # - entity: sensor.vibration_mailbox_battery
+        #   name: Sensor brievenbus
+        ## 1st floor, general 
+        - entity: sensor.smoke_sensor_hallway_101_battery_level  # >> needs additional alert sensor
           name: Brandmelder overloop
-        - entity: sensor.environment_office_battery
-          name: Omgevingscondities kantoor
-        - entity: sensor.light_level_office_battery
-          name: Lichtsensor kantoor
-        - entity: sensor.motion_office_battery
-          name: Bewegingssensor kantoor
-        - entity: sensor.environment_bathroom_battery
-          name: Omgevingscondities badkamer
-        - entity: sensor.environment_bedroom_battery
-          name: Omgevingscondities slaapkamer
-        - entity: sensor.environment_hallway_floor2_battery
-          name: Omgevingscondities overloop 2e verdieping
-        - entity: sensor.environment_heating_room_battery
-          name: Omgevingscondities ketelkast
-        - entity: sensor.environment_kim_battery
-          name: Omgevingscondities kamer kim
-        - entity: sensor.environment_storage_battery
-          name: Omgevingscondities berging
-        - entity: sensor.light_level_garden_battery
-          name: Lichtsensor tuin
+        ## 1st floor, office
+        - type: conditional
+          conditions:
+            - entity: 'sensor.environment_office_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_office_battery
+            name: Omgevingscondities kantoor
+        # - entity: sensor.environment_office_battery
+        #   name: Omgevingscondities kantoor
+        - type: conditional
+          conditions:
+            - entity: 'sensor.light_level_office_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.light_level_office_battery
+            name: Lichtsensor kantoor
+        # - entity: sensor.light_level_office_battery
+        #   name: Lichtsensor kantoor
+        - type: conditional
+          conditions:
+            - entity: 'sensor.motion_office_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.motion_office_battery
+            name: Bewegingssensor kantoor
+        # - entity: sensor.motion_office_battery
+        #   name: Bewegingssensor kantoor
+        ## 1st floor, bathroom ##
+        - type: conditional
+          conditions:
+            - entity: 'sensor.environment_bathroom_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_bathroom_battery
+            name: Omgevingscondities badkamer
+        ## 1st floor, bedroom
+        - type: conditional
+          conditions:
+            - entity: 'sensor.environment_bedroom_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_bedroom_battery
+            name: Omgevingscondities slaapkamer
+        ## 2nd floor, general ##
+        - type: conditional
+          conditions:
+            - entity: 'sensor.environment_hallway_floor2_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_hallway_floor2_battery
+            name: Omgevingscondities overloop 2e verdieping
+        ## 2nd floor, bedroom ##
+        - type: conditional
+          conditions:
+            - entity: 'sensor.button_room_kim_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.button_room_kim_battery
+            name: Verlichtings knop kamer Kim
+        - type: conditional 
+          conditions:
+            - entity: 'sensor.environment_kim_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_kim_battery
+            name: Omgevingscondities kamer kim
+        ## 2nd floor, heating room ##
+        - type: conditional 
+          conditions:
+            - entity: 'sensor.environment_heating_room_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.environment_heating_room_battery
+            name: Omgevingscondities ketelkast
+        ## Garden, general ##
+        - type: conditional 
+          conditions:
+            - entity: 'sensor.light_level_garden_battery_alert'
+              state_not: 'normal'
+          row: 
+            entity: sensor.light_level_garden_battery
+            name: Lichtsensor tuin
+
   # - type: vertical-stack
   #   cards:
   #   - type: entities

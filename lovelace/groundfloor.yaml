@@ -170,6 +170,7 @@ cards:
           left: 0%
           position: absolute
           transform: translate(0%, 0%)
+
       ##-----------------------------------------------------------------------------------------------
       ## Environmetal elements used on the floor plan
       ##-----------------------------------------------------------------------------------------------
@@ -216,19 +217,11 @@ cards:
       #     font-weight: 'bold'
 
       ## Outdoor temperature (buienradar)
-      # - type: title
-      #   content: 'Buiten condities: '
-      #   style:
-      #     top: 80.5%
-      #     left: 2.5%
-      #     font-size: 1.0vw
-      #     font-weight: 'bold'
-      #     transform: translate(0,0)
       - type: custom:text-element
         text: "Condities buiten:"
         style:
           top: 80%
-          left: 2.5%
+          left: 19%
           font-size: 1.0vw
           font-weight: 'bold'
           transform: translate(0,0)
@@ -237,7 +230,7 @@ cards:
         prefix: 'T: '
         style:
           top: 83%
-          left: 2.5%
+          left: 19%
           font-size: 1.0vw
           font-weight: 'bold'
           transform: translate(0,0)
@@ -246,13 +239,13 @@ cards:
         prefix: 'RH: '
         style:
           top: 85.5%
-          left: 2.5%
+          left: 19%
           font-size: 1.0vw
           font-weight: 'bold'
           transform: translate(0,0)
 
       ##-----------------------------------------------------------------------------------------------
-      ## Controlable elelemts used on the floor plan - Lights
+      ## Controlable elements used on the floor plan - Lights
       ##-----------------------------------------------------------------------------------------------
       ## Livingroom Hue lights - low cabinet left
       - type: image
@@ -390,8 +383,8 @@ cards:
           position: absolute
           width: 2.5% 
 
-      ##-----------------------------------------------------------------------------------------------
-      ## Home and away states used on the floor plan - no control
+     ##-----------------------------------------------------------------------------------------------
+      ## House states used on the floor plan - no control
       ##-----------------------------------------------------------------------------------------------
       ## House state
       - type: image
@@ -407,10 +400,14 @@ cards:
           'Vakantie': /local/custom_icons/card-house-vacation-on.png
         style:
           top: 10%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
+
+      ##-----------------------------------------------------------------------------------------------
+      ## Home and away states used on the floor plan - no control
+      ##-----------------------------------------------------------------------------------------------
       ## Anneke state
       - type: image
         title: null
@@ -426,7 +423,7 @@ cards:
           'Extended Away': /local/custom_icons/card-anneke-ext-away.png
         style:
           top: 23%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
@@ -441,7 +438,7 @@ cards:
           'not_home': /local/custom_icons/card-presence-location-off.png
         style:
           top: 23%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
@@ -456,7 +453,7 @@ cards:
           'not_home': /local/custom_icons/card-presence-wifi-off.png
         style:
           top: 23%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
@@ -475,7 +472,7 @@ cards:
           'Extended Away': /local/custom_icons/card-kimberly-ext-away.png
         style:
           top: 36%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
@@ -490,7 +487,7 @@ cards:
           'not_home': /local/custom_icons/card-presence-location-off.png
         style:
           top: 36%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
@@ -505,7 +502,7 @@ cards:
           'not_home': /local/custom_icons/card-presence-wifi-off.png
         style:
           top: 36%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
@@ -524,7 +521,7 @@ cards:
           'Extended Away': /local/custom_icons/card-ralph-ext-away.png
         style:
           top: 49%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
@@ -539,7 +536,7 @@ cards:
           'not_home': /local/custom_icons/card-presence-location-off.png
         style:
           top: 49%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%
@@ -554,7 +551,7 @@ cards:
           'not_home': /local/custom_icons/card-presence-wifi-off.png
         style:
           top: 49%
-          left: 25%
+          left: 18%
           position: absolute
           transform: translate(0%, -50%)
           width: 8%

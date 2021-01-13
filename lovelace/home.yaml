@@ -88,9 +88,9 @@ cards:
             - name: Hoge kasten
             - icon: lightbulb
         - type: custom:decluttering-card
-          template: coco_button_large # updated with clean-up of ui-lovelace
+          template: switch_button_large # updated with clean-up of ui-lovelace
           variables: 
-            - entity: garden
+            - entity: garden_lights
             - type: light
             - name: Tuin
             - icon: lightbulb
