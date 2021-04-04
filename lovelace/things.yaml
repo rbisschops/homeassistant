@@ -38,7 +38,7 @@ cards:
           - entity: binary_sensor.presence_people_home
             icon: mdi:account-multiple
           - entity: binary_sensor.presence_everybody_away
-            icon: mdi:account-multiple            
+            icon: mdi:account-multiple
           - entity: binary_sensor.presence_everybody_extended_away
             icon: mdi:account-multiple
       - type: custom:decluttering-card
@@ -108,8 +108,30 @@ cards:
           name: Hoge kasten
         - entity: input_boolean.light_bar
           name: Bar
-        - entity: input_boolean.switch_christmas_tree_button
+        - entity: light.kitchen_secundary_spots
+          name: Keuken
+    - type: glance
+      show_header_toggle: false
+      show_state: false
+      show_name: true
+      entities:
+        - entity: light.kitchen_spot_001
+          name: Keuken 001
+        - entity: light.kitchen_spot_002
+          name: Keuken 002
+        - entity: light.kitchen_spot_003
+          name: Keuken 003
+        - entity: light.kitchen_spot_004
+          name: Keuken 004
+    - type: glance
+      show_header_toggle: false
+      show_state: false
+      show_name: true
+      entities:
+        - entity: input_boolean.switch_christmas_tree
           name: Kerstboom
+        - entity: input_boolean.switch_small_christmas_tree
+          name: Kleine kerstboom
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -125,7 +147,7 @@ cards:
       show_state: false
       show_name: true
       entities:
-        - entity: input_boolean.light_garden
+        - entity: input_boolean.light_garden_lights
           name: Tuin
     - type: custom:decluttering-card
       template: custom_markdown_card_small
@@ -171,10 +193,10 @@ cards:
       show_state: false
       show_name: true
       entities:
-        - entity: binary_sensor.door_front_door
+        - entity: binary_sensor.door_front_door_door_state
           name: Voordeur
           icon: mdi:door-closed
-        - entity: binary_sensor.door_storage_door
+        - entity: binary_sensor.door_storage_door_door_state
           name: Bergingdeur
           icon: mdi:door-closed
         - entity: sensor.vibration_mailbox
@@ -206,7 +228,7 @@ cards:
       entities:
         - entity: remote.bisschops
           icon: mdi:remote
-        - entity: switch.switch_media_center
+        - entity: switch.switch_media_center_switch
           icon: mdi:power
     - type: custom:decluttering-card
       template: custom_markdown_card_small

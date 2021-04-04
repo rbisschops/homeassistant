@@ -1,0 +1,146 @@
+## Package file for Home Assistant, used for the master bedroom
+## Type: Home Assistant yaml file
+## Date added: 2021-01-13
+## Author: R.Bisschops
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+homeassistant:
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## Master bedroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_bedroom_temperature:
+      friendly_name: Temperatuur Slaapkamer
+    sensor.environment_bedroom_humidity:
+      friendly_name: Rel. Vochtigheid Slaapkamer
+    sensor.environment_bedroom_pressure:
+      friendly_name: Luchtdruk Slaapkamer
+    sensor.environment_bedroom_linkquality:
+      friendly_name:  Slaapkamer (link quality)
+    sensor.environment_bedroom_battery:
+      friendly_name:  Batterij multisensor slaapkamer
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
+
+###############################################################################
+##  Entities
+###############################################################################
+input_boolean:
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Window left, location master bedroom, will be replaced with real sensors in the future 
+  ## Source: Dummy switch
+  dummy_bed_room_window_left:
+    name: Slaapkamer raam links (dummy)
+    icon: mdi:window-closed-variant
+  ## Window right, location master bedroom
+  ## Source: Dummy switch
+  dummy_bed_room_window_right:
+    name: Slaapkamer raam rechts (dummy)
+    icon: mdi:window-closed-variant
+  ## Door master bed room, location 1st floor hallway-master bedroom
+  ## is defined in package_1st_floor_hallway
+
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Master bedroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_bedroom_temperature
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_bedroom_humidity
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_bedroom_pressure
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_bedroom_linkquality
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: environment_bedroom_battery
+    state_topic: "zigbee2mqtt/aqara_bedroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Master bedroom environment sensor - battery alert
+      ## Source: sensor.environment_bedroom_battery
+      environment_bedroom_battery_alert:
+        friendly_name:  Batterij multisensor slaapkamer alarm
+        value_template: >-
+          {% if states('sensor.environment_bedroom_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_bedroom_battery')|float < 20 and states('sensor.environment_bedroom_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+
+###############################################################################
+##  Groups
+###############################################################################
+
+###############################################################################
+##  Automations
+###############################################################################
+
+###############################################################################
+##  Templates
+###############################################################################
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+###############################################################################
+##  Timers
+###############################################################################

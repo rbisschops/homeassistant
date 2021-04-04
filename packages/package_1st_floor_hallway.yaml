@@ -1,0 +1,81 @@
+## Package file for Home Assistant, used for the 1st floor hallway
+## Type: Home Assistant yaml file
+## Date added: 2021-01-13
+## Author: R.Bisschops
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+homeassistant:
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## 2nd floor hallway environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_hallway_floor2_temperature:
+      friendly_name: Temperatuur Overloop 2e verdieping
+    sensor.environment_hallway_floor2_humidity:
+      friendly_name: Rel. Vochtigheid Overloop 2e verdieping 
+    sensor.environment_hallway_floor2_pressure:
+      friendly_name: Luchtdruk Overloop 2e verdieping
+    sensor.environment_hallway_floor2_linkquality:
+      friendly_name: Overloop 2e verdieping (link quality)
+    sensor.environment_hallway_floor2_battery:
+      friendly_name: Batterij multisensor overloop 2e verdieping
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
+###############################################################################
+##  Entities
+###############################################################################
+input_boolean:
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Door bathroom, location 1st floor hallway-bathroom, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_bath_room_door:
+    name: Badkamer deur (dummy)
+    icon: mdi:door-closed
+  ## Door master bed room, location 1st floor hallway-master bedroom, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_bed_room_door:
+    name: Slaapkamer deur (dummy)
+    icon: mdi:door-closed
+  ## Door hallway, location 1st floor hallway, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_first_floor_hallway_door:
+    name: Tussendeur 1e verdieping (dummy)
+    icon: mdi:door-closed
+  ## Door office, location 1st floor hallway-office, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_office_door:
+    name: Kantoor deur (dummy)
+    icon: mdi:door-closed
+
+###############################################################################
+##  Groups
+###############################################################################
+
+###############################################################################
+##  Automations
+###############################################################################
+
+###############################################################################
+##  Templates
+###############################################################################
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+###############################################################################
+##  Timers
+###############################################################################

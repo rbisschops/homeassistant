@@ -40,10 +40,8 @@ sensor:
       server_homeserver_cpu_temp:
         value_template: >-
           {% set cpu_temp = states.sensor.glances_core_0_temp.state|int + 
-            states.sensor.glances_core_1_temp.state|int +
-            states.sensor.glances_core_2_temp.state|int +
-            states.sensor.glances_core_3_temp.state|int %}
-          {% set cpu_temp = cpu_temp/4|int %}
+            states.sensor.glances_core_1_temp.state|int %}
+          {% set cpu_temp = cpu_temp/2|int %}
           {{ cpu_temp }}
         unit_of_measurement: "°C"
   ## Home server HDD boot

@@ -1,0 +1,125 @@
+## Package file for Home Assistant, used for the heating room
+## Type: Home Assistant yaml file
+## Date added: 2021-01-13
+## Author: R.Bisschops
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+homeassistant:
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## Heatingroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_heating_room_temperature:
+      friendly_name: Temperatuur Ketel ruimte
+    sensor.environment_heating_room_humidity:
+      friendly_name: Rel. Vochtigheid Ketel ruimte 
+    sensor.environment_heating_room_pressure:
+      friendly_name: Luchtdruk Ketel ruimte
+    sensor.environment_heating_room_linkquality:
+      friendly_name:  Ketel ruimte (link quality)
+    sensor.environment_heating_room_battery:
+      friendly_name: Batterij multisensor ketel ruimte
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
+###############################################################################
+##  Entities
+###############################################################################
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Heatingroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_heating_room_temperature
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_heating_room_humidity
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_heating_room_pressure
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_heating_room_linkquality
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: environment_heating_room_battery
+    state_topic: "zigbee2mqtt/aqara_heating_room_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Heatingroom environment sensor - battery alert
+      ## Source: sensor.environment_heating_room_battery
+      environment_heating_room_battery_alert:
+        friendly_name: Batterij multisensor ketel ruimte alarm
+        value_template: >-
+          {% if states('sensor.environment_heating_room_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_heating_room_battery')|float < 20 and states('sensor.environment_heating_room_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+###############################################################################
+##  Groups
+###############################################################################
+
+###############################################################################
+##  Automations
+###############################################################################
+
+###############################################################################
+##  Templates
+###############################################################################
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+###############################################################################
+##  Timers
+###############################################################################

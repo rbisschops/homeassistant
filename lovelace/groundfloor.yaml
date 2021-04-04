@@ -175,11 +175,33 @@ cards:
       ## Environmetal elements used on the floor plan
       ##-----------------------------------------------------------------------------------------------
       ## Indoor temperature and humidity sensors
+      # - type: state-label
+      #   entity: sensor.cleargrass_livingroom_temperature
+      #   prefix: 'T: '
+      #   style:
+      #     top: 21%
+      #     left: 47%
+      #     position: absolute
+      #     font-size: 1.0vw
+      #     color: '#000000'
+      #     font-weight: 'bold'
+      #     transform: translate(0,0)
+      # - type: state-label
+      #   entity: sensor.cleargrass_livingroom_humidity
+      #   prefix: 'RH: '
+      #   style:
+      #     top: 23.5%
+      #     left: 47%
+      #     position: absolute
+      #     font-size: 1.0vw
+      #     color: '#000000'
+      #     font-weight: 'bold'
+      #     transform: translate(0,0)
       - type: state-label
-        entity: sensor.cleargrass_livingroom_temperature
+        entity: sensor.environment_livingroom_temperature
         prefix: 'T: '
         style:
-          top: 21%
+          top: 21.0%
           left: 47%
           position: absolute
           font-size: 1.0vw
@@ -187,7 +209,7 @@ cards:
           font-weight: 'bold'
           transform: translate(0,0)
       - type: state-label
-        entity: sensor.cleargrass_livingroom_humidity
+        entity: sensor.environment_livingroom_humidity
         prefix: 'RH: '
         style:
           top: 23.5%
@@ -197,25 +219,6 @@ cards:
           color: '#000000'
           font-weight: 'bold'
           transform: translate(0,0)
-      # - type: state-label
-      #   entity: sensor.environment_livingroom_temperature
-      #   style:
-      #     top: 33%
-      #     left: 40%
-      #     position: absolute
-      #     font-size: 12px
-      #     color: '#000000'
-      #     font-weight: 'bold'
-      # - type: state-label
-      #   entity: sensor.environment_livingroom_humidity
-      #   style:
-      #     top: 37%
-      #     left: 40%
-      #     position: absolute
-      #     font-size: 12px
-      #     color: '#000000'
-      #     font-weight: 'bold'
-
       ## Outdoor temperature (buienradar)
       - type: custom:text-element
         text: "Condities buiten:"
@@ -366,11 +369,11 @@ cards:
               width: 2.5%
 
       ##-----------------------------------------------------------------------------------------------
-      ## Controlable elelemts used on the floor plan - Media center
+      ## Controlable elements used on the floor plan - Media center
       ##-----------------------------------------------------------------------------------------------
       ## Media center control
       - type: image
-        entity: switch.switch_media_center
+        entity: switch.switch_media_center_switch
         tap_action:
           action: toggle
         image: /local/custom_icons/mediacenter48_on.png

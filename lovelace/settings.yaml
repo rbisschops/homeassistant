@@ -33,9 +33,6 @@ cards:
       - entity: input_boolean.mode_christmas
         name: Kerst mode
         icon: "mdi:pine-tree"
-      - entity: input_boolean.media_recording_mode
-        name: Recorder mode
-        icon: "mdi:video"
       # - entity: input_boolean.light_livingroom_state
       #   name: Licht aan status
       #   icon: "mdi:lightbulb"
@@ -57,6 +54,20 @@ cards:
           name: Koof uit (min)
         - entity: input_number.light_christmas_tree_short_timer
           name: Kerstboom (min)
+  - type: vertical-stack
+    cards:
+    - type: custom:decluttering-card
+      template: custom_markdown_card_small
+      variables:
+        - title: Tuin
+    - type: entities
+      show_state: false
+      show_name: false
+      show_header_toggle: false
+      entities:
+        - entity: input_boolean.light_garden_lights_enable
+          name: Tuin verlichting uit
+          icon: "mdi:toggle-switch-outline"
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card
@@ -92,16 +103,17 @@ cards:
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
-        - title: Timers Media center
+        - title: Media center
     - type: entities
       show_state: false
       show_name: false
       show_header_toggle: false
       entities:
+        - entity: input_boolean.media_recording_mode
+          name: Opname mode
+          icon: "mdi:record-rec"
         - entity: input_number.media_media_center_delay
         - entity: input_number.media_media_wait_delay
-        # - entity: input_text.media_media_delay_timer
-        # - entity: input_text.media_media_wait_timer
         - entity: input_text.media_tv_radio_mode_timer
   - type: vertical-stack
     cards:

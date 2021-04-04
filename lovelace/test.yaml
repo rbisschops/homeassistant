@@ -22,8 +22,8 @@ cards:
       show_name: false
       show_header_toggle: false
       entities:
-        - entity: binary_sensor.door_front_door
-        - entity: binary_sensor.door_storage_door
+        - entity: binary_sensor.door_front_door_door_state
+        - entity: binary_sensor.door_storage_door_door_state
     - type: custom:decluttering-card
       template: custom_markdown_card_small
       variables:
@@ -113,12 +113,17 @@ cards:
       show_header_toggle: false
       entities:
         - entity: input_boolean.dummy_freezer_door
-        - entity: input_boolean.dummy_garbage_bin_plastic
-        - entity: input_boolean.dummy_garbage_bin_bio
+        - entity: input_boolean.dummy_garbage_bin_pmd
+        - entity: input_boolean.dummy_garbage_bin_gft
         - entity: input_boolean.garbage_bin_gft
         - entity: input_boolean.garbage_bin_pmd
         - entity: input_boolean.garbage_bin_paper
-
+        - entity: input_boolean.garbage_bin_gft_presence
+          name: GFT bak weg
+        - entity: input_boolean.garbage_bin_pmd_presence
+          name: PMD bak weg
+        - entity: input_boolean.garbage_bin_paper_presence
+          name: Papier bak weg
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card

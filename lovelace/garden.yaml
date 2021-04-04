@@ -515,12 +515,6 @@ cards:
               transform: translate(0%, -50%)
               width: 9%
 
-
-
-
-
-
-
       ## Controls for the garden
       # - type: image
       #   entity: input_boolean.switch_water_ornament

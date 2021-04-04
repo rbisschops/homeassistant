@@ -59,11 +59,11 @@ cards:
           transform: translate(0%, 0%)
       - type: image
         title: null
-        entity: input_boolean.garbage_bin_gft
+        entity: input_boolean.garbage_bin_paper
         tap_action:
           action: none
         state_image:
-          'on': /local/floorplans/overlays/02-storage/gft-bin.png
+          'on': /local/floorplans/overlays/02-storage/paper-bin.png
           'off': /local/floorplans/overlays/onepixel.png
         style:
           top: 38.75%
@@ -73,11 +73,11 @@ cards:
           transform: translate(0%, 0%)
       - type: image
         title: null
-        entity: input_boolean.garbage_bin_paper
+        entity: input_boolean.garbage_bin_gft
         tap_action:
           action: none
         state_image:
-          'on': /local/floorplans/overlays/02-storage/paper-bin.png
+          'on': /local/floorplans/overlays/02-storage/gft-bin.png
           'off': /local/floorplans/overlays/onepixel.png
         style:
           top: 38.75%
@@ -101,7 +101,7 @@ cards:
       ## Doors and windows overlays
       - type: image
         title: null
-        entity: binary_sensor.door_front_door
+        entity: binary_sensor.door_front_door_door_state
         tap_action:
           action: none
         state_image:
@@ -113,7 +113,7 @@ cards:
           transform: translate(0%, 0%)
       - type: image
         title: null
-        entity: binary_sensor.door_storage_door
+        entity: binary_sensor.door_storage_door_door_state
         tap_action:
           action: none
         state_image:

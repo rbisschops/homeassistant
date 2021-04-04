@@ -11,20 +11,10 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Active
     ##-----------------------------------------------------------------------------------------------
-    ## GFT (Bio) garbage calendar
-    ## Source: Google calendar
-    binary_sensor.garbage_calendar_gft:
-      friendly_name: GFT
-      icon: mdi:trash-can
-    binary_sensor.garbage_calendar_pmd:
-      friendly_name: PMD
-      icon: mdi:trash-can
-    binary_sensor.garbage_calendar_gft_pmd:
-      friendly_name: GFT en PMD
-      icon: mdi:trash-can
-    binary_sensor.garbage_calendar_paper:
-      friendly_name: Papier
-      icon: mdi:trash-can
+    ## outdoor environment
+    ## Source: Home Assistant
+    sun.sun:
+      friendly_name: Dag/Nacht
     ## ZigBeee2MQTT Switch Outlet 1
     ## Source IKEA Tradfri E1603/E1702 ZigBee
     switch.switch_outlet_1:
@@ -57,159 +47,6 @@ binary_sensor:
     country: NL
     workdays: [mon, tue, wed, thu, fri, sat]
     excludes: [sun]
-  ## GFT (Bio) garbage calendar
-  ## Source: Google calendar
-  - platform: template
-    sensors:
-      garbage_calendar_gft:
-        value_template: >-
-          {% if is_state('calendar.afval_kalender', 'on') %}
-            {% if state_attr('calendar.afval_kalender', 'message') == 'GFT' %}
-              true
-            {% else %}
-              false
-            {% endif %}
-          {% else %}
-            false
-          {% endif %}
-  ## PMD (Plastic and metal) garbage calendar
-  ## Source: Google calendar
-  - platform: template
-    sensors:
-      garbage_calendar_pmd:
-        value_template: >-
-          {% if is_state('calendar.afval_kalender', 'on') %}
-            {% if state_attr('calendar.afval_kalender', 'message') == 'PMD' %}
-              true
-            {% else %}
-              false
-            {% endif %}
-          {% else %}
-            false
-          {% endif %}
-  ## GFT & PMD garbage calendar
-  ## Source: Google calendar
-  - platform: template
-    sensors:
-      garbage_calendar_gft_pmd:
-        value_template: >-
-          {% if is_state('calendar.afval_kalender', 'on') %}
-            {% if state_attr('calendar.afval_kalender', 'message') == 'GFT + PMD' %}
-              true
-            {% else %}
-              false
-            {% endif %}
-          {% else %}
-            false
-          {% endif %}
-  ## Paper garbage calendar - For test, no actual bin present!!
-  ## Source: Google calendar
-  - platform: template
-    sensors:
-      garbage_calendar_paper:
-        value_template: >-
-          {% if is_state('calendar.afval_kalender', 'on') %}
-            {% if state_attr('calendar.afval_kalender', 'message') == 'Papier' %}
-              true
-            {% else %}
-              false
-            {% endif %}
-          {% else %}
-            false
-          {% endif %}
-
-  ## GFT garbage bin
-  ## Source: Template
-  ## Used for visual indication in the UI
-  - platform: template
-    sensors:
-      garbage_bin_gft:
-        friendly_name: 'GFT bak'
-        value_template: >-
-          {% if is_state('binary_sensor.garbage_calendar_gft', 'on') or is_state('binary_sensor.garbage_calendar_gft_pmd', 'on') %}
-            {{true}}
-          {% else %}
-            {{false}}
-          {% endif %}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
-  ## PMD garbage bin
-  ## Source: Template
-  ## Used for visual indication in the UI
-  - platform: template
-    sensors:
-      garbage_bin_pmd:
-        friendly_name: 'PMD bak'
-        value_template: >-
-          {% if is_state('binary_sensor.garbage_calendar_pmd', 'on') or is_state('binary_sensor.garbage_calendar_gft_pmd', 'on') %}
-            {{true}}
-          {% else %}
-            {{false}}
-          {% endif %}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
-  ## Paper garbage bin - For test, no actual bin present!!
-  ## Source: Template
-  ## Used for visual indication in the UI
-  - platform: template
-    sensors:
-      garbage_bin_paper:
-        friendly_name: 'Papier bak'
-        value_template: >-
-          {% if is_state('binary_sensor.garbage_calendar_papier', 'on') %}
-            {{true}}
-          {% else %}
-            {{false}}
-          {% endif %}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_paper.state ~ '.png' }}
-
-  ## GFT garbage bin - new binary sensor, used for home away state
-  ## Source: Template
-  ## Used for visual indication in the UI
-  - platform: template
-    sensors:
-      garbage_bin_presence_gft:
-        friendly_name: 'GFT bak'
-        value_template: >-
-          {% if is_state('binary_sensor.garbage_calendar_gft', 'on') or is_state('binary_sensor.garbage_calendar_gft_pmd', 'on') %}
-            {{true}}
-          {% else %}
-            {{false}}
-          {% endif %}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
-  ## PMD garbage bin - new binary sensor, used for home away state
-  ## Source: Template
-  ## Used for visual indication in the UI
-  - platform: template
-    sensors:
-      garbage_bin_presence_pmd:
-        friendly_name: 'PMD bak'
-        value_template: >-
-          {% if is_state('binary_sensor.garbage_calendar_pmd', 'on') or is_state('binary_sensor.garbage_calendar_gft_pmd', 'on') %}
-            {{true}}
-          {% else %}
-            {{false}}
-          {% endif %}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
-  ## Paper garbage bin - new binary sensor, used for home away state - For test, no actual bin present!!
-  ## Source: Template
-  ## Used for visual indication in the UI
-  - platform: template
-    sensors:
-      garbage_bin_presence_paper:
-        friendly_name: 'Papier bak'
-        value_template: >-
-          {% if is_state('binary_sensor.garbage_calendar_papier', 'on') %}
-            {{true}}
-          {% else %}
-            {{false}}
-          {% endif %}
-        entity_picture_template: >-
-          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_paper.state ~ '.png' }}
-
   ##-----------------------------------------------------------------------------------------------
   ## binary_sensors - Check
   ##-----------------------------------------------------------------------------------------------
@@ -256,37 +93,6 @@ input_boolean:
   mode_dark_outdoor:
     name: Licht level buiten
     icon: mdi:theme-light-dark
-
-  ## GFT garbage bin - used for state
-  ## Source: n/a
-  garbage_bin_gft:
-    name: GFT bak
-    icon: mdi:trash-can
-  ## PMD garbage bin - used for state
-  ## Source: n/a
-  garbage_bin_pmd:
-    name: PMD bak
-    icon: mdi:trash-can
-  ## Paper garbage bin - used for state - For test, no actual bin present!!
-  ## Source: n/a
-  garbage_bin_paper:
-    name: Papier bak
-    icon: mdi:trash-can
-  ## GFT garbage bin - used home/away state, replace wit binary_sensor
-  ## Source: dummy, for test only
-  garbage_bin_presence_gft:
-    name: GFT bak
-    icon: mdi:trash-can
-  ## PMD garbage bin - used home/away state, replace wit binary_sensor
-  ## Source: dummy, for test only
-  garbage_bin_presence_pmd:
-    name: PMD bak
-    icon: mdi:trash-can
-  ## Paper garbage bin - used home/away state, replace wit binary_sensor - For test, no actual bin present!!
-  ## Source: dummy, for test only
-  garbage_bin_presence_paper:
-    name: Papier bak
-    icon: mdi:trash-can
   ##-----------------------------------------------------------------------------------------------
   ## input_boolean - Check
   ##-----------------------------------------------------------------------------------------------
@@ -353,30 +159,6 @@ input_select:
   ##-----------------------------------------------------------------------------------------------
   ##input_boolean - Test
   ##-----------------------------------------------------------------------------------------------
-  ## GFT garbage bin - used for indicative state (UI mainly)
-  ## Source: n/a
-  garbage_bin_gft:
-    name: GFT bak
-    options:
-      - "idle"
-      - "active"
-      - "alert"
-  ## PMD garbage bin - used for indicative state (UI mainly)
-  ## Source: n/a
-  garbage_bin_pmd:
-    name: PMD bak
-    options:
-      - "idle"
-      - "active"
-      - "alert"
-  ## Paper garbage bin - used for indicative state (UI mainly)
-  ## Source: n/a
-  garbage_bin_paper:
-    name: Papier bak
-    options:
-      - "idle"
-      - "active"
-      - "alert"
   ## Current house state - used for house state indicator (UI mainly)
   mode_house_state:
     name: "Huis status"
@@ -391,6 +173,23 @@ sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Active
   ##-----------------------------------------------------------------------------------------------
+  ## Season sensor (astronomical)
+  ## Source: Home assistant
+  - platform: season
+    type: astronomical
+  - platform: template
+    sensors:
+      ## Sunset
+      ## Source: template sensor
+      time_sunset:
+        value_template: "{% set timestamp = as_timestamp(state_attr('sun.sun','next_setting')) | timestamp_custom('%H:%M') %} {{ timestamp }}"
+        unit_of_measurement: "PM"
+      ## Sunrise
+      ## Source: template sensor
+      time_sunrise:
+        value_template: "{% set timestamp = as_timestamp(state_attr('sun.sun','next_rising')) | timestamp_custom('%H:%M') %} {{ timestamp }}"
+        unit_of_measurement: "AM"
+
   ## Link quality outlet 1 (Tradfri via Zigbee2MQTT)
   - platform: "mqtt"
     name: switch_outlet_1_linkquality

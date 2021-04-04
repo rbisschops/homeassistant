@@ -1,0 +1,217 @@
+## Package file for Home Assistant, used for the 2nd floor bed room
+## Type: Home Assistant yaml file
+## Date added: 2021-01-03
+## Author: R.Bisschops
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+homeassistant:
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## ZigBeee2MQTT Switch high cabinets
+    ## Source SilverCrest,Lidl HG06337 ZigBee
+    light.light_room_kim:
+      friendly_name: Verlichting kamer Kim
+    sensor.light_room_kim_linkquality:
+      friendly_name: Verlichting kamer Kim (link quality)
+    sensor.button_room_kim:
+      friendly_name: Verlichtings knop kamer Kim
+    sensor.button_room_kim_battery:
+      friendly_name: Verlichtings knop kamer Kim (batterij)
+    sensor.button_room_kim_linkquality:
+      friendly_name: Verlichtings knop kamer Kim (link quality)
+    ## 2nd floor bedroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_kim_temperature:
+      friendly_name: Temperatuur kamer Kim
+    sensor.environment_kim_humidity:
+      friendly_name: Rel. Vochtigheid kamer Kim
+    sensor.environment_kim_pressure:
+      friendly_name: Luchtdruk kamer Kim
+    sensor.environment_kim_linkquality:
+      friendly_name:  kamer Kim (link quality)
+    sensor.environment_kim_battery:
+      friendly_name:  Batterij multisensor kamer Kim
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
+
+###############################################################################
+##  Entities
+###############################################################################
+input_boolean:
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Window left 2nd floor bedroom, location 2nd floor bedroom, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_kims_room_window_left:
+    name: Kamer Kim raam links (dummy)
+    icon: mdi:window-closed-variant
+  ## Window right 2nd floor bedroom, location 2nd floor bedroom, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_kims_room_window_right:
+    name: Kamer Kim raam rechts (dummy)
+    icon: mdi:window-closed-variant
+  ## Door 2nd floor bedroom, location 1st floor hallway-office
+  ## is defined in package_2nd_floor_hallway
+
+light:
+  ##-----------------------------------------------------------------------------------------------
+  ## lights - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch 2nd floor bed room
+  ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
+  - platform: "mqtt"
+    name: light_room_kim
+    state_topic: "zigbee2mqtt/lonsonho_dimmer_1"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    brightness: true
+    color_temp: false
+    xy: false
+    hs: false
+    schema: "json"
+    command_topic: "zigbee2mqtt/lonsonho_dimmer_1/set"
+    brightness_scale: 254
+    effect: false
+  ##-----------------------------------------------------------------------------------------------
+  ## lights - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## lights - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## lights - Test
+  ##-----------------------------------------------------------------------------------------------
+
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch 2nd floor bed room
+  ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
+  - platform: "mqtt"
+    name: light_room_kim_linkquality
+    state_topic: "zigbee2mqtt/lonsonho_dimmer_1"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ## Button 2nd floor bed room
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_room_kim
+    state_topic: "zigbee2mqtt/aqara_bedroom_kim_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.action }}"
+    icon: "mdi:gesture-double-tap"
+  ## Button 2nd floor bed room
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_room_kim_battery
+    state_topic: "zigbee2mqtt/aqara_bedroom_kim_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    value_template: "{{ value_json.battery }}"
+    device_class: "battery"
+  ## Button 2nd floor bed room
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_room_kim_linkquality
+    state_topic: "zigbee2mqtt/aqara_bedroom_kim_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ## 2nd floor bedroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_kim_temperature
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_kim_humidity
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_kim_pressure
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_kim_linkquality
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: environment_kim_battery
+    state_topic: "zigbee2mqtt/aqara_kim_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## 2nd floor bedroom environment sensor - battery alert
+      ## Source: sensor.environment_kim_battery
+      environment_kim_battery_alert:
+        friendly_name:  Batterij multisensor kamer Kim alarm
+        value_template: >-
+          {% if states('sensor.environment_kim_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_kim_battery')|float < 20 and states('sensor.environment_kim_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+
+###############################################################################
+##  Groups
+###############################################################################
+
+###############################################################################
+##  Automations
+###############################################################################
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+###############################################################################
+##  Timers
+###############################################################################

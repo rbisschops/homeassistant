@@ -11,6 +11,78 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Active
     ##-----------------------------------------------------------------------------------------------
+    ## ZigBeee2MQTT Switch high cabinets
+    ## Source SilverCrest,Lidl HG06337 ZigBee
+    switch.switch_high_cabinets:
+      friendly_name: High cabinets (SilverCrest)
+    sensor.switch_high_cabinets_linkquality:
+      friendly_name: High cabinets (link quality)
+    ## ZigBeee2MQTT Switch christmas tree
+    ## Source SilverCrest,Lidl HG06337 ZigBee
+    switch.switch_christmas_tree:
+      friendly_name: High cabinets (SilverCrest)
+    sensor.switch_christmas_tree_linkquality:
+      friendly_name: High cabinets (link quality)
+    ## Livingroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_livingroom_temperature:
+      friendly_name: Temperatuur Woonkamer
+    sensor.environment_livingroom_humidity:
+      friendly_name: Rel. Vochtigheid Woonkamer
+    sensor.environment_livingroom_pressure:
+      friendly_name: Luchtdruk Woonkamer 
+    sensor.environment_livingroom_linkquality:
+      friendly_name:  Woonkamer (link quality) 
+    sensor.environment_livingroom_battery:
+      friendly_name:  Batterij multisensor woonkamer
+    ## Refridgerator door sensor
+    ## Source: Xiaomi Aqara ZigBee
+    binary_sensor.door_refrigerator:
+      friendly_name: Koelkast deur
+    ## Refridgerator door link quality
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.door_refrigerator_linkquality:
+      friendly_name: Koelkastdeur (link quality)
+    ## Refridgerator door battery
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.door_refrigerator_battery:
+      friendly_name: Batterij koelkastdeur
+    ## Kitchen secundary spot light #001
+    ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+    light.kitchen_spot_001:
+      friendly_name: Keuken spot 001
+    ## Link quality kitchen secundary spot light #001
+    ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+    sensor.kitchen_spot_001_linkquality:
+      friendly_name: Keuken spot 001 (link quality)
+    ## Kitchen secundary spot light #002
+    ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+    light.kitchen_spot_002:
+      friendly_name: Keuken spot 002
+    ## Link quality kitchen secundary spot light #002
+    ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+    sensor.kitchen_spot_002_linkquality:
+      friendly_name: Keuken spot 002 (link quality)
+    ## Kitchen secundary spot light #003
+    ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+    light.kitchen_spot_003:
+      friendly_name: Keuken spot 003
+    ## Link quality kitchen secundary spot light #001
+    ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+    sensor.kitchen_spot_003_linkquality:
+      friendly_name: Keuken spot 003 (link quality)
+    ## Kitchen secundary spot light #004
+    ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+    light.kitchen_spot_004:
+      friendly_name: Keuken spot 004
+    ## Link quality kitchen secundary spot light #001
+    ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+    sensor.kitchen_spot_004_linkquality:
+      friendly_name: Keuken spot 004 (link quality)
+    ## Group kitchen secundary spot lights
+    ## Source: Home Assistant
+    light.kitchen_secundary_spots:
+      friendly_name: Keuken spots
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Check
     ##-----------------------------------------------------------------------------------------------
@@ -20,19 +92,6 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Test
     ##-----------------------------------------------------------------------------------------------
-    ## ZigBeee2MQTT Switch high cabinets
-    ## Source SilverCrest,Lidl HG06337 ZigBee
-    switch.switch_high_cabinets:
-      friendly_name: High cabinets (SilverCrest)
-    sensor.switch_high_cabinets_linkquality:
-      friendly_name: High cabinets (link quality)
-
-    ## ZigBeee2MQTT Switch christmas tree
-    ## Source SilverCrest,Lidl HG06337 ZigBee
-    switch.switch_christmas_tree:
-      friendly_name: High cabinets (SilverCrest)
-    sensor.switch_christmas_tree_linkquality:
-      friendly_name: High cabinets (link quality)
 
 ###############################################################################
 ##  Entities
@@ -41,6 +100,18 @@ binary_sensor:
   ##-----------------------------------------------------------------------------------------------
   ## binary_sensors - Active
   ##-----------------------------------------------------------------------------------------------
+  ## Refridgerator door 
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: door_refrigerator
+    state_topic: "zigbee2mqtt/aqara_refrigerator_door"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_on: false
+    payload_off: true
+    value_template: "{{ value_json.contact }}"
+    device_class: "door"
+  ## All livingroom lights
+  ## Source: Template
   - platform: template
     sensors:
       light_livingroom_all:
@@ -79,6 +150,11 @@ input_boolean:
   light_livingroom:
     name: Verlichting woonkamer
     icon: mdi:lightbulb
+  ## Button spot lights kitchen
+  ## Source: template
+  light_kitchen_secundary_spots:
+    name: Keuken kitchen spots
+    icon: mdi:lightbulb
   ## Button livingroom high cabinets
   ## Source: template
   light_high_cabinets:
@@ -99,13 +175,26 @@ input_boolean:
   light_bar:
     name: Verlichting bar
     icon: mdi:lightbulb
-
   ## Button all livingroom lights
   ## Source: template
   light_livingroom_all:
     name: Alle verlichting woonkamer
     icon: mdi:lightbulb
-
+  ## Groudfloor window, frontside of the house, will be replaced with real sensors in the future 
+  ## Source: Dummy switch
+  dummy_groundfloor_front_window:
+    name: Voorraam benedenverdieping (dummy)
+    icon: mdi:window-closed-variant
+  ## Door garden, location livingroom, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_garden_door:
+    name: Tuindeur (dummy)
+    icon: mdi:door-closed
+  ## Door hallway, location livingroom-hallway, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_groundfloor_hallway_door:
+    name: Tussendeur woonkamer (dummy)
+    icon: mdi:door-closed
   ##-----------------------------------------------------------------------------------------------
   ## input_boolean - Check
   ##-----------------------------------------------------------------------------------------------
@@ -130,7 +219,7 @@ input_select:
   ## Mode selector for the lights in the livingroom.
   ## Used for the modes the light can be set to from media center
   light_livingroom_mode:
-    name: Verlichtsmode Woonkamer
+    name: Verlichtingsmode Woonkamer
     options:
       - Normaal
       - Video
@@ -151,9 +240,29 @@ input_select:
       - Helder
       - Nachtlampje
       - Video
+  ## Selector for the scenes for the Hue lighting
+  light_kitchen_secundary_spots:
+    name: Keuken spots
+    icon: mdi:lightbulb
+    options:
+      - Normaal
+      - Ontspannen
+      - Schoonmaken
+      - Gedimd
+
   ##-----------------------------------------------------------------------------------------------
   ## input_select - Check
   ##-----------------------------------------------------------------------------------------------
+  ## Humdity state indicator
+  ## Source: template
+  environment_livingroom_humidity_state:
+    name: Luchtvochtigheid Woonkamer status
+    options: 
+      - Te laag
+      - Laag
+      - Normaal
+      - Hoog
+      - Te hooog
   ##-----------------------------------------------------------------------------------------------
   ## input_select - Obsolete
   ##-----------------------------------------------------------------------------------------------
@@ -250,24 +359,123 @@ light:
   ##-----------------------------------------------------------------------------------------------
   ## light - Active
   ##-----------------------------------------------------------------------------------------------
+  ## Kitchen secundary spot light #001
+  ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+  - platform: "mqtt"
+    name: kitchen_spot_001
+    state_topic: "zigbee2mqtt/light_kitchen_001"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    brightness: true
+    color_temp: true
+    xy: true
+    hs: false
+    schema: "json"
+    command_topic: "zigbee2mqtt/light_kitchen_001/set"
+    brightness_scale: 254
+    effect: true
+    effect_list: 
+      - "blink"
+      - "breathe"
+      - "okay"
+      - "channel_change"
+      - "finish_effect"
+      - "stop_effect"
+  ## Kitchen secundary spot light #002
+  ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+  - platform: "mqtt"
+    name: kitchen_spot_002
+    state_topic: "zigbee2mqtt/light_kitchen_002"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    brightness: true
+    color_temp: true
+    xy: true
+    hs: false
+    schema: "json"
+    command_topic: "zigbee2mqtt/light_kitchen_002/set"
+    brightness_scale: 254
+    effect: true
+    effect_list: 
+      - "blink"
+      - "breathe"
+      - "okay"
+      - "channel_change"
+      - "finish_effect"
+      - "stop_effect"
+  ## Kitchen secundary spot light #003
+  ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+  - platform: "mqtt"
+    name: kitchen_spot_003
+    state_topic: "zigbee2mqtt/light_kitchen_003"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    brightness: true
+    color_temp: true
+    xy: true
+    hs: false
+    schema: "json"
+    command_topic: "zigbee2mqtt/light_kitchen_003/set"
+    brightness_scale: 254
+    effect: true
+    effect_list: 
+      - "blink"
+      - "breathe"
+      - "okay"
+      - "channel_change"
+      - "finish_effect"
+      - "stop_effect"
+  ## Kitchen secundary spot light #004
+  ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+  - platform: "mqtt"
+    name: kitchen_spot_004
+    state_topic: "zigbee2mqtt/light_kitchen_004"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    brightness: true
+    color_temp: true
+    xy: true
+    hs: false
+    schema: "json"
+    command_topic: "zigbee2mqtt/light_kitchen_004/set"
+    brightness_scale: 254
+    effect: true
+    effect_list: 
+      - "blink"
+      - "breathe"
+      - "okay"
+      - "channel_change"
+      - "finish_effect"
+      - "stop_effect"
   ## light groups for setting the Hue lights. Present itself as light.xxx 
+  ## Group all Hue lamps livingroom
+  ## Source: Home Assistant
   - platform: group
-    name: Woonkamer Hue
-    entities:  
+    name: livingroom_hue
+    entities:
       - light.lage_kast_links
       - light.lage_kast_rechts
       - light.staande_lamp_links
       - light.staande_lamp_rechts
+  ## Group Hue lamps low cabinets livingroom
+  ## Source: Home Assistant
   - platform: group
-    name: light low cabinets
+    name: low_cabinets
     entities:
       - light.lage_kast_links
       - light.lage_kast_rechts
+  ## Group Hue lamps standing  lamps livingroom
+  ## Source: Home Assistant
   - platform: group
-    name: light standing lights
+    name: standing_lights
     entities:
       - light.staande_lamp_links
       - light.staande_lamp_rechts
+  ## Group kitchen secundary spot lights
+  ## Source: Home Assistant
+  - platform: group
+    name: kitchen_secundary_spots
+    entities:
+      - light.kitchen_spot_001
+      - light.kitchen_spot_002
+      - light.kitchen_spot_003
+      - light.kitchen_spot_004
   ##-----------------------------------------------------------------------------------------------
   ## light - Check
   ##-----------------------------------------------------------------------------------------------
@@ -280,7 +488,7 @@ sensor:
   ## sensors - Active
   ##-----------------------------------------------------------------------------------------------
   ## Link quality high cabinets
-    ## Source SilverCrest,Lidl HG06337 ZigBee
+  ## Source SilverCrest,Lidl HG06337 ZigBee
   - platform: "mqtt"
     name: switch_high_cabinets_linkquality
     state_topic: "zigbee2mqtt/high_cabinets"
@@ -288,9 +496,8 @@ sensor:
     icon: "mdi:signal"
     unit_of_measurement: "lqi"
     value_template: "{{ value_json.linkquality }}"
-
   ## Link quality christmas tree
-    ## Source SilverCrest,Lidl HG06337 ZigBee
+  ## Source SilverCrest,Lidl HG06337 ZigBee
   - platform: "mqtt"
     name: switch_christmas_tree_linkquality
     state_topic: "zigbee2mqtt/high_cabinets"
@@ -298,6 +505,101 @@ sensor:
     icon: "mdi:signal"
     unit_of_measurement: "lqi"
     value_template: "{{ value_json.linkquality }}"
+  ## Livingroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_livingroom_temperature
+    state_topic: "zigbee2mqtt/aqara_livingroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_livingroom_humidity
+    state_topic: "zigbee2mqtt/aqara_livingroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_livingroom_pressure
+    state_topic: "zigbee2mqtt/aqara_livingroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_livingroom_linkquality
+    state_topic: "zigbee2mqtt/aqara_livingroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: environment_livingroom_battery
+    state_topic: "zigbee2mqtt/aqara_livingroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Refridgerator door sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: door_refrigerator_linkquality
+    state_topic: "zigbee2mqtt/aqara_refrigerator_door"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: door_refrigerator_battery
+    state_topic: "zigbee2mqtt/aqara_refrigerator_door"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Link quality kitchen secundary spot light #001
+  ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+  - platform: "mqtt"
+    name: kitchen_spot_001_linkquality
+    state_topic: "zigbee2mqtt/light_kitchen_001"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ## Link quality kitchen secundary spot light #002
+  ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+  - platform: "mqtt"
+    name: kitchen_spot_002_linkquality
+    state_topic: "zigbee2mqtt/light_kitchen_002"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ## Link quality kitchen secundary spot light #003
+  ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+  - platform: "mqtt"
+    name: kitchen_spot_003_linkquality
+    state_topic: "zigbee2mqtt/light_kitchen_003"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ## Link quality kitchen secundary spot light #004
+  ## Source: Livarno Lux GU10 spot RGB, TS0505A ZigBee
+  - platform: "mqtt"
+    name: kitchen_spot_004_linkquality
+    state_topic: "zigbee2mqtt/light_kitchen_004"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Check
   ##-----------------------------------------------------------------------------------------------
@@ -307,6 +609,32 @@ sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Test
   ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Livingroom environment sensor - battery alert
+      ## Source: sensor.environment_livingroom_battery
+      environment_livingroom_battery_alert:
+        friendly_name:  Batterij multisensor woonkamer alarm
+        value_template: >-
+          {% if states('sensor.environment_livingroom_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_livingroom_battery')|float < 20 and states('sensor.environment_livingroom_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Refridgerator door sensor - battery alert
+      ## Source: sensor.door_refrigerator_battery
+      door_refrigerator_battery_alert:
+        friendly_name: Batterij koelkastdeur alarm
+        value_template: >-
+          {% if states('sensor.door_refrigerator_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.door_refrigerator_battery')|float < 20 and states('sensor.door_refrigerator_batteryy')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
 
 switch:
   ##-----------------------------------------------------------------------------------------------

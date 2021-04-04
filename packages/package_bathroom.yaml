@@ -1,6 +1,6 @@
-## Package file for Home Assistant, used for the 2nd floor bed room
+## Package file for Home Assistant, used for the bathroom
 ## Type: Home Assistant yaml file
-## Date added: 2021-01-03
+## Date added: 2021-01-13
 ## Author: R.Bisschops
 
 ###############################################################################
@@ -11,18 +11,18 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Active
     ##-----------------------------------------------------------------------------------------------
-    ## ZigBeee2MQTT Switch high cabinets
-    ## Source SilverCrest,Lidl HG06337 ZigBee
-    light.light_room_kim:
-      friendly_name: Verlichting kamer Kim
-    sensor.light_room_kim_linkquality:
-      friendly_name: Verlichting kamer Kim (link quality)
-    sensor.button_room_kim:
-      friendly_name: Verlichtings knop kamer Kim
-    sensor.button_room_kim_battery:
-      friendly_name: Verlichtings knop kamer Kim (batterij)
-    sensor.button_room_kim_linkquality:
-      friendly_name: Verlichtings knop kamer Kim (link quality)
+    ## Bathroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_bathroom_temperature:
+      friendly_name: Temperatuur Badkamer
+    sensor.environment_bathroom_humidity:
+      friendly_name: Rel. Vochtigheid Badkamer
+    sensor.environment_bathroom_pressure:
+      friendly_name: Luchtdruk Badkamer
+    sensor.environment_bathroom_linkquality:
+      friendly_name:  Badkamer (link quality)
+    sensor.environment_bathroom_battery:
+      friendly_name:  Batterij multisensor badkamer
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Check
     ##-----------------------------------------------------------------------------------------------
@@ -32,77 +32,63 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Test
     ##-----------------------------------------------------------------------------------------------
-
 ###############################################################################
 ##  Entities
 ###############################################################################
-light:
   ##-----------------------------------------------------------------------------------------------
-  ## lights - Active
+  ## input_boolean - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Switch 2nd floor bed room
-  ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
-  - platform: "mqtt"
-    name: light_room_kim
-    state_topic: "zigbee2mqtt/lonsonho_dimmer_1"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    brightness: true
-    color_temp: false
-    xy: false
-    hs: false
-    schema: "json"
-    command_topic: "zigbee2mqtt/lonsonho_dimmer_1/set"
-    brightness_scale: 254
-    effect: false
-  ##-----------------------------------------------------------------------------------------------
-  ## lights - Check
-  ##-----------------------------------------------------------------------------------------------
-  ##-----------------------------------------------------------------------------------------------
-  ## lights - Obsolete
-  ##-----------------------------------------------------------------------------------------------
-  ##-----------------------------------------------------------------------------------------------
-  ## lights - Test
-  ##-----------------------------------------------------------------------------------------------
+  ## Door bathroom, location 1st floor hallway-bathroom
+  ## is defined in package_1st_floor_hallway
 
 sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Switch 2nd floor bed room
-  ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
+  ## Bathroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
   - platform: "mqtt"
-    name: light_room_kim_linkquality
-    state_topic: "zigbee2mqtt/lonsonho_dimmer_1"
+    name: environment_bathroom_temperature
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
     availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "lqi"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_bathroom_humidity
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_bathroom_pressure
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_bathroom_linkquality
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
-    icon: "mdi:signal"
-  ## Button 2nd floor bed room
-  ## Xiaomi Mijia wireless switch, WXKG01LM
   - platform: "mqtt"
-    name: button_room_kim
-    state_topic: "zigbee2mqtt/aqara_bedroom_kim_button"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    value_template: "{{ value_json.action }}"
-    icon: "mdi:gesture-double-tap"
-  ## Button 2nd floor bed room
-  ## Xiaomi Mijia wireless switch, WXKG01LM
-  - platform: "mqtt"
-    name: button_room_kim_battery
-    state_topic: "zigbee2mqtt/aqara_bedroom_kim_button"
+    name: environment_bathroom_battery
+    state_topic: "zigbee2mqtt/aqara_bathroom_env"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "%"
-    value_template: "{{ value_json.battery }}"
     device_class: "battery"
-  ## Button 2nd floor bed room
-  ## Xiaomi Mijia wireless switch, WXKG01LM
-  - platform: "mqtt"
-    name: button_room_kim_linkquality
-    state_topic: "zigbee2mqtt/aqara_bedroom_kim_button"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "lqi"
-    value_template: "{{ value_json.linkquality }}"
-    icon: "mdi:signal"
+    value_template: "{{ value_json.battery }}"
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Check
   ##-----------------------------------------------------------------------------------------------
@@ -112,6 +98,20 @@ sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Test
   ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Bathroom environment sensor - battery alert
+      ## Source: sensor.environment_bathroom_battery
+      environment_bathroom_battery_alert:
+        friendly_name:  Batterij multisensor badkamer alarm
+        value_template: >-
+          {% if states('sensor.environment_bathroom_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_bathroom_battery')|float < 20 and states('sensor.environment_bathroom_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
 
 ###############################################################################
 ##  Groups
@@ -119,6 +119,10 @@ sensor:
 
 ###############################################################################
 ##  Automations
+###############################################################################
+
+###############################################################################
+##  Templates
 ###############################################################################
 
 ###############################################################################

@@ -53,13 +53,37 @@ cards:
         template: custom_markdown_card_small
         variables:
           - title: Vuilnisbakken
-      - type: glance
-        show_state: false
-        show_name: true
-        entities:
-        - entity: binary_sensor.garbage_bin_gft
-        - entity: binary_sensor.garbage_bin_pmd
-        - entity: binary_sensor.garbage_bin_paper
+      # - type: glance
+      #   show_state: false
+      #   show_name: true
+      #   entities:
+      #   - entity: binary_sensor.garbage_bin_gft
+      #   - entity: binary_sensor.garbage_bin_pmd
+      #   - entity: binary_sensor.garbage_bin_paper
+      - type: horizontal-stack
+        cards:
+          - type: custom:decluttering-card
+            template: garbage_bin
+            variables: 
+              - entity: garbage_bin_gft
+              - name: GFT bak
+              - icon: trash-can
+              - image: gft
+          - type: custom:decluttering-card
+            template: garbage_bin
+            variables: 
+              - entity: garbage_bin_pmd
+              - name: PMD bak
+              - icon: trash-can
+              - image: pmd
+          - type: custom:decluttering-card
+            template: garbage_bin
+            variables: 
+              - entity: garbage_bin_paper
+              - name: Papier bak
+              - icon: trash-can
+              - image: paper
+
 
   ## Control cards
   - type: vertical-stack
@@ -88,11 +112,11 @@ cards:
             - name: Hoge kasten
             - icon: lightbulb
         - type: custom:decluttering-card
-          template: switch_button_large # updated with clean-up of ui-lovelace
+          template: zigbee_light_button 
           variables: 
-            - entity: garden_lights
+            - entity: kitchen_secundary_spots
             - type: light
-            - name: Tuin
+            - name: Keuken
             - icon: lightbulb
     - type: horizontal-stack
       cards:
@@ -119,6 +143,24 @@ cards:
     - type: horizontal-stack
       cards:
         - type: custom:decluttering-card
+          template: switch_button_large_note # updated with clean-up of ui-lovelace
+          variables: 
+            - entity: garden_lights
+            - type: light
+            - name: Tuin
+            - icon: lightbulb
+        - type: custom:button-card
+          color_type: blank-card
+        - type: custom:decluttering-card
+          template: zigbee_switch_button # updated with clean-up of ui-lovelace
+          variables: 
+            - entity: switch_porch_light
+            - type: light
+            - name: Buitenlamp
+            - icon: lightbulb
+    - type: horizontal-stack
+      cards:
+        - type: custom:decluttering-card
           template: stats_blinds_button_large
           variables: 
             - entity: blinds_sunscreen
@@ -127,7 +169,7 @@ cards:
         - type: custom:decluttering-card
           template: stats_media_button_large
           variables: 
-            - entity: switch_media_center
+            - entity: switch_media_center_switch
             - name: Media center
             - icon: television
         - type: custom:decluttering-card
@@ -220,7 +262,7 @@ cards:
           template: stats_rag_icon_humidity
           variables:
             - sensor: livingroom
-            - leader: cleargrass
+            - leader: environment
             - name: Woonkamer
             - icon: water-percent
         - type: custom:decluttering-card
@@ -293,7 +335,6 @@ cards:
             - icon: alert-circle
 
   ## Weather card
-
   - type: vertical-stack
     cards:
     - type: custom:decluttering-card

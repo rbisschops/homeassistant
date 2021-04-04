@@ -4,6 +4,11 @@
 ## Author: R.Bisschops
 
 ###############################################################################
+##  Notes
+###############################################################################
+## Porch light ZigBee switch is part of package_hallway.yaml
+
+###############################################################################
 ##  Homeassistant settings
 ###############################################################################
 homeassistant:
@@ -11,6 +16,18 @@ homeassistant:
   ##-----------------------------------------------------------------------------------------------
   ## Customizations - Active
   ##-----------------------------------------------------------------------------------------------
+    ## Storage environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_storage_temperature:
+      friendly_name: Temperatuur Berging
+    sensor.environment_storage_humidity:
+      friendly_name: Rel. Vochtigheid Berging
+    sensor.environment_storage_pressure:
+      friendly_name: Luchtdruk Berging  
+    sensor.environment_storage_linkquality:
+      friendly_name:  Berging (link quality)  
+    sensor.environment_storage_battery:
+      friendly_name:  Batterij multisensor berging
     ## Mailbox vibration sensor
     ## Souce: Xiaomi vibration sensor ZigBee
     sensor.vibration_mailbox:
@@ -19,16 +36,215 @@ homeassistant:
       friendly_name: Brievenbus (batterij)
     sensor.vibration_mailbox_linkquality:
       friendly_name: Brievenbus (link quality)
+    binary_sensor.garbage_gft_calendar:
+      icon: mdi:trash-can
+    binary_sensor.garbage_pmd_calendar:
+      icon: mdi:trash-can
+    binary_sensor.garbage_gft_pmd_calendar:
+      icon: mdi:trash-can
+    binary_sensor.garbage_paper_calendar:
+      icon: mdi:trash-can
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Check
     ##-----------------------------------------------------------------------------------------------
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Obsolete
     ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Future use
+    ##-----------------------------------------------------------------------------------------------
+    # ## Switch storage (Porch light)
+    # ## Source: Xiaomi Aqara LLKZMK11LM
+    # switch.switch_porch_light:
+    #   friendly_name: Buitenlamp
+    # ## Freezer door sensors
+    # binary_sensor.door_freezer:
+    #   friendly name: Vriezer deur
+    # sensor.door_freezer_linkquality:
+    #   friendly_name: Vriezer deur (link quality)
 
 ###############################################################################
 ##  Entities
 ###############################################################################
+binary_sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## GFT (Bio) garbage calendar
+  ## Source: Google calendar
+  - platform: template
+    sensors:
+      garbage_gft_calendar:
+        friendly_name: 'GFT'
+        value_template: >-
+          {% if is_state('calendar.afval_kalender', 'on') %}
+            {% if state_attr('calendar.afval_kalender', 'message') == 'GFT' %}
+              true
+            {% else %}
+              false
+            {% endif %}
+          {% else %}
+            false
+          {% endif %}
+  ## PMD (Plastic and metal) garbage calendar
+  ## Source: Google calendar
+  - platform: template
+    sensors:
+      garbage_pmd_calendar:
+        friendly_name: 'PMD'
+        value_template: >-
+          {% if is_state('calendar.afval_kalender', 'on') %}
+            {% if state_attr('calendar.afval_kalender', 'message') == 'PMD' %}
+              true
+            {% else %}
+              false
+            {% endif %}
+          {% else %}
+            false
+          {% endif %}
+  ## GFT & PMD garbage calendar
+  ## Source: Google calendar
+  - platform: template
+    sensors:
+      garbage_gft_pmd_calendar:
+        friendly_name: GFT en PMD
+        value_template: >-
+          {% if is_state('calendar.afval_kalender', 'on') %}
+            {% if state_attr('calendar.afval_kalender', 'message') == 'GFT + PMD' %}
+              true
+            {% else %}
+              false
+            {% endif %}
+          {% else %}
+            false
+          {% endif %}
+  ## Paper garbage calendar
+  ## Source: Google calendar
+  - platform: template
+    sensors:
+      garbage_paper_calendar:
+        friendly_name: 'Papier'
+        value_template: >-
+          {% if is_state('calendar.afval_kalender', 'on') %}
+            {% if state_attr('calendar.afval_kalender', 'message') == 'Papier' %}
+              true
+            {% else %}
+              false
+            {% endif %}
+          {% else %}
+            false
+          {% endif %}
+
+  ## GFT garbage bin, used for visual indication in the UI
+  ## Source: Template
+  - platform: template
+    sensors:
+      garbage_bin_gft:
+        friendly_name: 'GFT bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_gft_calendar', 'on') or is_state('garbage_gft_pmd_calendar', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
+  ## PMD garbage bin, used for visual indication in the UI
+  ## Source: Template
+  - platform: template
+    sensors:
+      garbage_bin_pmd:
+        friendly_name: 'PMD bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_pmd_calendar', 'on') or is_state('garbage_gft_pmd_calendar', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
+  ## Paper garbage bin, used for visual indication in the UI
+  ## Source: Template
+  - platform: template
+    sensors:
+      garbage_bin_paper:
+        friendly_name: 'Papier bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_paper_calendar', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_paper.state ~ '.png' }}
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Future use
+  ##-----------------------------------------------------------------------------------------------
+  # ## Switch storage (Porch light)
+  # ## Source Xiaomi Aqara LLKZMK11LM
+  # - platform: "mqtt"
+  #   name: switch_hallway_porch_interlock
+  #   state_topic: "zigbee2mqtt/aqara_switch_porch"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   value_template: "{{ value_json.interlock }}"
+  #   payload_on: true
+  #   payload_off: false
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  ## GFT garbage bin - new binary sensor, used for home away state
+  ## Source: Template
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_gft_presence:
+        friendly_name: 'GFT bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_gft_calendar', 'on') or is_state('garbage_gft_pmd_calendar', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/gft48_' ~ states.binary_sensor.garbage_bin_gft.state ~ '.png' }}
+  ## PMD garbage bin - new binary sensor, used for home away state
+  ## Source: Template
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_pmd_presence:
+        friendly_name: 'PMD bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_pmd_calendar', 'on') or is_state('garbage_gft_pmd_calendar', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_pmd.state ~ '.png' }}
+  ## Paper garbage bin - new binary sensor, used for home away state
+  ## Source: Template
+  ## Used for visual indication in the UI
+  - platform: template
+    sensors:
+      garbage_bin_paper_presence:
+        friendly_name: 'Papier bak'
+        value_template: >-
+          {% if is_state('binary_sensor.garbage_calendar_papier', 'on') %}
+            {{true}}
+          {% else %}
+            {{false}}
+          {% endif %}
+        entity_picture_template: >-
+          {{ '/local/custom_icons/pmd48_' ~ states.binary_sensor.garbage_bin_paper.state ~ '.png' }}
+
+
 input_boolean:
   ##-----------------------------------------------------------------------------------------------
   ## input_boolean - Active
@@ -46,8 +262,64 @@ input_boolean:
   ## Storage door delayed open
   ## Source: template switch
   door_storage_door_delayed:
-    name: Berging deur vetraagd
+    name: Berging deur vertraagd
     icon: mdi:door
+  ## Door freezer, location storage, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_freezer_door:
+    name: Vriezerdeur (dummy)
+    icon: mdi:door-closed
+
+  ## Door storage, location hallway-storage 
+  ## is defined in package-hallway
+
+  ## GFT garbage bin - used for state
+  ## Source: n/a
+  garbage_bin_gft:
+    name: GFT bak
+    icon: mdi:trash-can
+  ## PMD garbage bin - used for state
+  ## Source: n/a
+  garbage_bin_pmd:
+    name: PMD bak
+    icon: mdi:trash-can
+  ## Paper garbage bin - used for state - For test, no actual bin present!!
+  ## Source: n/a
+  garbage_bin_paper:
+    name: Papier bak
+    icon: mdi:trash-can
+
+  ## GFT garbage bin - used home/away state, replace wit binary_sensor
+  ## Source: dummy, for test only
+  garbage_bin_gft_presence:
+    name: GFT bak
+    icon: mdi:trash-can
+  ## PMD garbage bin - used home/away state, replace wit binary_sensor
+  ## Source: dummy, for test only
+  garbage_bin_pmd_presence:
+    name: PMD bak
+    icon: mdi:trash-can
+  ## Paper garbage bin - used home/away state, replace wit binary_sensor - For test, no actual bin present!!
+  ## Source: dummy, for test only
+  garbage_bin_paper_presence:
+    name: Papier bak
+    icon: mdi:trash-can
+
+  ## Bio bin, test switch, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_garbage_bin_gft:
+    name: GFT bak (dummy)
+    icon: mdi:delete-outline
+  ## Plastic bin, test switch, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_garbage_bin_pmd:
+    name: PMD bak (dummy)
+    icon: mdi:delete-outline
+  ## Paper bin, test switch, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_garbage_bin_paper:
+    name: Papier bak (dummy)
+    icon: mdi:delete-outline
   ##-----------------------------------------------------------------------------------------------
   ## input_boolean - Check
   ##-----------------------------------------------------------------------------------------------
@@ -77,6 +349,33 @@ input_select:
       - "off"
       - "auto"
       - "hand"
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Test
+  ##-----------------------------------------------------------------------------------------------
+  ## GFT garbage bin - used for indicative state (UI mainly)
+  ## Source: n/a
+  garbage_bin_gft:
+    name: GFT bak
+    options:
+      - "-"
+      - "Ophaaldag"
+      - "Alarm"
+  ## PMD garbage bin - used for indicative state (UI mainly)
+  ## Source: n/a
+  garbage_bin_pmd:
+    name: PMD bak
+    options:
+      - "-"
+      - "Ophaaldag"
+      - "Alarm"
+  ## Paper garbage bin - used for indicative state (UI mainly)
+  ## Source: n/a
+  garbage_bin_paper:
+    name: Papier bak
+    options:
+      - "-"
+      - "Ophaaldag"
+      - "Alarm"
 
 input_number:
   ##-----------------------------------------------------------------------------------------------
@@ -131,12 +430,190 @@ sensor:
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: vibration_mailbox_battery
+    state_topic: "zigbee2mqtt/aqara_mailbox"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Storage environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_storage_temperature
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_storage_humidity
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_storage_pressure
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_storage_linkquality
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: environment_storage_battery
+    state_topic: "zigbee2mqtt/aqara_storage_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Storage porch light switch 
+  ## Source: Moes MS-104Z - ZigBee
+  - platform: "mqtt"
+    name: switch_porch_light_linkquality
+    state_topic: "zigbee2mqtt/moes_porch_light"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.linkquality }}"
+    unit_of_measurement: "lqi"
+    icon: "mdi:signal"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Storage environment sensor - battery alert
+      ## Source: sensor.environment_storage_battery
+      environment_storage_battery_alert:
+        friendly_name:  Batterij multisensor berging alarm
+        value_template: >-
+          {% if states('sensor.environment_storage_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_storage_battery')|float < 20 and states('sensor.environment_storage_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Mailbox vibration sensor - battery alert
+      ## Source: sensor.vibration_mailbox_battery
+      vibration_mailbox_battery_alert:
+        friendly_name: Batterij brievenbus sensor alarm
+        value_template: >-
+          {% if states('sensor.vibration_mailbox_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.vibration_mailbox_battery')|float < 20 and states('sensor.vibration_mailbox_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+ ## Switch storage (Porch light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  # - platform: "mqtt"
+  #   name: switch_hallway_porch_power
+  #   state_topic: "zigbee2mqtt/aqara_switch_porch"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   unit_of_measurement: "W"
+  #   value_template: "{{ value_json.power }}"
+  #   icon: "mdi:flash"
+  ## Switch storage (Porch light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  # - platform: "mqtt"
+  #   name: switch_hallway_porch_energy
+  #   state_topic: "zigbee2mqtt/aqara_switch_porch"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   unit_of_measurement: "kWh"
+  #   value_template: "{{ value_json.energy }}"
+  #   icon: "mdi:power-plug"
+  ## Switch storage (Porch light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  # - platform: "mqtt"
+  #   name: switch_hallway_porch_temperature
+  #   state_topic: "zigbee2mqtt/aqara_switch_porch"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   unit_of_measurement: "°C"
+  #   value_template: "{{ value_json.temperature }}"
+  #   device_class: "temperature"
+  ## Switch storage (Porch light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  # - platform: "mqtt"
+  #   name: switch_hallway_porch_voltage
+  #   state_topic: "zigbee2mqtt/aqara_switch_porch"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   unit_of_measurement: "V"
+  #   value_template: "{{ value_json.voltage }}"
+  #   icon: "mdi:alpha-v"
+  ## Switch storage (Porch light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  # - platform: "mqtt"
+  #   name: switch_hallway_porch_linkquality
+  #   state_topic: "zigbee2mqtt/aqara_switch_porch"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   unit_of_measurement: "lqi"
+  #   value_template: "{{ value_json.linkquality }}"
+  #   icon: "mdi:signal"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Future use
+  ##-----------------------------------------------------------------------------------------------
+  # ## Freezer door link quality status monitoring sensor
+  # - platform: "mqtt"
+  #   name: door_freezer_linkquality
+  #   state_topic: "zigbee2mqtt/aqara_freezer_door"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   unit_of_measurement: "-"
+  #   value_template: "{{ value_json.linkquality }}"
 ##-----------------------------------------------------------------------------------------------
-## sensors - Check
+## sensors - Test
 ##-----------------------------------------------------------------------------------------------
-##-----------------------------------------------------------------------------------------------
-## sensors - Obsolete
-##-----------------------------------------------------------------------------------------------
+
+switch:
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Storage porch light switch 
+  ## Source: Moes MS-104Z - ZigBee
+  - platform: "mqtt"
+    name: switch_porch_light
+    state_topic: "zigbee2mqtt/moes_porch_light"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state }}"
+    command_topic: "zigbee2mqtt/moes_porch_light/set"
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  # ## Switch porch light
+  # ## Source Xiaomi Aqara LLKZMK11LM
+  # - platform: "mqtt"
+  #   name: switch_porch_light
+  #   state_topic: "zigbee2mqtt/aqara_switch_porch"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   payload_off: "OFF"
+  #   payload_on: "ON"
+  #   value_template: "{{ value_json.state_l2 }}"
+  #   command_topic: "zigbee2mqtt/aqara_switch_porch/l1/set"
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Test
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups

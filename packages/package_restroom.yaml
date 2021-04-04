@@ -1,0 +1,166 @@
+## Package file for Home Assistant, used for the restroom
+## Type: Home Assistant yaml file
+## Date added: 2020-02-21
+## Author: R.Bisschops
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+homeassistant:
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## Restroom environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_toilet_temperature:
+      friendly_name: Temperatuur Toilet
+    sensor.environment_toilet_humidity:
+      friendly_name: Rel. Vochtigheid Toilet
+    sensor.environment_toilet_pressure:
+      friendly_name: Luchtdruk Toilet
+    sensor.environment_toilet_linkquality:
+      friendly_name:  Toilet (link quality)
+    sensor.environment_toilet_battery:
+      friendly_name:  Batterij multisensor toilet
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
+###############################################################################
+##  Entities
+###############################################################################
+input_boolean:
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Electrical restroom heating controlled by Z-Wave Thermostat
+  ## Used for manual on/off of the restroom heating
+  climate_restroom_heating_mode:
+    name: Toilet verwarming
+    icon: mdi:radiator
+  ## Door rest room, location hallway
+  ## is defined in package-hallway
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ##input_boolean - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+
+input_select:
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## State indicator restroom heating
+  ## Source: template input select 
+  climate_restroom_heating_mode:
+    name: Verwarming toilet mode
+    options:
+      - "Verwarmen"
+      - "Spaarstand"
+      - "Uitgeschakeld"
+    icon: mdi:thermometer
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Restroom environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_toilet_temperature
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_toilet_humidity
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_toilet_pressure
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_toilet_linkquality
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: environment_toilet_battery
+    state_topic: "zigbee2mqtt/aqara_toilet_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Restroom environment sensor - battery alert
+      ## Source: sensor.environment_toilet_battery
+      environment_toilet_battery_alert:
+        friendly_name:  Batterij multisensor toilet alarm
+        value_template: >-
+          {% if states('sensor.environment_toilet_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_toilet_battery')|float < 20 and states('sensor.environment_toilet_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+
+###############################################################################
+##  Groups
+###############################################################################
+
+###############################################################################
+##  Automations
+###############################################################################
+
+###############################################################################
+##  Templates
+###############################################################################
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+###############################################################################
+##  Timers
+###############################################################################

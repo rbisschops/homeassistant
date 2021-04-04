@@ -7,10 +7,14 @@
 ##  Homeassistant settings
 ###############################################################################
 homeassistant:
-  # customize:
+  customize:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Active
     ##-----------------------------------------------------------------------------------------------
+    ## Switch storage (Hallway light)
+    ## Source: Xiaomi Aqara LLKZMK11LM
+    switch.switch_hallway_light:
+      friendly_name: Verlichting halletje
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Check
     ##-----------------------------------------------------------------------------------------------
@@ -21,6 +25,29 @@ homeassistant:
 ###############################################################################
 ##  Entities
 ###############################################################################
+binary_sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch storage (Hallway light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_hallway_porch_interlock
+    state_topic: "zigbee2mqtt/aqara_switch_hallway"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.interlock }}"
+    payload_on: true
+    payload_off: false
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Test
+  ##-----------------------------------------------------------------------------------------------
+
 input_boolean:
   ##-----------------------------------------------------------------------------------------------
   ## input_boolean - Active
@@ -35,6 +62,23 @@ input_boolean:
   light_hallway:
     name: Verlichting halletje
     icon: mdi:lightbulb
+  ## Door storage, location hallway-storage, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_hallway_storage_door:
+    name: Tussendeur berging (dummy)
+    icon: mdi:door-closed
+  ## Door metering cabinet, location hallway, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_metering_cabinet_door:
+    name: Meterkast deur (dummy)
+    icon: mdi:door-closed
+  ## Door rest room, location hallway, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_rest_room_door:
+    name: Toiletdeur (dummy)
+    icon: mdi:door-closed
+  ## Door hallway, location livingroom-hallway
+  ## is defined in package-livingroom
   ##-----------------------------------------------------------------------------------------------
   ## input_boolean - Check
   ##-----------------------------------------------------------------------------------------------
@@ -87,6 +131,89 @@ input_number:
   ##-----------------------------------------------------------------------------------------------
   ##-----------------------------------------------------------------------------------------------
   ## input_number - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensor - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch storage (Hallway light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_hallway_porch_power
+    state_topic: "zigbee2mqtt/aqara_switch_hallway"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "W"
+    value_template: "{{ value_json.power }}"
+    icon: "mdi:flash"
+  ## Switch storage (Hallway light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_hallway_porch_energy
+    state_topic: "zigbee2mqtt/aqara_switch_hallway"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "kWh"
+    value_template: "{{ value_json.energy }}"
+    icon: "mdi:power-plug"
+  ## Switch storage (Hallway light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_hallway_porch_temperature
+    state_topic: "zigbee2mqtt/aqara_switch_hallway"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "°C"
+    value_template: "{{ value_json.temperature }}"
+    device_class: "temperature"
+  ## Switch storage (Hallway light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_hallway_porch_voltage
+    state_topic: "zigbee2mqtt/aqara_switch_hallway"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "V"
+    value_template: "{{ value_json.voltage }}"
+    icon: "mdi:alpha-v"
+  ## Switch storage (Hallway light)
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_hallway_porch_linkquality
+    state_topic: "zigbee2mqtt/aqara_switch_hallway"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensor - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensor - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensor - Test
+  ##-----------------------------------------------------------------------------------------------
+
+switch:
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch Hallway light
+  ## Source Xiaomi Aqara LLKZMK11LM
+  - platform: "mqtt"
+    name: switch_hallway_light
+    state_topic: "zigbee2mqtt/aqara_switch_hallway"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state_l1 }}"
+    command_topic: "zigbee2mqtt/aqara_switch_hallway/l1/set"
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switch - Test
   ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################

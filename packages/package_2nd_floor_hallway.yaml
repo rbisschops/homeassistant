@@ -1,0 +1,145 @@
+## Package file for Home Assistant, used for the 2nd floor hallway
+## Type: Home Assistant yaml file
+## Date added: 2021-01-13
+## Author: R.Bisschops
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+homeassistant:
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## 2nd floor hallway environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_hallway_floor2_temperature:
+      friendly_name: Temperatuur Overloop 2e verdieping
+    sensor.environment_hallway_floor2_humidity:
+      friendly_name: Rel. Vochtigheid Overloop 2e verdieping 
+    sensor.environment_hallway_floor2_pressure:
+      friendly_name: Luchtdruk Overloop 2e verdieping
+    sensor.environment_hallway_floor2_linkquality:
+      friendly_name: Overloop 2e verdieping (link quality)
+    sensor.environment_hallway_floor2_battery:
+      friendly_name: Batterij multisensor overloop 2e verdieping
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
+###############################################################################
+##  Entities
+###############################################################################
+input_boolean:
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Door heating room, location 2nd floor hallway-heating room, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_heating_room_door:
+    name: Ketelkast deur (dummy)
+    icon: mdi:door-closed
+  ## Door bedroom, location 2nd floor hallway-bedroom, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_kims_room_door:
+    name: Kamer Kim (dummy)
+    icon: mdi:door-closed
+  ## Window hallway 2nd floor, location 2nd floor hallway, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_hallway_window:
+    name: Overloop raam (dummy)
+    icon: mdi:window-closed-variant
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## 2nd floor hallway environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_hallway_floor2_temperature
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_hallway_floor2_humidity
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_hallway_floor2_pressure
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_hallway_floor2_linkquality
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: environment_hallway_floor2_battery
+    state_topic: "zigbee2mqtt/aqara_hallway_floor2_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## 2nd floor hallway environment sensor - battery alert
+      ## Source: sensor.environment_hallway_floor2_battery
+      environment_hallway_floor2_battery_alert:
+        friendly_name: Batterij multisensor overloop 2e verdieping alarm
+        value_template: >-
+          {% if states('sensor.environment_hallway_floor2_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_hallway_floor2_battery')|float < 20 and states('sensor.environment_hallway_floor2_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+
+###############################################################################
+##  Groups
+###############################################################################
+
+###############################################################################
+##  Automations
+###############################################################################
+
+###############################################################################
+##  Templates
+###############################################################################
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+###############################################################################
+##  Timers
+###############################################################################

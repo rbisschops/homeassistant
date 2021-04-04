@@ -86,15 +86,16 @@ homeassistant:
     ## Customizations - Obsolete
     ##-----------------------------------------------------------------------------------------------
 
-remote:
+#### Harmony hub is now an integration. This part is obsolete now ####
+# remote:
   ##-----------------------------------------------------------------------------------------------
   ## Remotes - Active
   ##-----------------------------------------------------------------------------------------------
   ## Harmony Hub remote
   ## Source: Harmony Hub integration
-  - platform: harmony
-    name: bisschops
-    host: !secret ip_harmony_hub
+  # - platform: harmony
+  #   name: bisschops
+  #   host: !secret ip_harmony_hub
 
 ##-----------------------------------------------------------------------------------------------
 ## Media players - Active

@@ -1,0 +1,250 @@
+## Package file for Home Assistant, used for the office
+## Type: Home Assistant yaml file
+## Date added: 2021-01-13
+## Author: R.Bisschops
+
+###############################################################################
+##  Homeassistant settings
+###############################################################################
+homeassistant:
+  customize:
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Active
+    ##-----------------------------------------------------------------------------------------------
+    ## Office environment sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.environment_office_temperature:
+      friendly_name: Temperatuur Kantoor
+    sensor.environment_office_humidity:
+      friendly_name: Rel. Vochtigheid Kantoor
+    sensor.environment_office_pressure:
+      friendly_name: Luchtdruk Kantoor
+    sensor.environment_office_linkquality:
+      friendly_name: Kantoor (link quality)  
+    sensor.environment_office_battery:
+      friendly_name: Batterij multisensor kantoor
+    ## Office light level sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.light_level_office_level:
+      friendly_name: Licht level kantoor
+    sensor.light_level_office_linkquality:
+      friendly_name:  Licht level kantoor (link quality)
+    sensor.light_level_office_battery:
+      friendly_name: Batterij licht sensor kantoor
+    ## Office motion sensor
+    ## Source: Xiaomi Aqara ZigBee
+    binary_sensor.motion_office:
+      friendly_name: Bewegingssensor kantoor
+    sensor.motion_office_linkquality:
+      friendly_name: Bewegingssensor kantoor (link quality)
+    sensor.motion_office_battery:
+      friendly_name: Batterij bewegingssensor kantoor
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Check
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Obsolete
+    ##-----------------------------------------------------------------------------------------------
+    ##-----------------------------------------------------------------------------------------------
+    ## Customizations - Test
+    ##-----------------------------------------------------------------------------------------------
+###############################################################################
+##  Entities
+###############################################################################
+input_boolean:
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Window office, location office, will be replaced with real sensors in the future
+  ## Source: Dummy switch
+  dummy_office_window:
+    name: Kantoor raam (dummy)
+    icon: mdi:window-closed-variant
+  ## Door office, location 1st floor hallway-office
+  ## is defined in package_1st_floor_hallway
+
+binary_sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Office motion sensor 
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: mqtt
+    name: motion_office
+    state_topic: "zigbee2mqtt/mijia_office_motion"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_on: true
+    payload_off: false
+    value_template: "{{ value_json.occupancy }}"
+    device_class: "motion"
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## binary_sensor - Test
+  ##-----------------------------------------------------------------------------------------------
+
+sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Office environment sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: environment_office_temperature
+    state_topic: "zigbee2mqtt/aqara_office_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    value_template: "{{ value_json.temperature }}"
+  - platform: "mqtt"
+    name: environment_office_humidity
+    state_topic: "zigbee2mqtt/aqara_office_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "%"
+    device_class: "humidity"
+    value_template: "{{ value_json.humidity }}"
+  - platform: "mqtt"
+    name: environment_office_pressure
+    state_topic: "zigbee2mqtt/aqara_office_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "hPa"
+    device_class: "pressure"
+    value_template: "{{ value_json.pressure }}"
+  - platform: "mqtt"
+    name: environment_office_linkquality
+    state_topic: "zigbee2mqtt/aqara_office_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    force_update: true
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: environment_office_battery
+    state_topic: "zigbee2mqtt/aqara_office_env"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Office light level sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: light_level_office_level
+    state_topic: "zigbee2mqtt/light_sensor_office"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    # unit_of_measurement: "-"
+    device_class: "illuminance"
+    value_template: "{{ value_json.illuminance }}"
+  - platform: "mqtt"
+    name: light_level_office_level_lux
+    state_topic: "zigbee2mqtt/light_sensor_office"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "lx"
+    device_class: "illuminance"
+    value_template: "{{ value_json.illuminance_lux }}"
+  - platform: "mqtt"
+    name: light_level_office_linkquality
+    state_topic: "zigbee2mqtt/light_sensor_office"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    # unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: light_level_office_battery
+    state_topic: "zigbee2mqtt/light_sensor_office"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Office motion sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: motion_office_linkquality
+    state_topic: "zigbee2mqtt/mijia_office_motion"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    # unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name: motion_office_battery
+    state_topic: "zigbee2mqtt/mijia_office_motion"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## sensors - Test
+  ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Office environment sensor - battery alert
+      ## Source: template
+      environment_office_battery_alert:
+        friendly_name: Batterij multisensor kantoor alarm
+        value_template: >-
+          {% if states('sensor.environment_office_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.environment_office_battery')|float < 20 and states('sensor.environment_office_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Office light level sensor - battery alert
+      ## Source: sensor.light_level_office_battery
+      light_level_office_battery_alert:
+        friendly_name: Batterij licht sensor kantoor alarm
+        value_template: >-
+          {% if states('sensor.light_level_office_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.light_level_office_battery')|float < 20 and states('sensor.light_level_office_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+      ## Office motion sensor - battery alert
+      ## Source: sensor.motion_office_battery
+      motion_office_battery_alert:
+        friendly_name: Batterij bewegingssensor kantoor alarm
+        value_template: >-
+          {% if states('sensor.motion_office_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.motion_office_battery')|float < 20 and states('sensor.motion_office_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
+
+###############################################################################
+##  Groups
+###############################################################################
+
+###############################################################################
+##  Automations
+###############################################################################
+
+###############################################################################
+##  Templates
+###############################################################################
+
+###############################################################################
+##  Scripts
+###############################################################################
+
+###############################################################################
+##  Timers
+###############################################################################

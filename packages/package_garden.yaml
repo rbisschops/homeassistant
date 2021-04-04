@@ -11,6 +11,8 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Active
     ##-----------------------------------------------------------------------------------------------
+    ## Switch garden
+    ## Source Xiaomi Aqara LLKZMK11LM
     binary_sensor.switch_garden_interlock:
       friendly_name: Schakelaar tuin (interlock)
     sensor.switch_garden_power:
@@ -27,6 +29,28 @@ homeassistant:
       friendly_name: Verlichting tuin
     switch.switch_garden_spare:
       friendly_name: Reserve tuin
+    ## Garden light level sensor
+    ## Source: Xiaomi Aqara ZigBee
+    sensor.light_level_garden_level:
+      friendly_name: Licht level tuin
+    sensor.light_level_garden_linkquality:
+      friendly_name:  Licht level tuin (link quality)
+    sensor.light_level_garden_battery:
+      friendly_name: Batterij licht sensor tuin
+    ## Sunscreen garden
+    ## Source: ZigBee QS-Zigbee-C01 (Tuya TS130F compatible)
+    binary_sensor.blinds_sunscreen_calibration:
+      friendly_name: Zonnescherm (kalibratie)
+    binary_sensor.blinds_sunscreen_reversal:
+      friendly_name: Zonnescherm (andersom)
+    cover.blinds_sunscreen:
+      friendly_name: Zonnescherm
+    sensor.blinds_sunscreen_moving:
+      friendly_name: Zonnescherm (actie) 
+    sensor.blinds_sunscreen_backlight_mode:
+      friendly_name: Zonnescherm (backlight)
+    sensor.blinds_sunscreen_linkquality:
+      friendly_name: Zonnescherm (link quality)
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Check
     ##-----------------------------------------------------------------------------------------------
@@ -52,6 +76,22 @@ binary_sensor:
     value_template: "{{ value_json.interlock }}"
     payload_on: true
     payload_off: false
+  ## Sunscreen garden
+  ## Source: ZigBee QS-Zigbee-C01 (Tuya TS130F compatible)
+  - platform: "mqtt"
+    name: blinds_sunscreen_calibration
+    state_topic: "zigbee2mqtt/tuya_sunscreen"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.calibration }}"
+    payload_on: "ON"
+    payload_off: "OFF"
+  - platform: "mqtt"
+    name: blinds_sunscreen_reversal
+    state_topic: "zigbee2mqtt/tuya_sunscreen"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.motor_reversal }}"
+    payload_on: "ON"
+    payload_off: "OFF"
   ##-----------------------------------------------------------------------------------------------
   ## binary_sensor - Check
   ##-----------------------------------------------------------------------------------------------
@@ -60,6 +100,30 @@ binary_sensor:
   ##-----------------------------------------------------------------------------------------------
   ##-----------------------------------------------------------------------------------------------
   ## binary_sensor - Test
+  ##-----------------------------------------------------------------------------------------------
+
+cover:
+  ##-----------------------------------------------------------------------------------------------
+  ## cover - Active
+  ##-----------------------------------------------------------------------------------------------
+  ## Sunscreen garden
+  ## Source: ZigBee QS-Zigbee-C01 (Tuya TS130F compatible)
+  - platform: "mqtt"
+    name: blinds_sunscreen
+    availability_topic: "zigbee2mqtt/bridge/state"
+    command_topic: "zigbee2mqtt/tuya_sunscreen/set"
+    value_template: "{{ value_json.position }}"
+    set_position_template: "{ \"position\": {{ position }} }"
+    set_position_topic: "zigbee2mqtt/tuya_sunscreen/set"
+    position_topic: "zigbee2mqtt/tuya_sunscreen"
+  ##-----------------------------------------------------------------------------------------------
+  ## cover - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## cover - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## cover - Test
   ##-----------------------------------------------------------------------------------------------
 
 input_boolean:
@@ -81,6 +145,11 @@ input_boolean:
   light_garden_lights:
     name: Tuin verlichting
     icon: mdi:lightbulb
+  ## Enable garden lights
+  ## Source: template_switch
+  light_garden_lights_enable:
+    name: Tuin verlichting enable
+    icon: mdi:toggle-switch-outline
   ## Status monitoring water ornament
   ## Source: template switch
   switch_water_ornament:
@@ -195,10 +264,60 @@ sensor:
     value_template: "{{ value_json.voltage }}"
     icon: "mdi:alpha-v"
   ## Switch garden
-  ## Source Xiaomi Aqara LLKZMK11LM
+  ## Source: Xiaomi Aqara LLKZMK11LM
   - platform: "mqtt"
     name: switch_garden_linkquality
     state_topic: "zigbee2mqtt/aqara_switch_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ## Garden light level sensor
+  ## Source: Xiaomi Aqara ZigBee
+  - platform: "mqtt"
+    name: light_level_garden_level
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "-"
+    device_class: "illuminance"
+    value_template: "{{ value_json.illuminance }}"
+  - platform: "mqtt"
+    name: light_level_garden_level_lux
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "lx"
+    device_class: "illuminance"
+    value_template: "{{ value_json.illuminance_lux }}"
+  - platform: "mqtt"
+    name: light_level_garden_linkquality
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "-"
+    value_template: "{{ value_json.linkquality }}"
+  - platform: "mqtt"
+    name:  light_level_garden_battery
+    state_topic: "zigbee2mqtt/light_sensor_garden"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "%"
+    device_class: "battery"
+    value_template: "{{ value_json.battery }}"
+  ## Sunscreen garden
+  ## Source: ZigBee QS-Zigbee-C01 (Tuya TS130F compatible)
+  - platform: "mqtt"
+    name: blinds_sunscreen_moving
+    state_topic: "zigbee2mqtt/tuya_sunscreen"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.moving }}"
+  - platform: "mqtt"
+    name: blinds_sunscreen_backlight_mode
+    state_topic: "zigbee2mqtt/tuya_sunscreen"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.backlight_mode }}"
+  - platform: "mqtt"
+    name: blinds_sunscreen_linkquality
+    state_topic: "zigbee2mqtt/tuya_sunscreen"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "lqi"
     value_template: "{{ value_json.linkquality }}"
@@ -212,6 +331,20 @@ sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensor - Test
   ##-----------------------------------------------------------------------------------------------
+  - platform: template
+    sensors:
+      ## Garden light level sensor - battery alert
+      ## Source: sensor.light_level_garden_battery
+      light_level_garden_battery_alert:
+        friendly_name: Batterij licht sensor tuin alarm
+        value_template: >-
+          {% if states('sensor.light_level_garden_battery')|float >= 20 %}
+            normal
+          {% elif states('sensor.light_level_garden_battery')|float < 20 and states('sensor.light_level_garden_battery')|float >= 15 %}
+            low
+          {% else%}
+            critical
+          {% endif %}
 
 switch:
   ##-----------------------------------------------------------------------------------------------

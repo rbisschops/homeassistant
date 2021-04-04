@@ -340,7 +340,7 @@ cards:
       - type: horizontal-stack
         cards:
           - type: gauge
-            entity: sensor.hp_laserjet_black_cartridge
+            entity: sensor.hp_laserjet_200_black_cartridge
             name: Zwart
             icon: 'mdi:water'
             unit: '%'
@@ -355,7 +355,7 @@ cards:
                 background-color: #E0E0E0;  
               }
           - type: gauge
-            entity: sensor.hp_laserjet_cyan_cartridge
+            entity: sensor.hp_laserjet_200_cyan_cartridge
             name: Cyaan
             icon: 'mdi:water'
             unit: '%'
@@ -370,7 +370,7 @@ cards:
                 background-color: #E0E0E0;  
               }
           - type: gauge
-            entity: sensor.hp_laserjet_magenta_cartridge
+            entity: sensor.hp_laserjet_200_magenta_cartridge
             name: Magenta
             icon: 'mdi:water'
             unit: '%'
@@ -385,7 +385,7 @@ cards:
                 background-color: #E0E0E0;  
               }
           - type: gauge
-            entity: sensor.hp_laserjet_yellow_cartridge
+            entity: sensor.hp_laserjet_200_yellow_cartridge
             name: Geel
             icon: 'mdi:water'
             unit: '%'
