@@ -10,6 +10,7 @@ homeassistant:
   elevation: !secret elevation_home
   unit_system: metric
   time_zone: !secret system_time_zone
+
 ## Custom packages
   packages: !include_dir_named packages/
 
@@ -32,9 +33,10 @@ frontend:
   themes: !include_dir_named themes
 
 ## Google
-google:
-  client_id: !secret google_client_id
-  client_secret: !secret google_secret
+## Google calendar integration
+# google:
+#   client_id: !secret google_client_id
+#   client_secret: !secret google_secret
 
 ## Google assistant
 ## Note: The api_key for manual installs is now deprecated and will be removed in 0.105. 
@@ -58,11 +60,17 @@ google:
 history:
 
 ## Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-# http:
+## http settings for Homeassistant
+http:
 #  api_password: !secret http_password
 #  base_url: https://rbisschops.duckdns.org:8123
 #  ssl_certificate: /ssl/fullchain.pem
 #  ssl_key: /ssl/privkey.pem
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.0.217
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
 
 ## Show links to resources in log and frontend
 # introduction:
@@ -82,40 +90,42 @@ logger:
     # homeassistant.components.script: debug
 
 ## Lovelace UI
+
 lovelace:
   mode: yaml
   ## Additional resources used
   resources:
-  - url: /local/custom_cards/mini-graph-card-bundle.js?v=0.9.4
+  - url: /local/custom_cards/mini-graph-card-bundle.js?v=0.10.0
     type: module
-  - url: /local/custom_cards/button-card.js?v=3.3.6
+  - url: /local/custom_cards/button-card.js?v=3.3.6  # Update to V3.4.2
     type: module
   - url: /local/custom_cards/custom-header.js?v=1.6.7 # Update to V1.8.3
     type: module
   - url: /local/custom_cards/decluttering-card.js?v=0.6.3
     type: module
-  - url: /local/custom_cards/card-mod.js?v=14 # Update to V2.0??
+  - url: /local/custom_cards/card-mod.js?v=14 # Update to V3.1.4??
     type: module
   - url: /local/custom_cards/text-element.js?v=0.0.2
     type: js
-
+#  - url: /local/apexcharts-card.js?v=2.0.1
+#   type: module
 
 ## Enables a map showing the location of tracked devices
 map:
 
 mobile_app:
 
-## External MQTT broker (mosquitto)
-mqtt:
-  broker: !secret ip_mqtt_broker_hs
-  username: !secret userid_mqtt_broker
-  password: !secret password_mqtt_broker
-  birth_message:
-    topic: 'hass/status'
-    payload: 'online'
-  will_message:
-    topic: 'hass/status'
-    payload: 'offline'
+## External MQTT broker homelab server (mosquitto) --> IS NOW AN INTEGRATION
+# mqtt:
+#   broker: !secret ip_mqtt_broker_hls001
+#   username: !secret userid_mqtt_broker
+#   password: !secret password_mqtt_broker
+#   birth_message:
+#     topic: 'hass/status'
+#     payload: 'online'
+#   will_message:
+#     topic: 'hass/status'
+#     payload: 'offline'
 
 ## MySensors gateway
 # mysensors:
@@ -144,13 +154,13 @@ tts:
   - platform: google_translate
     service_name: google_say
 
-## zwave is disabled as it is running on zwavejs2mqtt
-zwave:
-  usb_path: /dev/ttyACM0
-  device_config: !include zwave_device_config.yaml
-  network_key: !secret zwave_network_key
+## zwave is disabled as it is running on zwavejs2mqtt as integration and add-on
+# zwave:
+#   usb_path: /dev/ttyACM0
+#   device_config: !include zwave_device_config.yaml
+#   network_key: !secret zwave_network_key
   
-updater:
+# updater: --> DEPRECATED AND REMOVED
 ## Optional, allows Home Assistant developers to focus on popular components.
   # include_used_components: true
 

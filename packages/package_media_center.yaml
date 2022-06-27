@@ -86,41 +86,30 @@ homeassistant:
     ## Customizations - Obsolete
     ##-----------------------------------------------------------------------------------------------
 
-#### Harmony hub is now an integration. This part is obsolete now ####
-# remote:
-  ##-----------------------------------------------------------------------------------------------
-  ## Remotes - Active
-  ##-----------------------------------------------------------------------------------------------
-  ## Harmony Hub remote
-  ## Source: Harmony Hub integration
-  # - platform: harmony
-  #   name: bisschops
-  #   host: !secret ip_harmony_hub
-
 ##-----------------------------------------------------------------------------------------------
 ## Media players - Active
 ##-----------------------------------------------------------------------------------------------
 ##  LG television
 ## LG Television
 ## Source: LG Web OS integration
-webostv:
-  host: !secret ip_lgtelevision
-  name: living_room_tv
-  turn_on_action:
-    service: persistent_notification.create
-    data:
-      message: "Turn on action"
-  customize:
-    sources:
-      - Netflix
-      - Disney+
-      - Pathé Thuis
-      - Amazon Prime Video
-      - Set-top Box
-      - NPO
-      - Spotify Music - Luister gratis op LG TV
-      - HDMI1
-      - HDMI2
+# webostv:
+#   host: !secret ip_lgtelevision
+#   name: living_room_tv
+#   turn_on_action:
+#     service: persistent_notification.create
+#     data:
+#       message: "Turn on action"
+#   customize:
+#     sources:
+#       - Netflix
+#       - Disney+
+#       - Pathé Thuis
+#       - Amazon Prime Video
+#       - Set-top Box
+#       - NPO
+#       - Spotify Music - Luister gratis op LG TV
+#       - HDMI1
+#       - HDMI2
 
 ###############################################################################
 ##  Entities

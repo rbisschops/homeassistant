@@ -22,7 +22,7 @@ Last update: April 24th, 2020
 
 # [My Home server](#my-home-server)
 
-Here's my [Home Assistant](https://home-assistant.io/) configuration. I have installed Home Assistant on an custom build PC. The PC is running as a "Home server". I am currently running Ubuntu 18.04 LTS on the PC. Home Assistant as well as all supporting applications (and some additional non Home Assistant related applications) are running in Docker containers. Home assistant is running on HASS.io as are some of the add-ons.
+Here's my [Home Assistant](https://home-assistant.io/) configuration. I have installed Home Assistant on an custom build PC. The PC is running as a "Home server". I am currently running Ubuntu 18.04 LTS on the PC. Home Assistant as well as all supporting appllications (and some additional non Home Assistant related applications) are running in Docker containers. Home assistant is running on HASS.io as are some of the add-ons.
 
 ## Things that I run on my Home server
 * [Home Assistant](https://home-assistant.io/), home automation solution running as HASS.io version.

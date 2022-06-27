@@ -13,13 +13,13 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Internet statistics 
     sensor.network_uptime:
-      friedly_name: Uptime
-    sensor.speedtest_download:
-      icon: "mdi:speedometer"
-    sensor.speedtest_upload:
-      icon: "mdi:speedometer"
-    sensor.speedtest_ping:
-      icon: "mdi:speedometer"
+      friendly_name: Uptime
+    # sensor.speedtest_download:
+    #   icon: "mdi:speedometer"
+    # sensor.speedtest_upload:
+    #   icon: "mdi:speedometer"
+    # sensor.speedtest_ping:
+    #   icon: "mdi:speedometer"
     ## Crtical network devices
     sensor.network_amazon_echo:
       icon: "mdi:microphone"
@@ -41,19 +41,25 @@ homeassistant:
       icon: "mdi:printer"
     sensor.network_voip:
       icon: "mdi:phone-voip"
+    sensor.network_envoy:
+      icon: "mdi:solar-power"
     ## Other network devices (only when tracked)
     sensor.network_apple_tv:
+      icon: "mdi:apple"
+    sensor.network_apple_tv_4k:
       icon: "mdi:apple"
     sensor.network_bosch_dryer:
       icon: "mdi:tumble-dryer"
     sensor.network_bosch_washing_machine:
       icon: "mdi:washing-machine"
     sensor.network_denon:
-      icon: "mdi:volume-high"     
+      icon: "mdi:volume-high"
     sensor.network_humax:
       icon: "mdi:satellite-variant"
     sensor.network_ipad:
-      icon: "mdi:tablet-ipad"  
+      icon: "mdi:tablet-ipad"
+    sensor.network_ipad_2020:
+      icon: "mdi:tablet-ipad"
     sensor.network_laptop_kim_prive: 
       icon: "mdi:laptop"
     sensor.network_laptop_kim_werk: 
@@ -82,13 +88,14 @@ homeassistant:
 ##-----------------------------------------------------------------------------------------------
 ## Other Home Assistant settings - Active
 ##-----------------------------------------------------------------------------------------------
-speedtestdotnet:
-  scan_interval:
-    hours: 2
-  monitored_conditions:
-    - ping
-    - download
-    - upload
+## Replaced by Hass integration!!
+# speedtestdotnet:
+#   scan_interval:
+#     hours: 2
+#   monitored_conditions:
+#     - ping
+#     - download
+#     - upload
 
 ###############################################################################
 ##  Entities
@@ -107,164 +114,155 @@ sensor:
       ## Source: device tracker - Netgear
       network_amazon_echo:
         friendly_name: "Amazon echo dot (living room)"
-        # entity_id:
-        #   - device_tracker.amazonacac5ec30
-        value_template: "{{ 'on' if is_state('device_tracker.amazonacac5ec30','home') else 'off' }}"
+        value_template: "{{ 'on' if is_state('device_tracker.amazon_echo_dot_4','home') else 'off' }}"
       ## Network presence NAS 
       ## Source: device tracker - Netgear
       network_diskstation:
         friendly_name: "Diskstation II"
-        # entity_id:
-        #   - device_tracker.diskstationii
         value_template: "{{ 'on' if is_state('device_tracker.diskstationii','home') else 'off' }}"
       ## Network presence PiHole 
       ## Source: device tracker - Netgear
       network_pihole:
         friendly_name: "PiHole"
-        # entity_id:
-        #   - device_tracker.raspberrypi_2
-        value_template: "{{ 'on' if is_state('device_tracker.raspberrypi_2','home') else 'off' }}"
+        value_template: "{{ 'on' if is_state('device_tracker.pihole','home') else 'off' }}"
       ## Network presence Mysensors Gateway
       ## Source: device tracker - Netgear
       network_mysensors_gateway:
         friendly_name: "MySensors Gateway"
-        # entity_id:
-        #   - device_tracker.raspberrypi_3
-        value_template: "{{ 'on' if is_state('device_tracker.raspberrypi_3', 'home') else 'off' }}"
+        value_template: "{{ 'on' if is_state('device_tracker.mysensors', 'home') else 'off' }}"
       ## Network presence HA Bridge
       ## Source: device tracker - Netgear
       network_ha_bridge:
         friendly_name: "HA Bridge"  
-        # entity_id:
-        #   - device_tracker.habridge
-        value_template: "{{ 'on' if is_state('device_tracker.habridge', 'home') else 'off' }}"
+        value_template: "{{ 'on' if is_state('device_tracker.ha_bridge', 'home') else 'off' }}"
       ## Network presence Harmony Hub
       ## Source: device tracker - Netgear
       network_harmony_hub:
         friendly_name: "Harmony Hub"
-        # entity_id:
-        #   - device_tracker.harmonyhub
         value_template: "{{ 'on' if is_state('device_tracker.harmonyhub', 'home') else 'off' }}"
       ## Network presence DSMR Reader
       ## Source: device tracker - Netgear
       network_dsmrreader_pi:
-        friendly_name: "Home Assistant (RPi)"
-        # entity_id:
-        #   - device_tracker.dsmrreader
-        value_template: "{{ 'on' if is_state('device_tracker.dsmrreader', 'home') else 'off' }}"
+        friendly_name: "DSMR Reader (RPi)"
+        value_template: "{{ 'on' if is_state('device_tracker.dsmr_reader', 'home') else 'off' }}"
       ## Network presence Hue Bridge
       ## Source: device tracker - Netgear
       network_hue_bridge:
         friendly_name: "Philips Hue Bridge"
-        # entity_id:
-        #   - device_tracker.philipshue
-        value_template: "{{ 'on' if is_state('device_tracker.philipshue', 'home') else 'off' }}"
-      ## Network presence Laserjet printer
+        value_template: "{{ 'on' if is_state('device_tracker.philips_hue', 'home') else 'off' }}"
+      ## Network presence HP Laseryet printer
       ## Source: device tracker - Netgear
       network_printer:
         friendly_name: "HP Laser printer"
-        # entity_id:
-        #   - device_tracker.npidcd88c
-        value_template: "{{ 'on' if is_state('device_tracker.npidcd88c', 'home') else 'off' }}"    
+        value_template: "{{ 'on' if is_state('device_tracker.hp_laser_printer', 'home') else 'off' }}"    
       ## Network presence VOIP Modem
       ## Source: device tracker - Netgear
       network_voip:
         friendly_name: "VOIP modem"
-        # entity_id:
-        #   - device_tracker.n510ippro
-        value_template: "{{ 'on' if is_state('device_tracker.n510ippro', 'home') else 'off' }}"
+        value_template: "{{ 'on' if is_state('device_tracker.n510_ip_pro', 'home') else 'off' }}"
+      ## Network presence Home Assistant VM
+      ## Source: device tracker - Netgear
+      network_homeassistant:
+        friendly_name: "Home Assistant (VM)"
+        value_template: "{{ 'on' if is_state('device_tracker.homeassistant', 'home') else 'off' }}"
+      ## Network presence NodeRed (LXC)
+      ## Source: device tracker - Netgear
+      network_nodered:
+        friendly_name: "NodeRED (LXC)"
+        value_template: "{{ 'on' if is_state('device_tracker.nodered', 'home') else 'off' }}"
+      ## Network presence Mosquitto (LXC)
+      ## Source: device tracker - Netgear
+      network_mosquitto:
+        friendly_name: "Mosquitto (LXC)"
+        value_template: "{{ 'on' if is_state('device_tracker.mqtt', 'home') else 'off' }}"
+      ## Network presence ESPHome (LXC)
+      ## Source: device tracker - Netgear
+      network_esphome:
+        friendly_name: "ESPHome (LXC)"
+        value_template: "{{ 'on' if is_state('device_tracker.esphome', 'home') else 'off' }}"
+      ## Network presence Zigbee2mqtt
+      ## Source: device tracker - Netgear
+      network_zigbee2mqtt:
+        friendly_name: "Zigbee2mqtt (LXC)"
+        value_template: "{{ 'on' if is_state('device_tracker.zigbee2mqtt', 'home') else 'off' }}"
+      ## Network presence Enlighten Envoy
+      ## Source: device tracker - Netgear
+      network_envoy:
+        friendly_name: "Enphase Envoy"
+        value_template: "{{ 'on' if is_state('device_tracker.envoy', 'home') else 'off' }}"
+
       ## Other network devices (only when tracked)
       ## Network presence Apple-TV
       ## Source: device tracker - Netgear
       network_apple_tv:
         friendly_name: "Apple TV"
-        # entity_id:
-        #   - device_tracker.appletv
-        value_template: "{{ 'on' if is_state('device_tracker.appletv', 'home') else 'off' }}"  
+        value_template: "{{ 'on' if is_state('device_tracker.appletv', 'home') else 'off' }}"
+      ## Network presence Apple-TV-4K
+      ## Source: device tracker - Netgear
+      network_apple_tv_4k:
+        friendly_name: "Apple TV 4K"
+        value_template: "{{ 'on' if is_state('device_tracker.apple_tv_4k', 'home') else 'off' }}"
       ## Network presence Washing machine
       ## Source: device tracker - Netgear
       network_bosch_dryer:
         friendly_name: "Bosch Wasdroger"
-        # entity_id:
-        #   - device_tracker.boschwtyh8782nl68a40e22eaca
-        value_template: "{{ 'on' if is_state('device_tracker.boschwtyh8782nl68a40e22eaca', 'home') else 'off' }}"
+        value_template: "{{ 'on' if is_state('device_tracker.bosch_wasdroger', 'home') else 'off' }}"
       ## Network presence Dryer
       ## Source: device tracker - Netgear
       network_bosch_washing_machine:
         friendly_name: "Bosch Wasmachine"
-        # entity_id:
-        #   - device_tracker.boschwawh2643nl68a40e251509
-        value_template: "{{ 'on' if is_state('device_tracker.boschwawh2643nl68a40e251509', 'home') else 'off' }}"
+        value_template: "{{ 'on' if is_state('device_tracker.bosch_wasmachine', 'home') else 'off' }}"
       ## Network presence AVR
       ## Source: device tracker - Netgear
       network_denon:
         friendly_name: "Denon-AVR-X3600H"
-        # entity_id:
-        #   - device_tracker.denon_avr_x3600h
-        value_template: "{{ 'on' if is_state('device_tracker.denon_avr_x3600h', 'home') else 'off' }}"  
+        value_template: "{{ 'on' if is_state('device_tracker.denon_avr_x3600h', 'home') else 'off' }}"
       ## Network presence Cable receiver
       ## Source: device tracker - Netgear
       network_humax:
-        friendly_name: "Humax i5050"
-        # entity_id:
-        #   - device_tracker.0003789b9e56
-        value_template: "{{ 'on' if is_state('device_tracker.0003789b9e56', 'home') else 'off' }}"  
+        friendly_name: "Humax iRHD-5300C"
+        value_template: "{{ 'on' if is_state('device_tracker.0003789b9e56', 'home') else 'off' }}"
       ## Network presence iPad
       ## Source: device tracker - Netgear
       network_ipad:
         friendly_name: "iPad"
-        # entity_id:
-        #   - device_tracker.ipadvandiscript
-        value_template: "{{ 'on' if is_state('device_tracker.ipadvandiscript', 'home') else 'off' }}"  
+        value_template: "{{ 'on' if is_state('device_tracker.ipadvandiscript', 'home') else 'off' }}"
+      ## Network presence iPad 2020
+      ## Source: device tracker - Netgear
+      network_ipad_2020:
+        friendly_name: "iPad-2020"
+        value_template: "{{ 'on' if is_state('device_tracker.bisschops_ipad', 'home') else 'off' }}"
       ## Network presence laptop
       ## Source: device tracker - Netgear
-      network_laptop_kim_prive:
-        friendly_name: "Laptop Kim (prive)" 
-        # entity_id:
-        #   - device_tracker.windellu0981qd
-        value_template: "{{ 'on' if is_state('device_tracker.windellu0981qd', 'home') else 'off' }}"  
+      network_laptop_ralph_cgi:
+        friendly_name: "Laptop Ralph CGI" 
+        value_template: "{{ 'on' if is_state('device_tracker.laptop_ralph_cgi', 'home') else 'off' }}"  
       ## Network presence laptop
       ## Source: device tracker - Netgear
-      network_laptop_kim_werk:
-        friendly_name: "Laptop Kim (werk)" 
-        # entity_id:
-        #   - device_tracker.nl_56fxvt2
-        value_template: "{{ 'on' if is_state('device_tracker.nl_56fxvt2', 'home') else 'off' }}"  
-      ## Network presence laptop
-      ## Source: device tracker - Netgear
-      network_laptop_ralph:
-        friendly_name: "Laptop Ralph" 
-        # entity_id:
-        #   - device_tracker.nl1wf6nh2
-        value_template: "{{ 'on' if is_state('device_tracker.nl1wf6nh2', 'home') else 'off' }}"  
+      network_laptop_ralph_shell:
+        friendly_name: "Laptop Ralph CGI" 
+        value_template: "{{ 'on' if is_state('device_tracker.laptop_ralph_shell', 'home') else 'off' }}"  
       ## Network presence laptop
       ## Source: device tracker - Netgear
       network_laptop_rediscript:
         friendly_name: "Laptop Rediscript"
-        # entity_id:
-        #   - device_tracker.desktopqf9r6qv
-        value_template: "{{ 'on' if is_state('device_tracker.desktopqf9r6qv', 'home') else 'off' }}"     
+        value_template: "{{ 'on' if is_state('device_tracker.laptop_rediscript', 'home') else 'off' }}"     
       ## Network presence television
       ## Source: device tracker - Netgear
       network_lg_television:
         friendly_name: "LG Televisie"
-        # entity_id:
-        #   - device_tracker.lgwebostv
         value_template: "{{ 'on' if is_state('device_tracker.lgwebostv', 'home') else 'off' }}"  
       ## Network presence PC
       ## Source: device tracker - Netgear
       network_pc_ralph:
         friendly_name: "PC Ralph"
-        # entity_id:
-        #   - device_tracker.corei7
-        value_template: "{{ 'on' if is_state('device_tracker.corei7', 'home') else 'off' }}"  
+        value_template: "{{ 'on' if is_state('device_tracker.core_i7', 'home') else 'off' }}"  
       ## Network presence media player
       ## Source: device tracker - Netgear
       network_popcornhour:
         friendly_name: "Popcorn A300" 
-        # entity_id:
-        #   - device_tracker.a300
-        value_template: "{{ 'on' if is_state('device_tracker.a300', 'home') else 'off' }}"  
+        value_template: "{{ 'on' if is_state('device_tracker.a300', 'home') else 'off' }}"
+
     ##-----------------------------------------------------------------------------------------------
     ## sensors - Check
     ##-----------------------------------------------------------------------------------------------
@@ -273,18 +271,24 @@ sensor:
     ##-----------------------------------------------------------------------------------------------
       ## Network presence Domoticz Master
       ## Source: device tracker - Netgear
-      network_domoticz_master:
-        friendly_name: "Domoticz (master)"
-        # entity_id:
-        #   - device_tracker.raspberrypi
-        value_template: "{{ 'on' if is_state('device_tracker.raspberrypi','home') else 'off' }}"
+      # network_domoticz_master:
+      #   friendly_name: "Domoticz (master)"
+      #   value_template: "{{ 'on' if is_state('device_tracker.raspberrypi','home') else 'off' }}"
       ## Network presence Xiaomi Bridge
       ## Source: device tracker - Netgear
-      network_xiaomi_bridge:
-        friendly_name: "Xiaomi Bridge"
-        # entity_id:
-        #   - device_tracker.lumigatewayv3_miio78461469
-        value_template: "{{ 'on' if is_state('device_tracker.lumigatewayv3_miio78461469', 'home') else 'off' }}"
+      # network_xiaomi_bridge:
+      #   friendly_name: "Xiaomi Bridge"
+      #   value_template: "{{ 'on' if is_state('device_tracker.lumigatewayv3_miio78461469', 'home') else 'off' }}"
+      ## Network presence laptop
+      ## Source: device tracker - Netgear
+      # network_laptop_kim_prive:
+      #   friendly_name: "Laptop Kim (prive)" 
+      #   value_template: "{{ 'on' if is_state('device_tracker.windellu0981qd', 'home') else 'off' }}"  
+      ## Network presence laptop
+      ## Source: device tracker - Netgear
+      # network_laptop_kim_werk:
+      #   friendly_name: "Laptop Kim (werk)" 
+      #   value_template: "{{ 'on' if is_state('device_tracker.nl_56fxvt2', 'home') else 'off' }}"
 
 ###############################################################################
 ##  Groups

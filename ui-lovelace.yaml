@@ -4,11 +4,6 @@
 ## Author: R.Bisschops
 
 ###############################################################################
-##  Custom compact header settings
-##  https://github.com/maykar/compact-custom-header
-###############################################################################
-
-###############################################################################
 ##  Custom header settings
 ##  https://maykar.github.io/custom-header/#configuration/config
 ###############################################################################
@@ -19,37 +14,20 @@ custom_header:
   voice_hide: false
 
 ###############################################################################
-##  Custom button card templates
-##  https://github.com/custom-cards/button-card
+##  Imported custom button card templates
 ###############################################################################
 button_card_templates:
-  !include lovelace/button_card_templates.yaml
+  !include lovelace/templates/button_card_templates.yaml
 
 ###############################################################################
-##  Settings for Declustering-card
-##  https://github.com/custom-cards/decluttering-card
+##  Imported settings for Declustering-card
 ###############################################################################
-
 decluttering_templates:
-  !include lovelace/declutering_card_templates.yaml
+  !include lovelace/templates/declutering_card_templates.yaml
 
 ###############################################################################
 ##  Main Lovelace settings
 ###############################################################################
 title: Bisschops Mansion
-views:
-  - !include lovelace/home.yaml
-  - !include lovelace/mediaplayer.yaml
-  - !include lovelace/weather.yaml
-  - !include lovelace/utilities.yaml
-  - !include lovelace/stats.yaml
-  - !include lovelace/things.yaml
-  - !include lovelace/settings.yaml
-  - !include lovelace/groundfloor.yaml
-  # - !include lovelace/groundfloor_old.yaml
-  - !include lovelace/storage.yaml 
-  - !include lovelace/firstfloor.yaml
-  - !include lovelace/secondfloor.yaml
-  - !include lovelace/garden.yaml
-  - !include lovelace/automations.yaml
-  - !include lovelace/test.yaml
+# views:
+views: !include_dir_list lovelace/01_standard/views

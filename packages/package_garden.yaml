@@ -69,13 +69,14 @@ binary_sensor:
   ##-----------------------------------------------------------------------------------------------
   ## Switch garden
   ## Source Xiaomi Aqara LLKZMK11LM
-  - platform: "mqtt"
-    name: switch_garden_interlock
-    state_topic: "zigbee2mqtt/aqara_switch_garden"
-    availability_topic: "zigbee2mqtt/bridge/state"
-    value_template: "{{ value_json.interlock }}"
-    payload_on: true
-    payload_off: false
+  ## Commented as this device does not support /get for this parameter
+  # - platform: "mqtt"
+  #   name: switch_garden_interlock
+  #   state_topic: "zigbee2mqtt/aqara_switch_garden"
+  #   availability_topic: "zigbee2mqtt/bridge/state"
+  #   value_template: "{{ value_json.interlock }}"
+  #   payload_on: true
+  #   payload_off: false
   ## Sunscreen garden
   ## Source: ZigBee QS-Zigbee-C01 (Tuya TS130F compatible)
   - platform: "mqtt"
@@ -112,7 +113,7 @@ cover:
     name: blinds_sunscreen
     availability_topic: "zigbee2mqtt/bridge/state"
     command_topic: "zigbee2mqtt/tuya_sunscreen/set"
-    value_template: "{{ value_json.position }}"
+    position_template: "{{ value_json.position }}"
     set_position_template: "{ \"position\": {{ position }} }"
     set_position_topic: "zigbee2mqtt/tuya_sunscreen/set"
     position_topic: "zigbee2mqtt/tuya_sunscreen"
@@ -173,6 +174,25 @@ input_boolean:
   # light_garden_button:
   #   name: Tuin verlichting
   #   icon: mdi:lightbulb
+
+  ##-----------------------------------------------------------------------------------------------
+  ## input_boolean - Test
+  ##-----------------------------------------------------------------------------------------------
+  ## Sunscreen control open
+  ## Source: template switch
+  blinds_sunscreen_open:
+    name: Zonnescherm
+    icon: mdi:blinds
+  ## Sunscreen control close
+  ## Source: template switch
+  blinds_sunscreen_close:
+    name: Zonnescherm
+    icon: mdi:blinds
+  ## Sunscreen control pause
+  ## Source: template switch
+  blinds_sunscreen_pause:
+    name: Zonnescherm
+    icon: mdi:blinds
 
 input_select:
   ##-----------------------------------------------------------------------------------------------
@@ -279,7 +299,7 @@ sensor:
     state_topic: "zigbee2mqtt/light_sensor_garden"
     availability_topic: "zigbee2mqtt/bridge/state"
     expire_after: 21600
-    unit_of_measurement: "-"
+    # unit_of_measurement: "-"
     device_class: "illuminance"
     value_template: "{{ value_json.illuminance }}"
   - platform: "mqtt"
@@ -294,12 +314,14 @@ sensor:
     name: light_level_garden_linkquality
     state_topic: "zigbee2mqtt/light_sensor_garden"
     availability_topic: "zigbee2mqtt/bridge/state"
-    unit_of_measurement: "-"
+    expire_after: 21600
+    # unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
   - platform: "mqtt"
     name:  light_level_garden_battery
     state_topic: "zigbee2mqtt/light_sensor_garden"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"

@@ -1,26 +1,16 @@
 ## Package file for Home Assistant, used for getting Domoticz data via MQTT 
 ## Type: Home Assistant yaml file
 ## Date added: 2019-11-17
+## Last update: 2022-04-18 10:01
 ## Author: R.Bisschops
 
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-homeassistant:
 
 ###############################################################################
 ##  Entities
 ###############################################################################
-input_boolean:
-  ##-----------------------------------------------------------------------------------------------
-  ## input_boolean - Active
-  ##-----------------------------------------------------------------------------------------------
-  ##-----------------------------------------------------------------------------------------------
-  ## input_boolean - Check
-  ##-----------------------------------------------------------------------------------------------
-  ##-----------------------------------------------------------------------------------------------
-  ##input_boolean - Obsolete
-  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups
@@ -33,75 +23,6 @@ automation:
   ##-----------------------------------------------------------------------------------------------
   ## automations - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Homeserver process usage, will sent svalue1
-  - alias: "Domoticz publish - Homeserver process usage"
-    initial_state: "on" 
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: and
-      conditions:
-      - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
-      - condition: template
-        value_template: "{{ trigger.payload_json.name == 'Process Usage (Homeserver)' }}"
-    action: 
-      - service: mqtt.publish
-        data_template:
-          topic: "home/server/homeserver/process_usage"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": trigger.payload_json.name,
-              "usage": trigger.payload_json.svalue1
-            }|tojson }}
-  ## Homeserver server HDD-boot partition, will sent svalue1
-  - alias: "Domoticz publish - Homeserver HDD-boot partition usage"
-    initial_state: "on" 
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: and
-      conditions:
-      - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
-      - condition: template
-        value_template: "{{ trigger.payload_json.name == 'HDD /boot (Homeserver)' }}"
-    action: 
-      - service: mqtt.publish
-        data_template:
-          topic: "home/server/homeserver/hdd_boot"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": trigger.payload_json.name,
-              "usage": trigger.payload_json.svalue1
-            }|tojson }}
-  ## Homeserver server HDD partition, will sent svalue1
-  - alias: "Domoticz publish - Homeserver HDD partition usage"
-    initial_state: "on" 
-    trigger:
-      - platform: mqtt
-        topic: "domoticz/out"
-    condition:
-      condition: and
-      conditions:
-      - condition: template
-        value_template: "{{ trigger.payload_json.dtype == 'General' }}"
-      - condition: template
-        value_template: "{{ trigger.payload_json.name == 'HDD / (Homeserver)' }}"
-    action: 
-      - service: mqtt.publish
-        data_template:
-          topic: "home/server/homeserver/hdd"
-          retain: true
-          payload_template: >-
-            {{ {
-              "device": trigger.payload_json.name,
-              "usage": trigger.payload_json.svalue1
-            }|tojson }}
   ## Water meter will sent svalue1
   - alias: "Domoticz publish - Utilities Water values"
     initial_state: "on" 
@@ -131,7 +52,75 @@ automation:
   ##-----------------------------------------------------------------------------------------------
   ## automations - Obsolete
   ##-----------------------------------------------------------------------------------------------
-
+  # ## Homeserver process usage, will sent svalue1
+  # - alias: "Domoticz publish - Homeserver process usage"
+  #   initial_state: "on" 
+  #   trigger:
+  #     - platform: mqtt
+  #       topic: "domoticz/out"
+  #   condition:
+  #     condition: and
+  #     conditions:
+  #     - condition: template
+  #       value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+  #     - condition: template
+  #       value_template: "{{ trigger.payload_json.name == 'Process Usage (Homeserver)' }}"
+  #   action: 
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "home/server/homeserver/process_usage"
+  #         retain: true
+  #         payload_template: >-
+  #           {{ {
+  #             "device": trigger.payload_json.name,
+  #             "usage": trigger.payload_json.svalue1
+  #           }|tojson }}
+  # ## Homeserver server HDD-boot partition, will sent svalue1
+  # - alias: "Domoticz publish - Homeserver HDD-boot partition usage"
+  #   initial_state: "on" 
+  #   trigger:
+  #     - platform: mqtt
+  #       topic: "domoticz/out"
+  #   condition:
+  #     condition: and
+  #     conditions:
+  #     - condition: template
+  #       value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+  #     - condition: template
+  #       value_template: "{{ trigger.payload_json.name == 'HDD /boot (Homeserver)' }}"
+  #   action: 
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "home/server/homeserver/hdd_boot"
+  #         retain: true
+  #         payload_template: >-
+  #           {{ {
+  #             "device": trigger.payload_json.name,
+  #             "usage": trigger.payload_json.svalue1
+  #           }|tojson }}
+  # ## Homeserver server HDD partition, will sent svalue1
+  # - alias: "Domoticz publish - Homeserver HDD partition usage"
+  #   initial_state: "on" 
+  #   trigger:
+  #     - platform: mqtt
+  #       topic: "domoticz/out"
+  #   condition:
+  #     condition: and
+  #     conditions:
+  #     - condition: template
+  #       value_template: "{{ trigger.payload_json.dtype == 'General' }}"
+  #     - condition: template
+  #       value_template: "{{ trigger.payload_json.name == 'HDD / (Homeserver)' }}"
+  #   action: 
+  #     - service: mqtt.publish
+  #       data_template:
+  #         topic: "home/server/homeserver/hdd"
+  #         retain: true
+  #         payload_template: >-
+  #           {{ {
+  #             "device": trigger.payload_json.name,
+  #             "usage": trigger.payload_json.svalue1
+  #           }|tojson }}
 ###############################################################################
 ##  Templates
 ###############################################################################

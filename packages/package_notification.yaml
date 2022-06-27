@@ -54,6 +54,10 @@ input_boolean:
     name: Tekst notificaties toestaan
     icon: mdi:toggle-switch
     initial: on
+  notifications_mailbox_allowed:
+    name: Tekst notificaties brievenbus toestaan
+    icon: mdi:toggle-switch
+    initial: on
   ##-----------------------------------------------------------------------------------------------
   ## input_boolean - Check
   ##-----------------------------------------------------------------------------------------------

@@ -86,6 +86,7 @@ sensor:
     name: environment_bathroom_battery
     state_topic: "zigbee2mqtt/aqara_bathroom_env"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"

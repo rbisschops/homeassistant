@@ -11,12 +11,14 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Active
     ##-----------------------------------------------------------------------------------------------
-    ## ZigBeee2MQTT Switch high cabinets
-    ## Source SilverCrest,Lidl HG06337 ZigBee
+    ## Dimmer 2nd floor bed room
+    ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
     light.light_room_kim:
       friendly_name: Verlichting kamer Kim
     sensor.light_room_kim_linkquality:
       friendly_name: Verlichting kamer Kim (link quality)
+    ## 2nd floor bedroom light button
+    ## Xiaomi Mijia wireless switch, WXKG01LM
     sensor.button_room_kim:
       friendly_name: Verlichtings knop kamer Kim
     sensor.button_room_kim_battery:
@@ -69,7 +71,7 @@ light:
   ##-----------------------------------------------------------------------------------------------
   ## lights - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Switch 2nd floor bed room
+  ## Dimmer 2nd floor bed room
   ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
   - platform: "mqtt"
     name: light_room_kim
@@ -97,7 +99,7 @@ sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Switch 2nd floor bed room
+  ## Dimmer 2nd floor bed room
   ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
   - platform: "mqtt"
     name: light_room_kim_linkquality
@@ -120,6 +122,7 @@ sensor:
     name: button_room_kim_battery
     state_topic: "zigbee2mqtt/aqara_bedroom_kim_button"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     value_template: "{{ value_json.battery }}"
     device_class: "battery"
@@ -129,6 +132,7 @@ sensor:
     name: button_room_kim_linkquality
     state_topic: "zigbee2mqtt/aqara_bedroom_kim_button"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "lqi"
     value_template: "{{ value_json.linkquality }}"
     icon: "mdi:signal"
@@ -173,6 +177,7 @@ sensor:
     name: environment_kim_battery
     state_topic: "zigbee2mqtt/aqara_kim_env"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
@@ -199,6 +204,33 @@ sensor:
           {% else%}
             critical
           {% endif %}
+
+## New template format for sensors and binary sensors 
+## Valid as of version 2021.5.4
+# template:
+  ##-----------------------------------------------------------------------------------------------
+  ## template - Active
+  ##-----------------------------------------------------------------------------------------------
+  # - sensor: 
+  #     - name: "environment kim battery alert new"
+  #       state: >
+  #         {% if states('sensor.environment_kim_battery')|float >= 20 %}
+  #           normal
+  #         {% elif states('sensor.environment_kim_battery')|float < 20 and states('sensor.environment_kim_battery')|float >= 15 %}
+  #           low
+  #         {% else%}
+  #           critical
+  #         {% endif %}
+
+  ##-----------------------------------------------------------------------------------------------
+  ## template - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## template - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## template - Test
+  ##-----------------------------------------------------------------------------------------------
 
 ###############################################################################
 ##  Groups

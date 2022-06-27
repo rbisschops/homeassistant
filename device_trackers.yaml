@@ -6,9 +6,11 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-- platform: netgear
-  host: !secret ip_netgear
-  password: !secret netgear_password
-  exclude: 
-    - !secret mac_ubiquiti_ap_1
-    - !secret mac_homeserver
+
+## Netgear router --> NETGEAR IS NOW AN INTEGRATION
+# - platform: netgear
+#   host: !secret ip_netgear
+#   password: !secret netgear_password
+#   exclude: 
+#     - !secret mac_ubiquiti_ap_1
+#     - !secret mac_homeserver

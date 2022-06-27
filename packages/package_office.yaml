@@ -48,6 +48,29 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Test
     ##-----------------------------------------------------------------------------------------------
+    ## Button office desk left
+    ## Xiaomi Mijia wireless switch, WXKG01LM
+    sensor.button_desk_left:
+      friendly_name: Verlichtings knop bureau rechts
+    sensor.button_desk_left_battery:
+      friendly_name: Verlichtings knop bureau rechts (batterij)
+    sensor.button_desk_left_linkquality:
+      friendly_name: Verlichtings knop bureau rechts (link quality)
+    ## Button office desk right
+    ## Xiaomi Mijia wireless switch, WXKG01LM
+    sensor.button_desk_right:
+      friendly_name: Verlichtings knop bureau rechts
+    sensor.button_desk_right_battery:
+      friendly_name: Verlichtings knop bureau rechts (batterij)
+    sensor.button_desk_right_linkquality:
+      friendly_name: Verlichtings knop bureau rechts (link quality)
+    ## Switch office desk light
+    ## Blitzwolf BW-SHP13
+    switch.switch_office_desk_lights:
+      friendly_name: Kantoor bureau verlichting
+    sensor.switch_office_desk_lights_linkquality:
+      friendly_name:  Kantoor bureau verlichting (link quality)
+
 ###############################################################################
 ##  Entities
 ###############################################################################
@@ -132,6 +155,7 @@ sensor:
     name: environment_office_battery
     state_topic: "zigbee2mqtt/aqara_office_env"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
@@ -157,12 +181,14 @@ sensor:
     name: light_level_office_linkquality
     state_topic: "zigbee2mqtt/light_sensor_office"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     # unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
   - platform: "mqtt"
     name: light_level_office_battery
     state_topic: "zigbee2mqtt/light_sensor_office"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
@@ -178,9 +204,11 @@ sensor:
     name: motion_office_battery
     state_topic: "zigbee2mqtt/mijia_office_motion"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
+
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Check
   ##-----------------------------------------------------------------------------------------------
@@ -228,6 +256,96 @@ sensor:
           {% else%}
             critical
           {% endif %}
+
+  ## Button office desk left
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_desk_left
+    state_topic: "zigbee2mqtt/aqara_office_desk_left_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.action }}"
+    icon: "mdi:gesture-double-tap"
+  ## Button office desk left
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_desk_left_battery
+    state_topic: "zigbee2mqtt/aqara_office_desk_left_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "%"
+    value_template: "{{ value_json.battery }}"
+    device_class: "battery"
+  ## Button office desk left
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_desk_left_linkquality
+    state_topic: "zigbee2mqtt/aqara_office_desk_left_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+
+  ## Button office desk right
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_desk_right
+    state_topic: "zigbee2mqtt/aqara_office_desk_right_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    value_template: "{{ value_json.action }}"
+    icon: "mdi:gesture-double-tap"
+  ## Button office desk right
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_desk_right_battery
+    state_topic: "zigbee2mqtt/aqara_office_desk_right_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "%"
+    value_template: "{{ value_json.battery }}"
+    device_class: "battery"
+  ## Button office desk right
+  ## Xiaomi Mijia wireless switch, WXKG01LM
+  - platform: "mqtt"
+    name: button_desk_right_linkquality
+    state_topic: "zigbee2mqtt/aqara_office_desk_right_button"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+
+  ## Link quality Switch office desk light
+  - platform: "mqtt"
+    name: switch_office_desk_lights_linkquality
+    state_topic: "zigbee2mqtt/blitzwolf_office_light"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    icon: "mdi:signal"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+switch:
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Active
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## switches - Test
+  ##-----------------------------------------------------------------------------------------------
+  ## Switch office desk light
+  ## Blitzwolf BW-SHP13
+  - platform: "mqtt"
+    name: switch_office_desk_lights
+    state_topic: "zigbee2mqtt/blitzwolf_office_light"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    payload_off: "OFF"
+    payload_on: "ON"
+    value_template: "{{ value_json.state }}"
+    command_topic: "zigbee2mqtt/blitzwolf_office_light/set"
 
 ###############################################################################
 ##  Groups

@@ -13,12 +13,16 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Home server HDD
     ## Source: Domoticz via MQTT
+    sensor.server_homeserver_cpu_temp:
+      friendly_name: Homeserver CPU temperatuur
+    ## Home server HDD
+    ## Source: Domoticz via MQTT
     sensor.server_homeserver_hdd:
-      friendly_name: Homerserver HDD
+      friendly_name: Homeserver HDD
     ## Home server HDD boot
     ## Source: Domoticz via MQTT
     sensor.server_homeserver_hdd_boot:
-      friendly_name: Homerserver HDD boot
+      friendly_name: Homeserver HDD boot
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Check
     ##-----------------------------------------------------------------------------------------------

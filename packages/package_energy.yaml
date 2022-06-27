@@ -58,7 +58,27 @@ sensor:
   ##-----------------------------------------------------------------------------------------------
   ## DSMR reader integration
   - platform: dsmr_reader
+
+  ## Utilities sensor PV installation
+  ## Source MQTT topic home/meter/envoy
+  # - platform: "mqtt"
+  #   name: envoy_reading_electricity_generated_lifetime
+  #   state_topic: "home/meter/envoy"
+  #   expire_after: 3600             # 1 hours
+  #   force_update: true
+  #   value_template: "{{ value_json.lifetime }}"
+  #   json_attributes_topic: "home/meter/envoy"
+
+  ## Utilities sensor PV installation
+  ## Source REST API Enphase Envoy-S
+  # - platform: rest
+  #   name: envoy_reading_electricity_generated_lifetime
+  #   resource: http://192.168.0.160/api/v1/production
+  #   method: GET
+  #   value_template: "{{ value_json.wattHoursLifetime | multiply(0.001) }}"
+
   ## Utilities sensor water
+  ## Source MQTT topic home/meter/water
   - platform: "mqtt"
     name: utilities_water
     state_topic: "home/meter/water"
@@ -66,6 +86,7 @@ sensor:
     force_update: true
     value_template: "{{ value_json.usage }}"
     json_attributes_topic: "home/meter/water"
+
   ## Utilities water meter reference value (stored at 00:00 previous day)
   ## Source MQTT topic home/meter/reference
   - platform: "mqtt"
@@ -73,14 +94,86 @@ sensor:
     state_topic: "home/meter/reference"
     value_template: "{{ value_json.time }}"
     json_attributes_topic: "home/meter/reference"
+
   ## Utilities converted readings
+  ## Template
   - platform: template
     sensors:
-      ## Current electricity usage
+      ## Current electricity usage (in Watt)
       ## Source: DSMR-Reader
       dsmr_reading_electricity_currently_delivered_watt:
         value_template: "{{ states('sensor.dsmr_reading_electricity_currently_delivered')|float * 1000 }}"
         unit_of_measurement: "W"
+      ## Utilities sensor DSMR consumption now (in Watt)
+      ## Source 
+      dsmr_electricity_currently_delivered_watt:
+        value_template: "{{ ((states('sensor.dsmr_reading_electricity_currently_delivered')|float) *1000)|round(0) }}"
+        unit_of_measurement: "W"
+        friendly_name: Verbruik net (Watt)
+        device_class: energy
+      ## Utilities sensor DSMR returned now (in Watt)
+      ## Source 
+      dsmr_electricity_currently_returned_watt:
+        value_template: "{{ ((states('sensor.dsmr_reading_electricity_currently_returned')|float) *1000)|round(0) }}"
+        unit_of_measurement: "W"
+        friendly_name: Terug geleverd (Watt)
+        device_class: energy
+
+      ## Utilities sensor PV delivered lifetime (in kWh)
+      ## Source REST API Enphase Envoy-S
+      envoy_reading_electricity_generated_lifetime:
+        value_template: "{{ (states('sensor.envoy_lifetime_energy_production')|float /1000)|round(3) }}"
+        unit_of_measurement: "kWh"
+        friendly_name: PV opgewekt totaal
+        device_class: energy
+      ## Utilities sensor PV delivered today (in kWh)
+      ## Source REST API Enphase Envoy-S
+      envoy_reading_electricity_generated_today:
+        value_template: "{{ (states('sensor.envoy_today_s_energy_production')|float /1000)|round(3) }}"
+        unit_of_measurement: "kWh"
+        friendly_name: PV opgewekt vandaag
+        device_class: energy
+
+      ## Utilities sensor home usage today (in kWh)
+      ## Source various template sensors
+      utilities_day_consumption_electricity_day:
+        value_template: >-
+         {{ ((states('sensor.envoy_today_s_energy_production')|float /1000) +
+          (states('sensor.dsmr_day_consumption_electricity_merged')|float) -
+          (states('sensor.dsmr_day_consumption_electricity_returned_merged')|float))|round(3) }}
+        unit_of_measurement: "kWh"
+        friendly_name: Huis electriciteits verbruik vandaag
+        device_class: energy
+      ## Utilities sensor home usage now (in Watt)
+      ## Source various template sensors
+      utilities_consumption_electricity_now:
+        value_template: >-
+         {{ ((states('sensor.envoy_current_power_production')|float) +
+          (states('sensor.dsmr_electricity_currently_delivered_watt')|float) -
+          (states('sensor.dsmr_electricity_currently_returned_watt')|float))|round(0) }}
+        unit_of_measurement: "W"
+        friendly_name: Huis huidig electriciteits verbruik
+        device_class: energy
+
+      ## Utilities sensor powr production east oriented roof (average over 6 panels)
+      ## Used for calcualting the radiation in order to steer the sunscreen
+      ## Source: various Enlighten Envoy sensors
+      utilities_power_electricity_east:
+        value_template: >-
+          {% set total = 
+              (states('sensor.envoy_inverter_122052006877')|float) +
+              (states('sensor.envoy_inverter_122051127189')|float) +
+              (states('sensor.envoy_inverter_122052006684')|float) +
+              (states('sensor.envoy_inverter_122052006690')|float) +
+              (states('sensor.envoy_inverter_122052014470')|float) +
+              (states('sensor.envoy_inverter_122052014438')|float)
+          %}
+          {% set total = total/6 %}
+          {{ total }}
+        unit_of_measurement: "W"
+        friendly_name: Vermogen PV oost dak
+        device_class: energy
+
       ## Water usage current day (as of 00:00)
       ## Source: sensor.utilities water & sensor.utilities_reference
       utilities_water_usage:
@@ -105,6 +198,38 @@ sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Obsolete
   ##-----------------------------------------------------------------------------------------------
+
+utility_meter:
+  ##-----------------------------------------------------------------------------------------------
+  ## Utility meters - Active
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## Utility meters - Check
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## Utility meters - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## Utility meters - Test
+  ##-----------------------------------------------------------------------------------------------
+  pv_production_daily:
+    source: sensor.envoy_reading_electricity_generated_lifetime
+    cycle: daily
+    tariffs:
+      - high
+      - low
+  pv_production_monthly:
+    source: sensor.envoy_reading_electricity_generated_lifetime
+    cycle: monthly
+    tariffs:
+      - high
+      - low
+  pv_production_yearly:
+    source: sensor.envoy_reading_electricity_generated_lifetime
+    cycle: yearly
+    tariffs:
+      - high
+      - low
 
 # camera:
 ##-----------------------------------------------------------------------------------------------
@@ -133,9 +258,57 @@ sensor:
 ##  Groups
 ###############################################################################
 
+automation:
 ###############################################################################
 ##  Automations
 ###############################################################################
+  ## Utilities meters - select tariff High
+  - alias: "Utilies meters - select high tariff"
+    initial_state: "on" 
+    trigger:
+      - platform: time
+        at: "07:00:00"
+    condition:
+      - condition: "time"
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+    action:
+      - service: utility_meter.select_tariff
+        data:
+          entity_id: utility_meter.pv_production_daily
+          tariff: high
+      - service: utility_meter.select_tariff
+        data:
+          entity_id: utility_meter.pv_production_monthly
+          tariff: high
+      - service: utility_meter.select_tariff
+        data:
+          entity_id: utility_meter.pv_production_yearly
+          tariff: high
+
+  ## Utilities meters - select tariff Low
+  - alias: "Utilies meters - select low tariff"
+    initial_state: "on" 
+    trigger:
+      - platform: time
+        at: "23:00:00"
+    action:
+      - service: utility_meter.select_tariff
+        data:
+          entity_id: utility_meter.pv_production_daily
+          tariff: low
+      - service: utility_meter.select_tariff
+        data:
+          entity_id: utility_meter.pv_production_monthly
+          tariff: low
+      - service: utility_meter.select_tariff
+        data:
+          entity_id: utility_meter.pv_production_yearly
+          tariff: low
 
 ###############################################################################
 ##  Templates

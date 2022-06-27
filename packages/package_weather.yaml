@@ -6,24 +6,24 @@
 #################################################################################################
 ##  Homeassistant settings
 #################################################################################################
-weather:
+# weather:
   ##-----------------------------------------------------------------------------------------------
   ## Weather services - Active
   ##-----------------------------------------------------------------------------------------------
-  - platform: buienradar
+  # - platform: buienradar --> IS NOW AN INTEGRATION
 
 #################################################################################################
 ##  Entities
 #################################################################################################
-camera:
+# camera:
   ##-----------------------------------------------------------------------------------------------
   ## cameras - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Camera used for buienradar
+  ## Camera used for buienradar --> IS NOW AN INTEGRATION
   ## Source: buienradar feed
-  - platform: generic
-    name: buienradar
-    still_image_url: "https://api.buienradar.nl/image/1.0/RadarMapNL?w=256h=256"
+  # - platform: generic
+  #   name: buienradar
+  #   still_image_url: "https://api.buienradar.nl/image/1.0/RadarMapNL?w=256h=256"
   ##-----------------------------------------------------------------------------------------------
   ## cameras - Check
   ##-----------------------------------------------------------------------------------------------
@@ -31,50 +31,50 @@ camera:
   ## cameras - Obsolete
   ##-----------------------------------------------------------------------------------------------
 
-sensor:
+# sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Active
   ##-----------------------------------------------------------------------------------------------
   ## Buienradar sensors
-  ## Source: buienradar integration
-  - platform: buienradar
-    timeframe: 5
-    monitored_conditions:
-      - stationname
-      - conditioncode
-      - condition
-      - conditiondetailed
-      - conditionexact    
-      - symbol
-      - humidity
-      - temperature
-      - groundtemperature
-      - windspeed
-      - windforce
-      - winddirection
-      - windazimuth
-      - pressure
-      - visibility
-      - windgust
-      - precipitation
-      - irradiance
-      - precipitation_forecast_average
-      - precipitation_forecast_total
-      - rainchance_1d
-      - rainchance_2d
-      - rainchance_3d
-      - rainchance_4d
-      - rainchance_5d
-      - sunchance_1d
-      - sunchance_2d
-      - sunchance_3d
-      - sunchance_4d
-      - sunchance_5d
-      - symbol_1d
-      - symbol_2d
-      - symbol_3d
-      - symbol_4d
-      - symbol_5d
+  ## Source: buienradar integration --> IS NOW AN INTEGRATION
+  # - platform: buienradar
+  #   timeframe: 5
+  #   monitored_conditions:
+  #     - stationname
+  #     - conditioncode
+  #     - condition
+  #     - conditiondetailed
+  #     - conditionexact    
+  #     - symbol
+  #     - humidity
+  #     - temperature
+  #     - groundtemperature
+  #     - windspeed
+  #     - windforce
+  #     - winddirection
+  #     - windazimuth
+  #     - pressure
+  #     - visibility
+  #     - windgust
+  #     - precipitation
+  #     - irradiance
+  #     - precipitation_forecast_average
+  #     - precipitation_forecast_total
+  #     - rainchance_1d
+  #     - rainchance_2d
+  #     - rainchance_3d
+  #     - rainchance_4d
+  #     - rainchance_5d
+  #     - sunchance_1d
+  #     - sunchance_2d
+  #     - sunchance_3d
+  #     - sunchance_4d
+  #     - sunchance_5d
+  #     - symbol_1d
+  #     - symbol_2d
+  #     - symbol_3d
+  #     - symbol_4d
+  #     - symbol_5d
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Check
   ##-----------------------------------------------------------------------------------------------

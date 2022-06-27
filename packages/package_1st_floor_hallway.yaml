@@ -6,23 +6,11 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-homeassistant:
-  customize:
+# homeassistant:
+#   customize:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Active
     ##-----------------------------------------------------------------------------------------------
-    ## 2nd floor hallway environment sensor
-    ## Source: Xiaomi Aqara ZigBee
-    sensor.environment_hallway_floor2_temperature:
-      friendly_name: Temperatuur Overloop 2e verdieping
-    sensor.environment_hallway_floor2_humidity:
-      friendly_name: Rel. Vochtigheid Overloop 2e verdieping 
-    sensor.environment_hallway_floor2_pressure:
-      friendly_name: Luchtdruk Overloop 2e verdieping
-    sensor.environment_hallway_floor2_linkquality:
-      friendly_name: Overloop 2e verdieping (link quality)
-    sensor.environment_hallway_floor2_battery:
-      friendly_name: Batterij multisensor overloop 2e verdieping
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Check
     ##-----------------------------------------------------------------------------------------------

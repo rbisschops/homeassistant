@@ -6,19 +6,11 @@
 ###############################################################################
 ##  Homeassistant settings
 ###############################################################################
-homeassistant:
-  customize:
+# homeassistant:
+#   customize:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Active
     ##-----------------------------------------------------------------------------------------------
-    ## Test environment sensor
-    ## Source: Dummy 
-    sensor.environment_test_temperature:
-      friendly_name: Temperatuur Test
-    sensor.environment_test_humidity:
-      friendly_name: Rel. Vochtigheid Test
-    sensor.environment_test_pressure:
-      friendly_name: Luchtdruk Test
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Check
     ##-----------------------------------------------------------------------------------------------
@@ -28,60 +20,46 @@ homeassistant:
     ##-----------------------------------------------------------------------------------------------
     ## Customizations - Test
     ##-----------------------------------------------------------------------------------------------
+    ## Test environment sensor
+    ## Source: Dummy 
+    # sensor.environment_test_temperature:
+    #   friendly_name: Temperatuur Test
+    # sensor.environment_test_humidity:
+    #   friendly_name: Rel. Vochtigheid Test
+    # sensor.environment_test_pressure:
+    #   friendly_name: Luchtdruk Test
 
 ###############################################################################
 ##  Entities
 ###############################################################################
-input_select:
+# input_select:
   ##-----------------------------------------------------------------------------------------------
   ## input_select - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Test environment sensor
-  ## Source: Dummy
-  environment_test_humidity_state:
-    name: Luchtvochtigheid Test status
-    options: 
-      - Te laag
-      - Laag
-      - Normaal
-      - Hoog
-      - Te hoog
   ##-----------------------------------------------------------------------------------------------
   ## input_select - Check
   ##-----------------------------------------------------------------------------------------------
   ##-----------------------------------------------------------------------------------------------
   ## input_select - Obsolete
   ##-----------------------------------------------------------------------------------------------
-sensor:
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Test
+  ##-----------------------------------------------------------------------------------------------
+  ## Test environment sensor
+  ## Source: Dummy
+  # environment_test_humidity_state:
+  #   name: Luchtvochtigheid Test status
+  #   options: 
+  #     - Te laag
+  #     - Laag
+  #     - Normaal
+  #     - Hoog
+  #     - Te hoog
+
+# sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Active
   ##-----------------------------------------------------------------------------------------------
-  ## Test environment sensor
-  ## Source: Dummy 
-  - platform: "mqtt"
-    name: environment_test_temperature
-    state_topic: "test/test_sensor_env"
-    expire_after: 900
-    force_update: true
-    unit_of_measurement: "°C"
-    device_class: "temperature"
-    value_template: "{{ value_json.temperature }}"
-  - platform: "mqtt"
-    name: environment_test_humidity
-    state_topic: "test/test_sensor_env"
-    expire_after: 900
-    force_update: true
-    unit_of_measurement: "%"
-    device_class: "humidity"
-    value_template: "{{ value_json.humidity }}"
-  - platform: "mqtt"
-    name: environment_test_pressure
-    state_topic: "test/test_sensor_env"
-    expire_after: 900
-    force_update: true
-    unit_of_measurement: "hPa"
-    device_class: "pressure"
-    value_template: "{{ value_json.pressure }}"
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Check
   ##-----------------------------------------------------------------------------------------------
@@ -91,6 +69,32 @@ sensor:
   ##-----------------------------------------------------------------------------------------------
   ## sensors - Test
   ##-----------------------------------------------------------------------------------------------
+  ## Test environment sensor
+  ## Source: Dummy 
+  # - platform: "mqtt"
+  #   name: environment_test_temperature
+  #   state_topic: "test/test_sensor_env"
+  #   expire_after: 900
+  #   force_update: true
+  #   unit_of_measurement: "°C"
+  #   device_class: "temperature"
+  #   value_template: "{{ value_json.temperature }}"
+  # - platform: "mqtt"
+  #   name: environment_test_humidity
+  #   state_topic: "test/test_sensor_env"
+  #   expire_after: 900
+  #   force_update: true
+  #   unit_of_measurement: "%"
+  #   device_class: "humidity"
+  #   value_template: "{{ value_json.humidity }}"
+  # - platform: "mqtt"
+  #   name: environment_test_pressure
+  #   state_topic: "test/test_sensor_env"
+  #   expire_after: 900
+  #   force_update: true
+  #   unit_of_measurement: "hPa"
+  #   device_class: "pressure"
+  #   value_template: "{{ value_json.pressure }}"
 ###############################################################################
 ##  Groups
 ###############################################################################

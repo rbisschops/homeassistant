@@ -1,6 +1,7 @@
 ## Package file for Home Assistant, used for the Livingroom
 ## Type: Home Assistant yaml file
 ## Date added: 2019-03-10
+## Last update: 2022-04-18 10:07
 ## Author: R.Bisschops
 
 ###############################################################################
@@ -14,15 +15,15 @@ homeassistant:
     ## ZigBeee2MQTT Switch high cabinets
     ## Source SilverCrest,Lidl HG06337 ZigBee
     switch.switch_high_cabinets:
-      friendly_name: High cabinets (SilverCrest)
+      friendly_name: Hoge kasten (SilverCrest)
     sensor.switch_high_cabinets_linkquality:
-      friendly_name: High cabinets (link quality)
+      friendly_name: Hoge kasten (link quality)
     ## ZigBeee2MQTT Switch christmas tree
     ## Source SilverCrest,Lidl HG06337 ZigBee
     switch.switch_christmas_tree:
-      friendly_name: High cabinets (SilverCrest)
+      friendly_name: Kerstboom (SilverCrest)
     sensor.switch_christmas_tree_linkquality:
-      friendly_name: High cabinets (link quality)
+      friendly_name: Kerstboon (link quality)
     ## Livingroom environment sensor
     ## Source: Xiaomi Aqara ZigBee
     sensor.environment_livingroom_temperature:
@@ -36,15 +37,11 @@ homeassistant:
     sensor.environment_livingroom_battery:
       friendly_name:  Batterij multisensor woonkamer
     ## Refridgerator door sensor
-    ## Source: Xiaomi Aqara ZigBee
+    ## Source: Xiaomi Aqara MCCGQ11LM
     binary_sensor.door_refrigerator:
       friendly_name: Koelkast deur
-    ## Refridgerator door link quality
-    ## Source: Xiaomi Aqara ZigBee
     sensor.door_refrigerator_linkquality:
       friendly_name: Koelkastdeur (link quality)
-    ## Refridgerator door battery
-    ## Source: Xiaomi Aqara ZigBee
     sensor.door_refrigerator_battery:
       friendly_name: Batterij koelkastdeur
     ## Kitchen secundary spot light #001
@@ -81,6 +78,12 @@ homeassistant:
       friendly_name: Keuken spot 004 (link quality)
     ## Group kitchen secundary spot lights
     ## Source: Home Assistant
+    ## Dimmer 2nd floor bed room
+    ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
+    light.light_bar:
+      friendly_name: Verlichting bar
+    sensor.light_bar:
+      friendly_name: Verlichting bar (link quality)
     light.kitchen_secundary_spots:
       friendly_name: Keuken spots
     ##-----------------------------------------------------------------------------------------------
@@ -101,7 +104,7 @@ binary_sensor:
   ## binary_sensors - Active
   ##-----------------------------------------------------------------------------------------------
   ## Refridgerator door 
-  ## Source: Xiaomi Aqara ZigBee
+  ## Source: Xiaomi Aqara MCCGQ11LM
   - platform: "mqtt"
     name: door_refrigerator
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
@@ -117,7 +120,7 @@ binary_sensor:
       light_livingroom_all:
         friendly_name: Alle verlichting woonkamer
         value_template: >-
-          {{ is_state('input_boolean.light_high_cabinets','on')
+          {{ is_state('switch.switch_high_cabinets','on')
             and is_state('input_boolean.light_livingroom_button','on') }}
         entity_picture_template: >-
           {{ '/local/custom_icons/lightbulb48_' ~ states('binary_sensor.light_livingroom_all') ~ '.png' }}
@@ -165,11 +168,6 @@ input_boolean:
   switch_christmas_tree:
     name: Kerstboom
     icon: mdi:pine-tree
-  ## Button livingroom small christmas tree
-  ## Source: template
-  switch_small_christmas_tree:
-    name: Kleine kerstboom
-    icon: mdi:pine-tree
   ## Status monitoring livingroom bar lights
   ## Source: template
   light_bar:
@@ -201,15 +199,10 @@ input_boolean:
   ##-----------------------------------------------------------------------------------------------
   ##input_boolean - Obsolete
   ##-----------------------------------------------------------------------------------------------
-  # ## Button livingroom high cabinets
+  # ## Button livingroom small christmas tree
   # ## Source: template
-  # light_high_cabinets_button:
-  #   name: Button hoge kasten
-  #   icon: mdi:lightbulb
-  # ## Button livingroom christmas tree
-  # ## Source: template
-  # switch_christmas_tree_button:
-  #   name: Kerstboom
+  # switch_small_christmas_tree:
+  #   name: Kleine kerstboom
   #   icon: mdi:pine-tree
 
 input_select:
@@ -240,6 +233,10 @@ input_select:
       - Helder
       - Nachtlampje
       - Video
+  ##-----------------------------------------------------------------------------------------------
+  ## input_select - Check
+  ##-----------------------------------------------------------------------------------------------
+  ## Mode selector for the lights in the livingroom.
   ## Selector for the scenes for the Hue lighting
   light_kitchen_secundary_spots:
     name: Keuken spots
@@ -249,10 +246,6 @@ input_select:
       - Ontspannen
       - Schoonmaken
       - Gedimd
-
-  ##-----------------------------------------------------------------------------------------------
-  ## input_select - Check
-  ##-----------------------------------------------------------------------------------------------
   ## Humdity state indicator
   ## Source: template
   environment_livingroom_humidity_state:
@@ -262,7 +255,7 @@ input_select:
       - Laag
       - Normaal
       - Hoog
-      - Te hooog
+      - Te hoog
   ##-----------------------------------------------------------------------------------------------
   ## input_select - Obsolete
   ##-----------------------------------------------------------------------------------------------
@@ -293,15 +286,15 @@ input_select:
       - "off"
       - "auto"
       - "hand"
-  ## State indicator livingroom small christmas tree
-  ## Source: template
-  switch_small_christmas_tree:
-    name: Kleine kerstboom
-    options:
-      - "on"
-      - "off"
-      - "auto"
-      - "hand"
+  # ## State indicator livingroom small christmas tree
+  # ## Source: template
+  # switch_small_christmas_tree:
+  #   name: Kleine kerstboom
+  #   options:
+  #     - "on"
+  #     - "off"
+  #     - "auto"
+  #     - "hand"
 
 input_number:
   ##-----------------------------------------------------------------------------------------------
@@ -443,6 +436,20 @@ light:
       - "channel_change"
       - "finish_effect"
       - "stop_effect"
+  ## Dimmer groundfloor bar
+  ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
+  - platform: "mqtt"
+    name: light_bar
+    state_topic: "zigbee2mqtt/lonsonho_dimmer_bar"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    brightness: true
+    color_temp: false
+    xy: false
+    hs: false
+    schema: "json"
+    command_topic: "zigbee2mqtt/lonsonho_dimmer_bar/set"
+    brightness_scale: 254
+    effect: false
   ## light groups for setting the Hue lights. Present itself as light.xxx 
   ## Group all Hue lamps livingroom
   ## Source: Home Assistant
@@ -481,6 +488,9 @@ light:
   ##-----------------------------------------------------------------------------------------------
   ##-----------------------------------------------------------------------------------------------
   ## light - Obsolete
+  ##-----------------------------------------------------------------------------------------------
+  ##-----------------------------------------------------------------------------------------------
+  ## lights - Test
   ##-----------------------------------------------------------------------------------------------
 
 sensor:
@@ -546,21 +556,24 @@ sensor:
     name: environment_livingroom_battery
     state_topic: "zigbee2mqtt/aqara_livingroom_env"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
   ## Refridgerator door sensor
-  ## Source: Xiaomi Aqara ZigBee
+  ## Source: Xiaomi Aqara MCCGQ11LM
   - platform: "mqtt"
     name: door_refrigerator_linkquality
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "-"
     value_template: "{{ value_json.linkquality }}"
   - platform: "mqtt"
     name: door_refrigerator_battery
     state_topic: "zigbee2mqtt/aqara_refrigerator_door"
     availability_topic: "zigbee2mqtt/bridge/state"
+    expire_after: 21600
     unit_of_measurement: "%"
     device_class: "battery"
     value_template: "{{ value_json.battery }}"
@@ -596,6 +609,15 @@ sensor:
   - platform: "mqtt"
     name: kitchen_spot_004_linkquality
     state_topic: "zigbee2mqtt/light_kitchen_004"
+    availability_topic: "zigbee2mqtt/bridge/state"
+    unit_of_measurement: "lqi"
+    value_template: "{{ value_json.linkquality }}"
+    icon: "mdi:signal"
+  ## Dimmer groundfloor bar
+  ## Source Lonsonho, QS-Zigbee-D02-TRIAC-LN
+  - platform: "mqtt"
+    name: light_bar_linkquality
+    state_topic: "zigbee2mqtt/lonsonho_dimmer_bar"
     availability_topic: "zigbee2mqtt/bridge/state"
     unit_of_measurement: "lqi"
     value_template: "{{ value_json.linkquality }}"
